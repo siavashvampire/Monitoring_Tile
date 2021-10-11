@@ -56,7 +56,7 @@ class line_monitoring extends innerController {
 		$data = request::getFromArray( $_data,'Sensor_id,AbsTime,counter,Tile_Kind,Motor_Speed,start_time');
 		/* @var sensors $sensor */
 		$sensor = parent::model(['LineMonitoring','sensors'] , [$data['Sensor_id'] ] , 'Sensor_id = ? ');
-		if ( $sensor->getSensorId() != $data['Sensor_id'] ) {
+		if ( $sensor->getId() != $data['Sensor_id'] ) {
 			return [false,'شماره یکتا سنسور یافت نشد!'];
 		}
 
@@ -88,7 +88,7 @@ class line_monitoring extends innerController {
 
 		$log->setStartTime($Time);
 		$log->setAbsTime($data['AbsTime']);
-		$log->setSensorId($sensor->getSensorId());
+		$log->setSensorId($sensor->getId());
 		$log->setShiftId($shiftId);
 		$log->setEmployersId($shiftWorker);
 		$log->setShiftGroupId($shift_time_group);
@@ -110,7 +110,7 @@ class line_monitoring extends innerController {
 			if ( $ip != '' and $port != '' ){
 				$ws = new clientSocket(array('host' => $ip,'port' => $port,'path' => ''));
 				$ws->send(json_encode([
-					'sensor_id' => $sensor->getSensorId() ,
+					'sensor_id' => $sensor->getId() ,
 					'label' => $sensor->getLabel(),
 					'tile_id' => $log->getTileKind(),
 					'shift_id' => $log->getShiftId(),
@@ -144,7 +144,7 @@ class line_monitoring extends innerController {
 
         /* @var sensors $sensor */
         $sensor = parent::model(['LineMonitoring','sensors'] , [$data['Sensor_id'] ] , 'id = ? ');
-        if ( $sensor->getSensorId() != $data['Sensor_id'] ) {
+        if ( $sensor->getId() != $data['Sensor_id'] ) {
             return self::jsonError('شماره یکتا سنسور یافت نشد!');
         }
 
@@ -173,8 +173,8 @@ class line_monitoring extends innerController {
 
         /* @var sensor_active_log_archive $logArchive */
         if ( $data['active'] == 1 ){
-            $logArchive = parent::model(['LineMonitoring','sensor_active_log_archive'] , [$sensor->getSensorId() , ''] , ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
-            if ( $logArchive->getSensor_id() == $sensor->getSensorId() ){
+            $logArchive = parent::model(['LineMonitoring','sensor_active_log_archive'] , [$sensor->getId() , ''] , ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
+            if ( $logArchive->getSensor_id() == $sensor->getId() ){
                 $logArchive->setEnd_Time( $Time );
                 $logArchive->setJEnd_Time(JDate::jdate('Y/n/j H:i:s',$strTime ) );
                 $logArchive->setEnd_Shift_id( $shiftId );
@@ -194,9 +194,9 @@ class line_monitoring extends innerController {
                 return self::jsonError('Cant Find Deactive log!');
             }
         } else {
-            $logArchive = parent::model(['LineMonitoring','sensor_active_log_archive'] , [$sensor->getSensorId() , ''] , ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
-            if ( $logArchive->getSensor_id() != $sensor->getSensorId() ){
-                $logArchive->setSensor_id( $sensor->getSensorId() );
+            $logArchive = parent::model(['LineMonitoring','sensor_active_log_archive'] , [$sensor->getId() , ''] , ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
+            if ( $logArchive->getSensor_id() != $sensor->getId() ){
+                $logArchive->setSensor_id( $sensor->getId() );
                 $logArchive->setPhase( $sensor->getPhase() );
                 $logArchive->setTileDegree( $sensor->getTileDegree() );
                 $logArchive->setUnit( $sensor->getUnitId() );

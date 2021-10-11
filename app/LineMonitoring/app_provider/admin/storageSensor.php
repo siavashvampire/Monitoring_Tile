@@ -77,7 +77,7 @@ class storageSensor extends controller
         if ($VSId != null) {
             /* @var sensors $VS */
             $VS = parent::model('sensors', $VSId);
-            if ($VS->getSensorId() != $VSId) {
+            if ($VS->getId() != $VSId) {
                 httpErrorHandler::E404();
                 return false;
             }

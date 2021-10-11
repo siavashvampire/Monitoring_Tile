@@ -289,7 +289,7 @@ class data_temp extends model implements modelInterFace {
         
         foreach ($sensorList as $id){
             $sensor = new sensors($id["id"]);
-            $this->setSensorId($sensor->getSensorId());
+            $this->setSensorId($sensor->getId());
             $this->setTileKind($sensor->getTileId());
             $this->setPhase($sensor->getPhase());
             $this->setUnit($sensor->getUnitId());

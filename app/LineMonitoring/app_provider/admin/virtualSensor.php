@@ -83,7 +83,7 @@ class virtualSensor extends controller {
         {
 	        /* @var sensors $VS */
             $VS = parent::model('sensors',$VSId);
-            if ( $VS->getSensorId() != $VSId){
+            if ( $VS->getId() != $VSId){
                     httpErrorHandler::E404();
                     return false ;
                 }

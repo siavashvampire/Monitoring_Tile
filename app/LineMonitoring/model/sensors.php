@@ -82,29 +82,29 @@ class sensors extends model implements modelInterFace
         if ($result) {
             if ($this->getisVirtual()) {
                 if ($this->getisStorage()) {
-                    (new data)->UpdateZeroStorage($this->getSensorId(), $this->getTileId(), $this->getPhase(), $this->getUnitId(), $this->getTileDegree());
+                    (new data)->UpdateZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnitId(), $this->getTileDegree());
                 }
 
                 $db = (model::db());
                 $perfix = $db::$prefix;
-                model::queryUnprepared('DROP TRIGGER IF EXISTS `' . $perfix . 'execute_virtual_sensor_' . $this->getSensorId() . '`;');
+                model::queryUnprepared('DROP TRIGGER IF EXISTS `' . $perfix . 'execute_virtual_sensor_' . $this->getId() . '`;');
                 $listSensors = explode(',', $this->getSensorChosenId());
                 $listSensorsSign = explode(',', $this->getSensorSign());
                 if (count($listSensors) > 0) {
                     $query = '
-					CREATE TRIGGER `' . $perfix . 'execute_virtual_sensor_' . $this->getSensorId() . '` AFTER INSERT ON `' . $perfix . 'data_temp` FOR EACH ROW BEGIN
+					CREATE TRIGGER `' . $perfix . 'execute_virtual_sensor_' . $this->getId() . '` AFTER INSERT ON `' . $perfix . 'data_temp` FOR EACH ROW BEGIN
 					    ';
                     for ($i = 0; $i < count($listSensors); $i++) {
                         if ($this->getisStorage()) {
                             $query .= '
                             ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
                                 INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-                                VALUES(\'' . $this->getSensorId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+                                VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
                         } else {
                             $query .= '
 					        ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
 					        INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-					        VALUES(\'' . $this->getSensorId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+					        VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
                         }
                     }
                     $query .= '
@@ -125,29 +125,29 @@ class sensors extends model implements modelInterFace
         if ($result) {
             if ($this->getisVirtual()) {
                 if ($this->getisStorage()) {
-                    (new data)->InsertZeroStorage($this->getSensorId(), $this->getTileId(), $this->getPhase(), $this->getUnitId(), $this->getTileDegree());
+                    (new data)->InsertZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnitId(), $this->getTileDegree());
                 }
 
                 $db = (model::db());
                 $perfix = $db::$prefix;
-                model::queryUnprepared('DROP TRIGGER IF EXISTS `' . $perfix . 'execute_virtual_sensor_' . $this->getSensorId() . '`;');
+                model::queryUnprepared('DROP TRIGGER IF EXISTS `' . $perfix . 'execute_virtual_sensor_' . $this->getId() . '`;');
                 $listSensors = explode(',', $this->getSensorChosenId());
                 $listSensorsSign = explode(',', $this->getSensorSign());
                 if (count($listSensors) > 0) {
                     $query = '
-					CREATE TRIGGER `' . $perfix . 'execute_virtual_sensor_' . $this->getSensorId() . '` AFTER INSERT ON `' . $perfix . 'data_temp` FOR EACH ROW BEGIN
+					CREATE TRIGGER `' . $perfix . 'execute_virtual_sensor_' . $this->getId() . '` AFTER INSERT ON `' . $perfix . 'data_temp` FOR EACH ROW BEGIN
 					    ';
                     for ($i = 0; $i < count($listSensors); $i++) {
                         if ($this->getisStorage()) {
                             $query .= '
                             ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
                                 INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-                                VALUES(\'' . $this->getSensorId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+                                VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
                         } else {
                             $query .= '
 					        ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
 					        INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-					        VALUES(\'' . $this->getSensorId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+					        VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
                         }
                     }
                     $query .= '
@@ -339,7 +339,7 @@ class sensors extends model implements modelInterFace
         if ($tileId == null)
             $tileId = $this->getTileId();
         if ($plcId == null)
-            $plcId = $this->getSensorId();
+            $plcId = $this->getSensorPlcId();
 
         if ($tileId != null and $plcId != null)
             parent::updateOnFullQuery(['plc_read' => '0'], [$tileId, $plcId], 'tile_id = ? and  Sensor_id = ? ');

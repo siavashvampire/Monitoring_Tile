@@ -110,7 +110,7 @@ class sensor extends controller
         /* @var sensors $model */
         if ($get['sensor_id'] != '') {
             $model = parent::model('sensors', $get['sensor_id']);
-            if ($model->getSensorId() != $get['sensor_id']) {
+            if ($model->getId() != $get['sensor_id']) {
                 Response::jsonMessage('سنسور مد نظر یافت نشد!', false);
                 return false;
             }

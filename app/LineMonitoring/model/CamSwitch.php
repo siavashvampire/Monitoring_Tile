@@ -147,7 +147,7 @@ class CamSwitch extends model implements modelInterFace {
 		if ( $tileId == null )
 			$tileId = $this->getId();
 		if ( $plcId == null )
-			$plcId = $this->getSensorId();
+			$plcId = $this->getId();
 
 		if ($tileId != null and $plcId != null )
 			parent::updateOnFullQuery(['plc_read'=> '0'] ,[$tileId , $plcId ] , 'id = ? and  Sensor_id = ? ');

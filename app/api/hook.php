@@ -25,6 +25,6 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 class hook extends pluginController {
 
 	public function _adminHeaderNavbar($vars2){
-		$this->menu->addChild('configuration' ,'webservice', rlang('webservice' ) , app::getBaseAppLink('webservice','admin') , 'fa fa-exchange' ,'',null,'admin/webservice/index/api');
+		$this->menu->addChild('configuration' ,'webservice', rlang('webservice' ) , app::getBaseAppLink('webservice','admin') , 'fa fa-exchange' ,'','admin/webservice/index/api');
 	}
 }

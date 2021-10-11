@@ -149,9 +149,14 @@ class DAUnits extends model implements modelInterFace {
     public function getCount($value = array(),$variable = array()) {
         return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'DAUnits', 'COUNT(id) as co' )) [0]['co'];
     }
-    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'unit.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'unit.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"],$getApp = false ) {
         parent::join('DAUnits_Type type' , 'unit.type = type.id');
-        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'DAUnits unit' , 'unit.label,unit.IP,type.label as type'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+        $fields = "";
+        if ( $getApp ){
+            parent::join('daunits_app apps' , 'unit.id = apps.DAUnits_id');
+            $fields .= ", apps.label  as app";
+        }
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'DAUnits unit' , 'unit.id,unit.label,unit.IP,type.label as type' . $fields  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
     }
 
 

@@ -40,10 +40,11 @@ class DAUnits extends controller
         }
 
         $sortWith = [['column' => 'unit.id', 'type' => 'asc']];
+        /** @var \App\DAUnits\model\DAUnits $model */
         $model = parent::model('DAUnits');
         $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $search = $model->getItems($value, $variable, $sortWith, $pagination);
+        $search = $model->getItems($value, $variable, $sortWith, $pagination,false);
         $this->mold->set('items', $search);
 
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'DAUnits', 'index', 'DAUnits')["status"];

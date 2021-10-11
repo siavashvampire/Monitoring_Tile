@@ -177,3 +177,4 @@ SET FOREIGN_KEY_CHECKS=1;
 
 UPDATE `per_field` SET `type` = 'fieldCall_Sections_sections' WHERE `per_field`.`fieldId` = 15;
 UPDATE `per_field` SET `type`='fieldCall_units_units' WHERE `type`='fieldCall_siavash_units';
+UPDATE `per_field` SET `type`='fieldCall_LineMonitoring_phase' WHERE `type`='fieldCall_siavash_phase'

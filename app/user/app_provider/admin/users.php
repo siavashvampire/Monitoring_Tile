@@ -46,7 +46,7 @@ class users extends controller {
 		session::regenerateSessionId(false);
 		session::lifeTime(1 ,'day')->set('userAppLoginInformation',$user->returnAsArray());
 		session::lifeTime(1 ,'day')->set('adminAppLoginInformation',$admin);
-		Response::redirect(App::getBaseAppLink(null,'user'));
+		Response::redirect(App::getBaseAppLink(null,'admin'));
 		exit;
 	}
 	public function lists($defaultAccess = null) {

@@ -27,7 +27,7 @@ class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
 		$this->menu->after('dashboard','users' , rlang(['list','users'] ) , app::getBaseAppLink('users/lists','admin') , 'fa fa-users' ,'',null,'admin/users/lists/user');
 //		$this->menu->after('users','usersinpro' , 'لیست کاربران در حال بررسی' , \app::getBaseAppLink('users/lists/?status=0','admin') , 'fa fa-users');
-		$this->menu->addChild('configuration' ,'permission', rlang('permission' ) , app::getBaseAppLink('permissions','admin') , 'fa fa-lock');
+		$this->menu->addChild('configuration' ,'permission', rlang('permission' ) , app::getBaseAppLink('permissions','admin') , 'fa fa-lock','','admin/users/permissions/user');
 		$this->mold->path('default','user');
 		if ( session::has('userAppLoginInformation') ) {
 			$this->mold->set('userLogin', session::get('userAppLoginInformation'));

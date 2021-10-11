@@ -156,7 +156,7 @@ class DAUnits extends model implements modelInterFace {
             parent::join('daunits_app apps' , 'unit.id = apps.DAUnits_id');
             $fields .= ", apps.label  as app";
         }
-        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'DAUnits unit' , 'unit.id,unit.label,unit.IP,type.label as type' . $fields  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'DAUnits unit' , 'unit.id,unit.label,unit.IP,type.label as type , type.testPort as testPort' . $fields  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
     }
 
 

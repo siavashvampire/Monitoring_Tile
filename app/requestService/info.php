@@ -172,7 +172,7 @@ return [
         ],
     ],
     'sqlInstall' => [
-        "INSERT IGNORE INTO `{prefix}requestService_buginfluence` (`id`, `label`) VALUES
+        "INSERT  INTO `{prefix}requestService_buginfluence` (`id`, `label`) VALUES
 (1 , 'افت تولید'),
 (2 , 'افت کیفیت'),
 (3 , 'سایر');",

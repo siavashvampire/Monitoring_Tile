@@ -61,7 +61,8 @@ return [
     ],
 
     'sqlInstall' => [
-        "INSERT INTO `{prefix}DAUnits_Type` (`id`, `label`,`testPort`) VALUES (null , 'PLC_delta_DVP_12SE',0);",
+        "INSERT IGNORE INTO `{prefix}DAUnits_Type` (`id`, `label`,`testPort`) VALUES (1 , 'PLC_delta_DVP_12SE',0);",
+        "INSERT IGNORE INTO `{prefix}DAUnits_Type` (`id`, `label`,`testPort`) VALUES (2 , 'MERSAD_GATEWAY',0);",
 
     ],
 ];

@@ -3,6 +3,7 @@
 namespace App\contract;
 
 use app;
+use App\contract\model\vote;
 use App\core\controller\fieldService;
 use App\contract\model\contracts_vote;
 use App\user\app_provider\api\user;
@@ -40,7 +41,7 @@ class hook extends pluginController
         $user = user::getUserLogin();
         $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
 
-        if ($contractsVote != true and count($contractsVote) > 0) {
+        if ($contractsVote !== true and count($contractsVote) > 0) {
             $this->mold->set('firstFillOutId', $contractsVote[0]['fillOutId']);
             $this->mold->set('firstFillOutIdCount', count($contractsVote));
 
@@ -76,7 +77,7 @@ class hook extends pluginController
         if (cache::get('lastContractCheck', null, 'contract') != date('Y-m-d')) {
             model::join('contracts contracts', '( contracts.contractGroup = vote.contractGroup and DATE_SUB(DATE_FORMAT(contracts.endDate, "%Y-%m-%d") , INTERVAL vote.ShowToReceiver DAY) = DATE_FORMAT(NOW(), "%Y-%m-%d" ) )', 'INNER');
             $listTypeVote = model::searching([1], ' ? and ShowToReceiver >= 0 and ShowToReceiver is not null ', 'vote vote', 'contracts.contractId,contracts.userId,vote.voteId,vote.checkByUnit');
-            show(model::getLastQuery());
+
             $cacheUnitId = [];
             $cachePhaseId = [];
             $cacheUsersShouldSearch = [];
@@ -106,7 +107,8 @@ class hook extends pluginController
                         unset($fields);
                         $cacheUnitId[$TypeVote['userId']] = $unitId;
                         $cachePhaseId[$TypeVote['userId']] = $phase;
-                    } else {
+                    }
+                    else {
                         $unitId = $cacheUnitId[$TypeVote['userId']];
                         $phase = $cachePhaseId[$TypeVote['userId']];
                     }
@@ -114,7 +116,8 @@ class hook extends pluginController
                     if (!isset($cacheUsersShouldSearch[$user->getUserGroupId()])) {
                         $usersShouldSearch = model::searching([$user->getUserGroupId()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
                         $cacheUsersShouldSearch[$user->getUserGroupId()] = $usersShouldSearch;
-                    } else
+                    }
+                    else
                         $usersShouldSearch = $cacheUsersShouldSearch[$user->getUserGroupId()];
                     if ($unitId != null and $phase != null and count($usersShouldSearch) > 0) {
                         foreach ($usersShouldSearch as $index => $userSearched) {
@@ -147,14 +150,16 @@ class hook extends pluginController
                                     if ($userFind != null) break;
                                 }
                                 unset($fields);
-                            } else {
+                            }
+                            else {
                                 if ($unitId == $cacheUnitId[$userSearched['userId']] and $phase == $cachePhaseId[$userSearched['userId']]) {
                                     $userFind = $userSearched['userId'];
                                     break;
                                 }
                             }
                         }
-                    } elseif ($unitId != null and $phase == null and count($usersShouldSearch) > 0) {
+                    }
+                    elseif ($unitId != null and $phase == null and count($usersShouldSearch) > 0) {
                         foreach ($usersShouldSearch as $index => $userSearched) {
                             if (!isset($cacheUnitId[$userSearched['userId']])) {
                                 $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
@@ -178,7 +183,8 @@ class hook extends pluginController
                                 }
                             }
                         }
-                    } elseif ($unitId == null and $phase != null and count($usersShouldSearch) > 0) {
+                    }
+                    elseif ($unitId == null and $phase != null and count($usersShouldSearch) > 0) {
                         foreach ($usersShouldSearch as $index => $userSearched) {
                             if (!isset($cachePhaseId[$userSearched['userId']])) {
                                 $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
@@ -202,17 +208,20 @@ class hook extends pluginController
                                 }
                             }
                         }
-                    } elseif ($unitId == null and $phase == null and count($usersShouldSearch) > 0) {
+                    }
+                    elseif ($unitId == null and $phase == null and count($usersShouldSearch) > 0) {
                         $userFind = $usersShouldSearch[0]['userId'];
                     }
                     unset($usersShouldSearch);
                 } else {
-                    $user = user::getUserById($TypeVote['userId']);
-                    if (!isset($cacheUsersShouldSearch[$user->getUserGroupId()])) {
-                        $usersShouldSearch = model::searching([$user->getUserGroupId()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
-                        $cacheUsersShouldSearch[$user->getUserGroupId()] = $usersShouldSearch;
+
+                    /* @var vote $vote */
+                    $vote = $this->model(['contract', 'vote'] , $TypeVote['voteId'] );
+                    if (!isset($cacheUsersShouldSearch[$vote->getVoteReceiver()])) {
+                        $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+                        $cacheUsersShouldSearch[$vote->getVoteReceiver()] = $usersShouldSearch;
                     } else
-                        $usersShouldSearch = $cacheUsersShouldSearch[$user->getUserGroupId()];
+                        $usersShouldSearch = $cacheUsersShouldSearch[$vote->getVoteReceiver()];
                     if (count($usersShouldSearch) > 0) {
                         $userFind = $usersShouldSearch[0]['userId'];
                     }

@@ -1,0 +1,297 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام شیفت</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="name" autocomplete="off" class="form-control">
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">سرشیفت</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <select class="selectpicker selectpickerNotRefresh" name="shiftWorker" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                   <option value="" selected >همه</option>
+                                                   {foreach from=$access key=key value=access_item }
+                                                   <option value="{$access_item.userId}"  >{$access_item.fname} {$access_item.lname}</option>
+                                                   {/foreach}
+                                               </select>
+                                           </div>
+                                        </div>
+                                    </div>
+                                   <div class="col-md-12">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-calendar fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لیست شیفت‌های کاری</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" >
+                                <thead>
+                                <tr>
+                                    <th class="text-center">نام شیفت</th>
+                                    <th class="text-center">سرشیفت</th>
+                                    <th class="text-center" style="width: 25px;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$tiles key=key value=tile}
+                                <tr>
+                                    <td class="text-center">{$tile.shift_name}</td>
+                                    <td class="text-center"><a href="{url 'admin'}users/profile/{$tile.taskmaster_id}" target="_blank">{$tile.fname} {$tile.lname}</a></td>
+                                    <td class="text-center"><button class="btn btn-link text-info" onclick="openTileEditor('{$tile.shift_id}')"><i class="fa fa-pencil"></i></button> </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    تغییرات با موفقیت انجام شد.
+                </div>
+                <form id="sendDataForm">
+                    <div class="col-md-6">
+                        <label class="col-md-5 col-form-label">نام شیفت</label>
+                        <div class="col-md-7">
+                            <div class="form-group has-default">
+                                <input type="text" name="name" id="nameOfShift" autocomplete="off" class="form-control">
+                                <input type="hidden" name="id" id="shift_Id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="col-md-3 col-form-label">سرشیفت</label>
+                        <div class="col-md-9">
+                            <div class="form-group has-default" id="shiftWorkerParentDiv">
+                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="shiftWorker" id="shiftWorker" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سرشیفت">
+                                    {foreach from=$access key=key value=access_item }
+                                    <option value="{$access_item.userId}"  >{$access_item.fname} {$access_item.lname}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table text-right">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 20%">روز</th>
+                                        <th style="width: 20%">از ساعت</th>
+                                        <th style="width: 20%">تا ساعت</th>
+                                        <th style="width: 20%">کد گروهبندی</th>
+                                        <th style="width: 20%">
+                                            <button type="button" class="btn btn-info" onclick="$('#bodyTimes').append(oneRowTime);refreshPageJs();">
+                                                <i class="fa fa-plus-circle"></i>
+                        افزودن تایم جدید                                        </button>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bodyTimes">
+                                    <tr>
+                                        <td>
+                                            <select class="selectpicker" name="weekDayNumber[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="روز">
+                                                <option value="شنبه" selected >شنبه</option>
+                                                <option value="یک شنبه"   >یک شنبه</option>
+                                                <option value="دو شنبه"   >دو شنبه</option>
+                                                <option value="سه شنبه"   >سه شنبه</option>
+                                                <option value="چهار شنبه"   >چهار شنبه</option>
+                                                <option value="پنج شنبه"   >پنج شنبه</option>
+                                                <option value="جمعه"   >جمعه</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type='text' name='onDutyTime[]' value='07:00' autocomplete="off" class='input-sm form-control text-center persianTimePicker' placeholder="07:00">
+                                        </td>
+                                        <td>
+                                            <input type='text' name='offDutyTime[]' value='19:00' autocomplete="off" class='input-sm form-control text-center persianTimePicker' placeholder="19:00">
+                                        </td>
+                                        <td>
+                                            <input type='text' name='groupId[]' value='' autocomplete="off" class='input-sm form-control text-center' placeholder="1">
+                                        </td>
+                                        <td style="transform: translate(0%, 0%);" class="td-actions">
+                                            <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                <i class="fa fa-trash"></i>
+                                                حذف                                        </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendTile();" >ارسال</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+<button class="btn btn-info"  onclick="openTileEditor('')">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    اضافه کردن شیفت جدید
+</button>
+{/map}
+
+{map footerjs}
+<script>
+var urlc = '{url current}' ;
+var oneRowTime = $('#bodyTimes').html();
+var sarShiftNames = $('#shiftWorkerParentDiv').html();
+function  refreshPageJs() {
+    $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+    $(".persianTimePicker").persianDatepicker({
+        persianDigit: false ,
+        initialValue: false,
+        format: 'HH:mm',
+        timePicker: {
+            enabled: true,
+            meridiem: {
+                enabled: false
+            },
+            second : {
+                enabled: false
+            },
+            minute : {
+                enabled: true
+            }
+        },
+        autoClose: true,
+        onlyTimePicker: true
+    });
+}
+function openTileEditor(id){
+    if ( id === "" ){
+        $("#exampleModalLabel").html("اضافه کردن شیفت جدید");
+        $("#nameOfShift").val("");
+        $("#shift_Id").val("");
+        $("#shiftWorkerParentDiv").html(sarShiftNames);
+        $('#bodyTimes').html(oneRowTime);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+        refreshPageJs();
+        $('#sendDataButton').show();
+        $('#dataSendAlert').hide();
+        $('#exampleModal').modal('show');
+    } else {
+        $.ajax({
+            url: urlc + '/getDays',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'shift_id': id
+            },
+            success: function (result) {
+                if (result['status']) {
+                    $("#exampleModalLabel").html("ویرایش شیفت " + result['result']['name']);
+                    $("#nameOfShift").val(result['result']['name']);
+                    $("#shift_Id").val(id);
+                    $('#bodyTimes').html('');
+                    var i;
+                    for (i = 0; i < result['result']['times'].length; i++) {
+                        $("#bodyTimes").append(oneRowTime);
+                        var lastinsert = $('#bodyTimes tr:last');
+                        lastinsert.find('input[name^="onDutyTime"]' ).val(result['result']['times'][i]['startTime'].substr(0, 5));
+                        lastinsert.find('input[name^="offDutyTime"]' ).val(result['result']['times'][i]['endTime'].substr(0, 5));
+                        lastinsert.find('input[name^="groupId"]' ).val(result['result']['times'][i]['shift_time_group']);
+                        lastinsert.find('.selectpicker option')
+                            .removeAttr('selected')
+                            .filter('[value=\''+result['result']['times'][i]['onDay']+'\']')
+                            .attr('selected', true)
+                    }
+                    $("#shiftWorkerParentDiv").html(sarShiftNames).find('.selectpicker option')
+                        .removeAttr('selected')
+                        .filter('[value=\''+result['result']['taskmaster']+'\']')
+                        .attr('selected', true);
+                    $('.selectPickerShouldRefresh').selectpicker('refresh');
+                    refreshPageJs();
+                    $('#sendDataButton').show();
+                    $('#dataSendAlert').hide();
+                    $('#exampleModal').modal('show');
+                }
+            }
+        });
+    }
+}
+function sendTile(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: $( "#sendDataForm" ).serializeArray() ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html("تغییرات با موفقیت انجام شد.").show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
+            }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
+</script>
+{/map}

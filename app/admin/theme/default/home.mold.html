@@ -1,0 +1,121 @@
+<div class="content mt-5  mb-5">
+    <div class="container-fluid mt-5 mb-5">
+        <div class="row" {if isset($deleteCopyRight)} style="display:none;" {/if}>
+        <div class="mt-5">
+            <div class="col-md-6 {if $float == 'right'}rtl{else}ltr{/if} text-{$text_align}">
+                <div >
+                    {$tabOne}
+                </div>
+            </div>
+            <div class="col-md-6 {if $float == 'right'}rtl{else}ltr{/if} text-{$text_align}">
+                <div >
+                    {$tabTwo}
+                </div>
+            </div>
+			
+        </div>
+        </div>
+
+    {call adminDashboardPanels}
+		<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">وضعیت سنسورها</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25%">نام سنسور</th>
+                                        <th style="width: 25%">واحد</th>
+                                        <th style="width: 25%">فاز</th>
+                                        <th style="width: 25%">وضعیت</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$sensors key=key value=sensor}
+                                    <tr>
+
+                                        {if $sensor.Active == 1}
+                                            <td class="text-success">{$sensor.label}</td>
+                                            <td class="text-success">{$sensor.unitName}</td>
+                                            <td class="text-success">{$sensor.phase}</td>
+                                            <td class="text-success">فعال</td>
+                                        {elseif $sensor.Active == 0}
+                                            <td class="text-danger">{$sensor.label}</td>
+                                            <td class="text-danger">{$sensor.unitName}</td>
+                                            <td class="text-danger">{$sensor.phase}</td>
+                                            <td class="text-danger" >غیر فعال </td>
+                                        {/if}
+                                    </tr>
+                                {foreachelse}
+                                    <tr>
+                                        <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                    </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+            
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">وضعیت کلیدها</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th style="width: 25%">نام کلید</th>
+                                    <th style="width: 25%">واحد</th>
+                                    <th style="width: 25%">فاز</th>
+									<th style="width: 25%">وضعیت</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$Switchs key=key value=Switch}
+                                <tr>
+                                    {if $Switch.Active == 1}
+                                        <td class="text-success">{$Switch.label}</td>
+                                        <td class="text-success">{$Switch.unitName}</td>
+                                        <td class="text-success">{$Switch.phase}</td>
+                                        <td class="text-success">فعال</td>
+                                    {elseif $Switch.Active == 0}
+                                        <td class="text-danger">{$Switch.label}</td>
+                                        <td class="text-danger">{$Switch.unitName}</td>
+                                        <td class="text-danger">{$Switch.phase}</td>
+                                        <td class="text-danger" >غیر فعال </td>                                    
+                                    {/if}
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</div>

@@ -1,0 +1,221 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام سنسور</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="groupId" id="groupId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$access key=key value=access_item }
+                                                    <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نوع کاشی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="tile_kind" id="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$tiles key=key value=access_item }
+                                                    <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="unit" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.unit}"  >{$unit.Name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--<div class="col-md-4">-->
+                                        <!--<label class="col-md-3 col-form-label">از ساعت</label>-->
+                                        <!--<div class="col-md-9">-->
+                                            <!--<div class="form-group has-default">-->
+                                                <!--<input type="text" autocomplete="off" name="StartTime"  class="form-control persianTimePicker">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="col-md-4">-->
+                                        <!--<label class="col-md-3 col-form-label">الی</label>-->
+                                        <!--<div class="col-md-9">-->
+                                            <!--<div class="form-group has-default">-->
+                                                <!--<input type="text" autocomplete="off" name="EndTime"  class="form-control persianTimePicker">-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <div class="col-md-12">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-eye fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">زمان خاموشی شیفت :
+                         {if $shift}
+                            {$shift.shift_name}
+                         {/if}
+                        </h4>
+                        <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport('tebleExport');">
+                            <i class="fa fa-file-excel-o"></i>
+                            دانلود اکسل
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">نام سنسور</th>
+                                    <th class="text-center">واحد</th>
+                                    <th class="text-center">فاز</th>
+                                    <th class="text-center">مدت زمان خاموش بودن</th>
+                                </tr>
+                                </thead>
+                                <tbody id="listAllRecord">
+                                {foreach from=$logs key=key value=log}
+                                <tr id="rowOf_{$log.Sensor_id}">
+                                    <td class="text-center">{$log.label}</td>
+                                    <td class="text-center">{$log.unitName}</td>
+                                    <td class="text-center">{$log.phase}</td>
+                                    <td class="text-center">
+                                        {math format="floor(abs(x)/60)" x=$log.OffTime  set="tempMint"}
+                                        {math format="floor(x/60)" x=$tempMint  set="tempHour"}
+                                        {math format="floor(x/24)" x=$tempHour  set="tempDay"}
+                                        {math format="x % 24" x=$tempHour  set="tempHourAsli"}
+                                        {math format="x % 60" x=$tempMint  set="tempMintASli"}
+                                        {$tempDay}  روز {$tempHourAsli} ساعت {$tempMintASli} دقیقه
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <!--<tr>-->
+                                    <!--<td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>-->
+                                <!--</tr>-->
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var div = '{$loadDivID}' ;
+
+
+    function fnExcelReport(tableId)
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#2196f3'>";
+        var textRange; var j=0;
+        tab = document.getElementById(tableId); // id of table
+
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<br>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel;charset=UTF-8,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+
+     function search2(link ,searchInDiv ) {
+         searchIn = searchInDiv ;
+         searchLink = link ;
+         optionsSearch = $( searchIn+'Form' ).serializeArray();
+         jQuery.each( optionsSearch, function( i, field ) {
+             var  name = field.name ;
+             if ( name.includes("[]") ){
+                 name = name.replace("[]", "");
+                 if ( typeof options[name] == "undefined" ){
+                     options[name] = [];
+                 }
+                 options[name].push(field.value);
+             } else {
+                 options[field.name] = field.value;
+             }
+         });
+         load();
+         return false ;
+     }
+     window.setInterval(function(){search2(urlc ,div )},5000);
+
+</script>
+{/map}

@@ -1,0 +1,70 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-check-square-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">نظرسنجی</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-right text-bold">
+                            شما در حال پر کردن نظر سنجی در ارتباط با کاربر «
+                                <a href="{url 'admin'}users/profile/{$user->getUserId}" target="_blank"> {$user->getFname()} {$user->getLname()} </a>
+                            » می باشید.
+                                </div>
+                            </div>
+                            {if isset($contractsVote)}
+                            <div class="col-md-6">
+                                <label class="col-md-6 col-form-label">نظرسنجی راجب کاربر :</label>
+                                <div class="col-md-6">
+                                   <div class="form-group has-default">
+                                       <select class="selectpicker selectpickerNotRefresh" name="fillOutId" onchange="changeVote(this);" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" >
+                                           {foreach from=$contractsVote key=key value=contractVote }
+                                           <option value="{$contractVote.fillOutId}"  {if $voteFillId == $contractVote.fillOutId }selected{/if}>{$contractVote.fname} {$contractVote.lname}</option>
+                                           {/foreach}
+                                       </select>
+                                   </div>
+                                </div>
+                            </div>
+                            {/if}
+                        </div>
+                        <form class="form-horizontal" method="post"  onsubmit="return confirm('آیا از ثبت نظر خود اطمینان دارید؟ (نظر نهایی قابلیت ویرایش ندارد!)');" >
+
+                            <hr>
+                            <div class="row">
+                            {set "fillOutFieldServiceFormCssClassAllDiv","col-md-6"}
+                            {set "fillOutFieldServiceFormCssClassLabelDiv","col-md-6 col-form-label"}
+                            {set "fillOutFieldServiceFormCssClassInputDiv","col-md-6 form-group has-default"}
+                            {call fillOutFieldServiceForm}
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> ثبت نظر سنجی</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map footerjs}
+<script>
+    var adminUrl = "{url 'admin'}";
+    function changeVote(element) {
+        var valueAcc = $(element).find(":selected").val();
+        window.location.href =adminUrl + 'contractAction/fill/' + valueAcc;
+    }
+</script>
+{/map}

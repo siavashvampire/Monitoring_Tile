@@ -1,0 +1,22 @@
+{map footerjs}
+{if ! $showPassword }
+<script>
+    $('.loginForm').find('.passwordInputGroup').remove();
+    $('.loginForm').find('.loginSubmitButton').val('ارسال رمز عبور یکبار مصرف');
+
+</script>
+{/if}
+{/map}
+{map alertHeader}
+{if isset($alertUserNotFound)}
+<div class="alert alert-danger  alert-with-icon"  data-notify="container">
+    <span  class="text-right">
+                                  ایمیل و یا شماره همراه در سامانه موجود نمی باشد و یا مسدود شده است.</span>
+</div>
+{/if}
+{/map}
+{map loginMoreField}
+<div class="verificationCodeLogin">
+
+</div>
+{/map}

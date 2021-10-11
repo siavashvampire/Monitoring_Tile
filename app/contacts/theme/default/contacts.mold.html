@@ -1,0 +1,134 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                                       </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "insert"} {_ "contacts"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" id="newContacts" onsubmit="return ajaxThisForm('#newContacts' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label  class="col-form-label col-md-3 float-right">{_ "name"} {_ "and"} {_ "lastName"}:<span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" class="form-control text-center" required name="name" value="{if isset($Mold.post.name)}{$Mold.post.name}{elseif isset($model)}{$model->getName()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "type"} {_ "communication"} :<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="type" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "type"} {_ "communication"}">
+                                            {foreach from=$phone_type key=key value=type }
+                                            <option value="{$type.id}"  {if isset($Mold.post.type)}{if $type.id == $Mold.post.type }selected{/if}{elseif isset($model) and  $type.id == $model->getType() }selected{/if}>{$type.label}</option>
+                                            {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 float-right form-group">
+                                    <label  class="col-form-label col-md-3 float-right">{_ "number"} {_ "or"} {_ "code"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" class="form-control text-center" required name="Phone" value="{if isset($Mold.post.Phone)}{$Mold.post.Phone}{elseif isset($model)}{$model->getPhone()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label class="col-md-3 col-form-label">{_ "phase"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required multiple name="phase[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "phase"}">
+                                            {foreach from=$phases key=key value=phase }
+                                                <option value="{$phase.id}" {if isset($model) and in_array($phase.id, $model->getPhase())}selected{/if} >{$phase.label}</option>
+                                            {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 float-right form-group">
+                                    <label class="col-md-3 col-form-label">{_ "unit"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required multiple name="unit[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "unit"}">
+                                                {foreach from=$units key=key value=unit }
+                                                <option value="{$unit.unitId}" {if isset($model) and in_array($unit.unitId, $model->getUnits())}selected{/if} >{$unit.Name}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label  for="Access" class="col-form-label col-md-6 float-right">{_ "Access"}</label>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-default">
+                                            <label class="form-check-label">
+                                                <input autocomplete="off"  class="form-check-input" id="Access" name="Access" type="checkbox" {if isset($Mold.post.Access)}{if $Mold.post.Access == 1 }checked{/if}{else}{if isset($model)}{if $model->getAccess()}checked{/if}{else}checked{/if}{/if} value="1">
+                                                <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 float-right form-group">
+                                    <label  for="send_allow" class="col-form-label col-md-6 float-right">{_ "send_allow"}</label>
+                                    <div class="col-md-6">
+                                        <div class="form-group has-default">
+                                            <label class="form-check-label">
+                                                <input autocomplete="off"  class="form-check-input" id="send_allow" name="send_allow" type="checkbox" {if isset($Mold.post.send_allow)}{if $Mold.post.send_allow == 1 }checked{/if}{else}{if isset($model)}{if $model->getSendAllow()}checked{/if}{else}checked{/if}{/if} value="1">
+                                                <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{map footerjs}
+<script>
+        let urlc = '{url current}' ;
+</script>
+{/map}
+{map navBarButton}
+{if $editAccess == 'true'}
+<a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+                              <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                              </span>
+    {_ "list"} {_ "contacts"}
+</a>
+{/if}
+{/map}

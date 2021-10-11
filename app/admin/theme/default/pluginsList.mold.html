@@ -1,0 +1,102 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchServices" aria-expanded="false" aria-controls="searchServices">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "searchIn"} {_ "plugins"}</h4>
+                    </div>
+                    <div class="collapse" id="searchServices">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                   <div class="col-md-8">
+                                       <label class="col-md-3 col-form-label">{_ "name"}</label>
+                                       <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="name" class="form-control">
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchServices" aria-expanded="false" aria-controls="searchServices">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" id="listToGetFromServer">
+        <div class="row">
+            {foreach from=$apps key=key value=app}
+            <div class="col-md-4">
+                <div class="card card-product">
+                    <div class="card-header card-header-image" data-header-animation="false">
+                        <a href="#pablo">
+                            <img class="img" src="{$app.icon}">
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-actions text-center" style="display: none">
+                            <button type="button" class="btn btn-default btn-link" rel="tooltip" data-placement="bottom" title="View">
+                                <i class="material-icons">art_track</i>
+                            </button>
+                            <button type="button" class="btn btn-success btn-link" rel="tooltip" data-placement="bottom" title="Edit">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-link" rel="tooltip" data-placement="bottom" title="Remove">
+                                <i class="material-icons">close</i>
+                            </button>
+                            <button type="button" class="btn btn-default btn-link" rel="tooltip" data-placement="bottom" title="{_ 'version'}">
+                                {$app.version}
+                            </button>
+                        </div>
+                        <h4 class="card-title">
+                            {$app.name}
+                        </h4>
+                        <div class="card-description">
+                            {$app.description}
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        {func method="isAppActive" class="App\admin\controller\plugins_mold" set="setValue" app=$app.name version=$app.version}
+                        <div class="price">
+                            <form action="{url}plugins/installFromStorage" method="post">
+                                <input type="hidden" name="app" value="{$app.name}">
+                                <input type="hidden" name="link" value="{$app.insertLink}">
+                                <input type="hidden" name="type" value="{$app.type}">
+                            {if $setValue == 'notInstallYet' }
+                                <input type="hidden" name="installType" value="install">
+                                <input type="submit" value="{_ 'install'}" class="btn btn-info">
+                            {elseif $setValue == 'updated' }
+                                <input type="hidden" name="installType" value="none">
+                                <input type="submit" value="{_ 'install'}" class="btn tox-tbtn--disabled disabled" disabled>
+                            {elseif $setValue == 'needUpDate'}
+                                <input type="hidden" name="installType" value="update">
+                                <input type="submit" value="{_ 'update'}" class="btn btn-warning">
+                            {/if}
+                            </form>
+                        </div>
+                        <div class="stats">
+                            <p class="card-category"><i class="fa fa-user"></i> {$app.author} </p>
+                            <p class="card-category mr-3 ml-3" > {_ "installedNumber"} : {$app.count} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {foreachelse}
+            {_ "hasNotDataYet"}
+            {/foreach}
+            {view "[url patch]pagination.mold.html"}
+            </div>
+        </div>
+    </div>

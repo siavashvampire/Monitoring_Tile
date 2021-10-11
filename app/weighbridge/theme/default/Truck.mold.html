@@ -1,0 +1,195 @@
+﻿<div class="content">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "configuration"} {_ "Truck"} {$model->getId()}</h4>
+                    </div>    
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
+                            <div class="row" style="height: 120px;">
+                                <div class="col-md-4">
+                                    <div class="col-md-12" style="transform: translate(10%, 80%);">
+                                        <label class="col-md-5 col-form-label text-center">وزن </label>
+                                        <div class="col-md-7">
+                                            <div class="form-group has-default">
+                                                <input type="number" min="10" max="99" autocomplete="off" name="Weight" class="form-control text-center" value="{if isset($Mold.post.Weight)}{$Mold.post.Weight}{elseif isset($model)}{$model->getWeight()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>    
+                                <div class="col-md-7" style="background-image: url('<?php echo \app::getCurrentBaseLink('theme/default/') ;  ?>assets/img/CarPlate.png');background-size: 100% 100%;background-repeat: no-repeat;">
+                                    
+                                    <div class="col-md-3" style="transform: translate(10%, 80%);">
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input style="font-size:34px;" type="number" min="10" max="99" autocomplete="off" name="mainNumberPlate" class="form-control text-center" value="{if isset($Mold.post.Number1Plate)}{$Mold.post.Number1Plate}{elseif isset($model)}{$model->getMainNumberPlate()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" style="transform: translate(10%, 80%);">
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input style="font-size:34px;" type="number" min="111" max="999" autocomplete="off" name="Number1Plate" class="form-control text-center" value="{if isset($Mold.post.Number1Plate)}{$Mold.post.Number1Plate}{elseif isset($model)}{$model->getNumber1Plate()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3" style="transform: translate(20%, 60%);">
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" required name="CharNumberPlate" data-style="btn btn-outline-info btn-round text-{$float}" title="">
+                                                    {foreach from=$Chars key=key value=char }
+                                                    <label class="col-md-5 col-form-label text-center">{$char.label} </label>
+                                                    <option value="{$char.label}"  {if isset($Mold.post.CharNumberPlate)}{if $char.label == $Mold.post.CharNumberPlate }selected{/if}{elseif isset($model) and  $char.label == $model->getCharNumberPlate() }selected{/if}>{$char.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" style="transform: translate(10%, 80%);">
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input style="font-size:34px;" type="number" min="11" max="99" autocomplete="off" name="Number2Plate" class="form-control text-center" value="{if isset($Mold.post.Number1Plate)}{$Mold.post.Number1Plate}{elseif isset($model)}{$model->getNumber2Plate()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "Truck_Kind"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-7">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="Truck_Kind" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "Truck_Kind"}">
+                                                {foreach from=$Truck_Kinds key=key value=Truck_Kind }
+                                                    <option value="{$Truck_Kind.id}"  {if isset($Mold.post.Truck_Kind)}{if $Truck_Kind.id == $Mold.post.Truck_Kind }selected{/if}{elseif isset($model) and  $Truck_Kind.id == $model->getTruck_Kind() }selected{/if}>{$Truck_Kind.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "workTitle"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-7">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="workTitle" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "workTitle"}">
+                                                {foreach from=$workTitles key=key value=workTitle }
+                                                    <option value="{$workTitle.id}"  {if isset($Mold.post.workTitle)}{if $workTitle.id == $Mold.post.workTitle }selected{/if}{elseif isset($model) and  $workTitle.id == $model->getWork_Title() }selected{/if}>{$workTitle.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "driver"} 1<span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="driverName1" class="form-control text-center">{if isset($Mold.post.driverName1)}{$Mold.post.driverName1}{elseif isset($model)}{$model->getDriver1()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">{_ "phone"} <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="driverPhone1" class="form-control text-center">{if isset($Mold.post.driverPhone1)}{$Mold.post.driverPhone1}{elseif isset($model)}{$model->getDriver1Number()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "driver"} 2 </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off"  name="driverName2" class="form-control text-center">{if isset($Mold.post.driverName2)}{$Mold.post.driverName2}{elseif isset($model)}{$model->getDriver2()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">{_ "phone"}  </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off"  name="driverPhone2" class="form-control text-center">{if isset($Mold.post.driverPhone2)}{$Mold.post.driverPhone2}{elseif isset($model)}{$model->getDriver2Number()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "driver"} 3 </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off"  name="driverName3" class="form-control text-center">{if isset($Mold.post.driverName3)}{$Mold.post.driverName3}{elseif isset($model)}{$model->getDriver3()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">{_ "phone"}  </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off"  name="driverPhone3" class="form-control text-center">{if isset($Mold.post.driverPhone3)}{$Mold.post.driverPhone3}{elseif isset($model)}{$model->getDriver3Number()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12">                
+                                    <label class="col-md-1 col-form-label">{_ "description"}</label>
+                                    <div class="col-md-1"></div>
+                                    <div class="col-md-10">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off"  name="description" class="form-control">{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
+                               </div>
+                            </div>                            
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}Truck/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "backTo"} {_ "list"} {_ "Truck"}
+</a>
+{/map}

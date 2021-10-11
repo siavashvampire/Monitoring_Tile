@@ -1,0 +1,162 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "configuration"} {_ "Substation"} {$model->getlabel()}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label for="sensors" class="col-form-label col-md-3 float-right">{_ "name"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" class="form-control text-center" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getlabel()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 form-group">
+                                    <label for="showSort" class="col-form-label col-md-3 float-right" >{_ "IP"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" min="0" class="form-control text-center" name="port" value="{if isset($Mold.post.port)}{$Mold.post.port}{elseif isset($model)}{$model->getport()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-12">
+                                    <table class="table text-right">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 20%">{_ "type"} {_ "device"}</th>
+                                            <th style="width: 10%"><b>UNIT ID</b></th>
+                                            <th style="width: 10%">{_ "name"} {_ "device"}</th>
+                                            <th style="width: 10%"> {_ "refreshTime"}</th>
+                                            <th style="width: 15%" class = "text-center">
+                                                <button type="button" class="btn btn-info" onclick="$('#bodyDevice').append(oneRowDevice);refreshPageJs();">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    {_ "device"}                                       </button>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="bodyDevice" >
+                                        <tr style="display:none" id="bodyDeviceElemnt">
+                                            <td>
+                                                <select class="selectpicker" name="deviceType[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "type"} {_ "device"}">
+                                                {foreach from=$devicesType key=key value=device }
+                                                <option value="{$device.id}" >{$device.label}</option>
+                                                {/foreach}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <input type="number" min="1" class="form-control text-center" name="unitId[]">
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <input type="text" class="form-control text-center" name="deviceName[]" >
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <input type="text" class="form-control text-center" name="refreshTime[]" >
+                                                </div>
+                                            </td>
+                                            <td class="td-actions text-center">
+                                                <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                    <i class="fa fa-trash"></i>
+                                                    {_ "delete"}                                        </button>
+                                            </td>
+                                        </tr>
+                                        {if isset($model)}
+                                        {foreach from=$devices key=key and value=deviceId2}
+                                        <tr>
+                                            <td>
+                                                <select class="selectpicker text-center" name="deviceType[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "type"} {_ "device"}">
+                                                {foreach from=$devicesType key=key value=device }
+                                                <option value="{$device.id}" {if $deviceId2.deviceType == $device.id } selected {/if}>{$device.label}</option>
+                                                {/foreach}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <label>
+                                                        <input type="number" min="1" class="form-control text-center" name="unitId[]" value="{$deviceId2.unitId}">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <label>
+                                                        <input type="text" class="form-control text-center" name="deviceName[]" value="{$deviceId2.Name}">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <label>
+                                                        <input type="number" min="1" class="form-control text-center" name="refreshTime[]" value="{$deviceId2.refreshTime}">
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td class="td-actions text-center">
+                                                <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                    <i class="fa fa-trash"></i>
+                                                    {_ "delete"}                                        </button>
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        {/if}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var oneRowDevice ='<tr>'+ $('#bodyDeviceElemnt').html()+"</tr>";
+    $('#bodyDeviceElemnt').remove();
+    function  refreshPageJs() {
+        $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+    }
+</script>
+{/map}
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}Substation/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "backTo"} {_ "list"} {_ "Substation"}
+</a>
+{/map}

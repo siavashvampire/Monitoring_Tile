@@ -1,0 +1,40 @@
+<div class="content  mt-3">
+    <div class="container-fluid  mt-3">
+        <div class="row">
+            {foreach from=$apis key=key value=api}
+            <div class="col-md-6">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header  ">
+                        <div class="card-icon {if $api.active}text-success{else}text-danger{/if} float-left">
+                            {if $api.active}{_ "active"}{else}{_ "deActive"}{/if}
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{$api.name}</h4>
+                    </div>
+                    <div class="card-body">
+                        <a href="{$api.domain}" target="_blank">{$api.domain}</a><br>
+                        <span class="ltr text-left badge badge-info m-1">{$api.allowIp|str_replace:",":'</span><span class="ltr text-left badge badge-info m-1">'}</span>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{url}webservice/edit/{$api.apiId}" title="{_ 'edit'}"><i class="fa fa-pencil pointer text-danger"></i></a>
+                    </div>
+                </div>
+            </div>
+            {foreachelse}
+            <div class="col-md-12 text-center">
+                <div class="alert alert-warning">{_ "hasNotDataYet"}</div>
+            </div>
+            {/foreach}
+        </div>
+    </div>
+</div>
+{map navBarButton}
+<div class="col-md-12">
+<a class="btn btn-info" href="{url}webservice/new">
+                      <span class="btn-label">
+                        <i class="fa fa-link"></i>
+                      </span>
+    {_ "add"} {_ "webservice"}
+    <div class="ripple-container"></div>
+</a>
+</div>
+{/map}

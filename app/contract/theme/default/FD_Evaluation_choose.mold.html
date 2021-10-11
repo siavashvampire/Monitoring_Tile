@@ -1,0 +1,111 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "insert"} {_ "test"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post">
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "deadLine"} {_ "Complete"} {_ "form"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="date" autocomplete="off" required name="confirm_time" class="form-control" value="{if isset($Mold.post.Time_Send)}{$Mold.post.Time_Send}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"Y/m/d"|persianNumber}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "testedGroup"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select class="selectpicker selectpickerNotRefresh" onchange="getUsers($(this).val())" required name="group_id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "group"} {_ "test"}">
+                                                {foreach from=$user_group key=key value=group }
+<!--                                                <option value="{$group.user_groupId}" {if isset($Mold.post.group_id)}{if $group.user_groupId == $Mold.post.group_id }selected{/if}{elseif isset($model) and $group.user_groupId == $model->getuserid()}selected{/if}>{$group.name}</option>-->
+                                                <option value="{$group.user_groupId}" >{$group.name}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "test"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select id="type_select" class="selectpicker selectpickerNotRefresh" name="type_id" required data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "test"}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "individual"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select id="person_select" class="selectpicker selectpickerNotRefresh" name="evaluated[]" multiple data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام فرد">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "test"}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{map footerjs}
+<script>
+    let urlapi = '{url api}' ;
+    function getUsers(group_id){
+        $.ajax({
+            url: urlapi+'user/getUsersByGroupId/'+group_id,
+            type: 'post',
+            dataType: 'json',
+            data: {
+            } ,
+            success: function (result) {
+                let s = $('#person_select');
+                s.html("")
+                result.forEach(function (_ref) {
+                    var selected = "";
+                    // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                    s.append('<option value="'+_ref['userId']+'" '+selected+' >'+_ref['fname'] +'  '+ _ref['lname']+'</option>');
+                });
+                s.selectpicker('refresh');
+            }
+        });
+        $.ajax({
+            url: urlapi+'contract/getEvaluationTypeByEvaluatedGroup/'+group_id,
+            type: 'post',
+            dataType: 'json',
+            data: {
+            } ,
+            success: function (result) {
+                let s = $('#type_select');
+                s.html("")
+                result.forEach(function (_ref) {
+                    var selected = "";
+                    // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                    s.append('<option value="'+_ref['id']+'" '+selected+' >'+_ref['Name'] +'</option>');
+                });
+                s.selectpicker('refresh');
+            }
+        });
+    }
+</script>
+{/map}

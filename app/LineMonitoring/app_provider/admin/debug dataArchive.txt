@@ -1,0 +1,55 @@
+CREATE TEMPORARY TABLE IF NOT EXISTS per_temp_table1 select SUM(arch1.counter) as counterAll ,arch1.Sensor_id  ,arch1.phase ,arch1.unit    from per_data_archive arch1  WHERE arch1.tileDegree = 'همه' GROUP by arch1.phase ,arch1.unit , arch1.Tile_Kind;
+CREATE TEMPORARY TABLE IF NOT EXISTS per_temp_table2 select archAll.counterAll , SUM(arch1.counter) as counterNotAll , arch1.Tile_Kind,arch1.Sensor_id, arch1.phase ,arch1.unit,arch1.tileDegree  ,arch1.Start_time ,arch1.JStart_time FROM per_data_archive arch1 LEFT JOIN per_temp_table1 archAll on ( archAll.unit = arch1.unit and arch1.phase = archAll.phase  ) WHERE  arch1.tileDegree != 'همه' GROUP by arch1.phase ,arch1.unit ,arch1.Sensor_id, arch1.Tile_Kind  ;
+
+INSERT INTO per_temp_table2 select archAll.counterAll , SUM(arch1.counter) as counterNotAll , arch1.Tile_Kind,arch1.Sensor_id, arch1.phase ,arch1.unit,arch1.tileDegree  ,arch1.Start_time ,arch1.JStart_time  FROM per_data_archive arch1 LEFT JOIN per_temp_table1 archAll  on ( archAll.unit = arch1.unit and arch1.phase = archAll.phase  ) WHERE archAll.unit not in ( SELECT unit FROM per_temp_table2) and archAll.phase in ( SELECT phase FROM per_temp_table2)  GROUP by arch1.phase ,arch1.unit ,arch1.Sensor_id, arch1.Tile_Kind ;
+
+CREATE TEMPORARY TABLE IF NOT EXISTS per_temp_table3 SELECT t.* , ROUND( counterNotAll / counterAll * 100 , 2 ) as percent , tk.label, tk.tile_width , tk.tile_length  from per_temp_table2 t LEFT JOIN per_tile_kind tk on ( t.Tile_Kind = tk.id ) ;
+CREATE TEMPORARY TABLE IF NOT EXISTS per_temp_table4 select
+    table3.*,
+    case when tileDegree = "درجه 1" then percent end as p1 ,
+    case when tileDegree = "درجه 2" then percent end as p2,
+    case when tileDegree = "درجه 3" then percent end as p3,
+    case when tileDegree = "درجه W" then percent end as p5,
+    case when tileDegree = "درجه U" then percent end as p4,
+    case when tileDegree = "درجه 1" then counterNotAll end as m1,
+    case when tileDegree = "درجه 2" then counterNotAll end as m2,
+    case when tileDegree = "درجه 3" then counterNotAll end as m3,
+    case when tileDegree = "درجه W" then counterNotAll end as m5,
+    case when tileDegree = "درجه U" then counterNotAll end as m4
+  from per_temp_table3 table3;
+  CREATE TEMPORARY TABLE IF NOT EXISTS  per_temp_table5 select 
+    table4.counterAll  ,table4.Start_time,table4.JStart_time,table4.counterNotAll ,table4.Tile_Kind ,table4.Sensor_id ,table4.phase ,table4.unit ,table4.tileDegree,table4.percent , table4.label, table4.tile_width , table4.tile_length ,
+    sum(p1) as p1,
+    sum(p2) as p2,
+    sum(p3) as p3,
+    sum(p4) as p4,
+    sum(p5) as p5,
+    sum(m1) as m1,
+    sum(m2) as m2,
+    sum(m3) as m3,
+    sum(m4) as m4,
+    sum(m5) as m5
+  from per_temp_table4 table4 
+  group by table4.phase ,table4.unit;
+  CREATE TEMPORARY TABLE IF NOT EXISTS  per_temp_table6_0  select 
+    counterAll    ,Start_time  ,JStart_time,Tile_Kind ,table5.phase ,unit  , label, tile_width , tile_length ,
+    (100 - coalesce(p2, 0) - coalesce(p3, 0) - coalesce(p4, 0) - coalesce(p5, 0)) as p1,
+    coalesce(p2, 0) as p2,
+    coalesce(p3, 0) as p3,
+    coalesce(p4, 0) as p4,
+    coalesce(p5, 0) as p5,
+    (counterAll - coalesce(m2, 0) - coalesce(m3, 0) - coalesce(m4, 0) - coalesce(m5, 0)) as m1,
+    coalesce(m2, 0) as m2,
+    coalesce(m3, 0) as m3,
+    coalesce(m4, 0) as m4,
+    coalesce(m5, 0) as m5
+  from  per_temp_table5 table5;
+  
+    CREATE TEMPORARY TABLE IF NOT EXISTS  per_temp_table6  select counterAll    ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unit  , label, tile_width , tile_length , p1 , p2 , p3 , p4 , p5 , m1 , m2 , m3 , m4 , m5 from  per_temp_table6_0 t6 LEFT JOIN per_units units on ( t6.unit = units.id );
+    
+    SELECT * FROM per_temp_table1;
+    SELECT * FROM per_temp_table2;
+    SELECT * FROM per_temp_table3;
+    SELECT * FROM per_temp_table4;
+    SELECT * FROM per_temp_table5;
+    SELECT * FROM per_temp_table6;

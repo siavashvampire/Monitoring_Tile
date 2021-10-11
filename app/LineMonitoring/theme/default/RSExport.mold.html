@@ -1,0 +1,70 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تنظیمات خروجی فایل گزارش</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">بخش</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" multiple name="section[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش">
+                                                {foreach from=$sections key=key value=section }
+                                                <option value="{$section.id}"  >{$section.Name}  - {$section.id}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">فاز</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" multiple name="phase[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                {foreach from=$phases key=key value=phase }
+                                                    <option value="{$phase.id}"  >{$phase.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">از تاریخ</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                            <input type="hidden" name="StartTime" class="form-control persianDatepicker-from-alt">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">تا تاریخ</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                            <input type="hidden" name="EndTime"   class="form-control persianDatepicker-to-alt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تنظیمات درخواست خدمات</h4>
+                    </div>        
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post">
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">تاریخ درخواست<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send)}{$Mold.post.Time_Send}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"Y/m/d"|persianNumber}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">زمان درخواست<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="date" autocomplete="off" required name="Time_Send_justT" data-onlyTime="1"  class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"H&#58;i"}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">بخش درخواست کننده<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                           <select class="selectpicker selectpickerNotRefresh" required name="ServiceSection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش درخواست کننده">
+                                                {foreach from=$ServiceSections key=key value=ServiceSection }
+                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.Name}  - {$ServiceSection.id}</option>
+                                                    {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">نام درخواست کننده<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                           <select class="selectpicker selectpickerNotRefresh" required name="workerPerson" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام درخواست کننده">
+                                                {foreach from=$Users key=key value=User }
+                                                    <option value="{$User.userId}" {if isset($Mold.post.workerPerson)}{if $User.userId == $Mold.post.workerPerson }selected{/if}{elseif isset($requestService) and $User.userId == $requestService->getworkerPerson_id()}selected{/if}>{$User.fname} {$User.lname}</option>
+                                                    {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">بخش انجام دهنده<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                       <div class="form-group has-default">
+                                           <select class="selectpicker selectpickerNotRefresh" required name="Workersection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش انجام دهنده">
+                                                {foreach from=$Workersections key=key value=Workersection }
+                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.Name}  -  {$Workersection.id}</option>
+                                                {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-12">
+                                    <label class="col-md-3 col-form-label">شرح خرابی و عملیات انجام شده</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="3" autocomplete="off" name="Sender_note" class="form-control">{if isset($Mold.post.Sender_note)}{$Mold.post.Sender_note}{elseif isset($requestService)}{$requestService->getSender_note()}{/if}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> 
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> ثبت درخواست</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var oneRowPart ='<tr>'+ $('#bodyPartsElemnt').html()+"</tr>";
+    $('#bodyPartsElemnt').remove();
+    function  refreshPageJs() {
+    $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+}
+</script>
+{/map}

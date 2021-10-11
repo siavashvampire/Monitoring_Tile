@@ -1,0 +1,717 @@
+{map navBarButton}
+<a href="{url admin}" class="btn btn-info">
+                      <span class="btn-label">
+                        <i class="fa fa-low-vision"></i>
+                      </span>
+    برگشت به منو اصلی
+</a>
+{/map}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-print-none card-header-warning">
+                <h4 class="card-title text-center">عملکرد تولید</h4>
+                <p class="card-category"></p>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal d-print-none" id="typeOfChart0" method="post">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label class="col-md-3 col-form-label">زمان بندی</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select id="Timing0" onchange="updateSensorsChart(0);"
+                                            class="selectpicker selectpickerNotRefresh" name="Timing"
+                                            data-live-search="true" data-size="7"
+                                            data-style="btn btn-outline-info btn-round text-{$float}"
+                                            title="نوع زمان بندی">
+                                        <option id="Hour" value="Hour">ساعت</option>
+                                        <option id="Day" value="Day">روز</option>
+                                        <option id="Month" value="Month">ماه</option>
+                                        <option id="Year" value="Year">سال</option>
+                                        <option id="Day_Week" value="Day_Week">روز - هفتگی</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-md-3 col-form-label">نام سنسور</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select id="sensorsChart0" onchange="updateSensorsChart(0,0);"
+                                            class="selectpicker selectpickerNotRefresh" multiple name="sensors[]"
+                                            data-live-search="true" data-size="7"
+                                            data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+
+                                        {foreach from=$sensorsChart key=key value=sensorChart }
+                                        <option value="{$sensorChart.Sensor_id}">{$sensorChart.label}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label class="col-md-3 col-form-label">نوع نمودار</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select id="Kind" onchange="updateSensorsChart(0,0);"
+                                            class="selectpicker selectpickerNotRefresh" name="Kind"
+                                            data-live-search="true" data-size="7"
+                                            data-style="btn btn-outline-info btn-round text-{$float}"
+                                            title="نوع نمودار">
+                                        <option value="1">خطی</option>
+                                        <option value="2">تجمعی</option>
+                                        <option value="3" selected>میله ای</option>
+                                        <option value="4">میله ای تجمعی</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="col-md-3 col-form-label">روز</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="text" autocomplete="off" name="date"
+                                           class="form-control persianJustDatePickerDay pwt-datepicker-input-element text-center">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <a class="btn btn-link text-info"
+                               style="margin: 10px!important;margin-top: 25px!important;padding: 0!important;"><i
+                                    onclick="addCompare(this,0)" class="fa fa-plus"></i></a>
+                            <a class="btn btn-link text-info"
+                               style="margin: 10px!important;margin-top: 25px!important;padding: 0!important;"><i
+                                    onclick="resetCompare(this,0)" class="fa fa-refresh"></i></a>
+                        </div>
+                    </div>
+                </form>
+                <div class="ct-chart" id="Chart0"
+                     style="height: 500px;width:100%;display: inline-block;direction:ltr"></div>
+            </div>
+            <div class="card-footer ">
+                <div class="stats">
+                    <i class="material-icons">access_time</i> <span id="jTimeOfChart0"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<!--    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>-->
+<script src="{url theme}assets/loader.js"></script>
+
+<script>
+    let URLS = ['ChartGoogle'];
+    var delays = 80, durations = 500, animation = true;
+    let urlApi = '{url api}';
+    let intervalId = null;
+    let fontNameSet = 'tahoma';
+
+    function updateChartData(dataArray, MovAvg, number) {
+        if (dataArray[0].length >= 4) {
+            let Kind = $('#Kind').find(":selected").val();
+            let Time = $('#Timing0').find(":selected")[0].innerHTML;
+            let options = {
+                title: '',
+                width: '1600',
+                vAxis: {
+                    title: 'تعداد در ' + Time,
+                    format: 'short',
+                    titleTextStyle: {
+                        color: '#000000',
+                        fontName: fontNameSet,
+                        fontSize: '25',
+                        bold: false,
+                        italic: false,
+                    },
+                    textStyle: {
+                        color: '#000000',
+                        fontName: fontNameSet,
+                        fontSize: '16'
+                    },
+                    viewWindow: {
+                        min: 0
+                    }
+                },
+                hAxis: {
+                    title: Time,
+                    titleTextStyle: {
+                        color: '#000000',
+                        fontName: fontNameSet,
+                        fontSize: '25',
+                        bold: false,
+                        italic: false
+                    },
+                    textStyle: {
+                        color: '#000000',
+                        fontName: fontNameSet,
+                        fontSize: '16'
+                    }
+                },
+                seriesType: 'line',
+                titleTextStyle: {
+                    color: '#000000',
+                    fontName: fontNameSet,
+                    fontSize: '30',
+                    bold: false,
+                    italic: false
+                },
+                annotations: {
+                    boxStyle: {
+                        stroke: '#006223',
+                        // Thickness of the box outline.
+                        strokeWidth: 1,
+                        // x-radius of the corner curvature.
+                        rx: 1,
+                        // y-radius of the corner curvature.
+                        ry: 1,
+                    },
+                    highContrast: true,
+                    style: 'point',
+                    alwaysOutside: false,
+                    textStyle: {
+                        fontName: fontNameSet,
+                        fontSize: 10,
+                        bold: false,
+                        italic: false,
+                        // The color of the text.
+                        color: '#006223',
+                        // The color of the text outline.
+                        auraColor: 'rgba(255,255,255,0)',
+                        // The transparency of the text.
+                        opacity: 0.8
+                    },
+                    datum: {
+                        stem: {
+                            color: '#006223',
+                            length: 12,
+                        },
+                    },
+                },
+                explorer: {
+                    keepInBounds: true,
+                },
+                legend: {
+                    position: 'top',
+                    textStyle: {
+                        color: '#006223',
+                        bold: false,
+                        fontName: fontNameSet,
+                        fontSize: 20
+                    },
+                    alignment: 'center',
+                    maxLines: 3,
+                },
+                animation: {
+                    duration: 500,
+                    easing: 'inAndOut',
+                    startup: true,
+                },
+                curveType: 'function',
+                isStacked: false,
+                areaOpacity: 0.05,
+                focusTarget: 'category',
+                connectSteps: true,
+                reverseCategories: false,
+            };
+
+            if (Kind == 3 | Kind == 4)
+                options.seriesType = 'bars';
+            var data = google.visualization.arrayToDataTable(dataArray);
+
+            let chart = new google.visualization.ComboChart(document.getElementById('Chart' + number));
+
+            let columns = [0];
+            let seriesMap = [];
+            if (MovAvg) {
+                seriesMap.push({
+                    column: 1,
+                    roleColumns: [],
+                    display: true,
+                });
+                seriesMap.push({
+                    column: 2,
+                    roleColumns: [],
+                    display: true,
+                });
+                seriesMap.push({
+                    column: 3,
+                    roleColumns: [4],
+                    display: true
+                });
+                seriesMap.push({
+                    column: 5,
+                    roleColumns: [6],
+                    display: true
+                });
+            } else {
+                for (let i = 1; i < dataArray[0].length; i++) {
+                    seriesMap.push({
+                        column: i,
+                        roleColumns: [],
+                        display: true,
+                    })
+                }
+            }
+            let columnsMap = {};
+            let series = {
+                0: {
+                    type: 'line',
+                    visibleInLegend: true,
+                    color: '#76A7FA',
+                    disableColor: '#D9D9FF',
+                    labelInLegend: 'بودجه'
+                },
+                1: {type: 'line', visibleInLegend: true, color: 'red', disableColor: '#FFD9D9'},
+                2: {color: '#1bae77', disableColor: '#C3E6C3'}
+            };
+            if (MovAvg) {
+                series[3] = {lineWidth: 5, type: 'line', color: 'orange', disableColor: '#fde05f'};
+            } else {
+                series[3] = {color: 'orange', disableColor: '#fde05f'};
+                for (let i = 4; i < dataArray[0].length; i++) {
+                    series[i] = {color: null, disableColor: '#CCCCCC'};
+                }
+            }
+
+            for (let i = 0; i < seriesMap.length; i++) {
+                let col = seriesMap[i].column;
+                columnsMap[col] = i;
+                // series[i] = {};
+
+                if (seriesMap[i].display) {
+                    // if the column is the domain column or in the default list, display the series
+                    columns.push(col);
+                } else {
+                    // otherwise, hide it
+                    columns.push({
+                        label: data.getColumnLabel(col),
+                        type: data.getColumnType(col),
+                        sourceColumn: col,
+                        calc: function () {
+                            return null;
+                        }
+                    });
+                    // backup the default color (if set)
+                    if (typeof (series[i].color) !== 'undefined') {
+                        series[i].backupColor = series[i].color;
+                    }
+                    series[i].color = series[i].disableColor;
+                }
+                for (var j = 0; j < seriesMap[i].roleColumns.length; j++) {
+                    columns.push(seriesMap[i].roleColumns[j]);
+                }
+            }
+
+            options.series = series;
+
+            function selectHandler() {
+                let selectedItem = chart.getSelection()[0];
+                if (selectedItem) {
+                    if (selectedItem.row != null && selectedItem.column == null) {
+                        let closest = $('#Kind').closest('form')[0];
+
+                        let Timing = $('#Timing' + number).find(":selected").val();
+                        let input = closest.children[0].children[3].children[1].children[0].children[0];
+                        const inputValue = input.value.split("/");
+                        if (Timing == "Hour") {
+                            return;
+                        }
+                        if (Timing == "Day") {
+                            changeSelectedTime("Hour");
+
+                            if (inputValue[0] != "") {
+                                inputValue.push(tr_num(data.getFormattedValue(selectedItem.row, 0)));
+                                input.value = inputValue.join("/")
+                            }
+                        } else if (Timing == "Month") {
+                            changeSelectedTime("Day");
+                            if (inputValue[0] != "") {
+                                inputValue.push(tr_num(data.getFormattedValue(selectedItem.row, 0)));
+                                input.value = inputValue.join("/")
+                            }
+                        } else if (Timing == "Year") {
+                            changeSelectedTime("Month");
+                            input.value = tr_num(data.getFormattedValue(selectedItem.row, 0));
+                        }
+                        updateSensorsChart(0, 0);
+                    } else if (selectedItem.row == null && selectedItem.column != null) {
+                        let col = selectedItem.column;
+                        if (typeof (columns[col]) == 'number') {
+                            let src = columns[col];
+
+                            // hide the data series
+                            columns[col] = {
+                                label: data.getColumnLabel(src),
+                                type: data.getColumnType(src),
+                                sourceColumn: src,
+                                calc: function () {
+                                    return null;
+                                }
+                            };
+
+                            // grey out the legend entry
+                            series[columnsMap[src]].backupColor = series[columnsMap[src]].color;
+                            if (series[columnsMap[src]].disableColor == null)
+                                series[columnsMap[src]].disableColor = OpacityColor(series[columnsMap[src]].color);
+                            series[columnsMap[src]].color = series[columnsMap[src]].disableColor;
+                        } else {
+                            var src = columns[col].sourceColumn;
+
+                            // show the data series
+                            columns[col] = src;
+                            series[columnsMap[src]].color = series[columnsMap[src]].backupColor;
+                        }
+                        view = new google.visualization.DataView(data);
+                        view.columns = columns;
+                        chart.draw(view, options);
+                    }
+                }
+            }
+
+            google.visualization.events.addListener(chart, 'select', selectHandler);
+            chart.draw(data, options);
+        }
+    }
+
+    function getChart(number = 0) {
+        $.ajax({
+            url: urlApi + 'chart/' + URLS[number],
+            type: 'post',
+            dataType: 'json',
+            data: $("#typeOfChart" + number).serializeArray(),
+            success: function (result) {
+                updateChartData(result['data'], result['MovAvg'], number);
+                $("#jTimeOfChart" + number).html("اخرین بروزرسانی: " + result['jtime'] + " | نمودار مربوط به تاریخ : " + result['jdayStart'] + " الی " + result['jdayEnd']);
+            },
+            error: function (jqXHR, exception) {
+            },
+        });
+    }
+
+    function updateChart(number = 0) {
+        clearInterval(intervalId);
+        getChart(number);
+        intervalId = window.setInterval(function () {
+            getChart(number);
+        }, 5 * 60 * 1000);
+    }
+
+    function updateSensorsChart(number, init = 1) {
+        var closest = $('#Kind').closest('form')[0];
+        var parent = closest.children[0].children[3];
+        parent.style.display = "inherit";
+        var label = closest.children[0].children[3].children[0];
+        var input = closest.children[0].children[3].children[1].children[0].children[0];
+        var Timing = $('#Timing' + number).find(":selected").val();
+        const inputValue = input.value.split("/");
+
+        if (Timing == "Day" || Timing == "Day_Week") {
+            if (inputValue[0] != "") {
+                if (inputValue.length > 2)
+                    inputValue.splice(2, 3);
+                else if (inputValue.length < 2)
+                    inputValue.push(tr_num(1));
+                input.value = inputValue.join("/")
+            }
+            input.classList.add('persianJustDatePickerMonth');
+            input.classList.remove('persianJustDatePickerDay');
+            input.classList.remove('persianJustDatePickerYear');
+            label.innerHTML = "ماه";
+
+        } else if (Timing == "Hour") {
+            if (inputValue[0] != "") {
+                if (inputValue.length < 3)
+                    inputValue.push(tr_num(1));
+                if (inputValue.length < 3)
+                    inputValue.push(tr_num(1));
+                input.value = inputValue.join("/")
+            }
+            input.classList.add('persianJustDatePickerDay');
+            input.classList.remove('persianJustDatePickerMonth');
+            input.classList.remove('persianJustDatePickerYear');
+            label.innerHTML = "روز";
+        } else if (Timing == "Month") {
+            if (inputValue[0] != "") {
+                if (inputValue.length > 1)
+                    inputValue.splice(1, 3);
+                input.value = inputValue.join("/")
+            }
+            input.classList.add('persianJustDatePickerYear');
+            input.classList.remove('persianJustDatePickerMonth');
+            input.classList.remove('persianJustDatePickerDay');
+            label.innerHTML = "سال";
+        } else if (Timing == "Year") {
+            input.value = "";
+            parent.style.display = "none";
+        }
+        input.innerHTML = "";
+        refreshPageJs(init);
+
+        setCookie('chart' + number, JSON.stringify($('#sensorsChart' + number).val()), 99);
+        getChart(number);
+    }
+
+    function refreshPageJs(init = 0) {
+        if (init) {
+            $(".persianJustDatePickerYear").persianDatepicker({
+                persianDigit: false,
+                initialValueType: 'persian',
+                minDate: null,
+                maxDate: new persianDate().valueOf(),
+                format: 'YYYY',
+                viewMode: 'year',
+                timePicker: {
+                    enabled: false,
+                    meridiem: {
+                        enabled: false
+                    },
+                    second: {
+                        enabled: false
+                    },
+                    minute: {
+                        enabled: false
+                    }
+                },
+                dayPicker: {
+                    enabled: false,
+                },
+                monthPicker: {
+                    enabled: false,
+                },
+                autoClose: true,
+                onSelect: function (dateText) {
+                    updateSensorsChart(0, 0);
+                }
+            });
+            $(".persianJustDatePickerMonth").persianDatepicker({
+                persianDigit: false,
+                initialValueType: 'persian',
+                minDate: null,
+                maxDate: new persianDate().valueOf(),
+                format: 'YYYY/MM',
+                viewMode: 'month',
+                timePicker: {
+                    enabled: false,
+                    meridiem: {
+                        enabled: false
+                    },
+                    second: {
+                        enabled: false
+                    },
+                    minute: {
+                        enabled: false
+                    }
+                },
+                dayPicker: {
+                    enabled: false,
+                },
+                autoClose: true,
+                onSelect: function (dateText) {
+                    updateSensorsChart(0, 0);
+                }
+            });
+            $(".persianJustDatePickerDay").persianDatepicker({
+                persianDigit: false,
+                initialValueType: 'persian',
+                minDate: null,
+                maxDate: new persianDate().valueOf(),
+                format: 'YYYY/MM/DD',
+                timePicker: {
+                    enabled: false,
+                    meridiem: {
+                        enabled: false
+                    },
+                    second: {
+                        enabled: false
+                    },
+                    minute: {
+                        enabled: false
+                    }
+                },
+                autoClose: true,
+                onSelect: function (dateText) {
+                    updateSensorsChart(0, 0);
+                }
+            });
+        } else {
+            $(".persianJustDatePickerYear").persianDatepicker({
+                persianDigit: false,
+                initialValue: false,
+                minDate: null,
+                maxDate: new persianDate().valueOf(),
+                format: 'YYYY',
+                viewMode: 'year',
+                timePicker: {
+                    enabled: false,
+                    meridiem: {
+                        enabled: false
+                    },
+                    second: {
+                        enabled: false
+                    },
+                    minute: {
+                        enabled: false
+                    }
+                },
+                dayPicker: {
+                    enabled: false,
+                },
+                monthPicker: {
+                    enabled: false,
+                },
+                autoClose: true,
+                onSelect: function (dateText) {
+                    updateSensorsChart(0, 0);
+                }
+            });
+            $(".persianJustDatePickerMonth").persianDatepicker({
+                persianDigit: false,
+                initialValue: false,
+                minDate: null,
+                maxDate: new persianDate().valueOf(),
+                format: 'YYYY/MM',
+                viewMode: 'month',
+                timePicker: {
+                    enabled: false,
+                    meridiem: {
+                        enabled: false
+                    },
+                    second: {
+                        enabled: false
+                    },
+                    minute: {
+                        enabled: false
+                    }
+                },
+                dayPicker: {
+                    enabled: false,
+                },
+                autoClose: true,
+                onSelect: function (dateText) {
+                    updateSensorsChart(0, 0);
+                }
+            });
+            $(".persianJustDatePickerDay").persianDatepicker({
+                persianDigit: false,
+                initialValue: false,
+                minDate: null,
+                maxDate: new persianDate().valueOf(),
+                format: 'YYYY/MM/DD',
+                timePicker: {
+                    enabled: false,
+                    meridiem: {
+                        enabled: false
+                    },
+                    second: {
+                        enabled: false
+                    },
+                    minute: {
+                        enabled: false
+                    }
+                },
+                autoClose: true,
+                onSelect: function (dateText) {
+                    updateSensorsChart(0, 0);
+                }
+            });
+        }
+    }
+
+    function addCompare(obj, number) {
+        $.ajax({
+            url: urlApi + 'chart/addCompare',
+            type: 'post',
+            dataType: 'json',
+            data: $("#typeOfChart" + number).serializeArray(),
+            success: function (result) {
+            },
+            error: function (jqXHR, exception) {
+            },
+        });
+        updateSensorsChart(number);
+    }
+
+    function resetCompare(obj, number) {
+        var Timing = $('#Timing' + number).find(":selected").val();
+        $.ajax({
+            url: urlApi + 'chart/resetCompare',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'Timing': Timing,
+            },
+            success: function (result) {
+            },
+            error: function (jqXHR, exception) {
+            },
+        });
+        updateSensorsChart(number);
+    }
+
+    function changeSelectedTime(Time) {
+        const elements = document.getElementById("Timing0").options;
+        for (let i = 0; i < elements.length; i++) {
+            elements[i].selected = false;
+        }
+
+        for (let i = 0; i < elements.length; i++) {
+            if (elements[i].id == Time)
+                elements[i].selected = true;
+        }
+    }
+
+    function tr_num(str) {
+        str = str.toString();
+        return str.replace(/0/g, '۰').replace(/1/g, '۱').replace(/2/g, '۲').replace(/3/g, '۳').replace(/4/g, '۴').replace(/5/g, '۵').replace(/6/g, '۶').replace(/7/g, '۷').replace(/8/g, '۸').replace(/9/g, '۹');
+    }
+
+    function OpacityColor(color) {
+        console.log("aval opac " + color);
+        let addColorrate = 1.2;
+        let r = parseInt(color[1] + color[2], 16) * addColorrate;
+        let g = parseInt(color[3] + color[4], 16) * addColorrate;
+        let b = parseInt(color[5] + color[6], 16) * addColorrate;
+
+        if (r > 255)
+            r = 255
+        if (g > 255)
+            g = 255
+        if (b > 255)
+            b = 255
+
+        return color[0] + r.toString(16) + g.toString(16) + b.toString(16)
+    }
+
+    $(document).ready(function () {
+        sensorsSelect = getCookie('chart0');
+        if (sensorsSelect === null) {
+            sensorsSelect = [];
+        } else {
+            var sensorsSelected = JSON.parse(sensorsSelect);
+            for (var i = 0; i < sensorsSelected.length; i++) {
+                $('#sensorsChart0 option[value=' + sensorsSelected[i] + ']').attr('selected', 'selected');
+            }
+        }
+
+
+        if ($('#Timing0').find(":selected").val() == "")
+            $('#Timing0 option[value=' + "Hour" + ']').attr('selected', true);
+
+        // updateChart(0);
+
+        $('.navbar-minimize').hide();
+        $('.sidebar').hide();
+        $('.navbar-toggler').hide();
+        $('.main-panel').css('width', '100%');
+        refreshPageJs(1);
+    });
+
+</script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages': ['corechart']});
+    google.charts.setOnLoadCallback(updateChart);
+</script>
+{/map}

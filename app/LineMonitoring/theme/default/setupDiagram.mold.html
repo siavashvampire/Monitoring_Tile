@@ -1,0 +1,783 @@
+
+    <div class="container-fluid">
+        <div class="col-md-12 col-12">
+            <!--      Wizard container        -->
+            <div class="wizard-container">
+                <div class="card card-wizard" data-color="rose" id="wizardProfile">
+                    <form action="{url current}" method="post" id="formDiagram"  enctype="multipart/form-data">
+                        <!--        You can switch " data-color="primary" "  with one of the next bright colors: "green", "orange", "red", "blue"       -->
+                        <div class="card-header text-center">
+                            <h3 class="card-title">
+                                ساخت نقشه کارخانه
+                            </h3>
+                            <h5 class="card-description">جهت نمایش تعداد شمارش و وضعیت هر سنسور به صورت لحظه ای.</h5>
+                        </div>
+                        <div class="wizard-navigation"  style="text-align: left !important;direction: ltr !important;">
+                            <ul class="nav nav-pills" style="text-align: left !important;direction: ltr !important;">
+                                <li class="nav-item" style="float: left;">
+                                    <a class="nav-link active" href="#about" data-toggle="tab" role="tab">
+                                        بارگذاری نقشه
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="float: left;">
+                                    <a class="nav-link" href="#account" data-toggle="tab" role="tab">
+                                        انتخاب سنسور
+                                    </a>
+                                </li>
+                                <li class="nav-item" style="float: left;">
+                                    <a class="nav-link" href="#address" data-toggle="tab" role="tab">
+                                        اتصال به نقشه
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body">
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="about">
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <div class="form-group">
+                                                <label style="    right: 0;">نام دیاگرام</label>
+                                                <input type="text" required name="name" value="{if isset($Mold.post.name)}{$Mold.post.name}{elseif isset($diagram)}{$diagram->getName()}{/if}" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="picture-container">
+                                                <div class="picture">
+                                                    <img src="{if isset($diagram)}{$diagram->getPictureName()}{else}{url theme}assets/upload.jpg{/if}" class="picture-src" id="wizardPicturePreview" title="" />
+                                                    <input type="file" id="wizard-picture" name="picture">
+                                                </div>
+                                                <h6 class="description">اتخاب تصویر</h6>
+                                            </div>
+                                            فرمت تصویر باید .jpg باشد و بهتر سایز عکس 1920*1048 پیکسل باشد
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="account">
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label class="col-md-3 col-form-label">فاز</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    <select class="selectpicker selectpickerNotRefresh" id="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز" onchange="getSensor();">
+                                                        {foreach from=$phases key=key value=phase }
+                                                            <option value="{$phase.id}"  >{$phase.label}</option>
+                                                        {/foreach}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <label class="col-md-3 col-form-label">واحد</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    <select class="selectpicker selectpickerNotRefresh" id="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد"  onchange="getSensor();">
+                                                        {foreach from=$units key=key value=unit }
+                                                        <option value="{$unit.id}"  >{$unit.label}</option>
+                                                        {/foreach}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-5">
+                                            <label class="col-md-3 col-form-label">نام سنسور</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default" id="getSensor">
+                                                    <select class="selectpicker" multiple id="sensorId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-5">
+                                            <button type="button" class="btn btn-info" onclick="addSensor();">
+                                                <i class="fa fa-plus-circle"></i>
+                                                افزودن سنسور                                        <div class="ripple-container"></div></button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table text-right">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center">نام سنسور</th>
+                                                <th class="text-center">فاز</th>
+                                                <th class="text-center">واحد</th>
+                                                <th class="text-center" style="width: 25px;"></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="listSensorAdded">
+                                            {if isset($sensorSelectPost)}
+                                                {foreach from=$sensorSelectPost key=key value=sensorSelect }
+                                                <tr class="rowOFSensorSelect_{$sensorSelect.id}">
+                                                    <td class="text-center">{$sensorSelect.name}</td>
+                                                    <td class="text-center">{$sensorSelect.phase}</td>
+                                                    <td class="text-center">{$sensorSelect.unit}</td>
+                                                    <td class="text-center"> <button type="button" class="btn btn-danger" onclick="deleteSensor({$sensorSelect.id});">
+                                                                                                    <i class="fa fa-trash"></i>
+                                                                            حذف سنسور                                        <div class="ripple-container"></div></button></td>
+                                                </tr>
+                                                {/foreach}
+                                            {/if}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="address">
+                                    <div class="table-responsive">
+                                        <table class="table text-right">
+                                            <thead>
+                                            <tr>
+                                                <th class="text-center">نام سنسور</th>
+                                                <th class="text-center">فاز</th>
+                                                <th class="text-center">واحد</th>
+                                                <th class="text-center">مکان نمایش تعداد روی نقشه</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody id="listSensorAddedForMapping">
+                                            {if isset($sensorSelectPost)}
+                                                {foreach from=$sensorSelectPost key=key value=sensorSelect }
+                                                <tr class="rowOFSensorSelect_{$sensorSelect.id}">
+                                                    <td class="text-center">{$sensorSelect.name}</td>
+                                                    <td class="text-center">{$sensorSelect.phase}</td>
+                                                    <td class="text-center">{$sensorSelect.unit}</td>
+                                                    <td class="text-center"><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation({$sensorSelect.id} , this);">
+                                                                                                        <i class="fa fa-eye"></i>
+                                                        <div class="ripple-container"></div></button><button type="button" class="btn btn-info" onclick="editSensorLocation({$sensorSelect.id});">
+                                                                                                        <i class="fa fa-pencil"></i><div class="ripple-container"></div></button></td>
+                                                </tr>
+                                                {/foreach}
+                                            {/if}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="listLocationSensor">
+                                        {if isset($sensorSelectPost)}
+                                            {foreach from=$sensorSelectPost key=key value=sensorSelect }
+                                                <input name="sensorSelect[{$sensorSelect.id}][id]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.id}">
+                                                <input name="sensorSelect[{$sensorSelect.id}][name]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.name}">
+                                                <input name="sensorSelect[{$sensorSelect.id}][phase]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.phase}">
+                                                <input name="sensorSelect[{$sensorSelect.id}][unit]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="'{$sensorSelect.unit}">
+                                            {/foreach}
+                                        {/if}
+                                        {if isset($diagram)}
+                                            {foreach from=$diagram->getDiagram() key=key value=sensorSelect }
+                                                <input name="sensorLocation[{$key}][top]" id="topOf_{$key}" type="hidden" value="{$sensorSelect.top}">
+                                                <input name="sensorLocation[{$key}][width]" id="widthOf_{$key}" type="hidden" value="{$sensorSelect.width}">
+                                                <input name="sensorLocation[{$key}][left]" id="leftOf_{$key}" type="hidden" value="{$sensorSelect.left}">
+                                                <input name="sensorLocation[{$key}][height]" id="lenghtOf_{$key}" type="hidden" value="{$sensorSelect.height}">
+                                            {/foreach}
+                                        {/if}
+                                    </div>
+                                    <div class="containerOfMapping">
+                                        <img id="mapImage" src="{if isset($diagram)}{$diagram->getPictureName()}{else}{url theme}assets/upload.jpg{/if}" style="width:100%;">
+                                        <div class="selectErea" id="mapImage2"></div>
+
+                                        {if isset($diagram)}
+                                            {foreach from=$diagram->getDiagram() key=key value=sensorSelect }
+                                                <div id="sensorLocationFor_{$key}" class="mapItems" style="top: {$sensorSelect.top}%;left: {$sensorSelect.left}%;width: {$sensorSelect.width}%;height: {$sensorSelect.height}%;">
+                                                </div>
+                                            {/foreach}
+                                        {/if}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="ml-auto">
+                                <input type="button" class="btn btn-next btn-fill btn-rose btn-wd" name="next" value="مرحله بعد">
+                                <input type="button" onclick="saveDiagram();" class="btn btn-finish btn-fill btn-rose btn-wd" name="finish" value="ثبت" style="display: none;">
+                            </div>
+                            <div class="mr-auto">
+                                <input type="button" class="btn btn-previous btn-fill btn-default btn-wd disabled" name="previous" value="مرحله قبل">
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <!-- wizard container -->
+        </div>
+    </div>
+
+
+{map footerjs}
+    <style>
+        .card-wizard .picture {
+            width: 100%;
+            height: 100%;
+            background-color: #999;
+            border: 4px solid #ccc;
+            color: #fff;
+            border-radius: 0%;
+            margin: 5px auto;
+            overflow: hidden;
+            transition: all .2s;
+            -webkit-transition: all .2s;
+        }
+        .card .card-body {
+            text-align: right !important;
+            direction: rtl !important;
+        }
+        .containerOfMapping {
+            position: relative;
+            text-align: center;
+            color: white;
+        }
+        .mapItems {
+            position: absolute;
+            overflow: hidden;
+            background-color: rgba(100, 255, 220, 0.35);
+            border-color: rgba(100, 210, 120, 0.85);
+            border-style: outset;
+            border-radius: 7px;
+            padding: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .selectErea {
+            position: absolute;
+            display: block;
+            background-color: rgba(0, 255, 0, 0.35);
+            border-color: rgba(0, 255, 0, 0.85);
+            border-style: inset;
+            border-radius: 10px;
+            padding: 5px;
+        }
+        .alert {
+            text-align: right !important;
+            direction: rtl !important;
+        }
+        .OffSensor{
+            background-color: rgba(244, 5, 34, 0.5);
+            border-color: rgba(244, 5, 34, 0.85);
+        }
+    </style>
+<script src="{url themeBase}assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+<script src="{url themeBase}assets/js/plugins/jasny-bootstrap.min.js"></script>
+<script src="{url themeBase}assets/js/plugins/jquery.validate.min.js"></script>
+<script src="{url themeBase}assets/js/plugins/bootstrap-notify.js"></script>
+<script>
+
+
+    var sensors = [];
+
+    {if isset($sensorSelectPost)}
+        {foreach from=$sensorSelectPost key=key value=sensorSelect }
+        //{$sensorSelect.id}
+
+        sensors.push( { id :  {$sensorSelect.id} , name : '{$sensorSelect.name}' } );
+        {/foreach}
+    {/if}
+
+    var urlc = '{url admin}' ;
+
+    $(document).ready(function() {
+        // Initialise the wizard
+
+        // Code for the Validator
+        var $validator = $('.card-wizard form').validate({
+            rules: {
+                firstname: {
+                    name: true,
+                    minlength: 3
+                }
+            },
+
+            highlight: function(element) {
+                $(element).closest('.form-group').removeClass('has-success').addClass('has-danger');
+            },
+            success: function(element) {
+                $(element).closest('.form-group').removeClass('has-danger').addClass('has-success');
+            },
+            errorPlacement : function(error, element) {
+                $(element).append(error);
+            }
+        });
+
+
+
+        // Wizard Initialization
+        $('.card-wizard').bootstrapWizard({
+            'tabClass': 'nav nav-pills',
+            'nextSelector': '.btn-next',
+            'previousSelector': '.btn-previous',
+
+            onNext: function(tab, navigation, index) {
+                var $valid = $('.card-wizard form').valid();
+                if (!$valid) {
+                    $validator.focusInvalid();
+                    return false;
+                }
+            },
+
+            onInit: function(tab, navigation, index) {
+                //check number of tabs and fill the entire row
+                var $total = navigation.find('li').length;
+                var $wizard = navigation.closest('.card-wizard');
+
+                $first_li = navigation.find('li:first-child a').html();
+                $moving_div = $('<div class="moving-tab">' + $first_li + '</div>');
+                $('.card-wizard .wizard-navigation').append($moving_div);
+
+                refreshAnimation($wizard, index);
+
+                $('.moving-tab').css('transition', 'transform 0s');
+            },
+
+            onTabClick: function(tab, navigation, index) {
+                var $valid = $('.card-wizard form').valid();
+
+                if (!$valid) {
+                    return false;
+                } else {
+                    return true;
+                }
+            },
+
+            onTabShow: function(tab, navigation, index) {
+                var $total = navigation.find('li').length;
+                var $current = index + 1;
+
+                var $wizard = navigation.closest('.card-wizard');
+
+                // If it's the last tab then hide the last button and show the finish instead
+                if ($current >= $total) {
+                    $($wizard).find('.btn-next').hide();
+                    $($wizard).find('.btn-finish').show();
+                } else {
+                    $($wizard).find('.btn-next').show();
+                    $($wizard).find('.btn-finish').hide();
+                }
+
+                button_text = navigation.find('li:nth-child(' + $current + ') a').html();
+
+                setTimeout(function() {
+                    $('.moving-tab').text(button_text);
+                }, 150);
+
+                var checkbox = $('.footer-checkbox');
+
+                if (!index == 0) {
+                    $(checkbox).css({
+                        'opacity': '0',
+                        'visibility': 'hidden',
+                        'position': 'absolute'
+                    });
+                } else {
+                    $(checkbox).css({
+                        'opacity': '1',
+                        'visibility': 'visible'
+                    });
+                }
+
+                refreshAnimation($wizard, index);
+            }
+        });
+
+
+        // Prepare the preview for profile picture
+        $("#wizard-picture").change(function() {
+            readURL(this);
+        });
+
+        $('[data-toggle="wizard-radio"]').click(function() {
+            wizard = $(this).closest('.card-wizard');
+            wizard.find('[data-toggle="wizard-radio"]').removeClass('active');
+            $(this).addClass('active');
+            $(wizard).find('[type="radio"]').removeAttr('checked');
+            $(this).find('[type="radio"]').attr('checked', 'true');
+        });
+
+        $('[data-toggle="wizard-checkbox"]').click(function() {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $(this).find('[type="checkbox"]').removeAttr('checked');
+            } else {
+                $(this).addClass('active');
+                $(this).find('[type="checkbox"]').attr('checked', 'true');
+            }
+        });
+
+        $('.set-full-height').css('height', 'auto');
+
+        //Function to show image before upload
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#wizardPicturePreview').attr('src', e.target.result).fadeIn('slow');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $(window).resize(function() {
+            $('.card-wizard').each(function() {
+                $wizard = $(this);
+
+                index = $wizard.bootstrapWizard('currentIndex');
+                refreshAnimation($wizard, index);
+
+                $('.moving-tab').css({
+                    'transition': 'transform 0s'
+                });
+            });
+        });
+
+        function refreshAnimation($wizard, index) {
+            $total = $wizard.find('.nav li').length;
+            $li_width = 100 / $total;
+
+            total_steps = $wizard.find('.nav li').length;
+            move_distance = $wizard.width() / total_steps;
+            index_temp = index;
+            vertical_level = 0;
+
+            mobile_device = $(document).width() < 600 && $total > 3;
+
+            if (mobile_device) {
+                move_distance = $wizard.width() / 2;
+                index_temp = index % 2;
+                $li_width = 50;
+            }
+
+            $wizard.find('.nav li').css('width', $li_width + '%');
+
+            step_width = move_distance;
+            move_distance = move_distance * index_temp;
+
+            $current = index + 1;
+
+            if ($current == 1 || (mobile_device == true && (index % 2 == 0))) {
+                move_distance -= 8;
+            } else if ($current == total_steps || (mobile_device == true && (index % 2 == 1))) {
+                move_distance += 8;
+            }
+
+            if (mobile_device) {
+                vertical_level = parseInt(index / 2);
+                vertical_level = vertical_level * 38;
+            }
+
+            $wizard.find('.moving-tab').css('width', step_width);
+            $('.moving-tab').css({
+                'transform': 'translate3d(' + move_distance + 'px, ' + vertical_level + 'px, 0)',
+                'transition': 'all 0.5s cubic-bezier(0.29, 1.42, 0.79, 1)'
+
+            });
+        }
+
+
+        setTimeout(function() {
+            $('.card.card-wizard').addClass('active');
+        }, 600);
+    });
+
+    function getSensor() {
+        ajaxRunUrlHtml(urlc + 'diagram/getSensor/'+ $( "#phase option:selected" ).val() +  '/' + $( "#unitId option:selected" ).val() , '#getSensor' , '' )
+    }
+    
+    function addSensor() {
+        $('#sensorId :selected').each(function(){
+            if ($('.rowOFSensorSelect_'+$(this).val()).length === 0 ) {
+                $('#listSensorAdded').append('<tr class="rowOFSensorSelect_'+$(this).val()+'">' +
+                    '<td class="text-center">'+$(this).text()+'</td>' +
+                    '<td class="text-center">'+$( "#phase option:selected" ).text()+'</td>' +
+                    '<td class="text-center">'+$( "#unitId option:selected" ).text()+'</td>' +
+                    '<td class="text-center"> <button type="button" class="btn btn-danger" onclick="deleteSensor('+$(this).val()+');">\n' +
+                    '                                                <i class="fa fa-trash"></i>\n' +
+                    '                                                حذف سنسور                                        <div class="ripple-container"></div></button></td>' +
+                    '</tr>');
+                $('#listSensorAddedForMapping').append('<tr class="rowOFSensorSelect_'+$(this).val()+'">' +
+                    '<td class="text-center">'+$(this).text()+'</td>' +
+                    '<td class="text-center">'+$( "#phase option:selected" ).text()+'</td>' +
+                    '<td class="text-center">'+$( "#unitId option:selected" ).text()+'</td>' +
+                    '<td class="text-center"><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation('+$(this).val()+' , this);">\n' +
+                    '                                                <i class="fa fa-eye"></i>\n' +
+                    '<div class="ripple-container"></div></button><button type="button" class="btn btn-info" onclick="editSensorLocation('+$(this).val()+');">\n' +
+                    '                                                <i class="fa fa-pencil"></i>\n' +
+                    '<div class="ripple-container"></div></button></td>' +
+                    '</tr>');
+                $('#listLocationSensor').append('<input name="sensorSelect['+$(this).val()+'][id]" class="sensorSelect'+$(this).val()+'" type="hidden" value="'+$(this).val()+'">\n'+
+                    '<input name="sensorSelect['+$(this).val()+'][name]" class="sensorSelect'+$(this).val()+'" type="hidden" value="'+$(this).text()+'">\n'+
+                    '<input name="sensorSelect['+$(this).val()+'][phase]" class="sensorSelect'+$(this).val()+'" type="hidden" value="'+$( "#phase option:selected" ).text()+'">\n'+
+                    '<input name="sensorSelect['+$(this).val()+'][unit]" class="sensorSelect'+$(this).val()+'" type="hidden" value="'+$( "#unitId option:selected" ).text()+'">\n'
+                );
+                sensors.push( {id :  $(this).val() , name : $(this).text()} );
+            }
+        });
+    }
+    function deleteSensor(id) {
+        $('.rowOFSensorSelect_'+id).remove();
+        $('.sensorSelect'+id).remove();
+        sensors = $.grep(sensors, function(e){
+            return e.id != id;
+        });
+    }
+
+
+    function saveDiagram() {
+        var msg= "موقعیت سنسور (های) " ;
+        for (var index = 0; index < sensors.length; ++index) {
+            if ($('#topOf_'+ sensors[index].id ).length === 0 ) {
+                if ( msg !== "موقعیت سنسور (های) " ) {
+                    msg = msg + " و ";
+                }
+                msg = msg +  sensors[index].name ;
+            }
+        }
+        if ( msg !== "موقعیت سنسور (های) " ) {
+            msg = msg + " تنظیم نشده است!";
+            $.notify({
+                message: msg
+            },{
+                type: 'danger'
+            });
+        } else {
+            $("#formDiagram").submit();
+        }
+    }
+
+    $("#wizardPicturePreview").on('load', function () {
+        $("#mapImage").attr("src", $("#wizardPicturePreview").attr('src'));
+    });
+
+    var lastSensorSee = 0 ;
+    function  showSensorLocation(id,element) {
+        $('.mapItems').removeClass('OffSensor');
+        if ($('#sensorLocationFor_'+id).length === 0 ) {
+            $.notify({
+                message: 'هنوز مکانی برای این نقطعه در نظر گرفته نشده است!'
+            },{
+                type: 'warning'
+            });
+        } else {
+            //console.log($('#sensorLocationFor_'+id).hasClass('OffSensor'));
+            if ( lastSensorSee !== id ){
+                $('#sensorLocationFor_'+id).addClass('OffSensor');
+                $('.btnShowSensor').find( "i" ).removeClass('fa-eye-slash').addClass('fa-eye');
+                $(element).find( "i" ).removeClass('fa-eye').addClass('fa-eye-slash');
+                lastSensorSee = id ;
+            } else {
+                $(element).find( "i" ).removeClass('fa-eye-slash').addClass('fa-eye');
+                lastSensorSee = 0 ;
+            }
+        }
+    }
+    var idOfSensorForMapping = null;
+    var startX = -2 ;
+    var startY = -2 ;
+    function  editSensorLocation(id) {
+        if ($('#sensorLocationFor_'+id).length > 0  ) {
+            $('#sensorLocationFor_'+id).remove();
+        }
+        $('.selectErea').attr('style', 'top: 0px; left: 0px;width:0px; height:0px;');
+        $('.selectErea').attr('style', 'top: 0px; left: 0px;width:0px; height:0px;');
+        idOfSensorForMapping = id;
+        startX = -1;
+        startY = -1;
+    }
+
+
+    function FindPosition(oElement)
+    {
+        if(typeof( oElement.offsetParent ) != "undefined")
+        {
+            for(var posX = 0, posY = 0; oElement; oElement = oElement.offsetParent)
+            {
+                posX += oElement.offsetLeft;
+                posY += oElement.offsetTop;
+            }
+            return [ posX, posY ];
+        }
+        else
+        {
+            return [ oElement.x, oElement.y ];
+        }
+    }
+
+
+    function getLeft(left) {
+        var myImg = document.getElementById("mapImage");
+        var fullSize = myImg.offsetWidth ;
+        console.log(100 * left / fullSize);
+        return 100 * left / fullSize;
+    }
+    function getTop(top) {
+        var myImg = document.getElementById("mapImage");
+        var fullSize = myImg.offsetHeight;
+        console.log(100 * top / fullSize);
+        return 100 * top / fullSize;
+    }
+
+    var myImg = document.getElementById("mapImage");
+    myImg.onmousedown = mouseDownOnMap;
+    myImg.onmousemove = mouseMoveOnMap;
+    var myImg2 = document.getElementById("mapImage2");
+    myImg2.onmousedown = mouseDownOnMap2;
+    myImg2.onmousemove = mouseMoveOnMap2;
+    function mouseDownOnMap(e){
+        var PosX = 0;
+        var PosY = 0;
+        var ImgPos;
+        var myImg = document.getElementById("mapImage");
+        ImgPos = FindPosition(myImg);
+        if (!e) var e = window.event;
+        if (e.pageX || e.pageY)
+        {
+            PosX = e.pageX;
+            PosY = e.pageY;
+        }
+        else if (e.clientX || e.clientY)
+        {
+            PosX = e.clientX + document.body.scrollLeft
+                + document.documentElement.scrollLeft;
+            PosY = e.clientY + document.body.scrollTop
+                + document.documentElement.scrollTop;
+        }
+
+        if ( startX === -1 && startY === -1 ) {
+            startX = PosX - ImgPos[0] ;
+            startY = PosY - ImgPos[1] ;
+        } else if ( startX > -1 && startY > -1 ) {
+            PosX = PosX - ImgPos[0]  - startX;
+            PosY = PosY - ImgPos[1]  - startY;
+
+            if ($('#topOf_'+idOfSensorForMapping).length === 0 ) {
+                $('#listLocationSensor').append('<input name="sensorLocation['+idOfSensorForMapping+'][top]" id="topOf_'+idOfSensorForMapping+'" type="hidden" value="'+getTop(startY)+'">\n'+
+                    '<input name="sensorLocation['+idOfSensorForMapping+'][width]" id="widthOf_'+idOfSensorForMapping+'" type="hidden" value="'+getLeft(PosX)+'">\n'+
+                    '<input name="sensorLocation['+idOfSensorForMapping+'][left]" id="leftOf_'+idOfSensorForMapping+'" type="hidden" value="'+getLeft(startX)+'">\n'+
+                    '<input name="sensorLocation['+idOfSensorForMapping+'][height]" id="lenghtOf_'+idOfSensorForMapping+'" type="hidden" value="'+getTop(PosY)+'">\n'
+                );
+                $('.containerOfMapping').append('<div id="sensorLocationFor_'+idOfSensorForMapping+'" class="mapItems" style="top: '+getTop(startY)+'%;left: '+getLeft(startX)+'%;width: '+getLeft(PosX)+'%;height: '+getTop(PosY)+'%;"></div>');
+            } else {
+                $('#widthOf_' + idOfSensorForMapping).val(getLeft(PosX));
+                $('#topOf_' + idOfSensorForMapping).val(getTop(startY));
+                $('#leftOf_' + idOfSensorForMapping).val(getLeft(startX));
+                $('#lenghtOf_' + idOfSensorForMapping).val(getTop(PosY));
+                $('.containerOfMapping').append('<div id="sensorLocationFor_'+idOfSensorForMapping+'" class="mapItems" style="top: '+getTop(startY)+'%;left: '+getLeft(startX)+'%;width: '+getLeft(PosX)+'%;height: '+getTop(PosY)+'%;"></div>');
+            }
+            $.notify({
+                message: 'با موفقیت اضافه شد.'
+            },{
+                type: 'success'
+            });
+            startX = -2;
+            startY = -2;
+
+            $('.selectErea').attr('style', 'top: 0px; left: 0px;width:0px; height:0px;');
+        }
+    }
+    function mouseMoveOnMap(e){
+        if ( startX > -1 && startY > -1 ) {
+            var PosX = 0;
+            var PosY = 0;
+            var ImgPos;
+            var myImg = document.getElementById("mapImage");
+            ImgPos = FindPosition(myImg);
+            if (!e) var e = window.event;
+            if (e.pageX || e.pageY) {
+                PosX = e.pageX;
+                PosY = e.pageY;
+            } else if (e.clientX || e.clientY) {
+                PosX = e.clientX + document.body.scrollLeft
+                    + document.documentElement.scrollLeft;
+                PosY = e.clientY + document.body.scrollTop
+                    + document.documentElement.scrollTop;
+            }
+            PosX = PosX - ImgPos[0] - startX;
+            PosY = PosY - ImgPos[1]  - startY;
+            if ( PosY < 0 || PosX < 0 ){
+                startX = -1;
+                startY = -1;
+                $('.selectErea').attr('style', 'top: 0px; left: 0px;width:0px; height:0px;');
+                $.notify({
+                    message: 'پایان نقطعه نباید بالاتر از شروع باشد.'
+                },{
+                    type: 'warning'
+                });
+            } else {
+                $('.selectErea').attr('style', 'top: ' + startY + 'px; left: ' + startX + 'px;width:' + PosX + 'px; height:' + PosY + 'px;');
+            }
+        }
+    }
+    function mouseDownOnMap2(e){
+        var PosX = 0;
+        var PosY = 0;
+        var ImgPos;
+        var myImg = document.getElementById("mapImage2");
+        ImgPos = FindPosition(myImg);
+        if (!e) var e = window.event;
+        if (e.pageX || e.pageY)
+        {
+            PosX = e.pageX;
+            PosY = e.pageY;
+        }
+        else if (e.clientX || e.clientY)
+        {
+            PosX = e.clientX + document.body.scrollLeft
+                + document.documentElement.scrollLeft;
+            PosY = e.clientY + document.body.scrollTop
+                + document.documentElement.scrollTop;
+        }
+
+        if ( startX > -1 && startY > -1 ) {
+            PosX = PosX + ImgPos[0] ;
+            PosY = PosY + ImgPos[1]   ;
+
+
+            if ($('#topOf_'+idOfSensorForMapping).length === 0 ) {
+                $('#listLocationSensor').append('<input name="sensorLocation['+idOfSensorForMapping+'][top]" id="topOf_'+idOfSensorForMapping+'" type="hidden" value="'+getTop(startY)+'">\n'+
+                    '<input name="sensorLocation['+idOfSensorForMapping+'][width]" id="widthOf_'+idOfSensorForMapping+'" type="hidden" value="'+getLeft(PosX)+'">\n'+
+                    '<input name="sensorLocation['+idOfSensorForMapping+'][left]" id="leftOf_'+idOfSensorForMapping+'" type="hidden" value="'+getLeft(startX)+'">\n'+
+                    '<input name="sensorLocation['+idOfSensorForMapping+'][height]" id="lenghtOf_'+idOfSensorForMapping+'" type="hidden" value="'+getTop(PosY)+'">\n'
+                );
+                $('.containerOfMapping').append('<div id="sensorLocationFor_'+idOfSensorForMapping+'" class="mapItems" style="top: '+getTop(startY)+'%;left: '+getLeft(startX)+'%;width: '+getLeft(PosX)+'%;height: '+getTop(PosY)+'%;"></div>');
+            } else {
+                $('#widthOf_' + idOfSensorForMapping).val(getLeft(PosX));
+                $('#topOf_' + idOfSensorForMapping).val(getTop(startY));
+                $('#leftOf_' + idOfSensorForMapping).val(getLeft(startX));
+                $('#lenghtOf_' + idOfSensorForMapping).val(getTop(PosY));
+                $('.containerOfMapping').append('<div id="sensorLocationFor_'+idOfSensorForMapping+'" class="mapItems" style="top: '+getTop(startY)+'%;left: '+getLeft(startX)+'%;width: '+getLeft(PosX)+'%;height: '+getTop(PosY)+'%;"></div>');
+            }
+            $.notify({
+                message: 'با موفقیت اضافه شد.'
+            },{
+                type: 'success'
+            });
+            startX = -2;
+            startY = -2;
+            $('.selectErea').attr('style', 'top: 0px; left: 0px;width:0px; height:0px;');
+        }
+    }
+    function mouseMoveOnMap2(e){
+        if ( startX > -1 && startY > -1 ) {
+            var PosX = 0;
+            var PosY = 0;
+            var ImgPos;
+            var myImg = document.getElementById("mapImage2");
+            ImgPos = FindPosition(myImg);
+            if (!e) var e = window.event;
+            if (e.pageX || e.pageY) {
+                PosX = e.pageX;
+                PosY = e.pageY;
+            } else if (e.clientX || e.clientY) {
+                PosX = e.clientX + document.body.scrollLeft
+                    + document.documentElement.scrollLeft;
+                PosY = e.clientY + document.body.scrollTop
+                    + document.documentElement.scrollTop;
+            }
+            PosX = PosX - ImgPos[0] ;
+            PosY = PosY - ImgPos[1]  ;
+            $('.selectErea').attr('style', 'top: ' + startY + 'px; left: ' + startX + 'px;width:' + PosX + 'px; height:' + PosY + 'px;');
+        }
+    }
+
+</script>
+{/map}

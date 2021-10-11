@@ -1,0 +1,288 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تنظیمات خروجی فایل گزارش</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            <form class="form-horizontal" method="post" >
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="unit[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.id}"  >{$unit.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="phase[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نوع کاشی</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <select class="selectpicker selectpickerNotRefresh" multiple name="tile_kind[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+
+                                                   {foreach from=$tiles key=key value=access_item }
+                                                   <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                   {/foreach}
+                                               </select>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">از تاریخ</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" name="StartTime"  class="form-control persianJustDatePicker text-center" >
+                                            </div>
+<!--
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                                <input type="hidden" name="StartTime" class="form-control persianDatepicker-from-alt">
+                                            </div>
+-->
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">تا تاریخ</label>
+                                        <div class="col-md-9">
+<!--
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                                <input type="hidden" name="EndTime"   class="form-control persianDatepicker-to-alt">
+                                            </div>
+-->
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" name="EndTime"  class="form-control persianJustDatePicker text-center" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">نمایش فیلد های <span class="text-danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                                    <option value="data.phase"  selected>فاز</option>
+                                                    <option value="data.unit" selected >واحد</option>
+                                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" >سایز تولیدی</option>
+                                                    <option value="data.label" >عنوان کاشی</option>
+                                                    <option value="data.counterAll" selected >تولید کل</option>
+                                                    <option value="data.m1" selected  >متراژ 1  </option>
+                                                    <option value="data.m2" selected  >متراژ 2  </option>
+                                                    <option value="data.m3" selected  >متراژ 3  </option>
+                                                    <option value="data.m4" selected  >متراژ U  </option>
+                                                    <option value="data.m5" selected  >متراژ W  </option>
+                                                    <option value="data.p1" selected  >درصد 1  </option>
+                                                    <option value="data.p2" selected  >درصد 2  </option>
+                                                    <option value="data.p3" selected  >درصد 3  </option>
+                                                    <option value="data.p4" selected  >درصد U  </option>
+                                                    <option value="data.p5" selected  >درصد W  </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">خروجی فایل <span class="text-danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" required name="getPDF"  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع خروجی">
+                                                    <option value="1" >PDF</option>
+                                                    <option value="0" selected>CSV</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                   <div class="col-md-12">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش تولید شیفت</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="getPDF" type="hidden" value="0">
+                                <input name="Shift"  type="hidden" value="0">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش تولید شیفت قبل</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="getPDF" type="hidden" value="0">
+                                <input name="Shift"  type="hidden" value="1">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش تولید امروز</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="getPDF" type="hidden" value="0">
+                                <input name="Day"    type="hidden" value="0">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12"> گزارش تولید روز قبل</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="getPDF" type="hidden" value="0">
+                                <input name="Day"    type="hidden" value="1">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

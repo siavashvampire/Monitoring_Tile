@@ -1,0 +1,72 @@
+﻿<script src="assets/devices.js"></script>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess"
+                             style="display: none;" data-notify="container">
+                            <span class="text-{$text_align}" id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger"
+                             style="display: none;" data-notify="container">
+                            <span class="text-{$text_align}" id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "Substation"} {$model->getlabel()}</h4>
+                    </div>
+                    <div class="card-body" id="classDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script src="{url theme}assets/devices.js"></script>
+
+<script>
+    let urlApi = '{url api}' ;
+    let themeUrl = '<?php echo \app::getCurrentBaseLink('theme/default/') ;  ?>';
+    let substation_id = '{$model->getId()}'
+    device_class = [];
+    let classDiv = $('#classDiv');
+    let x = 0;
+    let temp = '';
+
+    {foreach from=$devices key=key and value=device}
+    if (x == 0 )
+        temp += '<div class="row">'
+
+    temp += getHtml({$device.deviceType},{$key})
+    if (x != 0 )
+        temp += '</div><br>'
+    x += 1
+    if (x == 2 )
+        x = 0
+
+    {/foreach}
+    if (x != 0 )
+        temp +='</div>'
+
+    classDiv.append(temp)
+    {foreach from=$devices key=key and value=device}
+        device_class[{$key}] = type_chooser({$device.deviceType},{$key}, substation_id, {$device.unitId}, themeUrl,urlApi)
+    {/foreach}
+
+</script>
+{/map}
+{map navBarButton}
+<a class="btn btn-info" href="{url admin}Substation/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "backTo"} {_ "list"} {_ "Substation"}
+</a>
+{/map}

@@ -1,0 +1,354 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام سنسور</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="groupId" id="groupId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$access key=key value=access_item }
+                                                    <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نوع کاشی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="tile_kind" id="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$tiles key=key value=access_item }
+                                                    <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="unit" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.unit}"  >{$unit.Name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرتب سازی">
+                                                    <option value="sensors.label|desc"  >نام سنسور | نزولی</option>
+                                                    <option value="sensors.label|asc" >نام سنسور | صعودی</option>
+                                                    <option value="tile_kind.label|desc" >نوع کاشی | نزولی</option>
+                                                    <option value="tile_kind.label|asc" >نوع کاشی | صعودی</option>
+                                                    <option value="sensors.tileDegree|desc" >درجه کاشی | نزولی</option>
+                                                    <option value="sensors.tileDegree|asc" >درجه کاشی | صعودی</option>
+                                                    <option value="sensors.phase|desc" >فاز | نزولی</option>
+                                                    <option value="sensors.phase|asc" >فاز | صعودی</option>
+                                                    <option value="units.label|desc" >واحد | نزولی</option>
+                                                    <option value="units.label|asc" >واحد | صعودی</option>
+                                                    <option value="counter|desc" >تعداد شمارش | نزولی</option>
+                                                    <option value="counter|asc" >تعداد شمارش | صعودی</option>
+                                                    <option value="sensors.Active|desc" >فعال یا غیرفعال</option>
+                                                    <option value="sensors.Active|asc" >غیرفعال یا فعال</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-eye fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تولیدات شیفت :
+                        {if $shift}
+                            {$shift.shift_name}
+                        {/if}
+                        </h4>
+                        <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport('tebleExport');">
+                            <i class="fa fa-file-excel-o"></i>
+                            دانلود اکسل
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                    <tr>
+                                        <th>نام سنسور</th>
+                                        <th>سایز کاشی</th>
+                                        <th>فاز</th>
+                                        <th>تولیدات شیفت</th>
+                                        <th>متراژ تولیدات شیفت</th>
+                                        {if $DaylogFlag}
+                                            <th>تولیدات روز</th>
+                                            <th>متراژ تولیدات روز</th>
+                                        {/if}
+                                        <th>مدت زمان خاموش بودن</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="listAllRecord">
+                                {foreach from=$logs key=key value=log}
+                                    <tr id="rowOf_{$log.Sensor_id}" class="{if $log.Active}{if $log.OffTime  != 0} text-success{/if}{else}text-danger{/if}">
+                                        <td>{$log.label}</td>
+                                        <td id="TileOf_{$log.Sensor_id}">{$log.tile_label}</td>
+                                        <td id="phase_{$log.Sensor_id}">{$log.phase}</td>
+                                        <td id="counterOf_{$log.Sensor_id}">{$log.counter}</td>
+                                        <td id="MetrCounterOf_{$log.Sensor_id}">{$log.MetrCounter}</td>
+                                        {if $DaylogFlag  == 1 }
+                                            {if $$log.isStorage == 1 }
+                                                <td id="counterOf_{$DayLog.Sensor_id}">{$log.counter}</td>
+                                                <td id="MetrCounterOf_{$DayLog.Sensor_id}">{$log.MetrCounter}</td>
+                                            {else}
+                                                {math format="x" x="noting"  set="tempDayLog"}
+                                                {foreach from=$DayLogs key=key3 value=DayLog}
+                                                    {if $DayLog.Sensor_id == $log.Sensor_id }
+                                                        {math format="x" x=$DayLog.counter  set="tempDayLog"}
+                                                        <td id="counterOf_{$DayLog.Sensor_id}">{$DayLog.counter}</td>
+                                                        <td id="MetrCounterOf_{$DayLog.Sensor_id}">{$DayLog.MetrCounter}</td>
+                                                    {/if}
+                                                {/foreach}
+                                                {if $tempDayLog == "noting" }
+                                                    <td id="counterOf_{$DayLog.Sensor_id}">0</td>
+                                                    <td id="MetrCounterOf_{$DayLog.Sensor_id}">0</td>
+                                                {/if}
+                                            {/if}
+                                        {/if}
+                                        <td id="offTimeOf_{$log.Sensor_id}">
+                                            {if $log.OffTime  == 0 }
+                                               تعریف نشده است
+                                            {else} 
+                                                {math format="x" x=0  set="tempMint"}
+                                                {foreach from=$OFFlogs key=key2 value=log2}
+                                                    {if $log2.Sensor_id == $log.Sensor_id }
+                                                        {math format="floor(abs(x)/60)" x=$log2.OffTime  set="tempMint"}
+                                                        {math format="floor(x/60)" x=$tempMint  set="tempHour"}
+                                                        {math format="floor(x/24)" x=$tempHour  set="tempDay"}
+                                                        {math format="x % 24" x=$tempHour  set="tempHourAsli"}
+                                                        {math format="x % 60" x=$tempMint  set="tempMintASli"}
+                                                        {if $tempHourAsli != 0 }{$tempHourAsli} ساعت {/if}{$tempMintASli} دقیقه 
+                                                    {/if}
+                                                {/foreach}
+                                                    {if $tempMint == "" }
+                                                        {if $log.Active} توقف نداشته است{else}متوقف است{/if}   
+                                                    {/if}
+                                            {/if}
+                                        </td>
+                                    </tr>
+                                    {foreachelse}
+                                    <tr>
+                                        <td colspan="7">{_ "hasNotDataYet"}</td>
+                                    </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    var Tile = {};
+    var Units = {};
+    var urlSocket = '{$socketIP}' ;
+    var portSocket = '{$socketPORT}' ;
+    var lastShiftId = '{$shiftId}' ;
+    var urlc = '{url current}' ;
+    var div = '{$loadDivID}' ;
+
+    {foreach from=$tiles key=key value=access_item }
+    Tile.i{$access_item.id} = "{$access_item.label}";
+    {/foreach}
+    {foreach from=$units key=key value=access_item }
+    Units.i{$access_item.unit} = "{$access_item.Name}";
+    {/foreach}
+
+
+if ("WebSocket" in window) {
+    var socket;
+    var url = null;
+    var host= urlSocket;
+    var port= portSocket;
+    var path=null;
+
+    function init(){
+
+        host="ws://"+host+":"+port;
+        url=host;
+        console.log("Connecting to "+host+" url:"+url);
+        try{
+            socket = new WebSocket(host);
+            socket.onopen    = function(msg){
+                console.log("Ws-error: status "+this.readyState);
+                if ( this.readyState >= 3 ) {
+                    socket.close();
+                    socket = null;
+                    init();
+                }
+            };
+            socket.onmessage = function(msg){
+                console.log("new Ws-data: ");
+                console.log(msg.data);
+                var obj = JSON.parse(msg.data.trim());
+                console.log(obj);
+                // if ( lastShiftId != obj.shift_id) {
+                //     quit();
+                //     window.location.reload(true);
+                // }
+                if (($("#rowOf_"+obj.sensor_id).length > 0)){
+                   $('#TileOf_'+obj.sensor_id).html(Tile['i'+obj.id]);
+                   $('#unit_'+obj.sensor_id).html(Units['i'+obj.unit]);
+                   $('#TileDegree_'+obj.sensor_id).html( obj.tileDegree );
+                   $('#phase_'+obj.sensor_id).html( obj.phase );
+                   var counter = parseInt($('#counterOf_'+obj.sensor_id).html());
+                    counter = counter + parseInt(obj.counter) ;
+                    $('#counterOf_'+obj.sensor_id).html(counter);
+                } else {
+                    var sensorId = $('#groupId').find(":selected").val();
+                    var tileId = $('#tile_kind').find(":selected").val();
+
+                    if ( (sensorId == "" || sensorId ==  obj.sensor_id) && (tileId == "" || tileId ==  obj.sensor_id) ) {
+                        $('#listAllRecord').append('<tr id="rowOf_' + obj.sensor_id + '">'
+                            + '<td class="text-center">' + obj.sensors + '</td>' +
+                            '<td class="text-center" id="TileOf_' + obj.sensor_id + '">' + Tile['i' + obj.id] + '</td>' +
+                            '<td class="text-center" id="TileDegree_' + obj.sensor_id + '">' +  obj.tileDegree + '</td>' +
+                            '<td class="text-center" id="phase_' + obj.sensor_id + '">' +  obj.phase + '</td>' +
+                            '<td class="text-center" id="unit_' + obj.sensor_id + '">' +  Units['i' + obj.unit] + '</td>' +
+                            ' <td class="text-center" id="counterOf_' + obj.sensor_id + '">' + obj.counter + '</td><td class="text-center" id="offTimeOf_' + obj.sensor_id + '">نیاز به نوسازی صفحه</td></tr>'
+                        );
+                    }
+                }
+            };
+            socket.onclose   = function(msg){ console.log("Disconnected - status "+this.readyState); };
+        }
+        catch(ex){ console.log("Ws-error: "+ex); }
+
+    }
+    window.onbeforeunload = quit;
+    function quit(){
+        try{socket.send('disconnect'); }catch(ex){}
+        socket.close();
+        socket=null;
+        console.log("Ws Closed. ");
+    }
+
+    init();
+} else {
+    alert("Error: No Websockets supported\r\nYour Browser does not support websockets. Upgrade to modern browser");
+}
+
+    function fnExcelReport(tableId)
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#2196f3'>";
+        var textRange; var j=0;
+        tab = document.getElementById(tableId); // id of table
+
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<br>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel;charset=UTF-8,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+
+    function search2(link ,searchInDiv ) {
+        searchIn = searchInDiv ;
+        searchLink = link ;
+        optionsSearch = $( searchIn+'Form' ).serializeArray();
+        jQuery.each( optionsSearch, function( i, field ) {
+            var  name = field.name ;
+            if ( name.includes("[]") ){
+                name = name.replace("[]", "");
+                if ( typeof options[name] == "undefined" ){
+                    options[name] = [];
+                }
+                options[name].push(field.value);
+            } else {
+                options[field.name] = field.value;
+            }
+        });
+        load();
+        return false ;
+    }
+    window.setInterval(function(){search2(urlc ,div )},10000);
+
+</script>
+{/map}

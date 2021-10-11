@@ -1,0 +1,54 @@
+﻿<div class="content">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "configuration"} {_ "Truck_Kind"} {$model->getlabel()}</h4>
+                    </div>    
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label for="sensors" class="col-form-label col-md-3 float-right">{_ "name"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" class="form-control" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getlabel()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}Truck_Kind/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "backTo"} {_ "list"} {_ "Truck"}
+</a>
+{/map}

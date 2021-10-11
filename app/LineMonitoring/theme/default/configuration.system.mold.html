@@ -1,0 +1,89 @@
+{map settingFooter}
+{if $nameApp == 'LineMonitoring'}
+
+<div class="col-md-12 mb-3 mt-3 alert alert-info">
+    <b>توجه نمایید!</b><br>
+    توجه کنید که برای اجرای صحیح سامانه باید فایل های Bat موجود در آدرس زیر در حال اجرا باشد!
+    <span class="text-left">
+        {$dirStartUP}
+    </span>
+</div>
+{if isset($listGroups)}
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_taskmaster"> گروه کاربری سرشیفت:<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" id="field_taskmaster" name="setting[taskmaster]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+            {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$listGroups key=keyValue value=valueOne}
+            <option value="{$valueOne.groupId}" {if isset($valueThisOne.taskmaster)}{if $valueThisOne.taskmaster == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.taskmaster)}{if $Mold.post.setting.taskmaster == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_supervisor"> گروه کاربری سرپرست:<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" id="field_supervisor" name="setting[supervisor]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+            {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$listGroups key=keyValue value=valueOne}
+            <option value="{$valueOne.groupId}" {if isset($valueThisOne.supervisor)}{if $valueThisOne.supervisor == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.supervisor)}{if $Mold.post.setting.supervisor == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_RequestAdmin"> گروه کاربری ادمین خدمات:<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" id="field_RequestAdmin" name="setting[RequestAdmin]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+            {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$listGroups key=keyValue value=valueOne}
+            <option value="{$valueOne.groupId}" {if isset($valueThisOne.RequestAdmin)}{if $valueThisOne.RequestAdmin == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.RequestAdmin)}{if $Mold.post.setting.RequestAdmin == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_OFFAdmin"> گروه کاربری ادمین توقفات:<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" id="field_OFFAdmin" name="setting[field_OFFAdmin]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+            {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$listGroups key=keyValue value=valueOne}
+            <option value="{$valueOne.groupId}" {if isset($valueThisOne.field_OFFAdmin)}{if $valueThisOne.field_OFFAdmin == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.field_OFFAdmin)}{if $Mold.post.setting.field_OFFAdmin == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_DiagramRefreshTime"> مدت زمان به روزرسانی:<span class="text-danger">*</span> </label>
+    <div class="col-md-4">
+        <input  type="number" value = "{if isset($valueThisOne.DiagramRefreshTime)}{$valueThisOne.DiagramRefreshTime}{elseif isset($Mold.post.setting.DiagramRefreshTime)}{$Mold.post.setting.DiagramRefreshTime}{/if}" min="1" type="text" name="setting[DiagramRefreshTime]" required autocomplete="off" class="form-control">
+        <div class="small text-gray"></div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_movAvg"> میانگین متحرک:<span class="text-danger">*</span> </label>
+    <div class="col-md-4">
+        <input  type="number" value = "{if isset($valueThisOne.movAvg)}{$valueThisOne.movAvg}{elseif isset($Mold.post.setting.movAvg)}{$Mold.post.setting.movAvg}{/if}" min="0" max="600" type="text" name="setting[movAvg]" required autocomplete="off" class="form-control">
+        <div class="small text-gray"></div>
+    </div>
+</div>
+{/if}
+
+{/if}
+{/map}

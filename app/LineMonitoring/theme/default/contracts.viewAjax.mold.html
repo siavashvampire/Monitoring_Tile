@@ -1,0 +1,207 @@
+﻿
+            <div class="modal-body" id="contractContent">
+                {if isset($success)}
+                    <div class="alert alert-success text-right">{$success}</div>
+                {/if}
+                {if isset($errors)}
+                    <div class="alert alert-danger text-right">{$errors}</div>
+                {/if}
+                {if isset($contract)}
+                <ul class="nav nav-pills nav-pills-warning" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#linkView" data-toggle="tab" role="tablist" >
+                            قرارداد
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#linkVotes" data-toggle="tab" role="tablist"  >
+                            لیست نظزسنجی های درون دوره مربوطه
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#linkEdit" data-toggle="tab" role="tablist"  >
+                            ویرایش قرارداد
+                        </a>
+                    </li>
+                </ul>
+                {/if}
+                <div class="tab-content tab-space">
+                    {if isset($contract)}
+                    <div class="tab-pane active" id="linkView">
+                        <table class="table table-striped text-{$text_align}">
+                            <tr>
+                                <td>
+                                    {_ "firstName"}:
+                                </td>
+                                <td>
+                                    {$user->getFname()}
+                                </td>
+                                <td>
+                                    {_ "lastName"}:
+                                </td>
+                                <td>
+                                    {$user->getlname()}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {_ "email"}:
+                                </td>
+                                <td>
+                                    {$user->getEmail()}
+                                </td>
+                                <td>
+                                    {_ "phone"}:
+                                </td>
+                                <td>
+                                    {$user->getPhone()}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    تاریخ شروع قرارداد:
+                                </td>
+                                <td>
+                                    {$contract->getStartDate()|jDate:"j F Y - H&#58;i&#58;s"}
+                                </td>
+                                <td>
+                                    تاریخ پایان قرارداد:
+                                </td>
+                                <td>
+                                    {$contract->getEndDate()|jDate:"j F Y - H&#58;i&#58;s"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    مدت زمان قرارداد:
+                                </td>
+                                <td>
+                                    {$contract->getContractDays()} روز
+                                </td>
+                                <td>
+                                    مدت زمان باقی مانده از  قرارداد:
+                                </td>
+                                <td>
+                                    {$contract->getExpireDays()} روز
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    قرارداد تنظیم شده توسط:
+                                </td>
+                                <td colspan="2">
+                                    <a href="{url 'admin'}users/profile/{$contractor->getUserId()}" target="_blank">{$contractor->getFname()} {$contractor->getlname()}</a>
+                                </td>
+                            </tr>
+                            {foreach from=$fields key=key value=field }
+                            {if $key % 2 == 0 }
+                            </tr><tr>
+                            {/if}
+                                <td>{$field.title}:</td>
+                                <td>{if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
+
+                                    {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                    {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                    {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                    {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                    {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+
+
+                                    {else}
+                                    {$field.value}{/if}</td>
+
+                            {/foreach}
+                        </table>
+                        <div id="printableAreaContractContent" style="display: none">
+                            {$contractTemplate|html}
+                        </div>
+                        <div class="col-md-12">
+                            <a target="_blank" href="{url 'admin'}contractAction/printContract/{$user->getUserId()}/{$contract->getContractId()}"  class="btn btn-info mt-3" ><i class="fa fa-print"></i> چاپ مشخصات و نظر نسجی</a>
+                            <button type="button" onclick="printDiv('printableAreaContractContent')"  class="btn btn-info mt-3" ><i class="fa fa-print"></i> چاپ قرار داد</button>
+                            <button type="button" class="btn btn-warning mt-3" data-dismiss="modal">بستن</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="linkVotes">
+                        <form method="post" id="sendNewVote" action="{url 'admin'}contractAction/sendVote/{$contract->getContractId()}" onsubmit="return ajaxThisFormGetHtml('#sendNewVote', '.modal-body' , false , false , '');" >
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="startDate" class="col-form-label float-right">ارسال درخواست نظرسنجی:</label>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <select class="selectpicker selectpickerNotRefresh" name="voteId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}">
+                                        {foreach from=$votesForm key=key value=voteForm }
+                                        <option value="{$voteForm.voteId}"  >{$voteForm.voteName}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-success mt-3" >ارسال</button>
+                            </div>
+                        </form>
+                        <table class="table table-striped text-{$text_align}">
+                            <thead>
+                            <tr>
+                                <th class="text-center">عنوان فرم</th>
+                                <th class="text-center">تاریخ تکمیل</th>
+                                <th class="text-center"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                                {foreach from=$votesDoneForm key=key value=voteDoneForm }
+                                <tr>
+                                <td>
+                                    {$voteDoneForm.voteName}
+                                </td>
+                                <td class="text-center">
+                                    {if  $voteDoneForm.fillOutDate != "" }
+                                        {$voteDoneForm.fillOutDate|jDate:"j F Y - H&#58;i&#58;s"}
+                                    {else}
+                                        کمکاکان تکمیل نشده است!
+                                    {/if}
+                                </td>
+                                <td  class="text-center">
+                                    <button class="btn btn-link text-info mr-2" onclick="openContractVote('{$voteDoneForm.fillOutId}')"><i class="fa fa-eye"></i></button>
+                                </td>
+                            </tr>
+                                {foreachelse}
+                                    <tr>
+                                        <td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>
+                                    </tr>
+                                {/foreach}
+                            </tbody>
+                        </table>
+                        <div class="col-md-12">
+                            <button type="button" class="btn btn-warning mt-3" data-dismiss="modal">بستن</button>
+                        </div>
+                    </div>
+                    {/if}
+                    <div class="tab-pane {if !isset($contract)}active{/if}" id="linkEdit">
+                        <form method="post" id="editFormContract" action="{url current}" onsubmit="return ajaxThisFormGetHtml('#editFormContract', '.modal-body' , false , false , '');" >
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="startDate" class="col-form-label float-right">تاریخ شروع قرارداد:</label>
+                                    <input type="text" class="form-control persianJustDatePicker" autocomplete="off" id="startDate" name="startDate" value="{if isset($contract)}{$contract->getStartDate()|jDate:"Y/m/d"}{/if}">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="daysExpire" class="col-form-label float-right">مدت زمان قرارداد به روز</label>
+                                    <input class="form-control" id="daysExpire" name="daysExpire" type="number"  value="{if isset($contract)}{$contract->getContractDays()}{/if}">
+                                </div>
+                            </div>
+                            <div class="moreFieldView">
+                                {set "fillOutFieldServiceFormCssClassAllDiv","col-md-6"}
+                                {set "fillOutFieldServiceFormCssClassLabelDiv","col-form-label float-right"}
+                                {set "fillOutFieldServiceFormCssClassInputDiv","u"}
+                                {call fillOutFieldServiceForm}
+                            </div>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-warning mt-3" data-dismiss="modal">بستن</button>
+                                <button type="submit" class="btn btn-success mt-3" id="sendDataButton" >ارسال</button>
+                            </div>
+                        </form>
+                    </div>
+            </div>

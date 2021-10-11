@@ -1,0 +1,66 @@
+﻿
+            <div class="modal-body" id="voteContent">
+                <div class="tab-content tab-space">
+                    <div class="tab-pane active" id="linkView" >
+                        <div id="printableAreaContractVote">
+                        <table class="table table-striped text-{$text_align}">
+                            <tr>
+                                <td>
+                                    {_ "name"} {_ "form"}:
+                                </td>
+                                <td>
+                                    {$vote->getVoteName()}
+                                </td>
+                                <td>
+                                    {_ "time"} {_ "Creation"} {_ "form"}:
+                                </td>
+                                <td>
+                                    {$contracts_vote->getCreatDate()|jDate:"j F Y - H&#58;i&#58;s"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {_ "name"} {_ "Complementary"} {_ "form"}:
+                                </td>
+                                <td>
+                                    <a href="{url 'admin'}users/profile/{$fillOutBy->getUserId()}" target="_blank">{$fillOutBy->getFname()} {$fillOutBy->getlname()}</a>
+                                </td>
+                                <td>
+                                    {_ "time" }{_ "Complete"} {_ "form"}:
+                                </td>
+                                <td>
+
+                                    {if  $contracts_vote->getFillOutDate() > 0 }
+                                    {$contracts_vote->getFillOutDate()|jDate:"j F Y - H&#58;i&#58;s"}
+                                    {else}
+                                    {_ "NotCompleted"} !
+                                    {/if}
+                                </td>
+                            </tr>
+                            {foreach from=$fields key=key value=field }
+                            {if $key % 2 == 0 }
+                            </tr><tr>
+                            {/if}
+                                <td>{$field.title}:</td>
+                                <td>{if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
+
+                                    {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                    {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                    {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                    {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                    {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+
+
+                                    {else}
+                                    {$field.value}{/if}</td>
+
+                            {/foreach}
+                        </table>
+                        </div>
+                        <div class="col-md-12">
+                            <button type="button" onclick="printDiv('printableAreaContractVote')"  class="btn btn-info mt-3" ><i class="fa fa-print"></i>{_ "print"} {_ "Poll"}</button>
+                            <button type="button" class="btn btn-warning mt-3" data-dismiss="modal">{_ "close"}</button>
+                        </div>
+                    </div>
+                </div>
+            </div>

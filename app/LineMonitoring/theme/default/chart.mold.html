@@ -1,0 +1,440 @@
+<style>
+  .ct-legend {
+    position: relative;
+    z-index: 10;
+    list-style: none;
+    text-align: center;
+  }
+  .ct-legend li {
+    position: relative;
+    padding-left: 23px;
+    margin-right: 10px;
+    margin-bottom: 3px;
+    cursor: pointer;
+    display: inline-block;
+  }
+  .ct-legend li:before {
+    width: 12px;
+    height: 12px;
+    position: absolute;
+    left: 0;
+    top: 5px;
+    content: '';
+    border: 3px solid transparent;
+    border-radius: 2px;
+  }
+  .ct-legend li.inactive:before {
+    background: transparent;
+  }
+  .ct-legend.ct-legend-inside {
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .ct-legend.ct-legend-inside li{
+    display: block;
+    margin: 0;
+  }
+  .ct-legend .ct-series-0:before {
+    background-color: #FF0000;
+    border-color: #FF0000;
+  }
+  .ct-legend .ct-series-1:before {
+    background-color: #00FFFF;
+    border-color: #00FFFF;
+  }
+  .ct-legend .ct-series-2:before {
+    background-color: #0000FF;
+    border-color: #0000FF;
+  }
+  .ct-legend .ct-series-3:before {
+    background-color: #0000A0;
+    border-color: #0000A0;
+  }
+  .ct-legend .ct-series-4:before {
+    background-color: #ADD8E6;
+    border-color: #ADD8E6;
+  }
+  .ct-legend .ct-series-5:before {
+    background-color: #800080;
+    border-color: #800080;
+  }
+  .ct-legend .ct-series-6:before {
+    background-color: #FFFF00;
+    border-color: #FFFF00;
+  }
+  .ct-legend .ct-series-7:before {
+    background-color: #00FF00;
+    border-color: #00FF00;
+  }
+  .ct-legend .ct-series-8:before {
+    background-color: #FF00FF;
+    border-color: #FF00FF;
+  }
+  .ct-legend .ct-series-9:before {
+    background-color: #FFFFFF;
+    border-color: #FFFFFF;
+  }
+  .ct-legend .ct-series-10:before {
+    background-color: #C0C0C0;
+    border-color: #C0C0C0;
+  }
+  .ct-legend .ct-series-11:before {
+    background-color: #808080;
+    border-color: #808080;
+  }
+  .ct-legend .ct-series-12:before {
+    background-color: #000000;
+    border-color: #000000;
+  }
+  .ct-legend .ct-series-13:before {
+    background-color: #FFA500;
+    border-color: #FFA500;
+  }
+  .ct-legend .ct-series-14:before {
+    background-color: #A52A2A;
+    border-color: #A52A2A;
+  }
+  .ct-legend .ct-series-15:before {
+    background-color: #800000;
+    border-color: #800000;
+  }
+  .ct-legend .ct-series-16:before {
+    background-color: #008000;
+    border-color: #008000;
+  }
+  .ct-legend .ct-series-17:before {
+    background-color: #808000;
+    border-color: #808000;
+  }
+  .ct-legend .ct-series-18:before {
+    background-color: #6960EC;
+    border-color: #6960EC;
+  }
+  .ct-legend .ct-series-19:before {
+    background-color: #8EEBEC;
+    border-color: #8EEBEC;
+  }
+  .ct-legend .ct-series-20:before {
+    background-color: #5E7D7E;
+    border-color: #5E7D7E;
+  }
+  .ct-legend .ct-series-21:before {
+    background-color: #728C00;
+    border-color: #728C00;
+  }
+  .ct-legend .ct-series-22:before {
+    background-color: #254117;
+    border-color: #254117;
+  }
+  .ct-legend .ct-series-23:before {
+    background-color: #7FE817;
+    border-color: #7FE817;
+  }
+  .ct-legend .ct-series-24:before {
+    background-color: #7E587E;
+    border-color: #7E587E;
+  }
+  .ct-legend .ct-series-25:before {
+    background-color: #FFE87C;
+    border-color: #FFE87C;
+  }
+</style>
+{map navBarButton}
+    <a href="{url admin}" class="btn btn-info">
+                      <span class="btn-label">
+                        <i class="fa fa-low-vision"></i>
+                      </span>
+            برگشت به منو اصلی
+        </a>
+{/map}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header d-print-none card-header-warning">
+        <h4 class="card-title text-center">آمار تولید</h4>
+        <p class="card-category"></p>
+      </div>
+      <div class="card-body">
+        <form class="form-horizontal d-print-none" id="typeOfChart0" method="post" >
+          <div class="row">
+            <div class="col-md-3">
+              <label class="col-md-3 col-form-label">زمان بندی</label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <select id="Timing0" onchange="updateSensorsChart(0,this);" class="selectpicker selectpickerNotRefresh" name="Timing" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع زمان بندی">
+                        <option value="Day" selected>روزانه</option>
+                        <option value="Week"   >هفتگی</option>
+                        <option value="Month"  >ماهانه</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="col-md-3 col-form-label">نام سنسور</label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <select id="sensorsChart0" onchange="updateSensorsChart(0);" class="selectpicker selectpickerNotRefresh" multiple name="sensors[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+
+                    {foreach from=$sensorsChart key=key value=sensorChart }
+                        <option value="{$sensorChart.Sensor_id}"  >{$sensorChart.label}</option>
+                    {/foreach}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label class="col-md-3 col-form-label">نوع نمودار</label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <select id="Kind" onchange="updateSensorsChart(0);" class="selectpicker selectpickerNotRefresh" name="Kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع نمودار">
+                        <option value="1" selected>معمولی</option>
+                        <option value="2"  >تجمعی</option>
+                        <option value="3"  >میله ای</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-2">
+              <label class="col-md-3 col-form-label">تاریخ</label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <input type="text" autocomplete="off"  name="date" class="form-control persianJustDatePicker2 pwt-datepicker-input-element text-center">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-1">
+                <a class="btn btn-link text-info" style="margin: 10px!important;margin-top: 25px!important;padding: 0px!important;"><i onclick="addCompare(this,0)" class="fa fa-plus"></i></a>
+                <a class="btn btn-link text-info" style="margin: 10px!important;margin-top: 25px!important;padding: 0px!important;"><i onclick="resetCompare(this,0)" class="fa fa-refresh"></i></a>
+            </div>
+          </div>
+        </form>
+        <div class="ct-chart" id="Chart0" style="height: 500px;width:100%;display: inline-block;direction:ltr"></div>
+      </div>
+      <div class="card-footer ">
+        <div class="stats">
+          <i class="material-icons">access_time</i> <span id="jTimeOfChart0"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{map footerjs}
+<!-- Chartist JS -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chartist/0.9.8/chartist.min.css">
+<script src="{url themeBase}assets/js/plugins/chartist.min.js"></script>
+<script src="{url theme}assets/chartist-plugin-axistitle.js"></script>
+<script src="{url theme}assets/chartist-plugin-legend.js"></script>
+
+<script>
+  var URLS = ['Chart'];
+  var delays = 80,durations = 500 , animation = true;
+  var urlApi = '{url api}' ;
+  var options = {
+      seriesBarDistance: 10,
+      lineSmooth: Chartist.Interpolation.monotoneCubic({
+      }),
+      fullWidth: true,
+      chartPadding: {
+        top: 30,
+        right: 10,
+        bottom: 30,
+        left: 20
+      },
+      axisY: {
+        onlyInteger: true,
+        low: 0
+      },
+      axisX: {
+        labelInterpolationFnc: function(value, index) {
+          return index % 1 === 0 ? value : null;
+        }
+      },
+      plugins: [
+        Chartist.plugins.ctAxisTitle({
+          axisX: {
+            axisTitle: 'زمان',
+            axisClass: 'ct-axis-title',
+            offset: {
+              x: 0,
+              y: 50
+            },
+            textAnchor: 'middle'
+          },
+          axisY: {
+            axisTitle: 'تعداد در ساعت',
+            axisClass: 'ct-axis-title',
+            offset: {
+              x: 0,
+              y: -1
+            },
+            textAnchor: 'middle',
+            flipTitle: false
+          }
+        }),
+        Chartist.plugins.legend({
+          position: 'bottom',
+        })
+      ]
+    };
+
+  function updateChartData(data,number){
+    var Kind = $('#Kind').find(":selected").val();
+    if (Kind == 3)
+        chart = new Chartist.Bar('#Chart'+number, data, options );
+    else
+        chart = new Chartist.Line('#Chart'+number, data, options );
+  }
+  function getChart(number) {
+    $.ajax({
+      url: urlApi+'chart/' + URLS[number],
+      type: 'post',
+      dataType: 'json',
+      data: $( "#typeOfChart"+number ).serializeArray() ,
+      success: function (result) {
+        updateChartData(result['data'],number);
+        $("#jTimeOfChart"+number).html("اخرین بروزرسانی: " + result['jtime'] + " | نمودار مربوط به تاریخ : "+ result['jdayStart'] + " الی " + result['jdayEnd'] );
+      },
+      error: function (jqXHR, exception) {
+      },
+    });
+  }
+  var intervalId = null;
+  function updateChart(number) {
+    clearInterval(intervalId);
+    getChart(number);
+    intervalId = window.setInterval(function(){
+    getChart(number);
+    }, 5 * 60 * 1000 );
+  }
+  function updateSensorsChart(number,obj){
+    if (typeof obj !== "undefined"){
+        var closest = obj.closest('form');
+        var label = closest.children[0].children[3].children[0];
+        var input = closest.children[0].children[3].children[1].children[0].children[0];
+        var Timing = $('#Timing'+number).find(":selected").val();
+        if ( Timing == "Month" ||  Timing == "Week"){
+            input.classList.add('persianJustDatePickerMonth');
+            input.classList.remove('persianJustDatePicker2');
+            label.innerHTML = "ماه";
+            
+        }
+        else{
+            input.classList.add('persianJustDatePicker2');
+            input.classList.remove('persianJustDatePickerMonth');
+            label.innerHTML = "تاریخ";
+        }
+        console.log(input.innerHTML);
+        input.innerHTML = "";
+        refreshPageJs();
+    }
+       
+    setCookie('chart'+number , JSON.stringify($('#sensorsChart'+number).val()) , 99 );
+    getChart(number);
+  }
+  function refreshPageJs() {
+        $(".persianJustDatePickerMonth").persianDatepicker({
+        persianDigit: false ,
+        initialValue: false,
+        minDate : null,
+        maxDate: new persianDate().valueOf(),
+        format: 'YYYY/MM',
+        viewMode : 'month',
+        timePicker: {
+            enabled: false,
+            meridiem: {
+                enabled: false
+            },
+            second : {
+                enabled: false
+            },
+            minute : {
+                enabled: false
+            }
+        },
+        dayPicker: {
+            enabled :false,
+            },
+        autoClose: true,
+        onSelect: function(dateText) {
+            updateSensorsChart(0);
+        }
+        }); 
+        $(".persianJustDatePicker2").persianDatepicker({
+            persianDigit: false ,
+            initialValue: false,
+            minDate : null,
+            maxDate: new persianDate().valueOf(),
+            format: 'YYYY/MM/DD',
+            timePicker: {
+                enabled: false,
+                meridiem: {
+                    enabled: false
+                },
+                second : {
+                    enabled: false
+                },
+                minute : {
+                    enabled: false
+                }
+            },
+            autoClose: true,
+            onSelect: function(dateText) {
+                updateSensorsChart(0);
+            }
+        });
+    }
+  function addCompare(obj,number){
+    $.ajax({
+      url: urlApi+'chart/addCompare',
+      type: 'post',
+      dataType: 'json',
+      data: $( "#typeOfChart"+number ).serializeArray() ,
+      success: function (result) {
+      },
+      error: function (jqXHR, exception) {
+      },
+    });
+    updateSensorsChart(number);
+  } 
+  function resetCompare(obj,number){
+    var Timing = $('#Timing'+number).find(":selected").val();
+    $.ajax({
+      url: urlApi+'chart/resetCompare',
+      type: 'post',
+      dataType: 'json',
+      data:{
+            'Timing': Timing ,
+      },
+      success: function (result) {
+      },
+      error: function (jqXHR, exception) {
+      },
+    });
+    updateSensorsChart(number);
+  }
+  $(document).ready(function() {
+    sensorsSelect = getCookie('chart0');
+    if (sensorsSelect === null) {
+      sensorsSelect = [];
+    } else {
+      var sensorsSelected = JSON.parse(sensorsSelect);
+      for (var i = 0; i < sensorsSelected.length; i++){
+        $('#sensorsChart0 option[value=' + sensorsSelected[i] + ']').attr('selected', 'selected');
+      }
+      $('.selectpicker').selectpicker('refresh');
+    }
+    updateChart(0);
+            
+    $('.navbar-minimize').hide();
+    $('.sidebar').hide();
+    $('.navbar-toggler').hide();
+    $('.main-panel').css('width' , '100%');
+    refreshPageJs();
+    
+  });
+
+</script>
+{/map}

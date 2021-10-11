@@ -1,0 +1,416 @@
+﻿<script>  
+function getReason(id,value,defaultValue){
+        anyChang = true;
+        $.ajax({
+            url: urlc+'/getReason',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'value': value
+            } ,
+            success: function (result) {
+                if (result['status']) {
+                    $('#ReasonSelect_'+ id).html("");
+                    result['reason'].forEach(function (_ref) {
+                        var selected = "";
+                        if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                        $('#ReasonSelect_'+ id).append('<option value="'+_ref['label']+'" '+selected+' >'+_ref['label']+'</option>');
+                    });
+                    $('#ReasonSelect_'+ id).selectpicker('refresh');
+                }
+            }
+        });
+    }
+</script>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام کلید</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="groupId" id="groupId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$access key=key value=access_item }
+                                                    <option value="{$access_item.Sensor_id}"  >{$access_item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نوع نمایش</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="howShow" id="ddd"data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع نمایش">
+                                                    <option value="all" selected >لاگ کلی</option>
+                                                    <option value="count" >سرجمع هر کلید</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت کلید">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.id}"  >{$unit.lebel}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">از تاریخ</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                                <input type="hidden" name="StartTime" class="form-control persianDatepicker-from-alt">       
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">الی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                                <input type="hidden" name="EndTime" class="form-control persianDatepicker-to-alt"> 
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                    <option value="sensors.label|desc" >نام کلید | نزولی</option>
+                                                    <option value="sensors.label|asc" >نام کلید | صعودی</option>
+                                                    <option value="units.label|desc" >واحد | نزولی</option>
+                                                    <option value="units.label|asc" >واحد | صعودی</option>
+                                                    <option value="data.phase|desc" >فاز | نزولی</option>
+                                                    <option value="data.phase|asc" >فاز | صعودی</option>
+                                                    <option value="data.Start_time|desc" selected >تاریخ خاموشی | نزولی</option>
+                                                    <option value="data.Start_time|asc" >تاریخ خاموشی | صعودی</option>
+                                                    <option value="data.End_Time|desc" >تاریخ روشن شدن | نزولی</option>
+                                                    <option value="data.End_Time|asc" >تاریخ روشن شدن | صعودی</option>
+                                                    <option value="data.OffTime|desc" >مدت زمان خاموش بودن | نزولی</option>
+                                                    <option value="data.OffTime|asc" >مدت زمان خاموش بودن | صعودی</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-eye fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لاگ خاموشی کلید :
+                        </h4>
+                        <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport('tebleExport');">
+                            <i class="fa fa-file-excel-o"></i>
+                            دانلود اکسل
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align} table-striped" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th >نام کلید</th>
+                                    <th >واحد</th>
+                                    <th >فاز</th>
+                                    {if $howToShow == 'all'}
+                                    <th >تاریخ خاموشی</th>
+                                    <th >تاریخ روشن شدن</th>
+<!--
+                                    <th class="text-center">اطلاعات خاموشی</th>
+                                    <th class="text-center">اطلاعات روشن شدن</th>
+-->
+                                    {elseif $howToShow == 'count'}
+                                        <th>تاریخ - شیفت</th>
+                                    {/if}
+                                    <th>مدت زمان خاموش بودن</th>
+                                </tr>
+                                </thead>
+                                <tbody id="listAllRecord">
+                                {foreach from=$logs key=key value=log}
+                                <tr id="rowOf_{$log.id}">
+                                    <td>{$log.label}</td>
+                                    <td>{$log.unitName}</td>
+                                    <td>{$log.phase}</td>
+
+                                    {if $howToShow == 'all'}
+                                    <td>{$log.JStart_time}</td>
+                                    <td>
+                                        {if $log.End_Time != '' }
+                                            {$log.JEnd_Time}
+                                        {else}
+                                            کلید خاموش است!
+                                        {/if}
+                                    </td>
+<!--
+                                    <td class="text-center">شیفت: {$log.Sshift_name} <br> سرشیفت : <a href="{url 'admin'}users/profile/{$log.Start_employers_id}" target="_blank">{$log.Sfname} {$log.Slname}</a></td>
+                                    <td class="text-center">
+                                        {if $log.End_Time != '' }
+                                        شیفت: {$log.Eshift_name} <br> سرشیفت : <a href="{url 'admin'}users/profile/{$log.Start_employers_id}" target="_blank">{$log.Efname} {$log.Elname}</a>
+                                        {else}
+                                        کلید خاموش است!
+                                        {/if}
+                                    </td>
+-->
+                                    {elseif $howToShow == 'count'}
+                                        <td>{$log.Time} - {$log.shift_name}</td>
+                                    {/if}
+                                    <td>
+                                        {if $howToShow == 'all'}
+                                        {$log.OffTime}
+                                    {else}
+                                        {math format="floor(abs(x)/60)" x=$log.OffTime  set="tempMint"}
+                                        {math format="floor(x/60)" x=$tempMint  set="tempHour"}
+                                        {math format="floor(x/24)" x=$tempHour  set="tempDay"}
+                                        {math format="x % 24" x=$tempHour  set="tempHourAsli"}
+                                        {math format="x % 60" x=$tempMint  set="tempMintASli"}
+                                        {$tempDay}  روز {$tempHourAsli} ساعت {$tempMintASli} دقیقه
+
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {if $howToShow == 'all'}
+                                <tr>
+                                    <td colspan="4">
+                                        {if $canChange and $log.reason == '' }
+                                            <label class="col-md-3 col-form-label">علت:</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    {if is_array($offSensorReasons) }
+                                                        <select class="selectpicker selectpickerNotRefresh"  data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" onchange="getReason('{$log.ActivityId}',$(this).val())" title="علت وارد نشده">
+                                                            {foreach from=$offSensorReasons key=key value=offSensorReason }
+                                                            <option value="{$offSensorReason.id}">{$offSensorReason.label}</option>
+                                                            {/foreach}
+                                                        </select>
+                                                        <select class="selectpicker selectpickerNotRefresh" data-live-search="true" id="ReasonSelect_{$log.ActivityId}" onchange="sendReason(this,'{$log.ActivityId}','reason',$(this).val())" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="لطفا سرفصل را انتخاب کنید!">
+                                                            <option selected>لطفا سرفصل را انتخاب کنید!</option>
+                                                        </select>
+                                                    {else}
+                                                         <input type="text" autocomplete="off" class="form-control"  onchange="sendReason(this,'{$log.ActivityId}','reason',$(this).val())">
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                        {elseif ! $canChange and $log.reason == '' }
+                                            علت: هنوز وارد نشده است!
+                                        {elseif !$canChange2 and $log.reason != '' }
+                                            <a href="{url 'admin'}users/profile/{$log.infoInsert}" target="_blank"  class="text-info">
+                                            علت: {$log.reason}
+                                            </a>
+                                        {elseif $canChange2 and $log.reason != '' }
+                                            <label class="col-md-3 col-form-label">علت:</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    {if is_array($offSensorReasons)}
+                                                        <select class="selectpicker selectpickerNotRefresh" data-live-search="true" onchange="getReason('{$log.ActivityId}',$(this).val(),{if isset($log) and $log.reason != "" }'{$log.ActivityId}'{else}-1{/if})" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="علت جدید را وارد کنید">
+                                                            {foreach from=$offSensorReasons key=key value=offSensorReason }
+                                                            <option value="{$offSensorReason.id}" {if isset($log)}{if $log.parentId == $offSensorReason.id }selected{/if}{/if}>{$offSensorReason.label}</option>
+                                                            {/foreach}
+                                                        </select>
+                                                        <select class="selectpicker selectpickerNotRefresh" data-live-search="true" id="ReasonSelect_{$log.ActivityId}" onchange="sendReason(this,'{$log.ActivityId}','reason',$(this).val())" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="لطفا سرفصل را انتخاب کنید!">
+                                                            <option value="{$log.reason}" selected>{$log.reason}</option>
+                                                        </select>
+                                                    {else}
+                                                        <input type="text" autocomplete="off" class="form-control"  onchange="sendReason(this,'{$log.ActivityId}','reason',$(this).val())" value="{$log.reason}">
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                        {/if}
+                                    </td>
+                                    <td colspan="3">
+                                        {if $canChange and $log.description == '' }
+                                        <label class="col-md-3 col-form-label">توضیحات:</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                {if $offSensorDescriptions }
+                                                <select class="selectpicker selectpickerNotRefresh" data-live-search="true" onchange="sendReason(this,'{$log.ActivityId}','description',$(this).val())" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="توضیحات وارد نشده">
+                                                    {foreach from=$offSensorDescriptions key=key value=offSensorDescription }
+                                                    <option value="{$offSensorDescription}"  >{$offSensorDescription}</option>
+                                                    {/foreach}
+                                                </select>
+                                                {else}
+                                                    <input type="text" autocomplete="off" class="form-control"  onchange="sendReason(this,'{$log.ActivityId}','description',$(this).val())">
+                                                {/if}
+                                            </div>
+                                        </div>
+                                        {elseif ! $canChange and $log.description == '' }
+                                        توضیحات: هنوز وارد نشده است!
+                                        {elseif ! $canChange2 and $log.description != '' }
+                                        <a href="{url 'admin'}users/profile/{$log.infoInsert}" target="_blank" class="text-info">
+                                        توضیحات: {$log.description}
+                                        </a>
+                                        {elseif $canChange2 and $log.description != '' }
+                                            <label class="col-md-3 col-form-label">توضیحات:</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    {if $offSensorDescriptions }
+                                                    <select class="selectpicker selectpickerNotRefresh" data-live-search="true" onchange="sendReason(this,'{$log.ActivityId}','description',$(this).val())" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="توضیحات وارد نشده">
+                                                        {foreach from=$offSensorDescriptions key=key value=offSensorDescription }
+                                                        <option value="{$offSensorDescription}"  {if isset($log)}{if $log.description == $offSensorDescriptions }selected{/if}{/if}>{$offSensorDescription}</option>
+                                                        {/foreach}
+                                                    </select>
+                                                    {else}
+                                                        <input type="text" autocomplete="off" class="form-control"  onchange="sendReason(this,'{$log.ActivityId}','description',$(this).val())" value="{$log.description}">
+                                                    {/if}
+                                                </div>
+                                            </div>   
+                                        {/if}
+                                    </td>
+                                </tr>
+                                {/if}
+                                {foreachelse}
+                                <tr>
+                                    <td colspan="{if $howToShow == 'all'}8{else}5{/if}">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var div = '{$loadDivID}' ;
+    var anyChange = false ;
+
+    function sendReason(obj,id,type,value){
+        anyChang = true;
+        $.ajax({
+            url: urlc+'/updateReason',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'logId': id,
+                'type': type,
+                'plcId': $('#plcId').val(),
+                'value': value
+            } ,
+            success: function (result) {
+                if (result['status']) {
+                    $(obj).closest('td').removeClass("alert-danger").addClass("alert-success");
+                //     $('#sendDataButton').hide();
+                //     load();
+                //     return false;
+                }
+                else {
+                   $(obj).closest('td').removeClass("alert-success").addClass("alert-danger");
+                }
+            }
+        });
+    }
+
+    function fnExcelReport(tableId)
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#2196f3'>";
+        var textRange; var j=0;
+        tab = document.getElementById(tableId); // id of table
+
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<br>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel;charset=UTF-8,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+
+     function search2(link ,searchInDiv ) {
+         searchIn = searchInDiv ;
+         searchLink = link ;
+         optionsSearch = $( searchIn+'Form' ).serializeArray();
+         jQuery.each( optionsSearch, function( i, field ) {
+             var  name = field.name ;
+             if ( name.includes("[]") ){
+                 name = name.replace("[]", "");
+                 if ( typeof options[name] == "undefined" ){
+                     options[name] = [];
+                 }
+                 options[name].push(field.value);
+             } else {
+                 options[field.name] = field.value;
+             }
+         });
+         load();
+         return false ;
+     }
+//     window.setInterval(function(){search2(urlc ,div )},5000);
+
+</script>
+{/map}

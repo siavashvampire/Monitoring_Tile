@@ -1,0 +1,10 @@
+﻿{map adminDashboardPanels}
+{if $numberOfSensorsToFill}
+<a href="{url 'admin'}sensorOffTimeLog/fill">
+    <div class="alert alert-warning text-right">
+        کاربر گرامی<br>
+        شما {$numberOfSensorsToFill} علت مربوط به سنسور های واحد خود را وارد نکردید. لطفا هر چه سریع تر علت توقف واحد را وارد کنید.
+    </div>
+</a>
+{/if}
+{/map}

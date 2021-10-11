@@ -1,0 +1,5 @@
+Open My Computer Properties
+Click on Advance System Setting
+Select Environment Variables
+Click on Path & Edit
+Click new & Add your PHP.exe path (e.g. C:\xampp\php\php.exe)

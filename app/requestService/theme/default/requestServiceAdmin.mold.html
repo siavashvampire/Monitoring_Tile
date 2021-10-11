@@ -1,0 +1,375 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تنظیمات درخواست خدمات</h4>
+                    </div>        
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post">
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">شماره درخواست<span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0" autocomplete="off" required name="requestCode" class="form-control" value="{if isset($Mold.post.requestCode)}{$Mold.post.requestCode}{elseif isset($requestService)}{$requestService->getRequestCode()}{/if}" >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">تاریخ درخواست<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{jDate:"Y/m/d"|persianNumber}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">زمان درخواست<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="date" autocomplete="off" required name="Time_Send_justT" data-onlyTime="1"  class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"H&#58;i"}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">نام دستگاه/تجهیز<span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="System_Name" class="form-control">{if isset($Mold.post.System_Name)}{$Mold.post.System_Name}{elseif isset($requestService)}{$requestService->getSystem_Name()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">فاز مورد نظر <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="phase" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز مورد نظر">
+                                                {foreach from=$phases key=key value=phase }
+                                                    <option value="{$phase.id}" {if isset($Mold.post.phase)}{if $phase.id == $Mold.post.phase }selected{/if}{elseif isset($requestService) and $phase.id == $requestService->getPhase()}selected{/if}> {$phase.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">بخش درخواست کننده<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                           <select class="selectpicker selectpickerNotRefresh" required name="ServiceSection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش درخواست کننده">
+                                                {foreach from=$ServiceSections key=key value=ServiceSection }
+                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.Name}  - {$ServiceSection.id}</option>
+                                                    {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">خط<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="Line" data-style="btn btn-outline-info btn-round text-{$float}" title="خط">
+                                                <option value="1" selected {if isset($Mold.post.Line)}{if $Mold.post.Line == 1}selected{/if}{elseif isset($requestService) and $requestService->getLine() == 1}selected{/if}>1</option>
+                                                <option value="2"  {if isset($Mold.post.Line)}{if $Mold.post.Line == 2}selected{/if}{elseif isset($requestService) and $requestService->getLine() == 2}selected{/if}>2</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">مرکز هزینه</label>
+                                    <div class="col-md-9">
+                                       <div class="form-group has-default">
+                                           <select class="selectpicker selectpickerNotRefresh" multiple name="Cost[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرکز هزینه">
+                                            
+                                                {foreach from=$costs key=key value=cost }
+                                                <option value="{$cost.id}"  {if isset($Mold.post.Cost)}{if in_array($cost.id,$Mold.post.Cost) }selected{/if}{elseif isset($requestService) and in_array( $cost.id , $requestService->getCost() )}selected{/if}>{$cost.Title}</option>
+                                                {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">بخش انجام دهنده<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                       <div class="form-group has-default">
+                                           <select class="selectpicker selectpickerNotRefresh" required name="Workersection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش انجام دهنده">
+                                                {foreach from=$Workersections key=key value=Workersection }
+                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.Name}  -  {$Workersection.id}</option>
+                                                {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">وضعیت دستگاه هنگام درخواست کار <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="System_Status" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت دستگاه هنگام درخواست کار">
+                                                {foreach from=$system_statuses key=key value=system_status }
+                                                <option value="{$system_status.id}"  {if isset($Mold.post.System_Status)}{if $system_status.id == $Mold.post.System_Status }selected{/if}{elseif isset($requestService) and  $system_status.id == $requestService->getSystem_Status() }selected{/if}>{$system_status.Title}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">مدت توقف</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0" autocomplete="off" name="offTime" class="form-control" value="{if isset($Mold.post.offTime)}{$Mold.post.offTime}{elseif isset($requestService)}{$requestService->getOffTime()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">فعالیت مورد نظر <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" multiple required name="WorkTitle[]" data-live-search="true"  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فعالیت مورد نظر">
+                                                {foreach from=$worktitles key=key value=worktitle }
+                                                <option value="{$worktitle.id}" {if isset($Mold.post.WorkTitle)}{if in_array($worktitle.id,$Mold.post.WorkTitle) }selected{/if}{elseif isset($requestService) and in_array( $worktitle.id , $requestService->getWorkTitle() )}selected{/if}> {$worktitle.Title}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">اثرات خرابی <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" multiple required name="BugInfluence[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="اثرات خرابی">
+                                                {foreach from=$BugInfluences key=key value=BugInfluence }
+                                                <option value="{$BugInfluence.id}"  {if isset($Mold.post.BugInfluence)}{if in_array($BugInfluence.id,$Mold.post.BugInfluence) }selected{/if}{elseif isset($requestService) and in_array( $BugInfluence.id , $requestService->getBugInfluence() )}selected{/if}>{$BugInfluence.Title}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">ساعت شروع<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                            <input type="hidden" name="Time_Start" required class="form-control persianDatepicker-from-alt">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">ساعت اتمام<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                            <input type="hidden" name="Time_End"  required class="form-control persianDatepicker-to-alt">
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <div class="col-md-4">                
+                                    <label class="col-md-3 col-form-label">نفر کارکرد<span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="1" autocomplete="off" required name="HumanNumber" class="form-control" value="{if isset($Mold.post.HumanNumber)}{$Mold.post.HumanNumber}{elseif isset($requestService)}{$requestService->getHumanNumber()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-12">
+                                    <label class="col-md-3 col-form-label">شرح خرابی و عملیات انجام شده</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="3" autocomplete="off" name="Sender_note" class="form-control">{if isset($Mold.post.Sender_note)}{$Mold.post.Sender_note}{elseif isset($requestService)}{$requestService->getSender_note()}{/if}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">علت خرابی<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="failure" data-style="btn btn-outline-info btn-round text-{$float}" title="علت خرابی">
+                                                {foreach from=$failures key=key value=failure }
+                                                <option value="{$system_status.id}"  {if isset($Mold.post.failure)}{if $failure.id == $Mold.post.failure }selected{/if}{elseif isset($requestService) and  $failure.id == $requestService->getFailure() }selected{/if}>{$failure.Title}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">توضیحات</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" name="failureDes" class="form-control">{if isset($Mold.post.failureDes)}{$Mold.post.failureDes}{elseif isset($requestService)}{$requestService->getFailureDes()}{/if}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">عملیات انجام شده<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="Donework" data-style="btn btn-outline-info btn-round text-{$float}" title="عملیات انجام شده">
+                                                {foreach from=$Doneworks key=key value=Donework }
+                                                <option value="{$Donework.id}"  {if isset($Mold.post.Donework)}{if $Donework.id == $Mold.post.Donework }selected{/if}{elseif isset($requestService) and  $Donework.id == $requestService->getDonework() }selected{/if}>{$Donework.Title}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">توضیحات</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" name="DoneworkDes" class="form-control">{if isset($Mold.post.DoneworkDes)}{$Mold.post.DoneworkDes}{elseif isset($requestService)}{$requestService->getDoneworkDes()}{/if}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">علت تاخیر<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="Latency" data-style="btn btn-outline-info btn-round text-{$float}" title="علت تاخیر">
+                                                {foreach from=$Latencys key=key value=Latency }
+                                                <option value="{$Latency.id}"  {if isset($Mold.post.Latency)}{if $Latency.id == $Mold.post.Latency }selected{/if}{elseif isset($requestService) and  $Latency.id == $requestService->getLatency() }selected{/if}>{$Latency.Title}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">                
+                                    <label class="col-md-3 col-form-label">مدت زمان تاخیر </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0" autocomplete="off" name="LatencyTime" class="form-control" value="{if isset($Mold.post.LatencyTime)}{$Mold.post.LatencyTime}{elseif isset($requestService)}{$requestService->getLatencyTime()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-12">
+                                    <table class="table text-right">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 40%">نام قطعه</th>
+                                                <th style="width: 10%">تعداد مصرفی</th>
+                                                <th style="width: 50%">
+                                                    <button type="button" class="btn btn-info" onclick="$('#bodyParts').append(oneRowPart);refreshPageJs();">
+                                                        <i class="fa fa-plus-circle"></i>
+                                افزودن قطعه جدید                                        </button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyParts" >
+                                            <tr style="display:none" id="bodyPartsElemnt">
+                                                <td>
+                                                    <select class="selectpicker" name="PartName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام قطعه">
+                                                    {foreach from=$Parts key=key value=part }
+                                                     <option value="{$part.id}" >{$part.Name}   -  {$part.id}</option>
+                                                    {/foreach}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <div class="form-group has-default">
+                                                        <input type="number" min="1" value="1" autocomplete="off" name="PartQuantity[]" class="form-control">
+                                                    </div>
+                                                </td>
+                                                <td class="td-actions text-right">
+                                                    <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                        <i class="fa fa-trash"></i>
+                                                        حذف                                        </button>
+                                                </td>
+                                            </tr>
+                                            {if isset($Mold.post.PartName )}
+                                                {foreach from=$Mold.post.PartName key=key and value=part}
+                                                    <tr>
+                                                        <td>
+                                                            <select class="selectpicker" name="PartName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام قطعه">
+                                                            {foreach from=$Parts key=key2 value=part2 }
+                                                             <option value="{$part2.id}" {if $Mold.post.PartName.[$key] == $part2.id } selected {/if} >{$part2.Name}   -  {$part2.id}</option>
+                                                            {/foreach}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-group has-default">
+                                                                <input type="number" min="1" value="{$Mold.post.PartQuantity.[$key]}" autocomplete="off" name="PartQuantity[]" class="form-control">
+                                                            </div>
+                                                        </td>
+                                                        <td class="td-actions text-right">
+                                                            <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                                <i class="fa fa-trash"></i>
+                                                                حذف                                        </button>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            {elseif isset($requestService) }
+                                                {set 'numbersof',$requestService->getConsumable_Parts_Qty()}
+                                                {set 'numbersofV',$requestService->getConsumable_Parts()}
+                                                {foreach from=$requestService->getConsumable_Parts() key=key and value=part}
+                                                    <tr>
+                                                        <td>
+                                                            <select class="selectpicker" name="PartName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام قطعه">
+                                                            {foreach from=$Parts key=key2 value=part2 }
+                                                             <option value="{$part2.id}" {if $numbersofV.[$key] == $part2.id } selected {/if} >{$part2.Name}   -  {$part2.id}</option>
+                                                            {/foreach}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <div class="form-group has-default">
+                                                                <input type="number" min="1" value="{$numbersof.[$key]}" autocomplete="off" name="PartQuantity[]" class="form-control">
+                                                            </div>
+                                                        </td>
+                                                        <td class="td-actions text-right">
+                                                            <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                                <i class="fa fa-trash"></i>
+                                                                حذف                                        </button>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> ثبت درخواست</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var oneRowPart ='<tr>'+ $('#bodyPartsElemnt').html()+"</tr>";
+    $('#bodyPartsElemnt').remove();
+    function  refreshPageJs() {
+    $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+}
+</script>
+{/map}

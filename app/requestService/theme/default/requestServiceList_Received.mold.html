@@ -1,0 +1,208 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$sections key=key value=section }
+                                                    <option value="{$section.id}"  >{$section.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    </div>
+                                <div class="row">.
+                                    
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">از تاریخ</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                                <input type="hidden" name="StartTime" class="form-control persianDatepicker-from-alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">الی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                                <input type="hidden" name="EndTime" class="form-control persianDatepicker-to-alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                    <option value="requestservice.phase|desc" >فاز | نزولی</option>
+                                                    <option value="requestservice.phase|asc" >فاز | صعودی</option>
+                                                    <option value="sections.Name|desc" >واحد | نزولی</option>
+                                                    <option value="sections.Name|asc" >واحد | صعودی</option>
+                                                    <option value="requestservice.Time_Send|desc" selected >زمان | نزولی</option>
+                                                    <option value="requestservice.Time_Send|asc" >زمان | صعودی</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-history fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">درخواست ها</h4>
+                        <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport('tebleExport');">
+                            <i class="fa fa-file-excel-o"></i>
+                            دانلود اکسل
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">بخش</th>
+                                    <th class="text-center">مشکل</th>
+                                    <th class="text-center">زمان</th>
+                                    <th class="text-center">نمایش</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$requestServices key=key value=requestService}
+                                <tr>
+                                    <td class="text-center">{$requestService.sectionName|str_replace:',':' - '}</td>
+                                    <td class="text-center">{$requestService.BugInfluence|str_replace:',':' - '}</td>
+                                    <td class="text-center">{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-link text-info mr-2" onclick="openReSerView('{$requestService.requestId}')"><i class="fa fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="9">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="ReSerContent"></div>
+        </div>
+    </div>
+</div>
+
+
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var urlAdmin = "{url 'admin'}" ;
+    var urlTheme= "{url themeBase}" ;
+    var div = '{$loadDivID}' ;
+    function openReSerView(id){
+        ajaxRunUrlHtml(urlAdmin+'requestService/Ajax_View/' + id, '#ReSerContent' , 'openModule');
+    }
+    function  openModule() {
+        $('#exampleModal').modal('show');
+    }
+    function fnExcelReport(tableId)
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#2196f3'>";
+        var textRange; var j=0;
+        tab = document.getElementById(tableId); // id of table
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<br>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel;charset=UTF-8,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+</script>
+{/map}

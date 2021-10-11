@@ -1,0 +1,208 @@
+﻿<html><meta charset="utf-8" /><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>
+<link href="{url themeBase}assets/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css" rel="stylesheet">
+<link href="{url themeBase}assets/css/material-dashboard.minf066.css?v=2.1.0" rel="stylesheet" />
+<body class="rtl text-right">
+
+<table class="table table-striped text-{$text_align}">
+                            <tr>
+                                <td colspan="6" class="text-center text-bold">
+                                    {_ "PersonalProfile"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {_ "firstName"}:
+                                </td>
+                                <td>
+                                    {$user->getFname()}
+                                </td>
+                                <td>
+                                    {_ "lastName"}:
+                                </td>
+                                <td>
+                                    {$user->getlname()}
+                                </td>
+                                <td>
+                                    {_ "email"}:
+                                </td>
+                                <td>
+                                    {$user->getEmail()}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {_ "phone"}:
+                                </td>
+                                <td>
+                                    {$user->getPhone()}
+                                </td>
+                                {foreach from=$fieldsUser key=key value=field }
+
+                                    <td>{$field.title}:</td>
+                                    <td>{if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
+
+                                    {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                    {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                    {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                    {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                    {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+
+
+                                    {else}
+                                    {$field.value}{/if}</td>
+                                    {if $key % 3 == 1 }
+                                        </tr><tr>
+                                    {/if}
+                                {/foreach}
+                                {if $key % 3 == 0 }
+                                <td></td>
+                                <td></td>
+                                {/if}
+                                {if $key % 3 == 2 }
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                {/if}
+                            </tr>
+                            <tr>
+                                <td colspan="6" style="padding-top: 60px;" class="text-center text-bold">
+                                    {_ "Specifications"} {_ "contract"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {_ "contract"} {_ "start"} {_ "date"}:
+                                </td>
+                                <td>
+                                    {$contract->getStartDate()|jDate:"j F Y"}
+                                </td>
+                                <td>
+                                    {_ "contract"} {_ "end"} {_ "date"}:
+                                </td>
+                                <td>
+                                    {$contract->getEndDate()|jDate:"j F Y"}
+                                </td>
+                                <td>
+                                    {_ "Period"} {_ "time"} {_ "contract"}:
+                                </td>
+                                <td>
+                                    {$contract->getContractDays()} {_ "day"}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    {_ "Period"} {_ "time"} {_ "remaining"} {_ "az"} {_ "contract"}:
+                                </td>
+                                <td>
+                                    {$contract->getExpireDays()} {_ "day"}
+                                </td>
+                                <td>
+                                    {_ "contract"} {_ "Adjusted"} {_ "by"}:
+                                </td>
+                                <td colspan="3">
+                                    {$contractor->getFname()} {$contractor->getlname()}
+                                </td >
+                            </tr>
+                            {foreach from=$fields key=key value=field }
+                            {if $key % 3 == 0 }
+                            </tr><tr>
+                            {/if}
+                                <td>{$field.title}:</td>
+                                <td>{if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
+
+                                    {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                    {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                    {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                    {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                    {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+
+
+                                    {else}
+                                    {$field.value}{/if}</td>
+
+                            {/foreach}
+
+                            {if $key % 3 == 0 }
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            {/if}
+                            {if $key % 3 == 1 }
+                                <td></td>
+                                <td></td>
+                            {/if}
+
+                            {foreach from=$votesDoneForm key=key value=voteForm }
+                            <tr>
+                                <td colspan="6" style="padding-top: 60px;" class="text-center text-bold">
+                                    {_ "Poll"} {$voteForm.voteName}
+                                </td>
+                            </tr>
+                                <tr>
+                                    <td>
+                                        {_ "name"} {_ "form"}:
+                                    </td>
+                                    <td>
+                                        {$voteForm.voteName}
+                                    </td>
+                                    <td>
+                                        {_ "time"} {_ "Creation"} {_ "form"}:
+                                    </td>
+                                    <td>
+                                        {$voteForm.creatDate|jDate:"j F Y"}
+                                    </td>
+                                    <td>
+                                        {_ "time"} {_ "Complete"} {_ "form"}:
+                                    </td>
+                                    <td>
+                                        {if  $voteForm.fillOutDate > 0 }
+                                        {$voteForm.fillOutDate|jDate:"j F Y"}
+                                        {else}
+                                        {_ "NotCompleted"} !
+                                        {/if}
+                                    </td>
+                                </tr>
+
+                                {foreach from=$voteForm.fields key=key2 value=field }
+                                    {if $key % 3 == 0 }
+                                        </tr><tr>
+                                    {/if}
+                                        <td>{$field.title}:</td>
+                                        <td>{if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
+
+                                    {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                    {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                    {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                    {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                    {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+
+
+                                    {else}
+                                    {$field.value}{/if}</td>
+
+                                {/foreach}
+                                {if $key % 3 == 0 }
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                {/if}
+                                {if $key % 3 == 1 }
+                                <td></td>
+                                <td></td>
+                                {/if}
+                            {/foreach}
+                        </table>
+
+</body>
+<script>
+    window.onload = function(e) {
+        window.print();
+        setTimeout(function () {
+            window.close();
+        }, 10);
+    }
+</script>
+</html>

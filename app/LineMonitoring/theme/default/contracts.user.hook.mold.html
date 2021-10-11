@@ -1,0 +1,7 @@
+﻿{map userProfileMorePage}
+<li  class="nav-item">
+    <a class="nav-link {if isset($activeTab) and $activeTab =='contracts'}active{/if} " href="{if isset($activeTab) and $activeTab =='contracts'}#{else}{url 'admin'}contract/user/{$user->getUserId()}{/if}" >
+        <i class="fa fa-file-text-o"></i> قرارداد ها
+    </a>
+</li>
+{/map}

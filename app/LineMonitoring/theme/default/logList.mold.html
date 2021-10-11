@@ -1,0 +1,249 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  {if ! isset($isDownload) } data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers" {/if}>
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{if ! isset($isDownload) }جستجو{else}دانلود{/if}</h4>
+                    </div>
+                    <div     {if ! isset($isDownload) } class="collapse" id="searchUsers" {/if}>
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" {if ! isset($isDownload) } id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');" {else} method="post" {/if}>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام سنسور</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <select class="selectpicker selectpickerNotRefresh" name="groupId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                   <option value="" selected >همه</option>
+                                                   {foreach from=$access key=key value=access_item }
+                                                   <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                   {/foreach}
+                                               </select>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نوع کاشی</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <select class="selectpicker selectpickerNotRefresh" name="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                                                   <option value="" selected >همه</option>
+                                                   {foreach from=$tiles key=key value=access_item }
+                                                   <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                   {/foreach}
+                                               </select>
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.id}"  >{$unit.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">از تاریخ</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                                <input type="hidden" name="StartTime" class="form-control persianDatepicker-from-alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">الی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                                <input type="hidden" name="EndTime" class="form-control persianDatepicker-to-alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                    <option value="sensors.label|desc"  >نام سنسور | نزولی</option>
+                                                    <option value="sensors.label|asc" >نام سنسور | صعودی</option>
+                                                    <option value="data.phase|desc" >فاز | نزولی</option>
+                                                    <option value="data.phase|asc" >فاز | صعودی</option>
+                                                    <option value="units.label|desc" >واحد | نزولی</option>
+                                                    <option value="units.label|asc" >واحد | صعودی</option>
+                                                    <option value="data.Start_time|desc" selected >زمان | نزولی</option>
+                                                    <option value="data.Start_time|asc" >زمان | صعودی</option>
+                                                    <option value="data.AbsTime|desc" >مدت زمان فعالیت | نزولی</option>
+                                                    <option value="data.AbsTime|asc" >مدت زمان فعالیت | صعودی</option>
+                                                    <option value="tile_kind.label|desc" >نوع کاشی | نزولی</option>
+                                                    <option value="tile_kind.label|asc" >نوع کاشی | صعودی</option>
+                                                    <option value="data.tileDegree|desc" >درجه کاشی | نزولی</option>
+                                                    <option value="data.tileDegree|asc" >درجه کاشی | صعودی</option>
+                                                    <option value="data.Motor_Speed|desc" >سرعت موتور | نزولی</option>
+                                                    <option value="data.Motor_Speed|asc" >سرعت موتور | صعودی</option>
+                                                    <option value="data.counter|desc" >تعداد شمارش</option>
+                                                    <option value="data.counter|asc" >تعداد شمارش</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{if ! isset($isDownload) }{_ "search"}{else}دانلود{/if}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {if ! isset($isDownload) }
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-history fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لاگ</h4>
+                        <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport('tebleExport');">
+                            <i class="fa fa-file-excel-o"></i>
+                            دانلود اکسل
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">نام سنسور</th>
+                                    <th class="text-center">فاز</th>
+                                    <th class="text-center">واحد</th>
+                                    <th class="text-center">زمان</th>
+                                    <th class="text-center">مدت زمان فعالیت</th>
+                                    <th class="text-center">نوع کاشی</th>
+                                    <th class="text-center">درجه کاشی</th>
+                                    <th class="text-center">سرعت موتور</th>
+                                    <th class="text-center">تعداد شمارش</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$logs key=key value=log}
+                                <tr>
+                                    <td class="text-center">{$log.label}</td>
+                                    <td class="text-center">{$log.phase}</td>
+                                    <td class="text-center">{$log.unitName}</td>
+                                    <td class="text-center">{$log.Start_time|jDate:"j F Y - H&#58;i&#58;s"}</td>
+                                    <td class="text-center">{$log.AbsTime}</td>
+                                    <td class="text-center">{$log.label}</td>
+                                    <td class="text-center">{$log.tileDegree}</td>
+                                    <td class="text-center">{$log.Motor_Speed}</td>
+                                    <td class="text-center">{$log.counter}</td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="9">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {/if}
+</div>
+
+{map footerjs}
+<script>
+var urlc = '{url current}' ;
+var div = '{$loadDivID}' ;
+function fnExcelReport(tableId)
+{
+var tab_text="<meta http-equiv='content-type' content='application/vnd.ms-excel; charset=UTF-8'><table border='2px'><tr bgcolor='#2196f3'>";
+    var textRange; var j=0;
+    tab = document.getElementById(tableId); // id of table
+
+    for(j = 0 ; j < tab.rows.length ; j++)
+    {
+    tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+    //tab_text=tab_text+"</tr>";
+    }
+
+    tab_text=tab_text+"</table>";
+tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+tab_text= tab_text.replace(/<br>/g, "");//remove if u want links in your table
+tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel;charset=UTF-8,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+
+function search2(link ,searchInDiv ) {
+    searchIn = searchInDiv ;
+    searchLink = link ;
+    optionsSearch = $( searchIn+'Form' ).serializeArray();
+    jQuery.each( optionsSearch, function( i, field ) {
+        var  name = field.name ;
+        if ( name.includes("[]") ){
+            name = name.replace("[]", "");
+            if ( typeof options[name] == "undefined" ){
+                options[name] = [];
+            }
+            options[name].push(field.value);
+        } else {
+            options[field.name] = field.value;
+        }
+    });
+    load();
+    return false ;
+}
+ //window.setInterval(function(){search2(urlc ,div )},1000);
+</script>
+{/map}

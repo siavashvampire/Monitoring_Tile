@@ -1,0 +1,79 @@
+<div class="content mt-5  mb-5">
+    <div class="container-fluid mt-5 mb-5">
+        <div class="row mt-5">
+            <div class="col-md-8 ml-auto mr-auto">
+                <form id="LoginValidation" action="{url}access/register" method="post">
+                    <div class="card img-fluid">
+                        <div class="card-header card-header-info card-header-icon">
+                            <div class="card-icon">
+                                <i class="material-icons">group</i>
+                            </div>
+                        </div>
+                        <div class="card-body rtl text-right">
+                            <div class="col-md-12 col-sm-12">
+                                {foreach from=$alert key=key value=alert}
+                                <div class="alert alert-{$alert.type}  alert-with-icon"  data-notify="container">
+                                    {if isset($alert.icon)}
+                                    <i class="material-icons" data-notify="icon">{$alert.icon}</i>
+                                    {/if}
+                                    {if $alert.canClose}
+                                    <button type="button" class="close float-{if $float == 'right' }left{else}right{/if}" data-dismiss="alert" aria-label="Close">
+                                        <i class="material-icons">close</i>
+                                    </button>
+                                    {/if}
+                                    <span  class="text-{$text_align}">
+                                        {if isset($alert.title)}<b> {$alert.title} - </b> {/if}{$alert.description}</span>
+                                </div>
+                                {/foreach}
+                                {call alertHeader}
+                                {if $defaultField.firstNameStatus != 'invisible' and $defaultField.firstNameStatus != 'admin' }
+                                <div class="col-md-6 form-group">
+                                    <label for="firstName" class="bmd-label-floating">{_ "firstName"} {if $defaultField.firstNameStatus == 'required'}<span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" class="form-control" id="firstName" {if $defaultField.firstNameStatus == 'required'}required{/if} name="fname" value="{if isset($Mold.post.fname)}{$Mold.post.fname}{/if}">
+                                </div>
+                                {/if}
+                                {if $defaultField.lastNameStatus != 'invisible' and $defaultField.lastNameStatus != 'admin' }
+                                <div class="col-md-6 form-group">
+                                    <label for="lastName" class="bmd-label-floating">{_ "lastName"} {if $defaultField.lastNameStatus == 'required'}<span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" class="form-control" id="lastName" {if $defaultField.lastNameStatus == 'required'}required{/if} name="lname" value="{if isset($Mold.post.lname)}{$Mold.post.lname}{/if}">
+                                </div>
+                                {/if}
+                                {if $defaultField.emailNameStatus != 'invisible' and $defaultField.emailNameStatus != 'admin' }
+                                <div class="col-md-6 form-group">
+                                    <label for="email" class="bmd-label-floating">{_ "email"} {if $defaultField.emailNameStatus == 'required'}<span class="text-danger">*</span>{/if}</label>
+                                    <input type="email" class="form-control" id="email" {if $defaultField.emailNameStatus == 'required'}required{/if} name="email" value="{if isset($Mold.post.email)}{$Mold.post.email}{/if}">
+                                </div>
+                                {/if}
+                                {if $defaultField.phoneNameStatus != 'invisible' and $defaultField.phoneNameStatus != 'admin' }
+                                <div class="col-md-6 form-group">
+                                    <label for="phone" class="bmd-label-floating">{_ "phone"} {if $defaultField.phoneNameStatus == 'required'}<span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" class="form-control" id="phone" {if $defaultField.phoneNameStatus == 'required'}required{/if} name="phone" value="{if isset($Mold.post.phone)}{$Mold.post.phone}{/if}">
+                                </div>
+                                {/if}
+                                {if $defaultField.passwordStatus != 'invisible' and $defaultField.passwordStatus != 'admin' }
+                                <div class="col-md-6 form-group">
+                                    <label for="phone" class="bmd-label-floating">{_ "password"} {if $defaultField.passwordStatus == 'required'}<span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" class="form-control" id="password" {if $defaultField.passwordStatus == 'required'}required{/if} name="password">
+                                </div>
+                                {/if}
+                                {if $defaultField.rePasswordStatus != 'invisible' and $defaultField.rePasswordStatus != 'admin' }
+                                <div class="col-md-6 form-group">
+                                    <label for="phone" class="bmd-label-floating">{_ "rePassword"} {if $defaultField.rePasswordStatus == 'required'}<span class="text-danger">*</span>{/if}</label>
+                                    <input type="text" class="form-control" id="rePassword" {if $defaultField.phoneStatus == 'required'}required{/if} name="rePassword">
+                                </div>
+                                {/if}
+                                {set "fillOutFieldServiceFormCssClassAllDiv","col-md-6 form-group"}
+                                {set "fillOutFieldServiceFormCssClassLabelDiv","bmd-label-floating"}
+                                {set "fillOutFieldServiceFormCssClassInputDiv",""}
+                                {call fillOutFieldServiceForm}
+                                <button type="submit" class="btn btn-info col-md-12">{_ "register"}</button>
+                            </div>
+                        </div>
+                        <div class="card-footer ml-auto mr-auto">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

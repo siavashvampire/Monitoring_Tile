@@ -1,0 +1,209 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "searchIn"} {_ "users"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                   <div class="col-md-4">
+                                       <label class="col-md-3 col-form-label">{_ "firstName"}</label>
+                                       <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="fname" class="form-control">
+                                           </div>
+                                       </div>
+                                   </div>
+                                   <div class="col-md-4">
+                                       <label class="col-md-3 col-form-label">{_ "lastName"}</label>
+                                       <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="lname" class="form-control">
+                                           </div>
+                                       </div>
+                                   </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "email"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="email" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                   <div class="col-md-4">
+                                       <label class="col-md-3 col-form-label">{_ "phone"}</label>
+                                       <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="phone" class="form-control">
+                                           </div>
+                                       </div>
+                                   </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">تاریخ پایان قرارداد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" name="contractEnd" class="form-control  persianJustDatePicker pwt-datepicker-input-element">
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <div class="col-md-4">
+                                       <label class="col-md-3 col-form-label">{_ "permission"}</label>
+                                       <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <select class="selectpicker" onchange="getCustomFieldProfileEdit(this);" name="groupId" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                   <option value="" selected >{_ "all"}</option>
+                                                   {foreach from=$access key=key value=access_item }
+                                                   <option value="{$access_item.user_groupId}"  >{$access_item.name}</option>
+                                                   {/foreach}
+                                               </select>
+                                           </div>
+                                       </div>
+                                   </div>
+
+                                </div>
+                                    <div  class="customFieldTempDiv row">
+                                        {set "fillOutFieldServiceFormCssClassAllDiv","col-md-4"}
+                                        {set "fillOutFieldServiceFormCssClassLabelDiv","col-md-3 col-form-label"}
+                                        {set "fillOutFieldServiceFormCssClassInputDiv","col-md-9"}
+                                        {set "shouldNotUserRequired",true}
+                                        {call fillOutFieldServiceForm}
+                                    </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                    <option value="register_time|desc" selected >تاریخ ثبت نام | نزولی</option>
+                                                    <option value="register_time|asc" >تاریخ ثبت نام | صعودی</option>
+                                                    <option value="fname|desc" >نام | نزولی</option>
+                                                    <option value="fname|asc" >نام | صعودی</option>
+                                                    <option value="lname|desc" >نام خانوادگی | نزولی</option>
+                                                    <option value="lname|asc" >نام خانوادگی | صعودی</option>
+                                                    <option value="email|desc" >کد پرسنلی | نزولی</option>
+                                                    <option value="email|asc" >کد پرسنلی | صعودی</option>
+                                                    <option value="phone|desc" >شماره موبایل | نزولی</option>
+                                                    <option value="phone|asc" >شماره موبایل | صعودی</option>
+                                                    <option value="name|desc" >سطح دسترسی | نزولی</option>
+                                                    <option value="name|asc" >سطح دسترسی | صعودی</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mt-1 float-left">
+                                        <button class="btn btn-link float-left" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info float-left">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-users"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "users"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}">
+                                <thead>
+                                <tr>
+<!--                                    <th class="text-center"></th>-->
+                                    <th style="width: 12%">{_ "firstName"}</th>
+                                    <th style="width: 15%">{_ "lastName"}</th>
+                                    <th style="width: 15%">{_ "email"}</th>
+                                    <th style="width: 15%">{_ "phone"}</th>
+                                    <th style="width: 20%">{_ "permission"}</th>
+                                    <th style="width: 20%">{_ "registerDate"}</th>
+                                    <th style="width: 3%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$users key=key value=user}
+                                <tr>
+<!--                                    <td class="text-center">{$user.userId}</td>-->
+                                    <td>{$user.fname}</td>
+                                    <td>{$user.lname}</td>
+                                    <td>{$user.email}</td>
+                                    <td>{$user.phone}</td>
+                                    <td>{$user.name}</td>
+                                    <td>{$user.register_time|jDate:"j F, Y"}</td>
+                                    <td class="td-actions text-right">
+                                        <a class="btn btn-info btn-link" href="{url}users/profile/{$user.userId}" target=_blank>
+                                            <i class="material-icons">remove_red_eye</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="7">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var url = "{url 'admin'}users/lists/" ;
+</script>
+{map footerjs}
+<script>
+    function  getCustomFieldProfileEdit(elemnt) {
+        var id = $(elemnt).val();
+        $.ajax({
+            url: url+id,
+            type: 'get',
+            dataType: 'html',
+            success: function (html) {
+                if (html) {
+                    var result = $('<div />').append(html).find(".customFieldTempDiv").html();
+                    $(".customFieldTempDiv").html(result);
+                }
+            }
+        });
+    }
+</script>
+{/map}
+{map navBarButton}
+<a class="btn btn-info" href="{url}users/insert">
+                      <span class="btn-label">
+                        <i class="material-icons">person_add</i>
+                      </span>
+    {_ "add"} {_ "user"} {_ "new"}
+    <div class="ripple-container"></div>
+</a>
+<a class="btn btn-link " href="{url}users/insertForm">
+                      <span class="btn-label">
+                        <i class="fa fa fa-wpforms fa-2x"></i>
+                      </span>
+    {_ "eFormRegister"}
+    <div class="ripple-container"></div>
+</a>
+{/map}

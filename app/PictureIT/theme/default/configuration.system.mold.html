@@ -1,0 +1,15 @@
+{map settingFooter}
+
+{if $nameApp == 'PictureIT'}
+
+
+    <div class="col-md-12 mb-3">
+        <label class="col-md-4 col-form-label" for="field_DiagramRefreshTime"> مدت زمان به روزرسانی:<span class="text-danger">*</span> </label>
+        <div class="col-md-4">
+            <input  type="number" value = "{if isset($valueThisOne.DiagramRefreshTime)}{$valueThisOne.DiagramRefreshTime}{elseif isset($Mold.post.setting.DiagramRefreshTime)}{$Mold.post.setting.DiagramRefreshTime}{/if}" min="1" type="text" name="setting[DiagramRefreshTime]" required autocomplete="off" class="form-control">
+            <div class="small text-gray"></div>
+        </div>
+    </div>
+
+{/if}
+{/map}

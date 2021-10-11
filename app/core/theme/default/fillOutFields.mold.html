@@ -1,0 +1,112 @@
+{map fillOutFieldServiceForm}
+{if !isset($fillOutFieldServiceFormCssClassAllDiv) }
+    {set "fillOutFieldServiceFormCssClassAllDiv","col-md-12"}
+{/if}
+{if !isset($fillOutFieldServiceFormCssClassLabelDiv) }
+    {set "fillOutFieldServiceFormCssClassLabelDiv","col-md-2 col-form-label"}
+{/if}
+{if !isset($fillOutFieldServiceFormCssClassInputDiv) }
+    {set "fillOutFieldServiceFormCssClassInputDiv","col-md-10"}
+{/if}
+{if !isset($shouldNotUserRequired) }
+    {set "shouldNotUserRequired",false}
+{/if}
+<script>
+    var cityStateIranConfig = [];
+</script>
+{if is_array($fields)}
+{foreach from=$fields key=key value=field}
+{if $field.type == 'textarea'}
+<div class="{$fillOutFieldServiceFormCssClassAllDiv}">
+    <label class="{$fillOutFieldServiceFormCssClassLabelDiv}" for="field_{$field.fieldId}">{$field.title} {if $field.status == 'required' and ! $shouldNotUserRequired}<span class="text-danger">*</span>{/if}</label>
+    <div class="{$fillOutFieldServiceFormCssClassInputDiv}">
+        <div class="form-check">
+            <textarea rows="4" cols="50"  class="form-control" id="field_{$field.fieldId}" {if $field.status  == 'required' and ! $shouldNotUserRequired}required{/if} name="customField[{$field.fieldId}]" >{if isset($field.value)}{$field.value}{else}{if isset($Mold.post.customField.[$field.fieldId])}{$Mold.post.customField.[$field.fieldId]}{else}{$field.values}{/if}{/if}</textarea>
+        </div>
+        {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+    </div>
+</div>
+{elseif $field.type == 'checkbox'}
+<div class="{$fillOutFieldServiceFormCssClassAllDiv}">
+    <label class="{$fillOutFieldServiceFormCssClassLabelDiv}" style="display: none;" for="field_{$field.fieldId}">{$field.title} {if $field.status == 'required' and ! $shouldNotUserRequired}<span class="text-danger">*</span>{/if}</label>
+    <div class="{$fillOutFieldServiceFormCssClassInputDiv}">
+        {foreach from=$field.valuesDe key=keyValue value=value}
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="checkbox" value="{$value}" name="customField[{$field.fieldId}][]"  {if isset($field.value)}checked{else}{if isset($Mold.post.customField.[$field.fieldId])}{if $Mold.post.customField.[$field.fieldId] == $value}checked{/if}{/if}{/if} > {$value}
+                <span class="form-check-sign"><span class="check"></span></span>
+            </label>
+        </div>
+        {/foreach}
+        {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+    </div>
+</div>
+{elseif $field.type == 'radio'}
+<div class="{$fillOutFieldServiceFormCssClassAllDiv}">
+    <label class="{$fillOutFieldServiceFormCssClassLabelDiv}" for="field_{$field.fieldId}">{$field.title} {if $field.status == 'required' and ! $shouldNotUserRequired}<span class="text-danger">*</span>{/if}</label>
+    <div class="{$fillOutFieldServiceFormCssClassInputDiv}">
+        {foreach from=$field.valuesDe key=keyValue value=value}
+        <div class="form-check">
+            <label class="form-check-label">
+                <input class="form-check-input" type="radio" value="{$value}" name="customField[{$field.fieldId}]" {if isset($field.value)}checked{else}{if isset($Mold.post.customField.[$field.fieldId])}{if $Mold.post.customField.[$field.fieldId] == $value}checked{/if}{/if}{/if} > {$value}
+                <span class="circle"><span class="check"></span></span>
+            </label>
+        </div>
+        {/foreach}
+    </div>
+</div>
+{elseif $field.type == 'select'}
+<div class="{$fillOutFieldServiceFormCssClassAllDiv}">
+    <label class="{$fillOutFieldServiceFormCssClassLabelDiv}" for="field_{$field.fieldId}">{$field.title} {if $field.status == 'required' and ! $shouldNotUserRequired}<span class="text-danger">*</span>{/if}</label>
+    <div class="{$fillOutFieldServiceFormCssClassInputDiv}">
+        <select class="form-control" id="field_{$field.fieldId}" name="customField[{$field.fieldId}]" {if $field.status  == 'required' and ! $shouldNotUserRequired}required{/if} title="{_ 'please'} {_ 'selecting'}">
+        {foreach from=$field.valuesDe key=keyValue value=value}
+        <option value="{$value}" {if isset($Mold.post.customField.[$field.fieldId])}{if $Mold.post.customField.[$field.fieldId] == $value}selected{/if}{else}{if isset($field.value)}{if $field.value == $value }selected{/if}{/if} {/if} >{$value}</option>
+        {/foreach}
+        </select>
+        {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+    </div>
+</div>
+{elseif substr($field.type,0,10) == 'fieldCall_'}
+{setExplode name='tempExplodeHook' value=$field.type explode='_'}
+{math format="'fieldService_showToFillOut_'.x" set="tempValue" x=$tempExplodeHook.2 }
+{callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+{if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+{elseif $field.type == 'cityIran' or $field.type == 'stateIran' }
+{set "hasCityStateIran",true}
+<script>
+    var temp = {};
+    temp.fieldId = {$field.fieldId} ;
+    temp.fieldValue = '{$field.value}' ;
+    temp.type = '{$field.type}' ;
+    temp.MoldPostCustomField = '{$Mold.post.customField.[$field.fieldId]}' ;
+    cityStateIranConfig.push( temp);
+</script>
+<div class="{$fillOutFieldServiceFormCssClassAllDiv}">
+    <label class="{$fillOutFieldServiceFormCssClassLabelDiv}" for="field_{$field.fieldId}">{$field.title} {if $field.status == 'required' and ! $shouldNotUserRequired}<span class="text-danger">*</span>{/if}</label>
+    <div class="{$fillOutFieldServiceFormCssClassInputDiv}">
+        <select class="form-control cityStateIranFormFiled chosen-select chosen-rtl" id="field_{$field.fieldId}" name="customField[{$field.fieldId}]"  title="{_ 'please'} {_ 'selecting'}" {if $field.status  == 'required' and ! $shouldNotUserRequired}required{/if} >
+        </select>
+        {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+    </div>
+</div>
+{else}
+<div class="{$fillOutFieldServiceFormCssClassAllDiv}">
+    <label class="{$fillOutFieldServiceFormCssClassLabelDiv}" for="field_{$field.fieldId}">{$field.title} {if $field.status == 'required' and ! $shouldNotUserRequired}<span class="text-danger">*</span>{/if}</label>
+    <div class="{$fillOutFieldServiceFormCssClassInputDiv}">
+        <input type="{$field.type}"  id="field_{$field.fieldId}" {if $field.status  == 'required' and ! $shouldNotUserRequired}required{/if} name="customField[{$field.fieldId}]" value="{if isset($field.value)}{$field.value}{else}{if isset($Mold.post.customField.[$field.fieldId])}{$Mold.post.customField.[$field.fieldId]}{else}{$field.values}{/if}{/if}" class="form-control">
+        {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+    </div>
+</div>
+{/if}
+{/foreach}
+{/if}
+{if isset($hasCityStateIran) }
+<script>
+    var pleaseSelecting = "{_ 'please'} {_ 'selecting'}" ;
+    var all = "{_ 'all'}" ;
+    var pleaseSelectingState = "{_ 'please'} {_ 'StateIranField'} {_ 'selecting'}" ;
+</script>
+<script src="{url theme}/assets/js/cityStateIran.js"></script>
+{/if}
+{/map}

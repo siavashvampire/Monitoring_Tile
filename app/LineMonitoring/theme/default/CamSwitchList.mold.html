@@ -1,0 +1,360 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام کلید</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="name" autocomplete="off" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">شماره پورت کلید</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="number" min="0" type="text" name="Switch_plc_id" autocomplete="off" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">وضعیت</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="Active" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت کلید">
+                                                    <option value="" selected >همه</option>
+                                                    <option value="1" >فعال</option>
+                                                    <option value="0" >غیر فعال</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="unitId"
+                                                        data-live-search="true" data-size="7"
+                                                        data-style="btn btn-outline-info btn-round text-{$float}"
+                                                        title="واحد">
+                                                    <option value="" selected>همه</option>
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.id}">{$unit.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" name="phase" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                    <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرتب سازی">
+                                                    <option value="sensors.label|desc" >نام سنسور | نزولی</option>
+                                                    <option value="sensors.label|asc" >نام سنسور | صعودی</option>
+                                                    <option value="sensors.Sensor_plc_id|desc"  >شماره پورت | نزولی</option>
+                                                    <option value="sensors.Sensor_plc_id|asc" selected >شماره پورت | صعودی</option>
+                                                    <option value="sensors.tileDegree|desc" >درجه کاشی | نزولی</option>
+                                                    <option value="sensors.tileDegree|asc" >درجه کاشی | صعودی</option>
+                                                    <option value="sensors.OffTime|desc" >سقف خاموشی | نزولی</option>
+                                                    <option value="sensors.OffTime|asc" >سقف خاموشی | صعودی</option>
+                                                    <option value="sensors.phase|desc" >فاز | نزولی</option>
+                                                    <option value="sensors.phase|asc" >فاز | صعودی</option>
+                                                    <option value="units.label|desc" >واحد | نزولی</option>
+                                                    <option value="units.label|asc" >واحد | صعودی</option>
+                                                    <option value="sensors.Active|desc" selected >وضعیت | نزولی</option>
+                                                    <option value="sensors.Active|asc" >وضعیت | صعودی</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لیست کلیدها</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th style="width: 35%">نام کلید</th>
+                                    <th style="width: 10%">پورت</th>
+                                    <th style="width: 13%">زمان تاخیر</th>
+                                    <th style="width: 7%">فاز</th>
+                                    <th style="width: 15%">واحد</th>
+                                    <th style="width: 15%">وضعیت</th>
+                                    <th style="width: 5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$Switchs key=key value=Switch}
+                                <tr>
+                                    {if $Switch.Switch_plc_id == 0}
+                                    <td class="text-muted">{$Switch.label}</td>
+                                    <td class="text-muted">{$Switch.Switch_plc_id}</td>
+                                    <td class="text-muted">{$Switch.DelayTime}</td>
+                                    <td class="text-muted">{$Switch.phase}</td>
+                                    <td class="text-muted">{$Switch.unitName}</td>
+                                    <td class="text-muted">خارج از سیستم</td>
+
+                                    {elseif $Switch.Active == 0}
+                                    <td class="text-danger">{$Switch.label}</td>
+                                    <td class="text-danger">{$Switch.Switch_plc_id}</td>
+                                    <td class="text-danger">{$Switch.DelayTime}</td>
+                                    <td class="text-danger">{$Switch.phase}</td>
+                                    <td class="text-danger">{$Switch.unitName}</td>
+                                    <td class="text-danger">غیر فعال</td>
+                                    {elseif $Switch.Active == 1}
+                                    <td class="text-success">{$Switch.label}</td>
+                                    <td class="text-success">{$Switch.Switch_plc_id}</td>
+                                    <td class="text-success">{$Switch.DelayTime}</td>
+                                    <td class="text-success">{$Switch.phase}</td>
+                                    <td class="text-success">{$Switch.unitName}</td>
+                                    <td class="text-success">فعال</td>
+
+                                    {else}
+                                    <td class="text-muted">{$Switch.label}</td>
+                                    <td class="text-muted">{$Switch.Switch_plc_id}</td>
+                                    <td class="text-muted">{$Switch.DelayTime}</td>
+                                    <td class="text-muted">{$Switch.phase}</td>
+                                    <td class="text-muted">{$Switch.unitName}</td>
+                                    <td class="text-muted">خارج از سیستم</td>
+                                    {/if}
+                                    <td class="text-center"><button class="btn btn-link text-info" onclick="openSwitchEditor('{$Switch.id}','{$Switch.label}','{$Switch.Switch_plc_id}','{$Switch.DelayTime}','{$Switch.IgnoreSensor}','{$Switch.RenderCheck}','{$Switch.Active}','{$Switch.phase}','{$Switch.unit}')"><i class="fa fa-pencil"></i></button> </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    تغییرات با موفقیت انجام شد.
+                </div>
+                <form>
+                    <div class="col-md-12 form-group">
+                        <label for="label" class="col-form-label float-right">نام کلید:</label>
+                        <input type="text"   class="form-control" id="label"   value="">
+                        <input type="hidden" class="form-control" id="id"     value="">
+                        <input type="hidden" class="form-control" id="Switch_status" value="">
+                    </div>
+
+                    <div class="col-md-12 form-group">
+                        <label for="plcId" class="col-form-label float-right">شماره پورت کلید:</label>
+                        <input type="number" min="0" class="form-control" id="plcId" value="">
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label for="DelayTime" class="col-form-label float-right">زمان تاخیر</label>
+                        <input type="number" min="0" class="form-control" id="DelayTime" value="0">
+                    </div>
+
+                    <div class="col-md-6 form-group" id="IgnoreSensorDiv">
+                        <label for="IgnoreSensor" class="col-form-label float-right">واحدهای درگیر</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="IgnoreSensor" multiple name="IgnoreSensor[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحدهای درگیر">
+                            {foreach from=$units key=key value=unit }
+                            <option value="{$unit.id}">{$unit.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 form-group"  id="phaseDiv">
+                        <label for="phase" class="col-form-label float-right">فاز :</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="phase" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                            {foreach from=$phases key=key value=phase }
+                            <option value="{$phase.id}"  >{$phase.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6  form-group" id="unitDiv">
+                        <label for="unit" class="col-form-label float-right">واحد:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="unit" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
+                            {foreach from=$units key=key value=unit }
+                            <option value="{$unit.id}"  >{$unit.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 text-center mt-2">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input autocomplete="off"  class="form-check-input" id="RenderCheck" name="RenderCheck" type="checkbox" value="1">ثبت نشدن داده
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendSwitch();" >ارسال</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+<button class="btn btn-info"  onclick="openSwitchEditor('','','','','','','','','')">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    اضافه کردن کلید جدید
+</button>
+{/map}
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var phaseDiv = $('#phaseDiv').html();
+    var units = $('#unitDiv').html();
+    var IgnoreSensorDiv = $('#IgnoreSensorDiv').html();
+    function openSwitchEditor(id,name,plcId,DelayTime,IgnoreSensor,RenderCheck,status,phase,unit){
+        if ( id === "" ){
+            $("#exampleModalLabel").html("اضافه کردن کلید جدید");
+            $("#label").val("");
+            $("#id").val("");
+            $("#Switch_status").val("0");
+            $("#plcId").val("");
+            $("#DelayTime").val("");
+            $("#phase").val("");
+            $("#IgnoreSensor").val("");
+            $("#RenderCheck").val("0");
+            $("#RenderCheck").removeAttr('checked');
+            $("#phaseDiv").html(phaseDiv);
+            $("#unitDiv").html(units);
+            $("#IgnoreSensorDiv").html(IgnoreSensorDiv);
+            $('.selectPickerShouldRefresh').selectpicker('refresh');
+        } else {
+            $("#exampleModalLabel").html("ویرایش کلید");
+            $("#label").val(name);
+            $("#id").val(id);
+            $("#plcId").val(plcId);
+            $("#Switch_status").val(status);
+            $("#RenderCheck").val(RenderCheck);
+            if ( $('#RenderCheck').val() == 1 )
+                $("#RenderCheck").attr('checked', true);
+            $("#DelayTime").val(DelayTime);
+            $("#phaseDiv").html(phaseDiv).find('.selectpicker option')
+                .removeAttr('selected')
+                .filter('[value=\''+phase+'\']')
+                .attr('selected', true);
+            $("#unitDiv").html(units).find('.selectpicker option')
+                .removeAttr('selected')
+                .filter('[value=\''+unit+'\']')
+                .attr('selected', true);
+            var sa = IgnoreSensor.split(",");
+            $IgnoreSensorTemp = $("#IgnoreSensorDiv").html(IgnoreSensorDiv).find('.selectpicker option')
+            $IgnoreSensorTemp.removeAttr('selected')
+            for (i in sa) {
+                $IgnoreSensorTemp.filter('[value=\''+sa[i]+'\']').attr('selected', true);
+            }
+            $('.selectPickerShouldRefresh').selectpicker('refresh');
+        }
+        $('.bmd-label-static').removeClass('bmd-label-static');
+        $('#sendDataButton').show();
+        $('#dataSendAlert').hide();
+        $('#exampleModal').modal('show');
+    }
+    function sendSwitch(){
+        $.ajax({
+            url: urlc+'/update',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'id': $('#id').val(),
+                'label': $('#label').val(),
+                'plcId': $('#plcId').val(),
+                'Active': $('#Switch_status').val(),
+                'RenderCheck' : $('#RenderCheck').val(),
+                'DelayTime': $('#DelayTime').val(),
+                'IgnoreSensor': $('#IgnoreSensor').val(),
+                'Phase': $('#phase').val(),
+                'unitId': $('#unitId').val(),
+            } ,
+            success: function (result) {
+                if (result['status']) {
+                    $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(result['message']).show();
+                    $('#sendDataButton').hide();
+                    load();
+                    return false;
+                }
+                else {
+                    $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+                }
+            }
+        });
+    }
+</script>
+{/map}

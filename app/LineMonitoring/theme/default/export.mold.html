@@ -1,0 +1,122 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تنظیمات خروجی فایل گزارش</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">نام سنسور</label>
+                                    <div class="col-md-9">
+                                       <div class="form-group has-default">
+                                           <select class="selectpicker selectpickerNotRefresh" multiple name="groupId[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                               
+                                               {foreach from=$access key=key value=access_item }
+                                               <option value="{$access_item.Sensor_id}"  >{$access_item.label}</option>
+                                               {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">نوع کاشی</label>
+                                    <div class="col-md-9">
+                                       <div class="form-group has-default">
+                                           <select class="selectpicker selectpickerNotRefresh" multiple name="tile_kind[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                                              
+                                               {foreach from=$tiles key=key value=access_item }
+                                               <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                               {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">شیفت</label>
+                                    <div class="col-md-9">
+                                       <div class="form-group has-default">
+                                           <select class="selectpicker selectpickerNotRefresh" multiple name="shifts[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="شیفت">
+                                               
+                                               {foreach from=$shifts key=key value=access_item }
+                                               <option value="{$access_item.shift_id}"  >{$access_item.shift_name}</option>
+                                               {/foreach}
+                                           </select>
+                                       </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">از تاریخ</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
+                                            <input type="hidden" name="StartTime" class="form-control persianDatepicker-from-alt">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="col-md-3 col-form-label">تا تاریخ</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
+                                            <input type="hidden" name="EndTime"   class="form-control persianDatepicker-to-alt">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">نمایش فیلد های <span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                                <option value="DATE(data.Start_time)"  >تاریخ میلادی</option>
+                                                <option value="data.JStart_time"  >تاریخ شمسی</option>
+                                                <option value="TIME(data.Start_time)"  >ساعت</option>
+                                                <option value="SUM(data.counter)"  >مجموع تعداد</option>
+                                                <option value="GROUP_CONCAT(DISTINCT sensors.label SEPARATOR ' - ')"  >عنوان سنسور</option>
+                                                <option value="GROUP_CONCAT(DISTINCT tile_kind.label SEPARATOR ' - ')"  >عنوان کاشی</option>
+                                                <option value="GROUP_CONCAT(DISTINCT shift_work.shift_name SEPARATOR ' - ')"  >عنوان شیفت</option>
+                                                <option value="GROUP_CONCAT(DISTINCT data.Shift_group_id SEPARATOR ' - ')"  >کد گروهی شیفت</option>
+                                                <option value="GROUP_CONCAT(DISTINCT CONCAT(user.fname, ' ', user.lname , ' (#',user.userId,')' ) SEPARATOR ' - ')"  >نام سرشیفت</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">جدا سازی بر اساس <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="expert[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                                <option value="data.Shift_id"  >شیفت</option>
+                                                <option value="data.Shift_id , data.Shift_group_id"  >شیفت و جدا کننده روزانه شیفت</option>
+                                                <option value="data.Tile_Kind"  >نوع کاشی</option>
+                                                <option value="DATE(data.Start_time)"  >روز</option>
+                                                <option value="hour(data.Start_time)"  >ساعت</option>
+                                                <option value="data.Sensor_id"  >سنسور</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-categories">
+                    <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link" href="{url 'admin'}users/profile/{$user->getUserId()}" >
+                                <i class="material-icons">person</i> {_ "profile"}
+                            </a>
+                        </li>
+                        {call userProfileMorePage}
+                        <li  class="nav-item">
+                            <a class="nav-link" href="{url 'admin'}users/profile/{$user->getUserId()}/edit" >
+                                <i class="material-icons">edit</i> {_ "edit"}
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-file-text-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {_ "contracts"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">{_ "date"} {_ "start"}</th>
+                                    <th class="text-center">{_ "date"} {_ "end"}</th>
+                                    <th class="text-center">{_ "contract"} {_ "Respective"}</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$listGroups key=key value=contract}
+                                <tr>
+                                    <td class="text-center">{$contract.startDate|jDate:"j F Y"}</td>
+                                    <td class="text-center">{$contract.endDate|jDate:"j F Y"}</td>
+                                    <td class="text-center">{$contract.name}</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-link text-info mr-2" onclick="openContractView('{$contract.contractId}')"><i class="fa fa-eye"></i></button>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contractContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="voteContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+<button class="btn btn-info"  onclick="openContractView('')">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "add"} {_ "contract"} {_ "new"}
+</button>
+{/map}
+
+{map footerjs}
+<script>
+var urlc = '{url current}' ;
+var urlAdmin = "{url 'admin'}" ;
+var urlTheme= "{url themeBase}" ;
+var userId = "{$user->getUserId()}" ;
+var div = '{$loadDivID}' ;
+function openContractView(id){
+    ajaxRunUrlHtml(urlAdmin+'contractAction/'+userId+'/'+id, '#contractContent' , 'openModule');
+}
+function openContractVote(id){
+    ajaxRunUrlHtml(urlAdmin+'contractAction/showFillVote/'+id, '#voteContent' , 'openModule2');
+}
+function  openModule() {
+    $('#exampleModal').modal('show');
+    $('#exampleModal2').modal('hide');
+}
+function  openModule2() {
+    $('#exampleModal2').modal('show');
+}
+function printDiv(divName) {
+    var divToPrint=document.getElementById(divName);
+    var newWin=window.open('','Print-Window');
+    newWin.document.open();
+    newWin.document.write('<html><meta charset="utf-8" /><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>' +
+        '<link href="'+urlTheme+'assets/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css" rel="stylesheet">\n' +
+        '<link href="'+urlTheme+'assets/css/material-dashboard.minf066.css?v=2.1.0" rel="stylesheet" />' +
+        '<body onload="window.print()" class="rtl text-right">'+divToPrint.innerHTML+'</body></html>');
+    newWin.document.close();
+    setTimeout(function(){newWin.close();},10);
+}
+</script>
+{/map}

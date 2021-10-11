@@ -1,0 +1,20 @@
+{map settingFooter}
+{if $nameApp == 'contract'}
+{if isset($listGroups)}
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_evaluationAdmin"> {_ "TestManagerUserGroup"}<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" id="field_evaluationAdmin" name="setting[evaluationAdmin]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+            {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$listGroups key=keyValue value=valueOne}
+            <option value="{$valueOne.groupId}" {if isset($valueThisOne.evaluationAdmin)}{if $valueThisOne.evaluationAdmin == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.evaluationAdmin)}{if $Mold.post.setting.evaluationAdmin == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
+{/if}
+{/if}
+{/map}

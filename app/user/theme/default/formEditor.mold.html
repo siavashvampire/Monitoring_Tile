@@ -1,0 +1,147 @@
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-2 ml-auto mr-auto">
+                <div class="page-categories">
+                    <div class="card">
+                        <div class="card-header ">
+                            <h4 class="card-title  float-{$float}">{_ "permission"}</h4>
+                        </div>
+                        <div class="card-body ">
+                            <ul class="nav nav-pills nav-pills-info flex-column" role="tablist">
+                                <li class="nav-item">
+                                    {foreach from=$access key=key value=access_item }
+                                    <a class="nav-link {if $nowOnAccess == $access_item.user_groupId }active{/if}" href="{url 'admin'}users/insertForm/{$access_item.user_groupId}">
+                                        {$access_item.name}
+                                    </a>
+                                    {/foreach}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="page-categories">
+                    <div class="card">
+                        <div class="card-header card-header-info card-header-icon" >
+                            <div class="card-icon" >
+                                <i class="fa fa-wpforms fa-2x"></i>
+                            </div>
+                            <h4 class="card-title float-{$float} m-3">{_ "eFormRegister"}</h4>
+                        </div>
+                        <div class="card-body">
+                            <form action="{url 'admin'}users/insertForm/changeDefault" method="post" class="form-horizontal defaultAccess">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-6 col-form-label mt-2">{_ "permission"} {_ "default"}</label>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" data-style="select-with-transition" onchange="$('.defaultAccess').submit()" data-size="7" name="defaultAccessRegister">
+                                                    {foreach from=$access key=key value=access_item }
+                                                    <option value="{$access_item.user_groupId}" {if $accessDefault == $access_item.user_groupId }selected{/if}>
+                                                    {$access_item.name}
+                                                    </option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <form class="form-horizontal" method="post" action="{url current}">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label mt-2">{_ "firstName"}</label>
+                                        <div class="col-md-10">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" required name="firstNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'firstName'}">
+                                                    <option value="required" {if isset($post.firstNameStatus)}{if $post.firstNameStatus == 'required'}selected{/if}{elseif isset($field.firstNameStatus)}{if $field.firstNameStatus == 'required'}selected{/if}{else}selected{/if} > {_ "required"}</option>
+                                                    <option value="visible" {if isset($post.firstNameStatus)}{if $post.firstNameStatus == 'visible'}selected{/if}{else}{if isset($field.firstNameStatus)}{if $field.firstNameStatus == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                    <option value="invisible" {if isset($post.firstNameStatus)}{if $post.firstNameStatus == 'invisible'}selected{/if}{else}{if isset($field.firstNameStatus)}{if $field.firstNameStatus == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label mt-2">{_ "lastName"}</label>
+                                        <div class="col-md-10">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" name="lastNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'lastName'}">
+                                                    <option value="required" {if isset($post.lastNameStatus)}{if $post.lastNameStatus == 'required'}selected{/if}{elseif isset($field.lastNameStatus)}{if $field.lastNameStatus == 'required'}selected{/if}{else}selected{/if} > {_ "required"}</option>
+                                                    <option value="visible" {if isset($post.lastNameStatus)}{if $post.lastNameStatus == 'visible'}selected{/if}{else}{if isset($field.lastNameStatus)}{if $field.lastNameStatus == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                    <option value="invisible" {if isset($post.lastNameStatus)}{if $post.lastNameStatus == 'invisible'}selected{/if}{else}{if isset($field.lastNameStatus)}{if $field.lastNameStatus == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label mt-2">{_ "email"}</label>
+                                        <div class="col-md-10">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" name="emailNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'email'}">
+                                                    <option value="required" {if isset($post.emailNameStatus)}{if $post.emailNameStatus == 'required'}selected{/if}{else}{if isset($field.emailNameStatus)}{if $field.emailNameStatus == 'required'}selected{/if}{/if}{/if} > {_ "required"}</option>
+                                                    <option value="visible" {if isset($post.emailNameStatus)}{if $post.emailNameStatus == 'visible'}selected{/if}{elseif isset($field.emailNameStatus)}{if $field.emailNameStatus == 'visible'}selected{/if}{else}selected{/if}> {_ "optional"}</option>
+                                                    <option value="invisible" {if isset($post.emailNameStatus)}{if $post.emailNameStatus == 'invisible'}selected{/if}{else}{if isset($field.emailNameStatus)}{if $field.emailNameStatus == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label mt-2">{_ "phone"} {_ "number"}</label>
+                                        <div class="col-md-10">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" name="phoneNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'phone'} {_ 'number'}">
+                                                    <option value="required" {if isset($post.phoneNameStatus)}{if $post.phoneNameStatus == 'required'}selected{/if}{elseif isset($field.phoneNameStatus)}{if $field.phoneNameStatus == 'required'}selected{/if}{else}selected{/if} > {_ "required"}</option>
+                                                    <option value="visible" {if isset($post.phoneNameStatus)}{if $post.phoneNameStatus == 'visible'}selected{/if}{else}{if isset($field.phoneNameStatus)}{if $field.phoneNameStatus == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                    <option value="invisible" {if isset($post.phoneNameStatus)}{if $post.phoneNameStatus == 'invisible'}selected{/if}{else}{if isset($field.phoneNameStatus)}{if $field.phoneNameStatus == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label mt-2">{_ "password"}</label>
+                                        <div class="col-md-10">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" name="passwordStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'password'}">
+                                                    <option value="required" {if isset($post.passwordStatus)}{if $post.passwordStatus == 'required'}selected{/if}{elseif isset($field.passwordStatus)}{if $field.passwordStatus == 'required'}selected{/if}{else}selected{/if} > {_ "required"}</option>
+                                                    <option value="visible" {if isset($post.passwordStatus)}{if $post.passwordStatus == 'visible'}selected{/if}{else}{if isset($field.passwordStatus)}{if $field.passwordStatus == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                    <option value="invisible" {if isset($post.passwordStatus)}{if $post.passwordStatus == 'invisible'}selected{/if}{else}{if isset($field.passwordStatus)}{if $field.passwordStatus == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label mt-2">{_ "rePassword"}</label>
+                                        <div class="col-md-10">
+                                            <div class="form-group bmd-form-group">
+                                                <select class="selectpicker" name="rePasswordStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'rePassword'}">
+                                                    <option value="required" {if isset($post.rePasswordStatus)}{if $post.rePasswordStatus == 'required'}selected{/if}{elseif isset($field.rePasswordStatus)}{if $field.rePasswordStatus == 'required'}selected{/if}{else}selected{/if} > {_ "required"}</option>
+                                                    <option value="visible" {if isset($post.rePasswordStatus)}{if $post.rePasswordStatus == 'visible'}selected{/if}{else}{if isset($field.rePasswordStatus)}{if $field.rePasswordStatus == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                    <option value="invisible" {if isset($post.rePasswordStatus)}{if $post.rePasswordStatus == 'invisible'}selected{/if}{else}{if isset($field.rePasswordStatus)}{if $field.rePasswordStatus == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                {call moreFieldsService}
+                            </div>
+                            <div class="card-footer">
+                                <button class="btn btn-link" type="reset">{_ "refresh"}</button>
+                                <button type="submit" class="btn btn-fill btn-info">
+                                 <span class="btn-label">
+                                    <i class="material-icons">edit</i>
+                                 </span>
+                                    {_ "edit"} {_ "eFormRegister"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

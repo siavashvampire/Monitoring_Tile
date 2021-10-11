@@ -1,0 +1,249 @@
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12 ml-auto mr-auto">
+                <div class="page-categories">
+                    {if !isset($newUser) and  ! isset($myProfile) }
+                    <ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link  {if !isset($activeTab)}active{else}{if $activeTab =='dashboard'}active{/if}{/if}" data-toggle="tab" href="#link1" role="tablist">
+                                <i class="material-icons">person</i> {_ "profile"}
+                            </a>
+                        </li>
+                    {call userProfileMorePage}
+                        <li  class="nav-item">
+                            <a class="nav-link  {if isset($activeTab) and $activeTab =='edit'}active{/if}" data-toggle="tab" href="#link8" role="tablist">
+                                <i class="material-icons">edit</i> {_ "edit"}
+                            </a>
+                        </li>
+                    </ul>{/if}
+                    <div class="tab-content tab-space tab-subcategories">
+                        {if !isset($newUser) and  ! isset($myProfile) }
+                        <div class="tab-pane {if !isset($activeTab)}active{else}{if $activeTab =='dashboard'}active{/if}{/if}" id="link1">
+                            <div class="col-md-5">
+                                <div class="card">
+                                    <div class="card-header card-header-info card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="fa fa-user"></i>
+                                        </div>
+                                        <h4 class="card-title float-{$float} m-3">{_ "profile"} {_ "user"}</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <table class="table table-striped text-{$text_align}">
+                                            <tr>
+                                                <td>
+                                                    {_ "firstName"}:
+                                                </td>
+                                                <td>
+                                                    {$user->getFname()}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {_ "lastName"}:
+                                                </td>
+                                                <td>
+                                                    {$user->getlname()}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {_ "email"}:
+                                                </td>
+                                                <td>
+                                                    {$user->getEmail()}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    {_ "phone"}:
+                                                </td>
+                                                <td>
+                                                    {$user->getPhone()}
+                                                </td>
+                                            </tr>
+                                            {foreach from=$fields key=key value=field }
+                                                <tr>
+                                                    <td>{$field.title}:</td>
+                                                    <td>{if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
+                                                        
+                                                        {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                                            {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                                            {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                                            {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                                            {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
+                                                        
+                                                        
+                                                        {else}                                                        
+                                                        {$field.value}{/if}</td>
+                                                </tr>
+                                            {/foreach}
+                                            {call moreItemInUserProfile}
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            {call userMainProfileOtherDiv}
+                        </div>
+                        {/if}
+                        <div class="tab-pane {if isset($newUser)}active{/if} {if isset($myProfile)}active{/if}  {if isset($activeTab)}{if $activeTab =='edit'}active{/if}{/if}" id="link8">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header card-header-info card-header-icon" >
+                                            <div class="card-icon" >
+                                                <i class="material-icons">{if isset($newUser)}person_add{else}edit{/if}</i>
+                                            </div>
+                                            <h4 class="card-title float-{$float} m-3">{if isset($myProfile)}{_ "profile"}{else}{if isset($newUser)}{_ "add"}{else}{_ "edit"}{/if} {_ "user"}{/if}</h4>
+                                        </div>
+                                        <form class="form-horizontal" method="post" action="{url}users/{if isset($newUser)}insert{else}{if isset($myProfile)}myProfile{else}Edit_profile/{if isset($user)}{$user->getUserId()}{/if}{/if}{/if}">
+                                            <div class="card-body">
+                                                {call addUserFormUpDescription}
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-3 col-form-label">{_ "firstName"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input  autocomplete="off" type="text" id="fnameInput" value="{if isset($Mold.post.fname)}{$Mold.post.fname}{else}{if isset($user)}{$user->getFname()}{/if}{/if}" name="fname" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-3 col-form-label">{_ "lastName"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input  autocomplete="off" type="text" id="lnameInput" value="{if isset($Mold.post.lname)}{$Mold.post.lname}{else}{if isset($user)}{$user->getlname()}{/if}{/if}" name="lname" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-3 col-form-label">{_ "email"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input  autocomplete="off" type="text" id="emailInput" value="{if isset($Mold.post.email)}{$Mold.post.email}{else}{if isset($user)}{$user->getEmail()}{/if}{/if}" name="email" dir="ltr" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-3 col-form-label">{_ "phone"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input  autocomplete="off" type="text" id="phoneInput" value="{if isset($Mold.post.phone)}{$Mold.post.phone}{else}{if isset($user)}{$user->getPhone()}{/if}{/if}" name="phone" dir="ltr" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-3 col-form-label">{_ "password"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input  autocomplete="off" type="password" id="passwordInput" name="password" dir="ltr" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {if ! isset($myProfile)}
+                                                    <div class="col-md-6">
+                                                        <label class="col-md-3 col-form-label">{_ "permission"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <select  autocomplete="off" class="selectpicker" onchange="getCustomFieldProfileEdit(this);" name="groupId" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                                    {foreach from=$access key=key value=access_item }
+                                                                    <option value="{$access_item.user_groupId}" {if ( isset($Mold.post.groupId) and $Mold.post.groupId == $access_item.user_groupId ) or (  ! isset($Mold.post.groupId) and  $access_item.user_groupId == $accessDefault )  } selected {elseif isset($user) and $user->getUserGroupId() == $access_item.user_groupId}selected{/if} >{$access_item.name}</option>
+                                                                    {/foreach}
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {/if}
+                                                    <div class="customFieldTempDiv col-md-12">
+                                                        {set "fillOutFieldServiceFormCssClassAllDiv","col-md-6"}
+                                                        {set "fillOutFieldServiceFormCssClassLabelDiv","col-md-3 col-form-label"}
+                                                        {set "fillOutFieldServiceFormCssClassInputDiv","col-md-9"}
+                                                        {call fillOutFieldServiceForm}
+                                                        {call addUserProfileFormField}
+                                                    </div>
+                                                    {if ! isset($newUser) and ! isset($myProfile)}
+                                                    <div class="col-md-12">
+                                                        <label class="col-md-3 col-form-label">{_ "admin_note"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <textarea rows="3" autocomplete="off" name="admin_note" class="form-control">{if isset($Mold.post.admin_note)}{$Mold.post.admin_note}{elseif isset($user)}{$user->getAdminNote()}{/if}</textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center mt-2">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input autocomplete="off"  class="form-check-input" id="activeInput" name="block" type="checkbox"  {if isset($Mold.post.active)}{if $Mold.post.active == 'active' }checked{/if}{else}{if isset($user)}{if $user->getBlock()}checked{/if}{else}checked{/if}{/if} value="1"> {_ "block"}
+                                                                <span class="form-check-sign">
+                                                  <span class="check"></span>
+                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    {/if}
+                                                </div>
+                                            </div>
+                                            <div class="card-footer">
+                                                <button class="btn btn-link" type="reset">{_ "refresh"}</button>
+                                                <button type="submit" class="btn btn-fill btn-info">
+                                                 <span class="btn-label">
+                                                    <i class="material-icons">{if isset($newUser)}person_add{else}edit{/if}</i>
+                                                 </span>
+                                                    {if isset($newUser)}{_ "add"}{else}{_ "edit"}{/if} {_ "user"}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                {if false }
+                                <div class="col-sm col-md-4">
+                                    <div class="card">
+                                        <div class="card-header card-header-info card-header-icon " >
+                                            <div class="card-icon" >
+                                                <i class="material-icons">info</i>
+                                            </div>
+                                            <h4 class="card-title float-{$float} m-3">{_ "help"}</h4>
+                                        </div>
+                                        <div class="card-body text-{$text_align} text-secondary">
+                                            <strong class="text-info">{_ "name"} :</strong> {_ "service_add_helper_name"}<br>
+                                            {call addUserFormHelp}
+                                        </div>
+                                        <div class="card-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                                {/if}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var url = "{url 'admin'}users/insert/" ;
+</script>
+{map footerjs}
+<script>
+    function  getCustomFieldProfileEdit(elemnt) {
+        var id = $(elemnt).val();
+        $.ajax({
+            url: url+id,
+            type: 'get',
+            dataType: 'html',
+            success: function (html) {
+                if (html) {
+                    var result = $('<div />').append(html).find(".customFieldTempDiv").html();
+                    $(".customFieldTempDiv").html(result);
+                    $('.selectpicker').selectpicker('refresh');
+                }
+            }
+        });
+    }
+</script>
+{/map}

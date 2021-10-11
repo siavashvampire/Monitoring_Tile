@@ -1,0 +1,117 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="card ">
+            <div class="card-header   text-{$text_align}">
+                <h4 class="card-title">{_ "configuration"}
+                </h4>
+            </div>
+            <div class="card-body  text-{$text_align}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <ul class="nav nav-pills nav-pills-rose flex-column" role="tablist">
+                            {foreach from=$apps key=nameApp value=app}
+                            <li class="nav-item w-100">
+                                <a class="nav-link {if $appShow == $nameApp}active{/if}" data-toggle="tab" href="#{$nameApp}" role="tablist">
+                                    {$app.name}
+                                </a>
+                            </li>
+                            {/foreach}
+                        </ul>
+                    </div>
+                    <div class="col-md-9">
+                        <div class="tab-content">
+                            {foreach from=$apps key=nameApp value=app}
+                            <div class="tab-pane {if $appShow == $nameApp}active{/if}" id="{$nameApp}">
+                                <form action="{url}configuration/edit/{$nameApp}" method="post">
+                                {foreach from=$app.customField key=key value=field}
+                                    {if $field.type == 'textarea'}
+                                        {if isset($values.[$nameApp])}
+                                            {set value=$values.[$nameApp] name="valueThisOne"}
+                                        {/if}
+                                    <div class="col-md-12 mb-3">
+                                            <label class="col-md-4 col-form-label" for="field_{$key}">{$field.title} {if $field.status == 'required'}<span class="text-danger">*</span>{/if} </label>
+                                            <div class="col-md-8">
+                                                <div class="form-check">
+                                                    <textarea rows="4" cols="50"  class="form-control" id="field_{$key}" {if $field.status  == 'required'}required{/if} name="setting[{$key}]" >{if isset($valueThisOne.[$key])}{$valueThisOne.[$key]}{elseif isset($Mold.post.setting.[$key])}{$Mold.post.setting.[$key]}{elseif isset($field.value)}{$field.value}{/if}</textarea>
+                                                </div>
+                                                {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+                                            </div>
+                                        </div>
+                                    {elseif $field.type == 'checkbox'}
+                                        <div class="col-md-12 mb-3">
+                                            <label class="col-md-4 col-form-label" for="field_{$key}">{$field.title} {if $field.status == 'required'}<span class="text-danger">*</span>{/if} </label>
+                                            <div class="col-md-8">
+                                                {foreach from=$field.valueDe key=keyValue value=valueOne}
+                                                    {if isset($values.[$nameApp])}
+                                            {set value=$values.[$nameApp] name="valueThisOne"}
+                                        {/if}
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" value="{$valueOne}" name="setting[{$key}][]"  {if isset($valueThisOne.[$key])}{if $valueThisOne.[$key] == $valueOne }checked{/if}{elseif isset($Mold.post.setting.[$key]) }{if $Mold.post.setting.[$key] == $valueOne }checked{/if}{elseif isset($field.value) and $field.value == $valueOne }checked{/if} > {$valueOne}
+                                                        <span class="form-check-sign"><span class="check"></span></span>
+                                                    </label>
+                                                </div>
+                                                {/foreach}
+                                                {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+                                            </div>
+                                        </div>
+                                    {elseif $field.type == 'radio'}
+                                        <div class="col-md-12 mb-3">
+                                            <label class="col-md-4 col-form-label" for="field_{$key}">{$field.title} {if $field.status == 'required'}<span class="text-danger">*</span>{/if} </label>
+                                            <div class="col-md-8">
+                                                {foreach from=$field.valueDe key=keyValue value=valueOne}
+                                                    {if isset($values.[$nameApp])}
+                                            {set value=$values.[$nameApp] name="valueThisOne"}
+                                        {/if}
+                                                <div class="form-check">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="radio" value="{$valueOne}" name="setting[{$key}]" {if isset($valueThisOne.[$key])}{if $valueThisOne.[$key] == $valueOne }checked{/if}{elseif isset($Mold.post.setting.[$key])}{if $Mold.post.setting.[$key] == $valueOne }checked{/if}{elseif isset($field.value) and $field.value == $valueOne}checked{/if} > {$valueOne}
+                                                        <span class="circle"><span class="check"></span></span>
+                                                    </label>
+                                                </div>
+                                                {/foreach}
+                                                {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+                                            </div>
+                                        </div>
+                                    {elseif $field.type == 'select'}
+                                        <div class="col-md-12 mb-3">
+                                            <label class="col-md-4 col-form-label" for="field_{$key}">{$field.title} {if $field.status == 'required'}<span class="text-danger">*</span>{/if} </label>
+                                            <div class="col-md-8">
+                                                <select class="selectpicker" id="field_{$key}" name="setting[{$key}]" {if $field.status  == 'required'}required{/if} data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+                                                {foreach from=$field.valueDe key=keyValue value=valueOne}
+                                                    {if isset($values.[$nameApp])}
+                                            {set value=$values.[$nameApp] name="valueThisOne"}
+                                        {/if}
+                                                <option value="{$valueOne}" {if isset($valueThisOne.[$key])}{if $valueThisOne.[$key] == $valueOne }selected{/if}{elseif isset($Mold.post.setting.[$key])}{if $Mold.post.setting.[$key] == $valueOne }selected{/if}{elseif isset($field.value) and $field.value == $valueOne}selected{/if} >{$valueOne}</option>
+                                                {/foreach}
+                                                </select>
+                                                {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+                                            </div>
+                                        </div>
+                                    {else}
+                                        {if isset($values.[$nameApp])}
+                                            {set value=$values.[$nameApp] name="valueThisOne"}
+                                        {/if}
+                                    <div class="col-md-12 mb-3">
+                                            <label class="col-md-4 col-form-label" for="field_{$key}">{$field.title} {if $field.status == 'required'}<span class="text-danger">*</span>{/if} </label>
+                                            <div class="col-md-8">
+                                                <input type="{$field.type}"  id="field_{$key}" {if $field.status  == 'required'}required{/if} name="setting[{$key}]" value="{if isset($valueThisOne.[$key])}{$valueThisOne.[$key]}{elseif isset($Mold.post.setting.[$key])}{$Mold.post.setting.[$key]}{elseif isset($field.value)}{$field.value}{/if}" class="form-control">
+                                                {if $field.description != ''}<div class="small text-gray">{$field.description}</div>{/if}
+                                            </div>
+                                        </div>
+                                    {/if}
+                                {/foreach}
+                                    {call settingFooter}
+                                    <div class="float-left">
+                                        <button type="submit" class="btn btn-info">{_ "edit"}</button>
+                                    </div>
+                                </form>
+                            </div>
+                            {/foreach}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

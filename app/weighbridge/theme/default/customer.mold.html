@@ -1,0 +1,332 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "info"} {_ "customer"} {$model->getName()}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "customer"} <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="name" class="form-control text-center">{if isset($Mold.post.name)}{$Mold.post.name}{elseif isset($model)}{$model->getName()}{/if}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "idNumber"} </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  autocomplete="off" name="idNumber" class="form-control text-center" value="{if isset($Mold.post.getIdNumber)}{$Mold.post.getIdNumber}{elseif isset($model)}{$model->getIdNumber()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "Credit"} <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="Credit" class="form-control text-center">{if isset($Mold.post.Credit)}{$Mold.post.Credit}{elseif isset($model)}{$model->getCredit()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "address"} <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="address" class="form-control text-center">{if isset($Mold.post.address)}{$Mold.post.address}{elseif isset($model)}{$model->getAddress()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "telePhone"} <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="telePhone" class="form-control text-center">{if isset($Mold.post.telePhone)}{$Mold.post.telePhone}{elseif isset($model)}{$model->getPhone()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "phone"} <span class="text-danger">*</span> </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off" required name="phone" class="form-control text-center">{if isset($Mold.post.phone)}{$Mold.post.phone}{elseif isset($model)}{$model->getCellPhone()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "accountNumber"} </label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <textarea rows="1" autocomplete="off"  name="accountNumber" class="form-control text-center">{if isset($Mold.post.accountNumber)}{$Mold.post.accountNumber}{elseif isset($model)}{$model->getAccountNumber()}{/if}</textarea>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="col-md-6 form-group">
+                                    <label class="col-md-3 col-form-label">{_ "status"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh" name="status" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت">
+                                                {foreach from=$status key=key value=item }
+                                                <option value="{$item.id}"  {if isset($Mold.post.status)}{if $item.id == $Mold.post.status }selected{/if}{elseif isset($model) and  $item.id == $model->getActive() }selected{/if}>{$item.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "settlementType"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker"  name="settlementType" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع تسویه">
+                                                {foreach from=$settlementType key=key value=item }
+                                                <option value="{$item.id}"  {if isset($Mold.post.settlementType)}{if $item.id == $Mold.post.settlementType }selected{/if}{elseif isset($model) and  $item.id == $model->getSettlementType() }selected{/if}>{$item.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "Carrier"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker"  name="Carrier" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="حمل کننده">
+                                                {foreach from=$carrier key=key value=item }
+                                                <option value="{$item.id}"  {if isset($Mold.post.Carrier)}{if $item.id == $Mold.post.Carrier }selected{/if}{elseif isset($model) and  $item.id == $model->getCarrier() }selected{/if}>{$item.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-5 ">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input autocomplete="off"  class="form-check-input" name="creditCheck" type="checkbox" {if isset($Mold.post.creditCheck)}{if $Mold.post.creditCheck == 1 }checked{/if}{else}{if isset($model)}{if $model->getCreditCheck()}checked{/if}{else}checked{/if}{/if} value="1">{_ "creditCheck"}
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-5 ">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input autocomplete="off"  class="form-check-input" name="deleteOnExport" type="checkbox" {if isset($Mold.post.deleteOnExport)}{if $Mold.post.deleteOnExport == 1 }checked{/if}{else}{if isset($model)}{if $model->getDeleteOnExport()}checked{/if}{else}checked{/if}{/if} value="1">{_ "deleteOnExport"}
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-12">
+                                    <table class="table text-right">
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 30%">{_ "code"} {_ "Truck"}</th>
+                                            <th style="width: 38%">{_ "number"} {_ "Truck"}</th>
+                                            <th style="width: 20%">{_ "Weight"} {_ "Truck"}</th>
+                                            <th style="width: 12%" class = "text-center">
+                                                <button type="button" class="btn btn-info" onclick="$('#bodyTruck').append(oneRowTruck);refreshPageJs();">
+                                                    <i class="fa fa-plus-circle"></i>
+                                                    {_ "Truck"}                                       </button>
+                                            </th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="bodyTruck" >
+                                        <tr style="display:none" id="bodyTruckElemnt">
+                                            <td>
+                                                <select class="selectpicker" name="truckId[]" onchange="updateTruckDetail(this,this.value);" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "code"} {_ "Truck"}">
+                                                {foreach from=$Trucks key=key value=Truck }
+                                                <option value="{$Truck.id}" >{$Truck.id}</option>
+                                                {/foreach}
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-12" style="height: 50px;background-image: url('<?php echo \app::getCurrentBaseLink('theme/default/') ;  ?>assets/img/CarPlate.png');background-size: 100% 100%;background-repeat: no-repeat;">
+
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.mainNumberPlate}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.Number1Plate}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.CharNumberPlate}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.Number2Plate}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <label class="col-md-12 text-center">{_ "Weight"} {_ "Truck"}</label>
+                                                </div>
+                                            </td>
+                                            <td class="td-actions text-center">
+                                                <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                    <i class="fa fa-trash"></i>
+                                                    حذف                                        </button>
+                                            </td>
+                                        </tr>
+                                        {if isset($model)}
+                                        {foreach from=$model->getTruckId() key=key and value=truckId2}
+                                        <tr>
+                                            <td>
+                                                <select class="selectpicker" name="truckId[]" onchange="updateTruckDetail(this,this.value);" name="PartName" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "code"} {_ "Truck"}">
+                                                {foreach from=$Trucks key=key value=Truck }
+                                                <option value="{$Truck.id}" {if $truckId2 == $Truck.id } selected {/if}>{$Truck.id}</option>
+                                                {/foreach}
+                                                </select>
+                                            </td>
+                                            {foreach from=$Trucks key=key value=item }
+                                            {if $truckId2 == $item.id }
+                                            <td>
+                                                <div class="col-md-12" style="height: 50px;background-image: url('<?php echo \app::getCurrentBaseLink('theme/default/') ;  ?>assets/img/CarPlate.png');background-size: 100% 100%;background-repeat: no-repeat;">
+
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.mainNumberPlate}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.Number1Plate}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.CharNumberPlate}</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-3" style="transform: translate(20%, 0%);padding: unset !important;">
+                                                        <div class="form-group has-default" style="padding: unset !important;">
+                                                            <label class="col-md-12 text-center" style="padding: unset !important;margin: unset !important;font-size: 30px !important;">{$item.Number2Plate}</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="form-group has-default">
+                                                    <label class="col-md-12 text-center">{$item.Weight}</label>
+                                                </div>
+                                            </td>
+                                            {/if}
+                                            {/foreach}
+                                            <td class="td-actions text-center">
+                                                <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                    <i class="fa fa-trash"></i>
+                                                    حذف                                        </button>
+                                            </td>
+                                        </tr>
+                                        {/foreach}
+                                        {/if}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}customer/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "backTo"} {_ "list"} {_ "customer"}
+</a>
+{/map}
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var urlApi = '{url api}' ;
+    var oneRowTruck ='<tr>'+ $('#bodyTruckElemnt').html()+"</tr>";
+    $('#bodyTruckElemnt').remove();
+    function  refreshPageJs() {
+        $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+    }
+    function  updateTruckDetail(obj,id) {
+        let closestTr    = obj.closest('tr');
+        let WeightLabel  = closestTr.children[2].children[0].children[0];
+        let NumberLabel0 = closestTr.children[1].children[0].children[0].children[0].children[0];
+        let NumberLabel1 = closestTr.children[1].children[0].children[1].children[0].children[0];
+        let NumberLabel2 = closestTr.children[1].children[0].children[2].children[0].children[0];
+        let NumberLabel3 = closestTr.children[1].children[0].children[3].children[0].children[0];
+        $.ajax({
+            url: urlApi+'getWeighbridge/Trucks',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'id': id,
+            },
+            success: function (result) {
+                WeightLabel.innerHTML = result[0]['Weight'];
+                NumberLabel0.innerHTML = result[0]['mainNumberPlate'];
+                NumberLabel1.innerHTML = result[0]['Number1Plate'];
+                NumberLabel2.innerHTML = result[0]['CharNumberPlate'];
+                NumberLabel3.innerHTML = result[0]['Number2Plate'];
+            },
+            error: function (jqXHR, exception) {
+            },
+        });
+    }
+</script>
+{/map}

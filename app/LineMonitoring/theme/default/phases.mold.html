@@ -1,0 +1,782 @@
+﻿<style>
+    th.headerZero {
+        padding: 0!important;
+    }
+</style>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" method="post" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">از تاریخ</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" value="{if isset($startTimeSearch)}{$startTimeSearch}{/if}" name="startTimeSearch"  class="form-control persianJustDatePicker text-center" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">الی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" value="{if isset($endTimeSearch)}{$endTimeSearch}{/if}" name="endTimeSearch"  class="form-control persianJustDatePicker text-center" >
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="display: none">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" name="Which" value="1"  class="form-control persianJustDatePicker text-center" >
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div id="resultOfThisForm">
+                        <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                        </div>
+                        <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                            <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                        </div>
+                    </div>
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "configuration"} {_ "phase"} {$model->getlabel()}</h4>
+                        <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport2('tableExport');">
+                            <i class="fa fa-file-excel-o"></i>
+                            دانلود اکسل
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" id="newPhase" onsubmit="return ajaxThisForm('#newPhase' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label for="phase" class="col-form-label col-md-2 float-right text-center">{_ "name"}:</label>
+                                    <div class="col-md-5">
+                                        <div class="form-group has-default">
+                                            <input type="text" class="form-control text-center" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getlabel()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="display: none">
+                                    <input type="text" autocomplete="off" value="{if isset($startTimeSearch)}{$startTimeSearch}{/if}" name="startTimeSearch"  class="form-control persianJustDatePicker text-center" >
+                                </div>
+                                <div class="col-md-4" style="display: none">
+                                            <input type="text" autocomplete="off" value="{if isset($endTimeSearch)}{$endTimeSearch}{/if}" name="endTimeSearch"  class="form-control persianJustDatePicker text-center" >
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table text-right" id="tableExport">
+                                        <thead>
+                                            <tr style="border-bottom: 2.5px solid;border-top: 2.5px solid;border-color: darkcyan;">
+                                                <th style="width: 25%" class = "text-center">{_ "startTime"}</th>
+                                                <th style="width: 19%" class = "text-center">{_ "endTime"}</th>
+                                                <th style="width: 21%" class = "text-center">{_ "budget"}</th>
+                                                <th style="width: 23%" class = "text-center">{_ "alarm"} {_ "budgetDiff"}</th>
+                                                <th style="width: 12%" class = "text-center">
+                                                    <button type="button" class="btn btn-info" onclick="$('#bodyBudget').append(oneRowBudget);refreshPageJs();">
+                                                        <i class="fa fa-plus-circle"></i>{_ "budget"} {_ "new"}</button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodyBudget" style="border-collapse:collapse">
+                                            <tr  id="bodyBudgetElement">
+                                                <td colspan="4" style=" transform: translate(0%, 2%);">
+                                                    <table class="table text-right">
+                                                        <thead style="border: 2px solid;border-bottom-style : hidden!important;">
+                                                            <tr>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                                <th style="width: 5%;" class="headerZero"></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="bodyBudget2" style="border: 2px solid!important;">
+                                                            <tr id="budget" style="border: 1.5px solid!important;color:  darkcyan;">
+                                                                <td colspan="5">
+                                                                    <i class="fa fa-calendar col-form-label col-md-1 float-right" aria-hidden="true"></i>
+                                                                    <div class="col-md-11">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="text" autocomplete="off" required name="startTime[]" class="form-control persianJustDatePicker text-center" >
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="5">
+                                                                    <i class="fa fa-calendar col-form-label col-md-1 float-right" aria-hidden="true"></i>
+                                                                    <div class="col-md-11">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="text" autocomplete="off" required name="endTime[]"  class="form-control persianJustDatePicker text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="5">
+                                                                    <div class="form-group has-default">
+                                                                        <input type="number" onchange="OnChangeBudget(this)" min="0" value="5000" autocomplete="off" name="budget[]"  class="form-control text-center">
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="5">
+                                                                    <div class="form-group has-default">
+                                                                        <input type="number" min="0" value="500" autocomplete="off" name="budgetDiff[]"  class="form-control text-center">
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Degree" style="border-top: 1.5px solid!important;">
+                                                                <td colspan="4" id="1DegreeTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "firstDegree"}: ({_ "Number"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="number" min="0" value="4000" onchange="OnChangeNumber(this,1)" autocomplete="off" name="firstDegree[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="2DegreeTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "secondDegree"}: ({_ "Number"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="number" min="0" value="700" onchange="OnChangeNumber(this,2)" autocomplete="off" name="secondDegree[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="3DegreeTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "thirdDegree"}: ({_ "Number"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="number" min="0" value="100" onchange="OnChangeNumber(this,3)" autocomplete="off" name="thirdDegree[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="4DegreeTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fourthDegree"}: ({_ "Number"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="number" min="0" value="100" onchange="OnChangeNumber(this,4)" autocomplete="off" name="fourthDegree[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="5DegreeTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fifthDegree"}: ({_ "Number"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input type="number" min="0" value="100" onchange="OnChangeNumber(this,5)" autocomplete="off" name="fifthDegree[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="Percents" style="border-top: 1.5px solid!important;">
+                                                                <td colspan="4" id="1DegreePercentTD">
+                                                                    <div class="col-form-label col-md-4">
+                                                                        <label for="phase" class="float-right text-center">{_ "firstDegree"}: ({_ "Percent"})</label>
+                                                                    </div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input id="1DegreePercentInput" type="number" min="0" max="100" onchange="OnChangePercent(this,1)" value="80" step=".01" autocomplete="off" name="firstDegreePer[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="2DegreePercentTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "secondDegree"}: ({_ "Percent"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input id="2DegreePercentInput" type="number" min="0" max="100" value="14" onchange="OnChangePercent(this,2)" step=".01" autocomplete="off" name="secondDegreePer[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="3DegreePercentTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "thirdDegree"}: ({_ "Percent"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input id="3DegreePercentInput" type="number" min="0" max="100" value="2" onchange="OnChangePercent(this,3)" step=".01" autocomplete="off" name="thirdDegreePer[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="4DegreePercentTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fourthDegree"}: ({_ "Percent"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input id="4DegreePercentInput" type="number" min="0" max="100" onchange="OnChangePercent(this,4)" value="2" step=".01" autocomplete="off" name="fourthDegreePer[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                                <td colspan="4" id="5DegreePercentTD">
+                                                                    <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fifthDegree"}: ({_ "Percent"})</label>
+                                                                    <div class="col-md-8">
+                                                                        <div class="form-group has-default">
+                                                                            <input id="5DegreePercentInput" type="number" min="0" max="100" onchange="OnChangePercent(this,5)" value="2" step=".01" autocomplete="off" name="fifthDegreePer[]" class="form-control text-center">
+                                                                        </div>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                                <td class="td-actions">
+                                                    <button type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i onclick="OpenDegree(this)" class="fa fa-eye-slash"></i></button>
+                                                    <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                        <i class="fa fa-trash"></i>
+                                                        حذف                                        </button>
+                                                </td>
+                                            </tr>
+                                            {if isset($Mold.post.budget)}
+                                                {foreach from=$Mold.post.budget key=key and value=Budget}
+                                                    <tr>
+                                                        <td colspan="4">
+                                                            <table class="table text-right">
+                                                                <thead style="border-style : hidden!important">
+                                                                    <tr>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                        <th style="width: 5%;"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="bodyBudget2">
+                                                                    <tr>
+                                                                        <td colspan="5">
+                                                                            <i class="fa fa-calendar col-form-label col-md-1 float-right" aria-hidden="true"></i>
+                                                                            <div class="col-md-11">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="text" autocomplete="off" required name="startTime[]" value="{$Mold.post.startTime.[$key]}" class="form-control persianJustDatePicker" >
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="5">
+                                                                            <i class="fa fa-calendar col-form-label col-md-1 float-right" aria-hidden="true"></i>
+                                                                            <div class="col-md-11">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="text" autocomplete="off" required name="endTime[]" value="{$Mold.post.endTime.[$key]}"  class="form-control persianJustDatePicker">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="5">
+                                                                            <div class="form-group has-default">
+                                                                                <input type="number" min="0" value="5000" autocomplete="off" name="budget[]" value="{$Mold.post.budget.[$key]}" class="form-control">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="5">
+                                                                            <div class="form-group has-default">
+                                                                                <input type="number" min="0" value="500" autocomplete="off" name="budgetDiff[]" value="{$Mold.post.budgetDiff.[$key]}"class="form-control">
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "firstDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$Mold.post.firstDegree.[$key]}" autocomplete="off" name="firstDegree[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "secondDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$Mold.post.secondDegree.[$key]}" autocomplete="off" name="secondDegree[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "thirdDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$Mold.post.thirdDegree.[$key]}" autocomplete="off" name="thirdDegree[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fourthDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$Mold.post.fourthDegree.[$key]}" autocomplete="off" name="fourthDegree[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fifthDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$Mold.post.fifthDegree.[$key]}" autocomplete="off" name="fifthDegree[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td colspan="4">
+                                                                            <div class="col-form-label col-md-4">
+                                                                                <label for="phase" class="float-right text-center">{_ "firstDegree"}: ({_ "Percent"})</label>
+                                                                            </div>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" max="100" value="{$Mold.post.firstDegreePer.[$key]}" autocomplete="off" name="firstDegreePer[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "secondDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" max="100" value="{$Mold.post.secondDegreePer.[$key]}" autocomplete="off" name="secondDegreePer[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "thirdDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" max="100" value="{$Mold.post.thirdDegreePer.[$key]}" autocomplete="off" name="thirdDegreePer[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fourthDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" max="100" value="{$Mold.post.fourthDegreePer.[$key]}" autocomplete="off" name="fourthDegreePer[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fifthDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" max="100" value="{$Mold.post.fifthDegreePer.[$key]}" autocomplete="off" name="fifthDegreePer[]" class="form-control">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td style=" transform: translate(-25%, 0%);" class="td-actions">
+                                                            <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                                <i class="fa fa-trash"></i>
+                                                                حذف                                        </button>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            {elseif isset($Budgets) }
+                                                {foreach from=$Budgets key=key and value=budget}
+                                                    <tr>
+                                                        <td id="DegreeMainTD" colspan="4" style=" transform: translate(0%, 2%);">
+                                                            <table class="table text-right" style="margin: unset!important;">
+                                                                <thead style="border: 2px solid;border-bottom-style : hidden!important;">
+                                                                    <tr>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                        <th style="width: 5%;" class="headerZero"></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="bodyBudget2" style="border: 2px solid!important;">
+                                                                    <tr id="budget" style="border: 1.5px solid!important;color:  darkcyan;">
+                                                                        <td colspan="5">
+                                                                            <i class="fa fa-calendar col-form-label col-md-1 float-right" aria-hidden="true"></i>
+                                                                            <div class="col-md-11">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="text" autocomplete="off" required name="startTime[]" value="{$budget.JStartTime}" class="form-control persianJustDatePicker text-center" >
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="5">
+                                                                            <i class="fa fa-calendar col-form-label col-md-1 float-right" aria-hidden="true"></i>
+                                                                            <div class="col-md-11">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="text" autocomplete="off" required name="endTime[]" value="{$budget.JEndTime}"  class="form-control persianJustDatePicker text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="5">
+                                                                            <div class="form-group has-default">
+                                                                                <input type="number" min="0" onchange="OnChangeBudget(this)"  autocomplete="off" name="budget[]" value="{$budget.budget}" class="form-control text-center">
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="5">
+                                                                            <div class="form-group has-default">
+                                                                                <input type="number" min="0"  autocomplete="off" name="budgetDiff[]" value="{$budget.budgetDiff}" class="form-control text-center">
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr id="Degree" style="border-top: 1.5px solid!important;display: none;">
+                                                                        <td colspan="4" id="1DegreeTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "firstDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$budget.firstDegree}" onchange="OnChangeNumber(this,1)" autocomplete="off" name="firstDegree[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="2DegreeTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "secondDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$budget.secondDegree}" onchange="OnChangeNumber(this,2)" autocomplete="off" name="secondDegree[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="3DegreeTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "thirdDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$budget.thirdDegree}" onchange="OnChangeNumber(this,3)" autocomplete="off" name="thirdDegree[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="4DegreeTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fourthDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$budget.fourthDegree}" onchange="OnChangeNumber(this,4)" autocomplete="off" name="fourthDegree[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="5DegreeTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fifthDegree"}: ({_ "Number"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input type="number" min="0" value="{$budget.fifthDegree}" onchange="OnChangeNumber(this,5)" autocomplete="off" name="fifthDegree[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr id="Percents" style="border-top: 1.5px solid!important;display: none;">
+                                                                        <td colspan="4" id="1DegreePercentTD">
+                                                                            <div class="col-form-label col-md-4">
+                                                                                <label for="phase" class="float-right text-center">{_ "firstDegree"}: ({_ "Percent"})</label>
+                                                                            </div>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input id="1DegreePercentInput" type="number"  min="0" max="100" step=".01" onchange="OnChangePercent(this,1)" value="{$budget.firstDegreePer}" autocomplete="off" name="firstDegreePer[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="2DegreePercentTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "secondDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input id="2DegreePercentInput" type="number" min="0" max="100" step=".01" onchange="OnChangePercent(this,2)" value="{$budget.secondDegreePer}" autocomplete="off" name="secondDegreePer[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="3DegreePercentTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "thirdDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input id="3DegreePercentInput" type="number" min="0" max="100" step=".01" onchange="OnChangePercent(this,3)" value="{$budget.thirdDegreePer}" autocomplete="off" name="thirdDegreePer[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="4DegreePercentTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fourthDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input id="4DegreePercentInput" type="number" min="0" max="100" step=".01" onchange="OnChangePercent(this,4)" value="{$budget.fourthDegreePer}" autocomplete="off" name="fourthDegreePer[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                        <td colspan="4" id="5DegreePercentTD">
+                                                                            <label for="phase" class="col-form-label col-md-4 float-right text-center">{_ "fifthDegree"}: ({_ "Percent"})</label>
+                                                                            <div class="col-md-8">
+                                                                                <div class="form-group has-default">
+                                                                                    <input id="5DegreePercentInput" type="number" min="0" max="100" step=".01" onchange="OnChangePercent(this,5)" value="{$budget.fifthDegreePer}" autocomplete="off" name="fifthDegreePer[]" class="form-control text-center">
+                                                                                </div>
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td class="td-actions">
+                                                            <button type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" onclick="OpenDegree(this)"></i></button>
+                                                            <button type="button" class="btn btn-danger p-2 ml-3 align-center" onclick="$(this).parent().parent().remove();">
+                                                                <i class="fa fa-trash"></i>
+                                                                حذف                                        </button>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{map footerjs}
+<script>
+    let urlc = '{url current}' ;
+    let oneRowBudget ='<tr>'+ $('#bodyBudgetElement').html() + "</tr>";
+    $('#bodyBudgetElement').remove();
+    function  refreshPageJs() {
+    $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+    $(".persianJustDatePicker").persianDatepicker({
+        persianDigit: false ,
+        initialValue: false,
+        minDate : null,
+        format: 'YYYY/MM/DD',
+        timePicker: {
+            enabled: false,
+            meridiem: {
+                enabled: false
+            },
+            second : {
+                enabled: false
+            },
+            minute : {
+                enabled: false
+            }
+        },
+        autoClose: true,
+    });
+    }
+    function OnChangePercent(obj,degree,value=null) {
+        var closestTr = obj.closest('tbody');
+        var childs = closestTr.childNodes;
+        var TDID = degree + "DegreeTD";
+        for (var i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == Node.ELEMENT_NODE) {
+                if(childs[i].id == "Degree") {
+                    DegreeTR = childs[i];
+                }
+                if(childs[i].id == "budget") {
+                    budgetTR = childs[i];
+                }
+            }
+        }
+        All = budgetTR.children[2].children[0].children[0].value
+        childs = DegreeTR.children;
+        for (var i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == Node.ELEMENT_NODE) {
+                if(childs[i].id == TDID) {
+                    DegreeTD = childs[i];
+                }
+            }
+        }
+        Input = DegreeTD.children[1].children[0].children[0]
+        if (value==null)
+            value = obj.value
+        Input.value = Math.round(value*All/100);
+    }
+    function OnChangeNumber(obj,degree,value=null) {
+        var closestTr = obj.closest('tbody');
+        var childs = closestTr.childNodes;
+        var TDID = degree + "DegreePercentTD";
+        for (var i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == Node.ELEMENT_NODE) {
+                if(childs[i].id == "Percents") {
+                    PercentsTR = childs[i];
+                }
+                if(childs[i].id == "budget") {
+                    budgetTR = childs[i];
+                }
+            }
+        }
+        All = budgetTR.children[2].children[0].children[0].value
+        childs = PercentsTR.children;
+        for (var i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == Node.ELEMENT_NODE) {
+                if(childs[i].id == TDID) {
+                    DegreePercentTD = childs[i];
+                }
+            }
+        }
+        if (value==null)
+            value = obj.value
+        Input = DegreePercentTD.children[1].children[0].children[0]
+        Input.value = Math.round(value/All *10000)/100;
+    }
+    function OnChangeBudget(obj) {
+        let closestTr = obj.closest('tbody');
+        let childs = closestTr.childNodes;
+        for (let i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == Node.ELEMENT_NODE) {
+                if(childs[i].id == "Percents") {
+                    PercentsTR = childs[i];
+                }
+            }
+        }
+
+        childs = PercentsTR.children;
+        for (let i = 0; i < childs.length; i++) {
+            if (childs[i].nodeType == Node.ELEMENT_NODE) {
+                if(childs[i].id == "1DegreePercentTD") {
+                    DegreePercentTD = childs[i];
+                    Input = DegreePercentTD.children[1].children[0].children[0];
+                    OnChangePercent(obj,1,Input.value);
+                }
+                if(childs[i].id == "2DegreePercentTD") {
+                    DegreePercentTD = childs[i];
+                    Input = DegreePercentTD.children[1].children[0].children[0];
+                    OnChangePercent(obj,2,Input.value);
+                }
+                if(childs[i].id == "3DegreePercentTD") {
+                    DegreePercentTD = childs[i];
+                    Input = DegreePercentTD.children[1].children[0].children[0];
+                    OnChangePercent(obj,3,Input.value);
+                }
+                if(childs[i].id == "4DegreePercentTD") {
+                    DegreePercentTD = childs[i];
+                    Input = DegreePercentTD.children[1].children[0].children[0];
+                    OnChangePercent(obj,4,Input.value);
+                }
+                if(childs[i].id == "5DegreePercentTD") {
+                    DegreePercentTD = childs[i];
+                    Input = DegreePercentTD.children[1].children[0].children[0];
+                    OnChangePercent(obj,5,Input.value);
+                }
+            }
+        }
+    }
+    function OpenDegree(obj) {
+        let closestTr = obj.closest('tr');
+        let DegreeTR = closestTr.children[0].children[0].children[1].children[1];
+        let PercentsTR = closestTr.children[0].children[0].children[1].children[2];
+        if (DegreeTR.style.display == ""){
+            obj.classList.remove('fa-eye-slash');
+            obj.classList.add('fa-eye');
+            DegreeTR.style.display = "none";
+            PercentsTR.style.display = "none";
+        }
+        else{
+            obj.classList.remove('fa-eye');
+            obj.classList.add('fa-eye-slash');
+            DegreeTR.style.display = "";
+            PercentsTR.style.display = "";
+        }
+    }
+    function fnExcelReport(tableId){
+        var tab_text="<table border='2px'><tr bgcolor='#2196f3'>";
+        var textRange; var j=0;
+        tab = document.getElementById(tableId); // id of table
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<br>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel;charset=UTF-8,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+    $(document).ready(function () {
+        refreshPageJs();
+    });
+
+</script>
+{/map}
+
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}phases/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    {_ "backTo"} {_ "list"} {_ "phases"}
+</a>
+{/map}

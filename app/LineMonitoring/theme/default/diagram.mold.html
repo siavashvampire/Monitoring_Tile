@@ -1,0 +1,208 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="containerOfMapping">
+                    <img id="mapImage" src="{$diagram->getPictureName()}" style="width:100%;">
+                    {foreach from=$diagram->getDiagram() key=key value=diagramSensor }
+                    <div id="sensor_{$key}" onclick="getDataOfSensor({$key})" class="mapItems" style="top: {$diagramSensor.top}%;left: {$diagramSensor.left}%;width: {$diagramSensor.width}%;height: {$diagramSensor.height}%;">
+                        loading...
+                    </div>
+                    {/foreach}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{map navbarPageExtraTitle}
+    <span id="jTime"></span>
+{/map}
+{map adminHeaderNavbar}
+<div class="row d-none " style="margin-top:-50px;">
+    <div class="col-md-4 text-center">
+        نقشه:
+        <select class="selectpicker selectpickerNotRefresh" id="diagram" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="دیاگرام" onchange="updateDiagram();">
+            {foreach from=$diagrams key=key value=diagramList }
+            <option value="{$diagramList.diagramId}" {if $diagramList.diagramId == $diagram->getDiagramId() } selected{/if}  >{$diagramList.name}</option>
+            {/foreach}
+        </select>
+    </div>
+    <div class="col-md-4 text-center">
+        فواصل بروزرسانی:
+        <select class="selectpicker" id="updateTime" data-size="8" data-style="btn btn-outline-info btn-round text-{$float}" title="زمان" onchange="updateTime();">
+            <option value="30">30 ثانیه</option>
+            <option value="{$RefreshTime}" selected>{$RefreshTime}</option>
+            <option value="60">یک دقیقه</option>
+            <option value="120" >دو دقیقه</option>
+            <option value="300">پنج دقیقه</option>
+            <option value="600">ده دقیقه</option>
+            <option value="900">ربع ساعت</option>
+            <option value="1800">نیم ساعت</option>
+            <option value="3600">یک ساعت</option>
+        </select>
+    </div>
+    <div class="col-md-4 text-center">
+        <a href="{url admin}sensorlog/counter/" class="btn btn-info">
+                      <span class="btn-label">
+                        <i class="fa fa-low-vision"></i>
+                      </span>
+            برگشت به منو اصلی
+        </a>
+    </div>
+</div>
+{/map}
+{map navBarButton}
+    <a href="{url admin}sensorlog/counter/" class="btn btn-info">
+                      <span class="btn-label">
+                        <i class="fa fa-low-vision"></i>
+                      </span>
+            برگشت به منو اصلی
+        </a>
+{/map}
+{map footerjs}
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="">
+                <div class="table-responsive">
+                    <table class="table text-{$text_align}" id="tebleExport">
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer mb-5">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .containerOfMapping {
+        position: relative;
+        text-align: center;
+        color: rgba(0, 80, 80, 1);
+        margin-top: -60px;
+        font-weight: bold;
+    }
+    .mapItems {
+        position: absolute;
+        overflow: hidden;
+        background-color: rgba(100, 255, 220, 0.35);
+        border-color: rgba(100, 210, 120, 0.85);
+        border-style: outset;
+        border-radius: 7px;
+        padding: 5px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .OffSensor{
+        background-color: rgba(244, 5, 34, 0.5);
+        border-color: rgba(244, 5, 34, 0.85);
+    }
+</style>
+<script>
+        let urlAdmin = '{url admin}' ;
+        let urlApi = '{url api}' ;
+        let diagramId = {$diagram->getDiagramId()} ;
+        let sensors = '{$diagram->getSensors()|implode:'-'}' ;
+        let diagramRefresh = null;
+        let intervalId = null;
+        $(document).ready(function() {
+            diagramRefresh = getCookie('diagramRefresh_'+diagramId);
+            if (diagramRefresh === null) {
+                diagramRefresh = {$RefreshTime};
+            } else {
+                $('#updateTime option[value=' + diagramRefresh + ']').attr('selected', 'selected');
+                $('.selectpicker').selectpicker('refresh');
+            }
+            $('.navbar-minimize').hide();
+            $('.sidebar').hide();
+            $('.navbar-toggler').hide();
+            $('.main-panel').css('width' , '100%');
+            updateDiagramData();
+        });
+
+        function updateDiagram() {
+            var diagramId = $( "#diagram option:selected" );
+            window.location.href = urlAdmin + 'diagram/s/' + diagramId.val() + '/' + diagramId.text();
+        }
+        function updateTime(){
+            diagramRefresh = $( "#updateTime option:selected" ).val() ;
+            setCookie('diagramRefresh_'+diagramId , diagramRefresh , 7 );
+            updateDiagramData();
+        }
+        function  updateDiagramData() {
+            clearInterval(intervalId);
+            getData();
+            intervalId = window.setInterval(function(){
+                getData();
+            }, diagramRefresh * 1000 );
+        }
+
+        function getData() {
+            $.ajax({
+                url: urlApi+'diagram/'+diagramId+'/'+sensors,
+                type: 'post',
+                dataType: 'json',
+                success: function (result) {
+                    for (var index = 0; index < result['data'].length; ++index) {
+                        if ($('#sensor_'+ result['data'][index].id ).length > 0 ) {
+                            $('#sensor_'+ result['data'][index].id ).html(result['data'][index].counter );
+                            if ( result['data'][index].Active ){
+                                $('#sensor_'+ result['data'][index].id ).removeClass('OffSensor') ;
+                            } else {
+                                $('#sensor_'+ result['data'][index].id ).addClass('OffSensor') ;
+                            }
+                        }
+                    }
+                    $("#jTime").html("اخرین بروزرسانی: " + result['jtime'] );
+                },
+                error: function (jqXHR, exception) {
+                    var msg = '';
+                    if (jqXHR.status === 0) {
+                        msg = 'Not connect.\n Verify Network.';
+                    } else if (jqXHR.status == 404) {
+                        msg = 'Requested page not found. [404]';
+                    } else if (jqXHR.status == 500) {
+                        msg = 'Internal Server Error [500].';
+                    } else if (exception === 'parsererror') {
+                        msg = 'Requested JSON parse failed.';
+                    } else if (exception === 'timeout') {
+                        msg = 'Time out error.';
+                    } else if (exception === 'abort') {
+                        msg = 'Ajax request aborted.';
+                    } else {
+                        var obj = JSON.parse(jqXHR.responseText);
+                        msg = obj['message'];
+                    }
+                    alert(msg);
+                    clearInterval(intervalId);
+                },
+            });
+        }
+        function getDataOfSensor(id) {
+            $.ajax({
+                url: urlAdmin+'sensorlog/counter',
+                type: 'post',
+                data: {
+                    'groupId': id
+                } ,
+                dataType: 'html',
+                success: function (html) {
+                    if (html) {
+                        var result = $('<div />').append(html).find("#tebleExport").html();
+                        $("#tebleExport").html(result);
+                        $('#exampleModal').modal('show');
+                    }
+                }
+            });
+        }
+    </script>
+{/map}

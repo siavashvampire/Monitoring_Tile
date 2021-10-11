@@ -1,0 +1,69 @@
+﻿
+<div class="modal-body" id="ReSerContent">
+    {if isset($success)}
+        <div class="alert alert-success text-right">{$success}</div>
+    {/if}
+    {if isset($errors)}
+        <div class="alert alert-danger text-right">{$errors}</div>
+    {/if}
+    <div class="tab-content tab-space">
+        {if isset($requestService)}
+            <div class="tab-pane active" id="linkView">
+                <table class="table table-striped text-{$text_align}">
+                    <tr>
+                        <td>
+                            خط:
+                        </td>
+                        <td>
+                            {$requestService->getLine()}
+                        </td>
+                        <td>
+                            مرکز هزینه :
+                        </td>
+                        <td>
+                            {$costs|implode:' - '}
+                        </td>
+                    </tr>
+                    <tr>
+                        {if $userid == $requestService->getworkerPerson_id()}
+                            <td>
+                                بخش انجام دهنده:
+                            </td>
+                            <td>
+                                {$WorkerSection|implode:' - '}
+                            </td>
+                        {/if}
+                        <td>
+                            وضعیت دستگاه هنگام درخواست کار :
+                        </td>
+                        <td>
+                            {$system_statuses|implode:' - '}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            فعالیت مورد نظر :
+                        </td>
+                        <td>
+                            {$worktitles|implode:' - '}
+                        </td>
+                        <td>
+                            اثرات خرابی:
+                        </td>
+                        <td>
+                            {$BugInfluences|implode:' - '}
+                        </td>
+                        
+                        <td>
+                            یاداشت فرستنده:
+                        </td>
+                        <td>
+                            {$requestService->getSender_note()}
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+        {/if}
+    </div>
+</div>

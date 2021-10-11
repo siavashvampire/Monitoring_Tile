@@ -1,0 +1,440 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام سنسور</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="name" autocomplete="off" class="form-control">
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">شماره پورت سنسور</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="number" min="0" type="text" name="Sensor_plc_id" autocomplete="off" class="form-control">
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نوع کاشی</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$tiles key=key value=access_item }
+                                                    <option value="{$access_item.id}"  >{$access_item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">وضعیت</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="Active" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
+                                                    <option value="" selected >همه</option>
+                                                    <option value="1" >فعال</option>
+                                                    <option value="0" >غیر فعال</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">واحد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="unit" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
+                                                    <option value="" selected >همه</option>
+                                                    {foreach from=$units key=key value=unit }
+                                                    <option value="{$unit.unit}"  >{$unit.Name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">فاز</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                        <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">مرتب سازی بر اساس</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرتب سازی">
+                                                    <option value="sensors.label|desc" >نام سنسور | نزولی</option>
+                                                    <option value="sensors.label|asc" >نام سنسور | صعودی</option>
+                                                    <option value="sensors.Sensor_plc_id|desc"  >شماره پورت | نزولی</option>
+                                                    <option value="sensors.Sensor_plc_id|asc" selected >شماره پورت | صعودی</option>
+                                                    <option value="tile_kind.label|desc" >نوع کاشی | نزولی</option>
+                                                    <option value="tile_kind.label|asc" >نوع کاشی | صعودی</option>
+                                                    <option value="sensors.tileDegree|desc" >درجه کاشی | نزولی</option>
+                                                    <option value="sensors.tileDegree|asc" >درجه کاشی | صعودی</option>
+                                                    <option value="sensors.OffTime|desc" >سقف خاموشی | نزولی</option>
+                                                    <option value="sensors.OffTime|asc" >سقف خاموشی | صعودی</option>
+                                                    <option value="sensors.phase|desc" >فاز | نزولی</option>
+                                                    <option value="sensors.phase|asc" >فاز | صعودی</option>
+                                                    <option value="units.label|desc" >واحد | نزولی</option>
+                                                    <option value="units.Name|asc" >واحد | صعودی</option>
+                                                    <option value="sensors.Active|desc" selected >وضعیت | نزولی</option>
+                                                    <option value="sensors.Active|asc" >وضعیت | صعودی</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <div class="col-md-6">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لیست سنسورها</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">نام سنسور</th>
+                                    <th class="text-center">شماره پورت سنسور</th>
+                                    <th class="text-center">نوع کاشی</th>
+                                    <th class="text-center">درجه کاشی</th>
+                                    <th class="text-center">تعداد کاشی</th>
+									<th class="text-center">سقف خاموشی</th>
+									<th class="text-center">سقف خاموشی بله</th>
+									<th class="text-center">سقف خاموشی اس ام اس</th>
+									<th class="text-center">فاز</th>
+									<th class="text-center">واحد</th>
+                                    <th class="text-center">وضعیت</th>
+                                    <th class="text-center" style="width: 25px;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$sensors key=key value=sensor}
+                                <tr>
+                                    {if $sensor.Sensor_plc_id == 0}
+                                        <td class="text-center text-muted">{$sensor.label}</td>
+                                        <td class="text-center text-muted">{$sensor.Sensor_plc_id}</td>
+                                        <td class="text-center text-muted">{$sensor.tile_name}</td>
+                                        <td class="text-center text-muted">{$sensor.tileDegree}</td>
+                                        <td class="text-center text-muted">{$sensor.tile_Count}</td>
+                                        <td class="text-center text-muted">{$sensor.OffTime}</td>
+                                        <td class="text-center text-muted">{$sensor.OffTime_Bale}</td>
+                                        <td class="text-center text-muted">{$sensor.OffTime_SMS}</td>
+                                        <td class="text-center text-muted">{$sensor.phase}</td>
+                                        <td class="text-center text-muted">{$sensor.unitName}</td>
+                                        <td class="text-center text-muted">خارج از سیستم</td>
+                                    {elseif $sensor.Active == 1}
+                                        <td class="text-center text-success">{$sensor.label}</td>
+                                        <td class="text-center text-success">{$sensor.Sensor_plc_id}</td>
+                                        <td class="text-center text-success">{$sensor.tile_name}</td>
+                                        <td class="text-center text-success">{$sensor.tileDegree}</td>
+                                        <td class="text-center text-success">{$sensor.tile_Count}</td>
+                                        <td class="text-center text-success">{$sensor.OffTime}</td>
+                                        <td class="text-center text-success">{$sensor.OffTime_Bale}</td>
+                                        <td class="text-center text-success">{$sensor.OffTime_SMS}</td>
+                                        <td class="text-center text-success">{$sensor.phase}</td>
+                                        <td class="text-center text-success">{$sensor.unitName}</td>
+                                        <td class="text-center text-success">فعال</td>
+                                    {elseif $sensor.Active == 0}
+                                        <td class="text-center text-danger">{$sensor.label}</td>
+                                        <td class="text-center text-danger">{$sensor.Sensor_plc_id}</td>
+                                        <td class="text-center text-danger">{$sensor.tile_name}</td>
+                                        <td class="text-center text-danger">{$sensor.tileDegree}</td>
+                                        <td class="text-center text-danger">{$sensor.tile_Count}</td>
+                                        <td class="text-center text-danger">{$sensor.OffTime}</td>
+                                        <td class="text-center text-danger">{$sensor.OffTime_Bale}</td>
+                                        <td class="text-center text-danger">{$sensor.OffTime_SMS}</td>
+                                        <td class="text-center text-danger">{$sensor.phase}</td>
+                                        <td class="text-center text-danger">{$sensor.unitName}</td>
+                                        <td class="text-center text-danger">غیر فعال</td>
+                                    {else}
+                                        <td class="text-center text-muted">{$sensor.label}</td>
+                                        <td class="text-center text-muted">{$sensor.Sensor_plc_id}</td>
+                                        <td class="text-center text-muted">{$sensor.tile_name}</td>
+                                        <td class="text-center text-muted">{$sensor.tileDegree}</td>
+                                        <td class="text-center text-muted">{$sensor.tile_Count}</td>
+                                        <td class="text-center text-muted">{$sensor.OffTime}</td>
+                                        <td class="text-center text-muted">{$sensor.OffTime_Bale}</td>
+                                        <td class="text-center text-muted">{$sensor.OffTime_SMS}</td>
+                                        <td class="text-center text-muted">{$sensor.phase}</td>
+                                        <td class="text-center text-muted">{$sensor.unitName}</td>
+                                        <td class="text-center text-muted">خارج از سیستم</td>
+                                    {/if}
+                                    <td class="text-center"><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.Sensor_plc_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    تغییرات با موفقیت انجام شد.
+                </div>
+                <form>
+                    <div class="col-md-12 form-group">
+                        <label for="sensors" class="col-form-label float-right">نام سنسور:</label>
+                        <input type="text" class="form-control" id="sensors" value="">
+                        <input type="hidden" class="form-control" id="sensor_id" value="">
+                        <input type="hidden" class="form-control" id="sensor_status" value="">
+                    </div>
+
+                    
+                    <div class="col-md-12  form-group" id="tile_kindParentDiv">
+                        <label for="tile_kind" class="col-form-label float-right">نوع کاشی:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="tile_kind" name="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                            {foreach from=$tiles key=key value=access_item }
+                            <option value="{$access_item.id}"  >{$access_item.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6 form-group">
+                        <label for="plcId" class="col-form-label float-right">شماره پورت سنسور:</label>
+                        <input type="number" min="0" class="form-control" id="plcId" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="showSort" class="col-form-label float-right">شماره رده بندی:</label>
+                        <input type="number" min="0"  class="form-control" id="showSort" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="tile_Count" class="col-form-label float-right">تعداد کاشی</label>
+                        <input type="number" min="1" class="form-control" id="tile_Count" value="">
+                    </div>
+                    
+                    <div class="col-md-6 form-group">
+                        <label for="OffTime" class="col-form-label float-right">سقف خاموشی</label>
+                        <input type="number" min="0" class="form-control" id="OffTime" value="">
+                    </div>                    
+                    <div class="col-md-6 form-group">
+                        <label for="OffTime_Bale" class="col-form-label float-right">سقف خاموشی بله</label>
+                        <input type="number" min="0" class="form-control" id="OffTime_Bale" value="">
+                    </div>                    
+                    <div class="col-md-6 form-group">
+                        <label for="OffTime_SMS" class="col-form-label float-right">سقف خاموشی اس ام اس</label>
+                        <input type="number" min="0" class="form-control" id="OffTime_SMS" value="">
+                    </div>
+                    <div class="col-md-6 form-group"  id="fazDiv">
+                        <label for="faz" class="col-form-label float-right">فاز:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="faz" name="faz" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                            {foreach from=$phases key=key value=phase }
+                                <option value="{$phase.id}"  >{$phase.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group"  id="tile_degreeParentDiv">
+                        <label for="tile_degree" class="col-form-label float-right">درجه کاشی:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="tile_degree" name="tile_degree" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                            <option value="همه" selected >کلی</option>
+                            <option value="درجه 1"  >درجه 1</option>
+                            <option value="درجه 2"  >درجه 2</option>
+                            <option value="درجه 3"  >درجه 3</option>
+                            <option value="درجه U"  >درجه U</option>
+                            <option value="درجه W"  >درجه W</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-6  form-group" id="unitDiv">
+                        <label for="unitId" class="col-form-label float-right">واحد:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="unitId" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
+                            {foreach from=$units key=key value=unit }
+                            <option value="{$unit.id}"  >{$unit.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-12 text-center mt-2">
+                            <div class="form-check">
+                                <label class="form-check-label">
+                                    <input autocomplete="off"  class="form-check-input" id="Export" name="Export" type="checkbox" value="1">گزارش
+                                    <span class="form-check-sign">
+                                        <span class="check"></span>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendSensor();" >ارسال</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+<button class="btn btn-info"  onclick="openSensorEditor('','','','','','','','','','','','')">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    اضافه کردن سنسور جدید
+</button>
+{/map}
+
+{map footerjs}
+<script>
+var urlc = '{url current}' ;
+var Tile_Names = $('#tile_kindParentDiv').html();
+var Tile_Degree = $('#tile_degreeParentDiv').html();
+var fazDiv = $('#fazDiv').html();
+var units = $('#unitDiv').html();
+function openSensorEditor(id,showSort,name,PLCId,tile_Kind,tile_Count,OffTime,OffTime_Bale,OffTime_SMS,status,faz,tile_degree,unitId,Export){
+    if ( id === "" ){
+        $("#exampleModalLabel").html("اضافه کردن سنسور جدید");
+        $("#sensors").val("");
+        $("#sensor_id").val("");
+        $("#showSort").val("");
+        $("#sensor_status").val("0");
+        $("#plcId").val("");
+        $("#tile_Count").val("");
+        $("#faz").val("");
+        $("#OffTime").val("");
+        $("#OffTime_Bale").val("");
+        $("#OffTime_SMS").val("");
+        $("#tile_kindParentDivz").html(Tile_Names);
+        $("#tile_degreeParentDiv").html(Tile_Degree);
+        $("#fazDiv").html(fazDiv);
+        $("#unitDiv").html(units);
+        $("#RenderCheck").val("1");
+        $("#Export").attr('checked', true);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    } else {
+        $("#exampleModalLabel").html("ویرایش سنسور");
+        $("#sensors").val(name);
+        $("#sensor_id").val(id);
+        $("#showSort").val(showSort);
+        $("#plcId").val(PLCId);
+        $("#tile_Count").val(tile_Count);
+        $("#sensor_status").val(status);
+        $("#OffTime").val(OffTime);
+        $("#OffTime_Bale").val(OffTime_Bale);
+        $("#OffTime_SMS").val(OffTime_SMS);
+        $("#Export").val(Export);
+        if ( $('#Export').val() == 1 )
+            $("#Export").attr('checked', true);
+        else 
+            $("#Export").removeAttr('checked');
+        $("#tile_kindParentDiv").html(Tile_Names).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+tile_Kind+'\']')
+            .attr('selected', true);
+        $("#tile_degreeParentDiv").html(Tile_Degree).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+tile_degree+'\']')
+            .attr('selected', true);
+        $("#fazDiv").html(fazDiv).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+faz+'\']')
+            .attr('selected', true);
+        $("#unitDiv").html(units).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+unitId+'\']')
+            .attr('selected', true);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    }
+    $('.bmd-label-static').removeClass('bmd-label-static');
+    $('#sendDataButton').show();
+    $('#dataSendAlert').hide();
+    $('#exampleModal').modal('show');
+}
+function sendSensor(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'sensors': $('#sensors').val(),
+            'sensor_id': $('#sensor_id').val(),
+            'showSort': $('#showSort').val(),
+            'plcId': $('#plcId').val(),
+            'tile_kind': $('#tile_kind').val(),
+            'tile_Count': $('#tile_Count').val(),
+            'OffTime': $('#OffTime').val(),
+            'OffTime_Bale': $('#OffTime_Bale').val(),
+            'OffTime_SMS': $('#OffTime_SMS').val(),
+            'Active': $('#sensor_status').val(),
+            'faz': $('#faz').val(),
+            'unitId': $('#unitId').val(),
+            'Export' : $('#Export').val(),
+            'tile_degree': $('#tile_degree').val(),
+        } ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html("تغییرات با موفقیت انجام شد.").show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
+            }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
+</script>
+{/map}

@@ -1,0 +1,20 @@
+{map footerjs}
+{if $showPasswordRegister }
+<script>
+    $('.registerFormFields').hide();
+    $('.registerFormFields').after( "<div class=\"col-md-12 form-group\">\n" +
+        "                                    <label for=\"emailSmsVerificationCode\" class=\"bmd-label-floating\">کد ارسال شده به شماره همراه شما: <span class=\"text-danger\">*</span></label>\n" +
+        "                                    <input type=\"text\" class=\"form-control\" id=\"emailSmsVerificationCode\" required name=\"emailSmsVerificationCode\">\n" +
+        "                                    <input type=\"hidden\"  required name=\"emailSmsVerificationCodeHash\" value='{$hashRegister}'>\n" +
+        "                                </div>" );
+</script>
+{/if}
+{/map}
+{map alertHeader}
+{if isset($alertUserNotFoundRegister)}
+<div class="alert alert-danger  alert-with-icon"  data-notify="container">
+    <span  class="text-right">
+                                  {$alertUserNotFoundRegister}</span>
+</div>
+{/if}
+{/map}

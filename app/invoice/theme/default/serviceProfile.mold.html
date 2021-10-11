@@ -1,0 +1,218 @@
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-12 ml-auto mr-auto">
+                <div class="page-categories">
+                    {if !isset($newService)}<ul class="nav nav-pills nav-pills-warning nav-pills-icons justify-content-center" role="tablist">
+                        <!--<li class="nav-item">
+                            <a class="nav-link {if !isset($activeTab)}active{else}{if $activeTab =='dashboard'}active{/if}{/if}" data-toggle="tab" href="#link6" role="tablist">
+                                <i class="material-icons">dashboard</i> {_ "info"}
+                            </a>
+                        </li><li class="nav-item">
+                            <a class="nav-link {if isset($activeTab) and $activeTab =='payments'}active{/if}" data-toggle="tab" href="#link7" role="tablist">
+                                <i class="material-icons">account_balance_wallet</i> {_ "payments"}
+                            </a>
+                        </li>-->
+                        <li class="nav-item">
+                            <a class="nav-link {if !isset($activeTab)}active{/if}{if isset($activeTab) and $activeTab =='edit'}active{/if}" data-toggle="tab" href="#link8" role="tablist">
+                                <i class="material-icons">edit</i> {_ "edit"}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {if isset($activeTab) and $activeTab =='moreInfo'}active{/if}" data-toggle="tab" href="#link9" role="tablist">
+                                <i class="material-icons">info</i> {_ "info"} {_ "more"}
+                            </a>
+                        </li>
+                        {call servicesProfileMorePage}
+                    </ul>{/if}
+                    <div class="tab-content tab-space tab-subcategories">
+                        {if !isset($newService)}<!--<div class="tab-pane {if !isset($activeTab)}active{else}{if $activeTab =='dashboard'}active{/if}{/if}" id="link6">
+
+                        </div>
+                        <div class="tab-pane {if isset($activeTab) and $activeTab =='payments'}active{/if}" id="link7">
+
+                        </div>-->{/if}
+                        <div class="tab-pane {if isset($newService) or !isset($activeTab)}active{/if} {if isset($activeTab) and $activeTab =='edit'}active{/if}" id="link8">
+                            <div class="row">
+                                <div class="col-md-7 col-sm-12">
+                                    <div class="card">
+                                        <div class="card-header card-header-info card-header-icon" >
+                                            <div class="card-icon" >
+                                                <i class="material-icons">{if isset($newService)}add_shopping_cart{else}edit{/if}</i>
+                                            </div>
+                                            <h4 class="card-title float-{$float} m-3">{if isset($newService)}{_ "add"}{else}{_ "edit"}{/if} {_ "services"}</h4>
+                                        </div>
+                                        <form class="form-horizontal" method="post" action="{url}service/{if isset($newService)}insert{else}profile/{if isset($service)}{$service->getServiceId()}{/if}{/if}">
+                                            <div class="card-body">
+                                                {call addServiceFormUpDescription}
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="col-md-3 col-form-label">{_ "name"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input type="text" id="nameInput" value="{if isset($post.name)}{$post.name}{else}{if isset($service)}{$service->getName()}{/if}{/if}" name="name" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-md-3 col-form-label">{_ "description"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input type="text" id="descriptionInput" value="{if isset($post.description)}{$post.description}{else}{if isset($service)}{$service->getDescription()}{/if}{/if}" name="description" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <label class="col-md-3 col-form-label">{_ "price"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input type="text" id="priceInput" value="{if isset($post.price)}{$post.price}{else}{if isset($service)}{$service->getPrice()}{/if}{/if}" name="price" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <label class="col-md-3 col-form-label">{_ "link"}</label>
+                                                        <div class="col-md-9">
+                                                            <div class="form-group has-default">
+                                                                <input type="text" id="linkInput" value="{if isset($post.link)}{$post.link}{else}{if isset($service)}{$service->getLink()}{/if}{/if}" name="link" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-12 text-center mt-2">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" id="activeInput" name="active" type="checkbox"  {if isset($post.active)}{if $post.active == 'active' }checked{/if}{else}{if isset($service)}{if $service->getStatus()}checked{/if}{else}checked{/if}{/if} value="active"> {_ "active"}
+                                                                <span class="form-check-sign">
+                                                  <span class="check"></span>
+                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                {call addServiceFormField}
+                                            </div>
+                                            <div class="card-footer">
+                                                <button class="btn btn-link" type="reset">{_ "refresh"}</button>
+                                                <button type="submit" class="btn btn-fill btn-info">
+                                                 <span class="btn-label">
+                                                    <i class="material-icons">{if isset($newService)}add_shopping_cart{else}edit{/if}</i>
+                                                 </span>
+                                                    {if isset($newService)}{_ "add"}{else}{_ "edit"}{/if} {_ "services"}
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="col-sm col-md-5">
+                                    <div class="card">
+                                        <div class="card-header card-header-info card-header-icon " >
+                                            <div class="card-icon" >
+                                                <i class="material-icons">info</i>
+                                            </div>
+                                            <h4 class="card-title float-{$float} m-3">{_ "help"} {_ "services"}</h4>
+                                        </div>
+                                        <div class="card-body text-{$text_align} text-secondary">
+                                            <strong class="text-info">{_ "name"} :</strong> {_ "service_add_helper_name"}<br>
+                                            {call addServiceFormHelp}
+                                        </div>
+                                        <div class="card-footer">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {if !isset($newService)}<div class="tab-pane {if isset($activeTab) and $activeTab =='moreInfo'}active{/if}" id="link9">
+                            <div class="card bg-light">
+                                <div class="card-header card-header-info card-header-icon" >
+                                    <div class="card-icon" >
+                                        <i class="fa fa-wpforms fa-2x"></i>
+                                    </div>
+                                    <h4 class="card-title float-{$float} m-3">{_ "management"} {_ "field"}</h4>
+                                </div>
+                                <form class="form-horizontal" method="post"  action="{url}service/editMore/{if isset($service)}{$service->getServiceId()}{/if}">
+                                    <div class="card-body text-{$text_align}">
+                                        <span class="text-dark">
+                                            {_ "filedOfServiceDescription"}
+                                        </span>
+                                        <div class="row border mt-5 rounded">
+                                            <div class="col-md-4">
+                                                <label class="col-md-2 col-form-label mt-2">{_ "firstName"}</label>
+                                                <div class="col-md-10">
+                                                    <div class="form-group bmd-form-group">
+                                                        <select class="selectpicker" required name="firstNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'firstName'}">
+                                                            <option value="required" {if isset($post.firstNameStatus)}{if $post.firstNameStatus == 'required'}selected{/if}{else}{if isset($service)}{if $service->getFirstNameStatus() == 'required'}selected{/if}{/if}{/if} > {_ "required"}</option>
+                                                            <option value="visible" {if isset($post.firstNameStatus)}{if $post.firstNameStatus == 'visible'}selected{/if}{else}{if isset($service)}{if $service->getFirstNameStatus() == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                            <option value="invisible" {if isset($post.firstNameStatus)}{if $post.firstNameStatus == 'invisible'}selected{/if}{else}{if isset($service)}{if $service->getFirstNameStatus() == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-md-2 col-form-label mt-2">{_ "lastName"}</label>
+                                                <div class="col-md-10">
+                                                    <div class="form-group bmd-form-group">
+                                                        <select class="selectpicker" name="lastNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'lastName'}">
+                                                            <option value="required" {if isset($post.lastNameStatus)}{if $post.lastNameStatus == 'required'}selected{/if}{else}{if isset($service)}{if $service->getLastNameStatus() == 'required'}selected{/if}{/if}{/if} > {_ "required"}</option>
+                                                            <option value="visible" {if isset($post.lastNameStatus)}{if $post.lastNameStatus == 'visible'}selected{/if}{else}{if isset($service)}{if $service->getLastNameStatus() == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                            <option value="invisible" {if isset($post.lastNameStatus)}{if $post.lastNameStatus == 'invisible'}selected{/if}{else}{if isset($service)}{if $service->getLastNameStatus() == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-md-2 col-form-label mt-2">{_ "email"}</label>
+                                                <div class="col-md-10">
+                                                    <div class="form-group bmd-form-group">
+                                                        <select class="selectpicker" name="emailNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'email'}">
+                                                            <option value="required" {if isset($post.emailNameStatus)}{if $post.emailNameStatus == 'required'}selected{/if}{else}{if isset($service)}{if $service->getEmailStatus() == 'required'}selected{/if}{/if}{/if} > {_ "required"}</option>
+                                                            <option value="visible" {if isset($post.emailNameStatus)}{if $post.emailNameStatus == 'visible'}selected{/if}{else}{if isset($service)}{if $service->getEmailStatus() == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                            <option value="invisible" {if isset($post.emailNameStatus)}{if $post.emailNameStatus == 'invisible'}selected{/if}{else}{if isset($service)}{if $service->getEmailStatus() == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label class="col-md-2 col-form-label mt-2">{_ "phone"} {_ "number"}</label>
+                                                <div class="col-md-10">
+                                                    <div class="form-group bmd-form-group">
+                                                        <select class="selectpicker" name="phoneNameStatus" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'status'} {_ 'phone'} {_ 'number'}">
+                                                            <option value="required" {if isset($post.phoneNameStatus)}{if $post.phoneNameStatus == 'required'}selected{/if}{else}{if isset($service)}{if $service->getPhoneStatus() == 'required'}selected{/if}{/if}{/if} > {_ "required"}</option>
+                                                            <option value="visible" {if isset($post.phoneNameStatus)}{if $post.phoneNameStatus == 'visible'}selected{/if}{else}{if isset($service)}{if $service->getPhoneStatus() == 'visible'}selected{/if}{/if}{/if}> {_ "optional"}</option>
+                                                            <option value="invisible" {if isset($post.phoneNameStatus)}{if $post.phoneNameStatus == 'invisible'}selected{/if}{else}{if isset($service)}{if $service->getPhoneStatus() == 'invisible'}selected{/if}{/if}{/if}>{_ "invisible"}</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {call moreFieldsService}
+
+                                    <div class="card-footer">
+                                        <button class="btn btn-link" type="reset">{_ "refresh"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">
+                                             <span class="btn-label">
+                                                <i class="material-icons">save</i>
+                                             </span>
+                                            {_ "save"}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            {call serviceMoreInfoCard}serviceMoreInfoCard
+                        </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .bootstrap-tagsinput .badge {
+        background-color: #00bcd4 !important;
+    }
+</style>

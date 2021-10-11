@@ -1,0 +1,115 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "search"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "contact"} :</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <label>
+                                                   <input type="text" name="label" autocomplete="off" class="form-control">
+                                               </label>
+                                           </div>
+                                        </div>
+                                    </div>
+                                   <div class="col-md-12">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {_ "contacts"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tableExport">
+                                <thead>
+                                        <tr>
+                                        <th>{_ "name"} {_ "and"} {_ "lastName"} </th>
+                                        <th>{_ "type"} {_ "communication"}</th>
+                                        <th>{_ "number"} {_ "or"} {_ "code"}</th>
+                                        <th>{_ "phase"}</th>
+                                        <th>{_ "unit"}</th>
+                                        <th>{_ "Access"}</th>
+                                        <th>{_ "send_allow"}</th>
+                                        {if $editAccess == 'true'}
+                                            <th style="width: 25px;"></th>
+                                        {/if}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {foreach from=$items key=key value=item}
+                                        <tr>
+                                            <td>{$item.name}</td>
+                                            <td>{$item.type}</td>
+                                            <td>{$item.phone}</td>
+                                            <td>{$item.phase}</td>
+                                            <td>{$item.units}</td>
+                                            {if $item.access == 1}
+                                            <td><i class="fa fa-check"></i></td>
+                                            {else}
+                                            <td><i class="fa fa-times"></i></td>
+                                            {/if}
+                                            {if $item.send_allow == 1}
+                                            <td><i class="fa fa-check"></i></td>
+                                            {else}
+                                            <td><i class="fa fa-times"></i></td>
+                                            {/if}
+                                            {if $editAccess == 'true'}
+                                                <td><a class="btn btn-link text-info" href="{url admin}{$ChangeURL}/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
+                                            {/if}
+                                        </tr>
+                                    {foreachelse}
+                                        <tr>
+                                            <td colspan="8">{_ "hasNotDataYet"}</td>
+                                        </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+{if $editAccess == 'true'}
+<a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+                              <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                              </span>
+    {_ "add"} {_ "contacts"} {_ "new"}
+</a>
+{/if}
+{/map}
+

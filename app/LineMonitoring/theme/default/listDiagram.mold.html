@@ -1,0 +1,56 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-map-signs fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لیست نقشه های کارخانه</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">نام نقشه</th>
+                                    <th class="text-center" style="width: 25%;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$diagrams key=key value=diagram}
+                                <tr>
+                                    <td class="text-center">{$diagram.name}</td>
+                                    <td class="text-center">
+                                        <a href="{url admin}diagram/s/{$diagram.diagramId}/{$diagram.name}" class="btn btn-info">
+                                            <i class="fa fa-map-signs"></i></a>
+                                        <a href="{url admin}diagram/setup/{$diagram.diagramId}" class="btn btn-info">
+                                            <i class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+<a href="{url admin}diagram/setup" class="btn btn-info">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    اضافه کردن نقشه جدید
+</a>
+{/map}

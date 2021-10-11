@@ -1,0 +1,201 @@
+<div class="content">
+    <div class="container-fluid mb-3" >
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="fa fa-search fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "search"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="col-md-12 col-form-label">{_ "description"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="description" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-12 col-form-label">{_ "walletId"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input type="number" name="walletId" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-12 col-form-label">{_ "userId"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input type="number" name="userId" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-12 col-form-label">{_ "price"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input type="number" name="price" class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-12 col-form-label">{_ "status"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <select class="chosen-select chosen-rtl" name="status" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'status'} {_ 'verify'}">
+                                                    <option value="" selected >{_ "all"}</option>
+                                                    <option value="deposit"  >{_ "charge"} {_ "wallet"}</option>
+                                                    <option value="withdrawRequest"  >{_ "requestWithdraw"}</option>
+                                                    <option value="withdrawAccept"  >{_ "decreaseWallet"}</option>
+                                                    <option value="withdrawReject"  >{_ "withdrawReject"}</option>
+                                                    <option value="pending"  >{_ "pending"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-12 col-form-label">{_ "transactionFrom"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="startDate" autocomplete="off" class="form-control datepicker">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-12 col-form-label">{_ "transactionTo"}</label>
+                                        <div class="col-md-12">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="endDate" autocomplete="off" class="form-control datepicker">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-4 mt-5 ltr float-left">
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid" >
+        {set loadDivID,"#listToGetFromServer"}
+        {set loadDivIDInHtml,"listToGetFromServer"}
+        <div class="card" id="listToGetFromServer">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="mdi mdi-credit-card-multiple text-blue fa-2x"></i>
+                </div>
+                <h4 class="card-title float-{$float} mr-1 text-blue" >{_ 'list'} {_ 'transactions'} {_ 'wallet'}</h4>
+                <span class="card-title float-left m-1 text-blue pointer" onclick="fnExcelReport('tebleExport');">
+                    <i class="fa fa-file-excel-o"></i>
+                    {_ "downloadAsExcel"}
+                </span>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table text-{$text_align}" id="tebleExport">
+                        <thead>
+                        <tr>
+                            <th class="text-center"></th>
+                            <th>{_ "description"}</th>
+                            <th>{_ "user"}</th>
+                            <th>{_ "price"}</th>
+                            <th>{_ "date"}</th>
+                            <th>{_ "status"}</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach from=$invoices key=key value=invoice}
+                        <tr>
+                            <td class="text-center">{$invoice.actionId}</td>
+                            <td>{if $invoice.invoiceId > 0 }<a class="btin btn-link" href="{url 'admin'}invoices/{$invoice.invoiceId}">{/if}{$invoice.description}{if $invoice.invoiceId > 0 }</a>{/if}</td>
+                            <td><a href="{url 'admin'}users/profile/{$invoice.userId}">{$invoice.fname} {$invoice.lname}</a></td>
+                            <td>{$invoice.price|number_format}</td>
+                            <td>{$invoice.dateAction|jDate:"j F, Y"}<br>{$invoice.timeAction}</td>
+                            <td class="text-right">
+                                {if $invoice.status == 'deposit' }
+                                <span class="text-success">{_ "charge"} {_ "wallet"}</span>
+                                {elseif $invoice.status == 'withdrawRequest' }
+                                <span class="text-warning">{_ "requestWithdraw"}</span>
+                                {elseif $invoice.status == 'withdrawAccept' }
+                                <span class="text-danger">{_ "decreaseWallet"}</span>
+                                {elseif $invoice.status == 'withdrawReject' }
+                                <span class="text-muted">{_ "withdrawReject"}</span>
+                                {elseif $invoice.status == 'pending' }
+                                <span class="text-blue">{_ "pending"}</span>
+                                {/if}
+                            </td>
+                        </tr>
+                        {foreachelse}
+                        <tr>
+                            <td class="text-center" colspan="8">{_ "hasNotDataYet"}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                {view "[url patch]pagination.mold.html"}
+            </div>
+        </div>
+    </div>
+</div>
+
+{map footerjs}
+<script>
+    function fnExcelReport(tableId)
+    {
+        var tab_text="<table border='2px'><tr bgcolor='#2196f3'>";
+        var textRange; var j=0;
+        tab = document.getElementById(tableId); // id of table
+
+        for(j = 0 ; j < tab.rows.length ; j++)
+        {
+            tab_text=tab_text+tab.rows[j].innerHTML+"</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text=tab_text+"</table>";
+        tab_text= tab_text.replace(/<a[^>]*>|<\/a>/g, "");//remove if u want links in your table
+        tab_text= tab_text.replace(/<br>/g, "  ");//remove if u want links in your table
+        tab_text= tab_text.replace(/<img[^>]*>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<span class="hidden-excel">[^<\/span>]*<\/span>/gi,""); // remove if u want images in your table
+        tab_text= tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html","replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa=txtArea1.document.execCommand("SaveAs",true,"Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+</script>
+{/map}

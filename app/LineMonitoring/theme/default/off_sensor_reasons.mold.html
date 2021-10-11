@@ -1,0 +1,165 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="fa fa-search fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "searchIn"} {if isset($specialtyFather)}{_ "specialtiesOf"} {$specialtyFather.label}{else}{_ "specialties"}{/if}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                   <div class="col-md-4">
+                                       <label class="col-md-12 col-form-label">علت توقف</label>
+                                       <div class="col-md-12">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="name" class="form-control">
+                                           </div>
+                                       </div>
+                                   </div>
+                                    <div class="col-md-4 mt-5 ltr">
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid mt-5">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-user-md fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{if isset($specialtyFather)}علت های توقف {$specialtyFather.label}{else}سرفصل علت های توقف{/if}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="resultOfThisForm">
+                            <div class="alert alert-success alert-with-icon" id="resultOfThisFormSuccess" style="display: none;" data-notify="container">
+                                <span  class="text-{$text_align}"  id="resultOfThisFormSuccessText"></span>
+                            </div>
+                            <div class="alert alert-danger alert-with-icon" id="resultOfThisFormDanger" style="display: none;" data-notify="container">
+                                <span  class="text-{$text_align}"  id="resultOfThisFormDangerText"></span>
+                            </div>
+                        </div>
+                        <form class="form-horizontal" style="display: none;" id="newRecordSpecialties" onsubmit="return ajaxThisForm('#newRecordSpecialties' ,'#resultOfThisForm' , true , true , 'reloadTableData');" method="post" action="{url}off_sensor_reasons/checkData">
+                            <h5 id="titleOfForm" class="text-right">اضافه کردن علت جدید</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="col-md-12 col-form-label">علت توقف</label>
+                                    <div class="col-md-12">
+                                        <div class="form-group has-default">
+                                            <input type="text" name="name" id="nameOfSpecialty"  class="form-control">
+                                            <input type="hidden" name="fatherId" id="fatheridOfSpecialty"  class="form-control">
+                                            <input type="hidden" name="id" id="idOfSpecialty"  class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mt-5 ltr">
+                                    <button type="submit"  id="editButton"  class="btn btn-fill btn-info">افزودن</button>
+                                </div>
+                            </div>
+                            <hr>
+                        </form>
+                        <div id="listToGetFromServer">
+                        <div class="table-responsive" >
+                            <table class="table text-{$text_align}">
+                                <thead>
+                                <tr>
+                                    <th style="width: 80%">
+                                        {if ! isset($specialtyFather)}
+                                            سر فصل علت توقف
+                                        {else}
+                                            علت توقف
+                                        {/if}
+                                    </th>
+                                    <th style="width: 20%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$specialties key=key value=specialtie}
+                                <tr>
+                                    <td>{$specialtie.label}</td>
+                                    <td class="td-actions">
+                                        {if ! isset($specialtyFather)}
+<!--
+                                        <a class="btn btn-info" href="{url}off_sensor_reasons/lists/{$specialtie.id}">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+-->
+                                        <button type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" onclick="location.href='{url}off_sensor_reasons/lists/{$specialtie.id}'"></i></button>
+                                        {/if}
+                                        <button class="btn btn-link text-info" style="color: darkcyan!important;" onclick="$('#newRecordSpecialties').show();$('#idOfSpecialty').val('{$specialtie.id}');$('#nameOfSpecialty').val('{$specialtie.label}');$('#fatheridOfSpecialty').val('{$specialtie.parentId}');$('#editButton').html('ویرایش');$('#titleOfForm').html('ویرایش علت توقف');">
+                                            <i class="fa fa-edit "></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td colspan="7">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var url = "{url 'admin'}specialties/lists/{$ff}/" ;
+</script>
+{map footerjs}
+<script>
+    function  getCustomFieldProfileEdit(elemnt) {
+        var id = $(elemnt).val();
+        $.ajax({
+            url: url+id,
+            type: 'get',
+            dataType: 'html',
+            success: function (html) {
+                if (html) {
+                    var result = $('<div />').append(html).find(".customFieldTempDiv").html();
+                    $(".customFieldTempDiv").html(result);
+                }
+            }
+        });
+    }
+</script>
+{/map}
+{map navBarButton}
+    <div class="btn btn-info" onclick="$('#newRecordSpecialties').toggle();$('#idOfSpecialty').val('');$('#nameOfSpecialty').val('');$('#fatheridOfSpecialty').val('{$specialtyFatherId}');$('#editButton').html('افزودن');$('#titleOfForm').html('اضافه کردن علت جدید');">
+                          <span class="btn-label">
+                            <i class="fa fa-user-plus"></i>
+                          </span>
+        {if isset($specialtyFather)}اضافه کردن علت جدید {$specialtyFather.label}{else}اضافه کردن سرفصل علت های توقف{/if}
+
+        <div class="ripple-container"></div>
+    </div>
+    {if isset($specialtyFather)}
+        <a class="btn btn-link" href="{url}off_sensor_reasons/lists/{$specialtyFather.fatherId}">
+                          <span class="btn-label">
+                            <i class="fa fa-mail-reply"></i>
+                          </span>
+        برگشت به لیست قبلی
+        <div class="ripple-container"></div>
+        </a>
+    {/if}
+{/map}

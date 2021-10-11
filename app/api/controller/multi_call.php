@@ -8,14 +8,14 @@ if ( !defined( 'paymentCMS' ) ) die( '<link rel="stylesheet" href="http://maxcdn
 class multi_call extends innerController {
 
     public function index(){
-        $DataArray = json_decode($_POST['calls']);
+        $DataArray = json_decode($_POST['DataArray'],true);
         $lastIndex = -1 ;
         $response = [];
         if ( isset($DataArray) and is_array($DataArray) ){
             foreach ($DataArray  as $index => $_dataSTD ){
                if ( isset($_dataSTD['class']) and isset($_dataSTD['app']) and  isset($_dataSTD['method']) ){
                    $className = 'App\\' . $_dataSTD['app'] . '\app_provider\\api\\' . $_dataSTD['class'];
-                   if (class_exists($className) and method_exists($_dataSTD['class'], $_dataSTD['method'])) {
+                   if (class_exists($className) and method_exists($className, $_dataSTD['method'])) {
                        $class = new $className();
                        $_REQUEST = $_POST = $_dataSTD['data'];
                        $_SERVER['JsonOff'] = true;
@@ -23,18 +23,18 @@ class multi_call extends innerController {
                        $lastIndex = $index ;
                    } else {
                        unset($_SERVER['JsonOff']);
-                       parent::jsonError( [ 'lastIndex' => $lastIndex , 'result' => $response] , 500 );
+                       parent::jsonError( [ 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
                    }
                } else {
                    unset($_SERVER['JsonOff']);
-                   parent::jsonError( [ 'lastIndex' => $lastIndex , 'result' => $response] , 500 );
+                   parent::jsonError( [ 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
                }
             }
             unset($_SERVER['JsonOff']);
             parent::json( $response );
         } else {
             unset($_SERVER['JsonOff']);
-            parent::jsonError( [ 'lastIndex' => $lastIndex , 'result' => $response] , 500 );
+            parent::jsonError( [ 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
         }
     }
 }

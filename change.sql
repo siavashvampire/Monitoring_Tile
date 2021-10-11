@@ -124,9 +124,9 @@ ALTER TABLE `per_requestservice_system_status` CHANGE `Title` `label` VARCHAR(65
 ALTER TABLE `per_requestservice_worktitle` CHANGE `Title` `label` VARCHAR(65) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
 ALTER TABLE `per_requestservice` ADD CONSTRAINT `per_requestservice_ibfk_1` FOREIGN KEY (`phase`) REFERENCES `per_phases`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE `test`.`per_requestservice` ADD INDEX `phase` (`phase`);
+ALTER TABLE `per_requestservice` ADD INDEX `phase` (`phase`);
 ALTER TABLE `per_requestservice` ADD CONSTRAINT `per_requestservice_ibfk_2` FOREIGN KEY (`section`) REFERENCES `per_sections`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE `test`.`per_requestservice` ADD INDEX `section` (`section`);
+ALTER TABLE `per_requestservice` ADD INDEX `section` (`section`);
 
 DROP TRIGGER `per_sensoractivelogarchive_after_insert`;
 DROP TRIGGER `per_sensoractivelogarchive_after_update`;

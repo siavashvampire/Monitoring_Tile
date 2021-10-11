@@ -77,7 +77,7 @@ class hook extends pluginController
 
     public function _fieldService_showToFillOut_phase($vars2)
     {
-        $phases = $this->model(['LineMonitoring', 'phases'])->getPhases();
+        $phases = $this->model(['LineMonitoring', 'phases'])->getItems();
         $options = '';
         if (is_array($phases))
             foreach ($phases as $phase) {

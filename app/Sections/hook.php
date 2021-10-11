@@ -25,20 +25,20 @@ class hook extends pluginController {
         //		show($this->mold->get('fillOutFieldServiceFormCssClassAllDiv'));
         /* @var specialties $model */
         $model = $this->model(['Sections', 'sections']);
-        $searchFathers = $model->search('1', ' ?  ', null, '*', ['column' => 'Name', 'type' => 'asc']);
+        $searchFathers = $model->search('1', ' ?  ', null, '*', ['column' => 'label', 'type' => 'asc']);
         $options = '';
         if (is_array($searchFathers))
             foreach ($searchFathers as $search) {
                 $selected = '';
                 if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
-                    if (in_array($search['sectionId'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
                         $selected = 'selected';
                 } elseif (isset($this->mold->get('field')['value'])) {
                     $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
-                    if (in_array($search['sectionId'], $explodeSelectedValue))
+                    if (in_array($search['id'], $explodeSelectedValue))
                         $selected = 'selected';
                 }
-                $options .= '<option value ="' . $search['sectionId'] . '" ' . $selected . '>' . $search['Name'] . '</option>';
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
 
             }
         $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">

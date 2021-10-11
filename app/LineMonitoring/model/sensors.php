@@ -18,7 +18,7 @@ class sensors extends model implements modelInterFace
     private $plc_read;
     private $phase;
     private $tileDegree;
-    private $unitId;
+    private $unit;
     private $OffTime;
     private $OffTime_Bale;
     private $OffTime_SMS;
@@ -40,7 +40,7 @@ class sensors extends model implements modelInterFace
         $this->plc_read = $result['plc_read'];
         $this->phase = $result['phase'];
         $this->tileDegree = $result['tileDegree'];
-        $this->unitId = $result['unitId'];
+        $this->unit = $result['unit'];
         $this->OffTime = $result['OffTime'];
         $this->OffTime_Bale = $result['OffTime_Bale'];
         $this->OffTime_SMS = $result['OffTime_SMS'];
@@ -63,7 +63,7 @@ class sensors extends model implements modelInterFace
         $array['plc_read'] = $this->plc_read;
         $array['phase'] = $this->phase;
         $array['tileDegree'] = $this->tileDegree;
-        $array['unitId'] = $this->unitId;
+        $array['unit'] = $this->unit;
         $array['OffTime'] = $this->OffTime;
         $array['OffTime_Bale'] = $this->OffTime_Bale;
         $array['OffTime_SMS'] = $this->OffTime_SMS;
@@ -82,7 +82,7 @@ class sensors extends model implements modelInterFace
         if ($result) {
             if ($this->getisVirtual()) {
                 if ($this->getisStorage()) {
-                    (new data)->UpdateZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnitId(), $this->getTileDegree());
+                    (new data)->UpdateZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnit(), $this->getTileDegree());
                 }
 
                 $db = (model::db());
@@ -98,13 +98,13 @@ class sensors extends model implements modelInterFace
                         if ($this->getisStorage()) {
                             $query .= '
                             ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
-                                INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-                                VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+                                INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unit`,`tileDegree`)
+                                VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnit() . '\',\'' . $this->getTileDegree() . '\');';
                         } else {
                             $query .= '
 					        ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
-					        INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-					        VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+					        INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unit`,`tileDegree`)
+					        VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnit() . '\',\'' . $this->getTileDegree() . '\');';
                         }
                     }
                     $query .= '
@@ -125,7 +125,7 @@ class sensors extends model implements modelInterFace
         if ($result) {
             if ($this->getisVirtual()) {
                 if ($this->getisStorage()) {
-                    (new data)->InsertZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnitId(), $this->getTileDegree());
+                    (new data)->InsertZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnit(), $this->getTileDegree());
                 }
 
                 $db = (model::db());
@@ -141,13 +141,13 @@ class sensors extends model implements modelInterFace
                         if ($this->getisStorage()) {
                             $query .= '
                             ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
-                                INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-                                VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+                                INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unit`,`tileDegree`)
+                                VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),-1,-1,-1,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnit() . '\',\'' . $this->getTileDegree() . '\');';
                         } else {
                             $query .= '
 					        ' . (($i > 0) ? 'ELSE' : '') . 'IF (NEW.Sensor_id = \'' . $listSensors[$i] . '\') THEN
-					        INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unitId`,`tileDegree`)
-					        VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnitId() . '\',\'' . $this->getTileDegree() . '\');';
+					        INSERT INTO ' . $perfix . 'data(`Sensor_id`,`Start_time`,`JStart_time`,`AbsTime`,`counter`,`Shift_id`,`Shift_group_id`,`employers_id`,`Tile_Kind`,`Motor_Speed`,`phase`,`unit`,`tileDegree`)
+					        VALUES(\'' . $this->getId() . '\',NEW.Start_time,NEW.JStart_time,NEW.AbsTime,( NEW.counter * ' . ((isset($listSensorsSign[$i]) and $listSensorsSign[$i] != null) ? $listSensorsSign[$i] : '1') . '),NEW.Shift_id,NEW.Shift_group_id,NEW.employers_id,\'' . $this->getTileId() . '\',NEW.Motor_Speed,\'' . $this->getPhase() . '\',\'' . $this->getUnit() . '\',\'' . $this->getTileDegree() . '\');';
                         }
                     }
                     $query .= '
@@ -389,17 +389,17 @@ class sensors extends model implements modelInterFace
     /**
      * @return mixed
      */
-    public function getUnitId()
+    public function getUnit()
     {
-        return $this->unitId;
+        return $this->unit;
     }
 
     /**
-     * @param mixed $unitId
+     * @param mixed $unit
      */
-    public function setUnit($unitId)
+    public function setUnit($unit)
     {
-        $this->unitId = $unitId;
+        $this->unit = $unit;
     }
 
 
@@ -428,7 +428,7 @@ class sensors extends model implements modelInterFace
     }
 
     /**
-     * @param mixed $unitId
+     * @param mixed $unit
      */
     public function setSensorSign($SensorSign)
     {
@@ -444,7 +444,7 @@ class sensors extends model implements modelInterFace
     }
 
     /**
-     * @param mixed $unitId
+     * @param mixed $unit
      */
     public function setExport($Export)
     {
@@ -460,7 +460,7 @@ class sensors extends model implements modelInterFace
     }
 
     /**
-     * @param mixed $unitId
+     * @param mixed $unit
      */
     public function setisVirtual($isVirtual)
     {
@@ -476,7 +476,7 @@ class sensors extends model implements modelInterFace
     }
 
     /**
-     * @param mixed $unitId
+     * @param mixed $unit
      */
     public function setisStorage($isStorage)
     {

@@ -184,13 +184,13 @@ class innerController {
 
 
 	protected static function jsonError($massage = null , $statusCode = 400){
-		if ( self::$jsonResponse and ! isset($_SERVER['JsonOff']))
+		if ( self::$jsonResponse and ( ! isset($_SERVER['JsonOff']) and ! isset($_SERVER['JsonOffMultiCall'])))
 			Response::jsonError($massage,$statusCode);
 		return ['status'=> false , 'massage' => $massage ] ;
 	}
 
 	protected static function json($result){
-		if ( self::$jsonResponse and ! isset($_SERVER['JsonOff']) )
+		if ( self::$jsonResponse and ( ! isset($_SERVER['JsonOff']) and ! isset($_SERVER['JsonOffMultiCall'])))
 			Response::json($result);
 		return ['status'=> true , 'result' => $result ] ;
 	}

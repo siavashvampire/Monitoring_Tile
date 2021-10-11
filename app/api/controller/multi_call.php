@@ -12,29 +12,29 @@ class multi_call extends innerController {
         $lastIndex = -1 ;
         $response = [];
         if ( isset($DataArray) and is_array($DataArray) ){
+            $_SERVER['JsonOffMultiCall'] = true;
             foreach ($DataArray  as $index => $_dataSTD ){
                if ( isset($_dataSTD['class']) and isset($_dataSTD['app']) and  isset($_dataSTD['method']) ){
                    $className = 'App\\' . $_dataSTD['app'] . '\app_provider\\api\\' . $_dataSTD['class'];
                    if (class_exists($className) and method_exists($className, $_dataSTD['method'])) {
                        $class = new $className();
                        $_REQUEST = $_POST = $_dataSTD['data'];
-                       $_SERVER['JsonOff'] = true;
                        $response[$index] = call_user_func_array([$class, $_dataSTD['method']], (array)$_dataSTD['params']);
                        $lastIndex = $index ;
                    } else {
-                       unset($_SERVER['JsonOff']);
-                       parent::jsonError( [ 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
+                       unset($_SERVER['JsonOffMultiCall'],$_SERVER['JsonOff']);
+                       parent::jsonError( [ "status" => false , 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
                    }
                } else {
-                   unset($_SERVER['JsonOff']);
-                   parent::jsonError( [ 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
+                   unset($_SERVER['JsonOffMultiCall'],$_SERVER['JsonOff']);
+                   parent::jsonError( [ "status" => false , 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
                }
             }
-            unset($_SERVER['JsonOff']);
-            parent::json( $response );
+            unset($_SERVER['JsonOffMultiCall'],$_SERVER['JsonOff']);
+            parent::json( ["status" => true , "result" => $response] );
         } else {
-            unset($_SERVER['JsonOff']);
-            parent::jsonError( [ 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
+            unset($_SERVER['JsonOffMultiCall'],$_SERVER['JsonOff']);
+            parent::jsonError( [ "status" => false , 'indexOfProblem' => $lastIndex , 'result' => $response] , 500 );
         }
     }
 }

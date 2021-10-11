@@ -96,7 +96,7 @@ class line_monitoring extends innerController {
 		$log->setTileKind($data['Tile_Kind']);
 		$log->setMotorSpeed($data['Motor_Speed']);
 		$log->setPhase($sensor->getPhase());
-		$log->setUnit($sensor->getUnitId());
+		$log->setUnit($sensor->getUnit());
 		$log->setTileDegree($sensor->getTileDegree());
 		$log->setJStartTime(JDate::jdate('Y/n/j',$strTime));
 		if ( ! $log->insertToDataBase() ) {
@@ -118,7 +118,7 @@ class line_monitoring extends innerController {
 					'absTime' => $log->getAbsTime(),
 					'motorSpeed' => $log->getMotorSpeed(),
 					'phase' => $sensor->getPhase(),
-					'unitId' => $sensor->getUnitId(),
+					'unitId' => $sensor->getUnit(),
 					'tileDegree' => $sensor->getTileDegree(),
 				]));$ws->send('disconnect');
 				$ws->close();
@@ -191,7 +191,7 @@ class line_monitoring extends innerController {
             } else {
                 $sensor->setActive(1);
                 $sensor->upDateDataBase();
-                return self::jsonError('Cant Find Deactive log!');
+                return self::json('Cant Find Deactive log!');
             }
         } else {
             $logArchive = parent::model(['LineMonitoring','sensor_active_log_archive'] , [$sensor->getId() , ''] , ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
@@ -199,7 +199,7 @@ class line_monitoring extends innerController {
                 $logArchive->setSensor_id( $sensor->getId() );
                 $logArchive->setPhase( $sensor->getPhase() );
                 $logArchive->setTileDegree( $sensor->getTileDegree() );
-                $logArchive->setUnit( $sensor->getUnitId() );
+                $logArchive->setUnit( $sensor->getUnit() );
                 $logArchive->setStart_time( $Time );
                 $logArchive->setJStart_time( JDate::jdate('Y/n/j H:i:s',$strTime ));
                 $logArchive->setEnd_Time( null );
@@ -224,7 +224,7 @@ class line_monitoring extends innerController {
             } else {
                 $sensor->setActive(0);
                 $sensor->upDateDataBase();
-                return self::jsonError('duplicate request!');
+                return self::json('duplicate request!');
             }
         }
 
@@ -282,7 +282,7 @@ class line_monitoring extends innerController {
             } else {
                 $Switch->setActive(1);
                 $Switch->upDateDataBase();
-                return self::jsonError('Cant Find Deactive log!');
+                return self::json('Cant Find Deactive log!');
             }
         } else {
 
@@ -290,7 +290,7 @@ class line_monitoring extends innerController {
             if ( $logArchive->getId() != $Switch->getId() ){
                 $logArchive->setId( $Switch->getId() );
                 $logArchive->setPhase( $Switch->getPhase() );
-                $logArchive->setUnit( $Switch->getUnitId() );
+                $logArchive->setUnit( $Switch->getUnit() );
                 $logArchive->setStart_time( $data['time'] );
                 $logArchive->setJStart_time( JDate::jdate('Y/n/j H:i:s',strtotime($data['time']) ));
                 $logArchive->setEnd_Time( null );
@@ -317,7 +317,7 @@ class line_monitoring extends innerController {
             } else {
                 $Switch->setActive(0);
                 $Switch->upDateDataBase();
-                return self::jsonError('duplicate request!');
+                return self::json('duplicate request!');
             }
         }
 

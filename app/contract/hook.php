@@ -16,7 +16,7 @@ class hook extends pluginController
 {
     public function _adminHeaderNavbar($vars2)
     {
-        $this->menu->after('users', 'contract', 'تنظیمات فرم ها', app::getBaseAppLink('contract', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/index/contract');
+        $this->menu->after('users', 'contract', 'تنظیمات قرارداد', app::getBaseAppLink('contract', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/index/contract');
         $this->menu->after('users', 'evaluation', 'فرم ساز', app::getBaseAppLink('evaluation/newType', 'admin'), 'fa fa-id-badge', '', null, 'admin/evaluation/newType/contract');
         $this->menu->after('evaluation', 'evaluation_list', 'لیست ارزیابی ها', app::getBaseAppLink('evaluation/list', 'admin'), 'fa fa-list-ol', '', null, 'admin/evaluation/list/contract');
         $this->menu->after('evaluation_list', 'evaluation_insert', 'ثبت ارزیابی', app::getBaseAppLink('evaluation', 'admin'), 'fa fa-check-square-o', '', null, 'admin/evaluation/index/contract');
@@ -27,12 +27,13 @@ class hook extends pluginController
         $getPath = $this->mold->getPath();
         $this->mold->path('default', 'contract');
 
-//		$contracts = model::searching([$user->getUserId()],' userId	= ? ' ,'contracts','*');
-//		$this->mold->set('listGroups', $contracts);
-//
+		$contracts = model::searching([$user->getUserId()],' userId	= ? ' ,'contracts','*');
+		$this->mold->set('listGroups', $contracts);
+
         $this->mold->view('contracts.user.hook.mold.html');
         $this->mold->path($getPath['folder'], $getPath['app']);
     }
+
 
     public function _adminDashboard()
     {
@@ -61,21 +62,21 @@ class hook extends pluginController
 //            $this->mold->path($getPath['folder'], $getPath['app']);
 //        }
 
-//        $search = model::searching( array()  ,  null  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
-//        $this->mold->set('sensorsChart' , $search);
-//        $getPath = $this->mold->getPath();
-//        $this->mold->path('default', 'contract');
+        $search = model::searching( array()  ,  null  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
+        $this->mold->set('sensorsChart' , $search);
+        $getPath = $this->mold->getPath();
+        $this->mold->path('default', 'contract');
 //        $this->mold->view('chart.admin.hook.mold.html');
-//        $this->mold->path($getPath['folder'], $getPath['app']);
+        $this->mold->path($getPath['folder'], $getPath['app']);
 
     }
 
     public function _doBeforeLogin()
     {
         if (cache::get('lastContractCheck', null, 'contract') != date('Y-m-d')) {
-
             model::join('contracts contracts', '( contracts.contractGroup = vote.contractGroup and DATE_SUB(DATE_FORMAT(contracts.endDate, "%Y-%m-%d") , INTERVAL vote.ShowToReceiver DAY) = DATE_FORMAT(NOW(), "%Y-%m-%d" ) )', 'INNER');
             $listTypeVote = model::searching([1], ' ? and ShowToReceiver >= 0 and ShowToReceiver is not null ', 'vote vote', 'contracts.contractId,contracts.userId,vote.voteId,vote.checkByUnit');
+            show(model::getLastQuery());
             $cacheUnitId = [];
             $cachePhaseId = [];
             $cacheUsersShouldSearch = [];

@@ -53,7 +53,7 @@
                                     {/foreach}
                                     <li class="nav-item">
                                       <a class="nav-link {if $tabview == 'newvote' and $vote->getVoteId() == null }active{/if}" href="{if $tabview == 'newvote' and $vote->getVoteId() == null }#link1{else}{url 'admin'}contract/newVote/{$nowOnAccess}{/if}" >
-                                          {_ "new"} {_ "Poll"}
+                                          {_ "Poll"} {_ "new"}
                                       </a>
                                     </li>
                                   </ul>
@@ -116,11 +116,11 @@
                                     <i class="material-icons">edit</i>
                                  </span>
                                     {if $tabview == 'contract'}
-                                    {_ "Edit"}{_ "Fields"}{_ "contract"}
+                                    {_ "Edit"} {_ "Fields"} {_ "contract"}
                                     {elseif $tabview == 'contractTemplate'}
-                                    {_ "Edit"}{_ "text"}{_ "default"}
+                                    {_ "Edit"} {_ "text"} {_ "default"}
                                     {else}
-                                    {_ "Edit"}{_ "form"}{_ "Poll"}
+                                    {_ "Edit"} {_ "form"} {_ "Poll"}
                                     {/if}
                                 </button>
                             </div>

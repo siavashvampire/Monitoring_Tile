@@ -84,9 +84,9 @@ class Substation extends model implements modelInterFace {
 	}
 
     public function getCount($value = array(),$variable = array()) {
-        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'Substation Substation', 'COUNT(Substation.id) as co' )) [0]['co'];
+        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'Substation item', 'COUNT(item.id) as co' )) [0]['co'];
     }
-    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
-        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'Substation Substation' , 'Substation.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'Substation item' , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
 	}
 }

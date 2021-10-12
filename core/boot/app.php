@@ -273,24 +273,6 @@ class App
         return $return;
     }
 
-    public static function appsListWithPLC()
-    {
-        $apps = self::appsList();
-        $return = [];
-        if (is_array($apps)) {
-            foreach ($apps as $app) {
-                $file_name = self::$appPatch . $app . DIRECTORY_SEPARATOR . 'info.php';
-                if (file_exists($file_name)) {
-                    $temp = require $file_name;
-                    if (isset($temp['info']))
-                        if (isset($temp['info']["PLCNeed"]))
-                            if ($temp['info']["PLCNeed"])
-                                $return[$app] = $temp['info'];
-                }
-            }
-        }
-        return $return;
-    }
 
     public static function pluginsList()
     {

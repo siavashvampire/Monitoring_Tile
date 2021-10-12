@@ -129,7 +129,7 @@ class substation_Device  extends model implements modelInterFace {
         $this->unitId = $unitId;
     }
 
-    public function getDevices($substation_id = null,$type = null) {
+    public function getItems($substation_id = null,$type = null) {
         if ( $substation_id == null) $substation_id = $this->getSubstationId();
 
         $value = array();

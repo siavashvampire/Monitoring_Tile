@@ -67,9 +67,15 @@
                                         <tr style="display:none" id="bodyDeviceElemnt">
                                             <td>
                                                 <select class="selectpicker" name="appName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ " name"} {_ "application"}" >
-                                                {foreach from=$appsTotal key=key value=app }
-                                                <option value="{$app.name}">{$app.name}</option>
-                                                {/foreach}
+                                                    {foreach from=$appsTotal key=key value=app }
+                                                        {if !is_array($app)}
+                                                            <option value="{$app.label}">{$app.label}</option>
+                                                        {else}
+                                                            {foreach from=$app key=key value=app2 }
+                                                                <option value="{$app2.label}">{$app2.label}</option>
+                                                            {/foreach}
+                                                        {/if}
+                                                    {/foreach}
                                                 </select>
                                             </td>
                                             <td class="td-actions text-center">
@@ -83,9 +89,15 @@
                                         <tr>
                                             <td>
                                                 <select class="selectpicker text-center" name="appName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "application"}">
-                                                {foreach from=$appsTotal key=key value=app }
-                                                <option value="{$app.name}" {if $appOne.label == $app.name } selected {/if}>{$app.name}</option>
-                                                {/foreach}
+                                                    {foreach from=$appsTotal key=key value=app }
+                                                        {if isset($app.label)}
+                                                            <option value="{$app.label}">{$app.label}</option>
+                                                        {else}
+                                                            {foreach from=$app key=key value=app2 }
+                                                                <option value="{$app2.label}">{$app2.label}</option>
+                                                            {/foreach}
+                                                        {/if}
+                                                    {/foreach}
                                                 </select>
                                             </td>
                                             <td class="td-actions text-center">

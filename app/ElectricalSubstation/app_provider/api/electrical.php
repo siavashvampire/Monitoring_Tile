@@ -5,6 +5,7 @@ namespace App\ElectricalSubstation\app_provider\api;
 use App\api\controller\innerController;
 use app\ElectricalSubstation\model\elecsub_data_temp;
 use app\ElectricalSubstation\model\Substation;
+use App\ElectricalSubstation\model\substation_Device;
 use paymentCms\component\cache;
 use paymentCms\component\JDate;
 use paymentCms\component\model;
@@ -14,6 +15,29 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class electrical extends innerController
 {
+    public static function index(): array
+    {
+        cache::save('yes', 'isSubstation', 2592000, 'ElectricalSubstation');
+        /** @var Substation $model */
+        $model = parent::model(['ElectricalSubstation', 'Substation']);
+        return self::json($model->getItems());
+    }
+
+    public static function SubstationForDAUnits(): array
+    {
+        /** @var Substation $model */
+        $model = parent::model(['ElectricalSubstation', 'Substation']);
+        return self::json($model->search(array(), null, 'Substation item', 'CONCAT("ElectricalSubstation_", item.id) as label'));
+    }
+
+    public static function device($substation_id = 1): array
+    {
+        /** @var substation_Device $model */
+        $model = parent::model(['ElectricalSubstation', 'substation_Device']);
+        return self::json($model->getItems($substation_id));
+    }
+
+
     public static function newLog(): array
     {
         $DataArray = json_decode($_POST['DataArray']);

@@ -486,7 +486,7 @@ class sensors extends model implements modelInterFace
     public function getCount($value = array(), $variable = array())
     {
         $tableName = 'sensors item';
-        return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, 'COUNT(item.Sensor_id) as co')) [0]['co'];
+        return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, 'COUNT(item.id) as co')) [0]['co'];
     }
 
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $page = null, $field = null)
@@ -497,7 +497,7 @@ class sensors extends model implements modelInterFace
             $field[] = 'item.label';
             $field[] = 'item.unit';
             $field[] = 'units.label as unitName';
-            $field[] = 'item.phase';
+            $field[] = 'phases.label as phase';
             $field[] = 'item.Sensor_plc_id as PLC_id';
             $field[] = 'item.Active as Active';
             $field[] = 'item.tile_Count';

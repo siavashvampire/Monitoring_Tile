@@ -1,0 +1,37 @@
+﻿<div class="modal-body" id="contractContent">
+    <table class="table table-striped text-{$text_align}">
+        <thead>
+            <tr>
+                <th class="text-center">{_ "title"} {_ "form"}</th>
+                <th class="text-center">{_ "date"} {_ "Complete"}</th>
+                <th class="text-center"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {foreach from=$votesDoneForm key=key value=voteDoneForm }
+            <tr>
+                <td>
+                    {$voteDoneForm.voteName}
+                </td>
+                <td class="text-center">
+                    {if  $voteDoneForm.fillOutDate != "" }
+                        {$voteDoneForm.fillOutDate|jDate:"j F Y - H&#58;i&#58;s"}
+                    {else}
+                    {_ "notCompletedYet"}!
+                    {/if}
+                </td>
+                <td  class="text-center">
+                    <button class="btn btn-link text-info mr-2" onclick="openContractVote('{$voteDoneForm.fillOutId}')"><i class="fa fa-eye"></i></button>
+                </td>
+            </tr>
+            {foreachelse}
+                <tr>
+                    <td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>
+                </tr>
+            {/foreach}
+        </tbody>
+    </table>
+    <div class="col-md-12">
+        <button type="button" class="btn btn-warning mt-3" data-dismiss="modal">{_ "close"}</button>
+    </div>
+</div>

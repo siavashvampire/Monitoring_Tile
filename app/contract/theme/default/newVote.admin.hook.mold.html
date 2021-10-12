@@ -1,20 +1,25 @@
-﻿{map adminDashboardPanels}
+﻿{map adminHeaderNavbar}
 {if $firstFillOutIdCount}
-<a href="{url 'admin'}contractAction/fill/{$firstFillOutId}">
-    <div class="alert alert-warning text-right">
-        کاربر گرامی<br>
-        واحد اداری از شما درخواست دارد تا {$firstFillOutIdCount} فرم نظر سنجی را پر کنید. برای پر کردن فرم ها اینجا را
-        کلیک کنید.
-    </div>
-</a>
-{/if}
-{if $votesidCount}
-<a href="{url 'admin'}vote_only/{$votesid}">
-    <div class="alert alert-warning text-right">
-        کاربر گرامی<br>
-        واحد اداری از شما درخواست دارد تا {$votesidCount} فرم نظر سنجی را پر کنید. برای پر کردن فرم ها اینجا را کلیک
-        کنید.
-    </div>
-</a>
+    {if $firstFillOutIdCount == 1 }
+        <a href="{url 'admin'}contractAction/fill/{$firstFillOutId}">
+            <div class="alert alert-warning text-right">
+                کاربر گرامی<br>
+                به درخواست واحد اداری، در اسرع وقت فرم مد نظر را تکمیل کنید.
+                <br>
+                برای تکمیل کردن فرم اینجا را
+                کلیک کنید.
+            </div>
+        </a>
+    {else}
+        <a href="{url 'admin'}contractAction/listVote">
+            <div class="alert alert-warning text-right">
+                کاربر گرامی<br>
+                به درخواست واحد اداری، در اسرع وقت هر {$firstFillOutIdCount} فرم ارسال شده را تکمیل کنید.
+                <br>
+                برای تکمیل کردن فرم ها اینجا را
+                کلیک کنید.
+            </div>
+        </a>
+    {/if}
 {/if}
 {/map}

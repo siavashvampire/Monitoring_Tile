@@ -22,6 +22,18 @@ class hook extends pluginController
         $this->menu->after('users', 'evaluation', 'فرم ساز', app::getBaseAppLink('evaluation/newType', 'admin'), 'fa fa-id-badge', '', null, 'admin/evaluation/newType/contract');
         $this->menu->after('evaluation', 'evaluation_list', 'لیست ارزیابی ها', app::getBaseAppLink('evaluation/list', 'admin'), 'fa fa-list-ol', '', null, 'admin/evaluation/list/contract');
         $this->menu->after('evaluation_list', 'evaluation_insert', 'ثبت ارزیابی', app::getBaseAppLink('evaluation', 'admin'), 'fa fa-check-square-o', '', null, 'admin/evaluation/index/contract');
+        $user = user::getUserLogin();
+        $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
+
+        if ($contractsVote !== true and count($contractsVote) > 0) {
+            $this->mold->set('firstFillOutId', $contractsVote[0]['fillOutId']);
+            $this->mold->set('firstFillOutIdCount', count($contractsVote));
+
+            $getPath = $this->mold->getPath();
+            $this->mold->path('default', 'contract');
+            $this->mold->view('newVote.admin.hook.mold.html');
+            $this->mold->path($getPath['folder'], $getPath['app']);
+        }
     }
 
     public function _userProfileShowInAdmin($user, $fields)
@@ -39,6 +51,7 @@ class hook extends pluginController
 
     public function _adminDashboard()
     {
+        /*
         $user = user::getUserLogin();
         $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
 
@@ -51,6 +64,7 @@ class hook extends pluginController
             $this->mold->view('newVote.admin.hook.mold.html');
             $this->mold->path($getPath['folder'], $getPath['app']);
         }
+        */
 
 //        $Votes = model::searching([$user['userId']], ' userId	= ?', 'votes_only', '*');
 //

@@ -296,6 +296,32 @@ class contractAction extends controller
         return null;
     }
 
+    public function listVote($status = false)
+    {
+        if ($status) {
+            $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
+        }
+        $userId = user::getUserLogin(true);
+
+        model::join('contracts contracts', 'contracts.contractId =  contracts_vote.contractId');
+        model::join('user user', 'contracts.userId =  user.userId');
+        $contractsVote = model::searching([$userId], ' contracts_vote.userId	= ?  and fillOutDate is null', 'contracts_vote contracts_vote', 'user.fname,user.lname,contracts_vote.fillOutId,contracts_vote.creatDate');
+        if ($contractsVote !== true and count($contractsVote) == 0) {
+            Response::redirect(app::getBaseAppLink('home', 'admin'));
+            return null;
+        }
+        if ($contractsVote !== true and count($contractsVote) == 1) {
+            Response::redirect(app::getBaseAppLink('contractAction/fill/' . $contractsVote[0]['fillOutId'] , 'admin'));
+            return null;
+        }
+        if ($contractsVote !== true and count($contractsVote) > 1)
+            $this->mold->set('contractsVote', $contractsVote);
+
+        $this->mold->path('default', 'contract');
+        $this->mold->view('financeDepartmentList.mold.html');
+        $this->mold->setPageTitle(rlang('Polls'));
+    }
+
     public function fill($voteFillId, $status = false)
     {
         if ($status) {
@@ -336,12 +362,9 @@ class contractAction extends controller
             return null;
         }
         if ($goNext and $contractsVote !== true and count($contractsVote) >= 1) {
-            Response::redirect(app::getBaseAppLink('contractAction/fill/' . $contractsVote[0]['fillOutId'] . '/1', 'admin'));
+            Response::redirect(app::getBaseAppLink('contractAction/listVote/1', 'admin'));
             return null;
         }
-        if ($contractsVote !== true and count($contractsVote) > 1)
-            $this->mold->set('contractsVote', $contractsVote);
-
 
         $this->mold->set('user', user::getUserById($contract->getUserId()));
 

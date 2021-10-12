@@ -232,4 +232,31 @@ class CamSwitch extends model implements modelInterFace {
 	public function setRenderCheck($RenderCheck) {
 		$this->RenderCheck = $RenderCheck;
 	}
+
+    public function getCount($value = array(), $variable = array())
+    {
+        $tableName = 'CamSwitch item';
+        return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, 'COUNT(item.id) as co')) [0]['co'];
+    }
+
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $page = null, $field = null)
+    {
+        if ($field == null) {
+            $field = array();
+            $field[] = 'item.id';
+            $field[] = 'item.label';
+            $field[] = 'item.unit';
+            $field[] = 'units.label as unitName';
+            $field[] = 'phases.label as phase';
+            $field[] = 'item.Switch_plc_id as PLC_id';
+            $field[] = 'item.Active as Active';
+        }
+
+        $field = implode(',', $field);
+        $table = 'CamSwitch item';
+
+        parent::join('units units', 'units.id = item.unit ');
+        parent::join('phases phases', 'phases.id = item.phase ');
+        return parent::search($value, implode(' and ', $variable), $table, $field, $sortWith, $page);
+    }
 }

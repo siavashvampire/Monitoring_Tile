@@ -3,6 +3,7 @@
 namespace App\LineMonitoring\app_provider\api;
 
 use App\api\controller\innerController;
+use App\LineMonitoring\model\sensors;
 use paymentCms\component\cache;
 use paymentCms\component\request;
 
@@ -14,6 +15,8 @@ class sensor extends innerController
     {
         $get = request::post('unitId , phase', null);
         $appName = ['LineMonitoring', 'sensors'];
+        /** @var sensors $model */
+        $model = parent::model($appName);
 
         $order = ['column' => 'item.showSort', 'type' => 'asc'];
 
@@ -49,6 +52,6 @@ class sensor extends innerController
             $page = null;
 
         cache::save('yes', 'isTileKindUpdate', 2592000, 'LineMonitoring');
-        return self::json(parent::model($appName)->getItems($value, $variable, $order, $page));
+        return self::json($model->getItems($value, $variable, $order, $page));
     }
 }

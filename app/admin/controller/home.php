@@ -5,10 +5,11 @@ namespace App\admin\controller;
 
 use App;
 use App\core\controller\fieldService;
+use App\LineMonitoring\app_provider\api\cam_switch;
+use App\LineMonitoring\app_provider\api\sensor;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
-use paymentCms\component\model;
 
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -55,30 +56,15 @@ class home extends controller
         }
         if ($unitId) {
             $value[] = $unitId;
-            $variable[] = ' sensors.unit = ? ';
+            $variable[] = ' item.unit = ? ';
         }
         if ($phase) {
             $value[] = $phase;
-            $variable[] = ' sensors.phase = ? ';
+            $variable[] = ' item.phase = ? ';
         }
-        $value[] = 0;
-        $value[] = 0;
-        $value[] = 0;
-        $variable[] = ' sensors.Sensor_plc_id <> ? ';
-        $variable[] = ' sensors.OffTime <> ? ';
-        $variable[] = ' sensors.isVirtual = ? ';
-        $model = parent::model(['LineMonitoring', 'sensors']);
-        $model->join('units units', 'units.id = sensors.unit ');
-        $sensor = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensors sensors', 'sensors.label , sensors.phase ,sensors.Active , units.label as unitName', ['column' => 'sensors.showSort', 'type' => 'asc']);
 
-        $value = array();
-        $variable = array();
-        $value[] = 0;
-        $variable[] = ' CamSwitch.Switch_plc_id <> ? ';
-        $model = parent::model(['LineMonitoring', 'CamSwitch']);
-        $model->join('units units', 'units.id = CamSwitch.unit ');
-        $switch = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'CamSwitch CamSwitch', 'CamSwitch.*,units.label as unitName', ['column' => 'CamSwitch.Switch_plc_id', 'type' => 'desc']);
-//        show($switch);
+        $sensor = sensor::index($value,$variable)["result"];
+        $switch = cam_switch::index($value,$variable)["result"];
 
         $this->mold->set('sensors', $sensor);
         $this->mold->set('Switchs', $switch);

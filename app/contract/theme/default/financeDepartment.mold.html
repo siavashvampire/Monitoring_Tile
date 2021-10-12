@@ -14,24 +14,13 @@
                             <div class="col-md-12">
                                 <div class="text-right text-bold">
                             شما در حال پر کردن نظر سنجی در ارتباط با کاربر «
-                                <a href="{url 'admin'}users/profile/{$user->getUserId}" target="_blank"> {$user->getFname()} {$user->getLname()} </a>
+                                <a href="{url 'admin'}users/profile/{$user->getUserId()}" target="_blank"> {$user->getFname()} {$user->getLname()} </a>
                             » می باشید.
                                 </div>
-                            </div>
-                            {if isset($contractsVote)}
-                            <div class="col-md-6">
-                                <label class="col-md-6 col-form-label">نظرسنجی راجب کاربر :</label>
-                                <div class="col-md-6">
-                                   <div class="form-group has-default">
-                                       <select class="selectpicker selectpickerNotRefresh" name="fillOutId" onchange="changeVote(this);" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" >
-                                           {foreach from=$contractsVote key=key value=contractVote }
-                                           <option value="{$contractVote.fillOutId}"  {if $voteFillId == $contractVote.fillOutId }selected{/if}>{$contractVote.fname} {$contractVote.lname}</option>
-                                           {/foreach}
-                                       </select>
-                                   </div>
+                                <div class="text-bold pointer" onclick="openContractView('{$user->getUserId()}','{$contractVote->getContractId()}')">
+                                    <span><i class="fa fa-check-square-o"></i> نمایش نظرات دیگران </span>
                                 </div>
                             </div>
-                            {/if}
                         </div>
                         <form class="form-horizontal" method="post"  onsubmit="return confirm('آیا از ثبت نظر خود اطمینان دارید؟ (نظر نهایی قابلیت ویرایش ندارد!)');" >
 
@@ -59,12 +48,56 @@
 </div>
 
 
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contractContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="voteContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {map footerjs}
 <script>
-    var adminUrl = "{url 'admin'}";
-    function changeVote(element) {
-        var valueAcc = $(element).find(":selected").val();
-        window.location.href =adminUrl + 'contractAction/fill/' + valueAcc;
+    var urlc = '{url current}' ;
+    var urlAdmin = "{url 'admin'}" ;
+    var urlTheme= "{url themeBase}" ;
+    var userId = "{$user->getUserId()}" ;
+    var div = '{$loadDivID}' ;
+    function openContractView(id){
+        ajaxRunUrlHtml(urlAdmin+'contractAction/otherVoted/'+id + '/' + , '#contractContent' , 'openModule');
+    }
+    function openContractVote(id){
+        ajaxRunUrlHtml(urlAdmin+'contractAction/showFillVote/'+id, '#voteContent' , 'openModule2');
+    }
+    function  openModule() {
+        $('#exampleModal').modal('show');
+        $('#exampleModal2').modal('hide');
+    }
+    function  openModule2() {
+        $('#exampleModal2').modal('show');
     }
 </script>
 {/map}

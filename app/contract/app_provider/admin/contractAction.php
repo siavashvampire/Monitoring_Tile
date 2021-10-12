@@ -102,6 +102,27 @@ class contractAction extends controller
         $this->mold->view('contracts.viewAjax.mold.html');
     }
 
+    public function otherVoted( $userId , $contractId )
+    {
+        $user = user::getUserById($userId);
+        if ($user->getUserId() == null) {
+            httpErrorHandler::E404();
+            return false;
+        }
+        /* @var contracts $contract */
+        $contract = $this->model(['contract', 'contracts'], $contractId);
+        if ($contract->getContractId() != $contractId or $contract->getUserId() != $user->getUserId()) {
+            httpErrorHandler::E404();
+            return false;
+        }
+        model::join('vote vote', 'vote.voteId = contracts_vote.voteId');
+        $votesDoneForm = model::searching([$contract->getContractId()], ' contracts_vote.contractId = ? ', 'contracts_vote contracts_vote', '*');
+        if (count($votesDoneForm) == 0) $votesDoneForm = true;
+        $this->mold->set('votesDoneForm', $votesDoneForm);
+        $this->mold->path('default', 'contract');
+        $this->mold->view('contractsVoted.viewAjax.mold.html');
+    }
+
     public function printContract($userId, $contractId)
     {
         $user = user::getUserById($userId);
@@ -213,7 +234,7 @@ class contractAction extends controller
                 }
             }
 
-            $usersShouldSearch = model::searching([$user->getUserGroupId()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+            $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
             if ($unitId != null and $phase != null and count($usersShouldSearch) > 0) {
                 foreach ($usersShouldSearch as $index => $userSearched) {
                     $tempUserFindUnit = null;
@@ -273,8 +294,8 @@ class contractAction extends controller
             }
             unset($usersShouldSearch);
         } else {
-            $user = user::getUserById($contract->getUserId());
-            $usersShouldSearch = model::searching([$user->getUserGroupId()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+            //$user = user::getUserById($contract->getUserId());
+            $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
             if (count($usersShouldSearch) > 0) {
                 $userFind = $usersShouldSearch[0]['userId'];
             }
@@ -367,6 +388,7 @@ class contractAction extends controller
         }
 
         $this->mold->set('user', user::getUserById($contract->getUserId()));
+        $this->mold->set('contractVote', $contractVote);
 
         $fields = fieldService::getFieldsToFillOut($contractVote->getVoteId(), 'contract_vote', $this->mold);
 //		show($fields);

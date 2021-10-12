@@ -63,7 +63,7 @@
                                                 {elseif $app.status == 'active' }
                                                 {if ! ($appName == 'admin' or $appName == 'core' or $appName == 'api' or $appName == 'user') }
                                                 <a class="btn btn-danger m-1" href="{url}plugins/deActive/{$appName}">
-                                                    <i class="fa fa-floppy-o mr-1 ml-1"></i> {_ "deActive"}
+                                                    <i class="fa fa-floppy-o mr-1 ml-1"></i> {_ "deActiveing"}
                                                 </a>
                                                 {/if}
                                                 {/if}
@@ -107,7 +107,7 @@
                                                 </a>
                                                 {elseif $plugin.status == 'active' }
                                                 <a class="btn btn-danger m-1" href="{url}plugins/deActivePlugin/{$pluginName}">
-                                                    <i class="fa fa-floppy-o mr-1 ml-1"></i> {_ "deActive"}
+                                                    <i class="fa fa-floppy-o mr-1 ml-1"></i> {_ "deActiveing"}
                                                 </a>
                                                 {/if}
                                             </td>

@@ -195,3 +195,6 @@ UPDATE `per_sensor_active_log` SET `phase`=1 WHERE `phase`=3;
 UPDATE `per_sensor_active_log` SET `phase`=2 WHERE `phase`=7;
 UPDATE `per_sensor_active_log` SET `phase`=3 WHERE `phase` = 'سایر';
 ALTER TABLE `per_sensor_active_log` CHANGE `phase` `phase` INT(11) NOT NULL;
+
+DELETE FROM `test`.`per_field` WHERE  `fieldId`=5;
+DELETE FROM `test`.`per_field` WHERE  `fieldId`=6;

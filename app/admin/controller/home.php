@@ -30,13 +30,6 @@ class home extends controller
         if ($update['update']['needUpdate'])
             $this->alert('danger', rlang('update'), rlang('needUpdate'), 'autorenew');
 
-        $this->mold->set('tabOne', $update['panel1']);
-        $this->mold->set('tabTwo', $update['panel2']);
-        $this->mold->view('home.mold.html');
-        $this->mold->setPageTitle(rlang('dashboard'));
-        $this->mold->set('activeMenu', 'dashboard');
-        $this->callHooks('adminDashboard');
-
         $value = array();
         $variable = array();
 
@@ -68,6 +61,14 @@ class home extends controller
 
         $this->mold->set('sensors', $sensor);
         $this->mold->set('Switchs', $switch);
+
+        $this->mold->set('tabOne', $update['panel1']);
+        $this->mold->set('tabTwo', $update['panel2']);
+        $this->mold->view('home.mold.html');
+        $this->mold->setPageTitle(rlang('dashboard'));
+        $this->mold->set('activeMenu', 'dashboard');
+        $this->callHooks('adminDashboard');
+
 
 
     }

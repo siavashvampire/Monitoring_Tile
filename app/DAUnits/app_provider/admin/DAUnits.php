@@ -150,8 +150,8 @@ class DAUnits extends controller
 
 
         }
-
-        $this->mold->set('appsTotal', App::appsListWithPLC());
+        show(parent::callHooks('need_plc'));
+        $this->mold->set('appsTotal', parent::callHooks('need_plc'));
         $this->mold->set('types', parent::model('DAUnits_Type')->getType());
         $this->mold->path('default', 'DAUnits');
         $this->mold->set('activeMenu', 'DAUnits');

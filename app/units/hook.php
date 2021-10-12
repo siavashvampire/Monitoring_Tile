@@ -10,8 +10,8 @@ class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
 //        $this->menu->after('configurationLine', 'configurationManufactor', 'تنظیمات کارخانه', "#", 'fa fa-building-o ', '',null,  'admin/off_sensor_reasons/lists/LineMonitoring');
 
-//        $this->menu->addChild('configurationManufactor', 'Units', 'واحد‌های کارخانه', app::getBaseAppLink('units', 'admin'), 'fa fa-columns', '',  'admin/units/index/units');
-        $this->menu->after('users', 'Units', 'واحد‌های کارخانه', app::getBaseAppLink('units', 'admin'), 'fa fa-columns', '',  null,'admin/units/index/units');
+        $this->menu->addChild('configurationManufactor', 'Units', 'واحد‌های کارخانه', app::getBaseAppLink('units', 'admin'), 'fa fa-columns', '',  'admin/units/index/units');
+//        $this->menu->after('users', 'Units', 'واحد‌های کارخانه', app::getBaseAppLink('units', 'admin'), 'fa fa-columns', '',  null,'admin/units/index/units');
 
     }
 

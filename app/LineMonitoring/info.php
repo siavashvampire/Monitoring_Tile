@@ -6,7 +6,6 @@ return [
 		'version' => '1.0.0.0',
 		'author' => 'Siavash Sepahi',
 		'support' => '09379206248',
-        'PLCNeed' => true,
 	],
 	'configuration' => [
 		'wsPort' => [

@@ -61,7 +61,6 @@ class hook extends pluginController
         $this->menu->addChild('configurationManufactor', 'off_sensor_reasons', 'تنظیمات علت توقفات', app::getBaseAppLink('off_sensor_reasons', 'admin'), 'fa fa-file-text-o', '',  'admin/off_sensor_reasons/lists/LineMonitoring');
 
         $this->menu->addChild('configurationManufactor', 'diagramSetting', 'تنظیمات نقشه‌های کارخانه', app::getBaseAppLink('diagram', 'admin'), 'fa fa-map-signs', '',  'admin/diagram/index/LineMonitoring');
-
     }
 
     /*
@@ -215,4 +214,9 @@ class hook extends pluginController
 
         return $should_update;
     }
+    public function _need_plc()
+    {
+        return "LineMonitoring";
+    }
+
 }

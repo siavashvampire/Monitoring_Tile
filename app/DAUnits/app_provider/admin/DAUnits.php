@@ -150,7 +150,7 @@ class DAUnits extends controller
 
 
         }
-        show(parent::callHooks('need_plc'));
+//        show( parent::callHooks('need_plc'));
         $this->mold->set('appsTotal', parent::callHooks('need_plc'));
         $this->mold->set('types', parent::model('DAUnits_Type')->getType());
         $this->mold->path('default', 'DAUnits');

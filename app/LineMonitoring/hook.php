@@ -216,7 +216,7 @@ class hook extends pluginController
     }
     public function _need_plc()
     {
-        return "LineMonitoring";
+        return ["label" => "LineMonitoring"];
     }
 
 }

@@ -121,15 +121,15 @@ class sensorlog extends controller {
             $value2[] = $unitId;
             $valueForUnit[] = $unitId;
             $variable[] = ' data.unit = ? ';
-            $variable2[] = ' unitId = ? ';
-            $variableForUnit[] = ' unitId = ? ';
+            $variable2[] = ' item.unit = ? ';
+            $variableForUnit[] = ' item.id = ? ';
             $get['unitId'] = null;
         }
         if ($phase) {
             $value[] = $phase;
             $value2[] = $phase;
             $variable[] = ' data.phase = ? ';
-            $variable2[] = ' phase = ? ';
+            $variable2[] = ' item.phase = ? ';
             $get['phase'] = null;
         }
         if ( $get['groupId'] != null ) {
@@ -146,13 +146,13 @@ class sensorlog extends controller {
 			$value[] = $get['phase'] ;
 			$value2[] = $get['phase'] ;
 			$variable[] = ' data.phase = ? ';
-			$variable2[] = ' phase = ? ';
+			$variable2[] = ' item.phase = ? ';
 		}
 		if ( $get['unitId'] != null ) {
 			$value[] = $get['unitId'] ;
 			$value2[] = $get['unitId'] ;
 			$variable[] = ' data.unit = ? ';
-			$variable2[] = ' unitId = ? ';
+			$variable2[] = ' item.unit = ? ';
 		}
         
 		$sortWith = [['column' => 'sensors.showSort' , 'type' =>'asc']];
@@ -186,7 +186,7 @@ class sensorlog extends controller {
         $value[] = -1 ;
 		$variable[] = ' ((data.Shift_id = ? and data.Shift_group_id = ? ) or (data.Shift_id = ?))';
         
-		$variable2[] = ' Sensor_plc_id <> ? ';
+		$variable2[] = ' item.Sensor_plc_id <> ? ';
 		$value2[] = 0;
 		/* @var data $model */
 		$model = parent::model('data');
@@ -240,8 +240,7 @@ class sensorlog extends controller {
         $this->mold->set('logs' , $search);
 		$this->mold->set('access' , $Sensors);
 		$this->mold->set('tiles'  , tiles::index()["result"]);
-		$units = $model->search((array) $valueForUnit  ,  ( ( count($variableForUnit) == 0 ) ? null : implode(' and ' , $variableForUnit) ), 'units', '*', ['column' => 'label', 'type' => 'asc']);
-        $this->mold->set('units', units::index()["result"]);
+		$this->mold->set('units', units::index($valueForUnit,$variableForUnit)["result"]);
         $this->mold->set('phases', phases::index()["result"]);
 
         $value = array( );

@@ -96,23 +96,17 @@
                                             </td>
                                             <td>
                                                 <div class="form-group has-default">
-                                                    <label>
                                                         <input type="number" min="1" class="form-control text-center" name="unitId[]" value="{$deviceId2.unitId}">
-                                                    </label>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group has-default">
-                                                    <label>
                                                         <input type="text" class="form-control text-center" name="deviceName[]" value="{$deviceId2.Name}">
-                                                    </label>
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="form-group has-default">
-                                                    <label>
-                                                        <input type="number" min="1" class="form-control text-center" name="refreshTime[]" value="{$deviceId2.refreshTime}">
-                                                    </label>
+                                                    <input type="number" min="1" class="form-control text-center" name="refreshTime[]" value="{$deviceId2.refreshTime}">
                                                 </div>
                                             </td>
                                             <td class="td-actions text-center">
@@ -154,7 +148,10 @@
 {/map}
 {map navBarButton}
 <a class="btn btn-info"  href="{url admin}Substation/List">
-                      <span class="btn-label">
+                      <span class="btn-
+
+
+">
                         <i class="fa fa-plus"></i>
                       </span>
     {_ "backTo"} {_ "list"} {_ "Substation"}

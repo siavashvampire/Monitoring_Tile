@@ -63,7 +63,6 @@ class contacts extends controller
 
     public function index($id = null)
     {
-
         $get = request::post('name,Phone,send_allow,Access,unit,phase,type', null);
         if ($id != null) {
             $model = parent::model('phone', $id);

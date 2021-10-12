@@ -187,11 +187,27 @@ INSERT IGNORE INTO `per_units` (`id`, `label`) VALUES
     (-2, 'پشتیبانی IT');
 
 UPDATE `per_camswitch` SET `phase` = '2' WHERE `per_camswitch`.`id` = 1;
-UPDATE `per_switch_active_log_archive` SET `phase`=2;
-UPDATE `per_switch_active_log` SET `phase`=2;
 
+UPDATE `per_switch_active_log_archive` SET `phase`=1 WHERE `phase`=3;
+UPDATE `per_switch_active_log_archive` SET `phase`=2 WHERE `phase`=7;
+UPDATE `per_switch_active_log_archive` SET `phase`=3 WHERE `phase` = 'سایر';
+
+UPDATE `per_switch_active_log` SET `phase`=1 WHERE `phase`=3;
+UPDATE `per_switch_active_log` SET `phase`=2 WHERE `phase`=7;
+UPDATE `per_switch_active_log` SET `phase`=3 WHERE `phase` = 'سایر';
 
 UPDATE `per_sensor_active_log` SET `phase`=1 WHERE `phase`=3;
 UPDATE `per_sensor_active_log` SET `phase`=2 WHERE `phase`=7;
 UPDATE `per_sensor_active_log` SET `phase`=3 WHERE `phase` = 'سایر';
-ALTER TABLE `per_sensor_active_log` CHANGE `phase` `phase` INT(11) NOT NULL;
+
+UPDATE `per_sensor_active_log_merge` SET `phase`=1 WHERE `phase`=3;
+UPDATE `per_sensor_active_log_merge` SET `phase`=2 WHERE `phase`=7;
+UPDATE `per_sensor_active_log_merge` SET `phase`=3 WHERE `phase` = 'سایر';
+
+UPDATE `per_sensor_active_log_archive` SET `phase`=1 WHERE `phase`=3;
+UPDATE `per_sensor_active_log_archive` SET `phase`=2 WHERE `phase`=7;
+UPDATE `per_sensor_active_log_archive` SET `phase`=3 WHERE `phase` = 'سایر';
+
+UPDATE `per_sensors` SET `phase`=1 WHERE `phase`=3;
+UPDATE `per_sensors` SET `phase`=2 WHERE `phase`=7;
+UPDATE `per_sensors` SET `phase`=3 WHERE `phase` = 'سایر';

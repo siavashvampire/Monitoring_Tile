@@ -96,6 +96,7 @@ class contractAction extends controller
             $fields = fieldService::getFieldsToFillOut($user->getUserGroupId(), 'contract_with_user', $this->mold);
         }
 
+        $this->mold->set('showVote', isset($_GET['voteShow']));
         $this->mold->set('user', $user);
         $this->mold->path('default', 'contract');
         $this->mold->view('contracts.viewAjax.mold.html');

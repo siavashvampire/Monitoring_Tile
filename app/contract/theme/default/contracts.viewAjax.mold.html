@@ -9,12 +9,12 @@
                 {if isset($contract)}
                 <ul class="nav nav-pills nav-pills-warning" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#linkView" data-toggle="tab" role="tablist" >
+                        <a class="nav-link {if !$showVote}active{/if}" href="#linkView" data-toggle="tab" role="tablist" >
                             {_ "contract"}
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#linkVotes" data-toggle="tab" role="tablist"  >
+                        <a class="nav-link {if $showVote}active{/if}" href="#linkVotes" data-toggle="tab" role="tablist"  >
                             {_ "list"} {_ "Polls"} {_ "in"} {_ "in"} {_ "Respective"}
                         </a>
                     </li>
@@ -27,7 +27,7 @@
                 {/if}
                 <div class="tab-content tab-space">
                     {if isset($contract)}
-                    <div class="tab-pane active" id="linkView">
+                    <div class="tab-pane {if !$showVote}active{/if}" id="linkView">
                         <table class="table table-striped text-{$text_align}">
                             <tr>
                                 <td>
@@ -121,8 +121,8 @@
                             <button type="button" class="btn btn-warning mt-3" data-dismiss="modal">{_ "close"}</button>
                         </div>
                     </div>
-                    <div class="tab-pane" id="linkVotes">
-                        <form method="post" id="sendNewVote" action="{url 'admin'}contractAction/sendVote/{$contract->getContractId()}" onsubmit="return ajaxThisFormGetHtml('#sendNewVote', '.modal-body' , false , false , '');" >
+                    <div class="tab-pane {if $showVote}active{/if}" id="linkVotes">
+                        <form method="post" id="sendNewVote" action="{url 'admin'}contractAction/sendVote/{$contract->getContractId()}" onsubmit="if(confirm('{_ "are_You_sure"}')){return ajaxThisFormGetHtml('#sendNewVote', '.modal-body' , false , false , ''); }else return false " >
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <label for="startDate" class="col-form-label float-right">{_ "send"} {_ "request"} {_ "Poll"}:</label>
@@ -131,6 +131,7 @@
                             <div class="col-md-5">
                                 <div class="form-group">
                                     <select class="selectpicker selectpickerNotRefresh" name="voteId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}">
+                                        <option selected>-</option>
                                         {foreach from=$votesForm key=key value=voteForm }
                                         <option value="{$voteForm.voteId}"  >{$voteForm.voteName}</option>
                                         {/foreach}

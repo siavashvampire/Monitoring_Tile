@@ -204,7 +204,7 @@ class contract extends controller {
 		$this->mold->view('contracts.user.mold.html');
 	}
 	public function list(){
-        $get = request::all('page=1,perEachPage=25,contractStartFrom,contractStartUntil,contractEndFrom,contractEndUntil,groupId,status' ,null);
+        $get = request::all('page=1,perEachPage=25,contractStartFrom,contractStartUntil,contractEndFrom,contractEndUntil,groupIds,status' ,null);
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -243,15 +243,17 @@ class contract extends controller {
                 $variable[] = ' c.endDate between ? And ? ';
             }
 
-            if ( $get['groupId'] != null ) {
-                $value = array_merge($value , $get['groupId']) ;
+            if ( $get['groupIds'] != null ) {
+                $value = array_merge($value , $get['groupIds']) ;
                 $value[] = 0 ;
-                $variable[] = 'c.contractGroup In ( '. str_repeat('? ,', count($get['groupId'])).' ? )' ;
+                $variable[] = 'c.contractGroup In ( '. str_repeat('? ,', count($get['groupIds'])).' ? )' ;
             }
-            if ( $get['status'] == "0" ) {
-                $variable[] = 'NOW() NOT between c.startDate and c.endDate' ;
-            } else {
-                $variable[] = 'NOW() between c.startDate and c.endDate' ;
+            if ( $get['status'] != "all") {
+                if ($get['status'] == "0") {
+                    $variable[] = 'NOW() NOT between c.startDate and c.endDate';
+                } else {
+                    $variable[] = 'NOW() between c.startDate and c.endDate';
+                }
             }
         }
 
@@ -269,8 +271,8 @@ class contract extends controller {
         $pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
         model::join('user_group ug', ' c.contractGroup = ug.user_groupId ', "LEFT");
         model::join('user u', ' c.userId = u.userId ', "LEFT");
-        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'contracts c', 'c.*,u.fname,u.lname,u.email,ug.name'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
-
+        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'contracts c', 'c.*,u.fname,u.lname,u.email,ug.name, IF(NOW() between c.startDate and c.endDate, "1", "0") as status'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+        //show(model::getLastQuery());
         $this->mold->path('default', 'contract');
         $this->mold->view('contractList.mold.html');
         $this->mold->setPageTitle(rlang('contracts'));

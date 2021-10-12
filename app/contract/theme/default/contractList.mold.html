@@ -57,10 +57,9 @@
                                         <label class="col-md-3 col-form-label">{_ "contract_for"}</label>
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
-                                                <select class="selectpicker" multiple data-live-search="true" name="groupId[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
-                                                    <option value="" selected >{_ "all"}</option>
+                                                <select class="selectpicker" multiple data-live-search="true" name="groupIds[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
                                                     {foreach from=$access key=key value=access_item }
-                                                    <option value="{$access_item.user_groupId}"  >{$access_item.name}</option>
+                                                    <option value="{$access_item.user_groupId}" >{$access_item.name}</option>
                                                     {/foreach}
                                                 </select>
                                             </div>
@@ -71,6 +70,7 @@
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
                                                 <select class="selectpicker" name="status" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'status'}">
+                                                    <option value="all" >{_ "all"}</option>
                                                     <option value="1" selected >{_ "active"}</option>
                                                     <option value="0" >{_ "deActive"}</option>
                                                 </select>
@@ -104,7 +104,6 @@
                             <table class="table text-{$text_align}">
                                 <thead>
                                 <tr>
-<!--                                    <th class="text-center"></th>-->
                                     <th style="width: 12%">{_ "firstName"}</th>
                                     <th style="width: 15%">{_ "lastName"}</th>
                                     <th style="width: 15%">{_ "email"}</th>
@@ -112,27 +111,22 @@
                                     <th style="width: 15%">{_ "date"} {_ "end"}</th>
                                     <th style="width: 20%">{_ "contract_for"}</th>
                                     <th style="width: 20%">{_ "status"}</th>
-                                    <th style="width: 3%"></th>
+                                    <th style="width: 20%"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$contracts key=key value=contract}
                                 <tr>
-<!--                                    <td class="text-center">{$user.userId}</td>-->
-                                    <td>{$contract.fname}</td>
-                                    <td>{$contract.lname}</td>
+                                    <td><a href="{url admin}users/profile/{$contract.userId}" target="_blank">{$contract.fname}</a></td>
+                                    <td><a href="{url admin}users/profile/{$contract.userId}" target="_blank">{$contract.lname}</a></td>
                                     <td>{$contract.email}</td>
-                                    <td>{$contract.start|jDate:"j F, Y"}</td>
-                                    <td>{$contract.end|jDate:"j F, Y"}</td>
+                                    <td>{$contract.startDate|jDate:"j F, Y"}</td>
+                                    <td>{$contract.endDate|jDate:"j F, Y"}</td>
                                     <td>{$contract.name}</td>
-                                    <td>{$contract.status}</td>
+                                    <td>{if $contract.status}{_ "active"}{else}{_ "deActive"}{/if}</td>
                                     <td class="td-actions text-right">
-                                        <a class="btn btn-info btn-link" href="{url}users/profile/{$user.userId}" target=_blank>
-                                            <i class="material-icons">remove_red_eye</i>
-                                        </a>
-                                        <a class="btn btn-info btn-link" href="{url}users/profile/{$user.userId}" target=_blank>
-                                            <i class="material-icons">remove_red_eye</i>
-                                        </a>
+                                        <button class="btn btn-link text-info mr-2" onclick="openContractView('{$contract.userId}','{$contract.contractId}')"><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-link text-info mr-2" onclick="openContractViewForVote('{$contract.userId}','{$contract.contractId}')"><i class="fa fa-check-square-o"></i></button>
                                     </td>
                                 </tr>
                                 {foreachelse}
@@ -150,3 +144,70 @@
         </div>
     </div>
 </div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="contractContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="voteContent">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map footerjs}
+<script>
+    var urlc = '{url current}' ;
+    var urlAdmin = "{url 'admin'}" ;
+    var urlTheme= "{url themeBase}" ;
+    var div = '{$loadDivID}' ;
+    function openContractView(userId,id){
+        ajaxRunUrlHtml(urlAdmin+'contractAction/'+userId+'/'+id, '#contractContent' , 'openModule');
+    }
+    function openContractViewForVote(userId,id){
+        ajaxRunUrlHtml(urlAdmin+'contractAction/'+userId+'/'+id+'?voteShow=1', '#contractContent' , 'openModule');
+    }
+    function openContractVote(id){
+        ajaxRunUrlHtml(urlAdmin+'contractAction/showFillVote/'+id, '#voteContent' , 'openModule2');
+    }
+    function  openModule() {
+        $('#exampleModal').modal('show');
+        $('#exampleModal2').modal('hide');
+    }
+    function  openModule2() {
+        $('#exampleModal2').modal('show');
+    }
+    function printDiv(divName) {
+        var divToPrint=document.getElementById(divName);
+        var newWin=window.open('','Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><meta charset="utf-8" /><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>' +
+            '<link href="'+urlTheme+'assets/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css" rel="stylesheet">\n' +
+            '<link href="'+urlTheme+'assets/css/material-dashboard.minf066.css?v=2.1.0" rel="stylesheet" />' +
+            '<body onload="window.print()" class="rtl text-right">'+divToPrint.innerHTML+'</body></html>');
+        newWin.document.close();
+        setTimeout(function(){newWin.close();},10);
+    }
+</script>
+{/map}

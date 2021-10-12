@@ -1,0 +1,47 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header card-header-info card-header-icon">
+            <div class="card-icon" >
+              <i class="fa fa-check-square-o fa-2x"></i>
+            </div>
+            <h4 class="card-title float-{$float} m-3">{_ "Pols"}</h4>
+          </div>
+          <div class="card-body">
+            <table class="table table-striped text-{$text_align}">
+              <thead>
+              <tr>
+                <th class="text-center">{_ "name"}</th>
+                <th class="text-center">{_ "date"} {_ "Creation"}</th>
+                <th class="text-center"></th>
+              </tr>
+              </thead>
+              <tbody>
+              {foreach from=$contractsVote key=key value=contractVote }
+              <tr>
+                <td>
+                  {$contractVote.fname} {$contractVote.lname}
+                </td>
+                <td class="text-center">
+                  {$contractVote.creatDate|jDate:"j F Y - H&#58;i&#58;s"}
+                </td>
+                <td  class="text-center">
+                  <a class="btn btn-link text-info mr-2" href="{url 'admin'}contractAction/fill/{$contractVote.fillOutId}"><i class="fa fa-eye"></i></a>
+                </td>
+              </tr>
+              {foreachelse}
+              <tr>
+                <td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>
+              </tr>
+              {/foreach}
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

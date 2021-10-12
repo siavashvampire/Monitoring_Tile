@@ -12,7 +12,7 @@ class Switch_active_log extends model implements modelInterFace {
 	private $primaryKey = null;
 	private $primaryKeyShouldNotInsertOrUpdate = null;
 	private $ActivityId ;
-	private $id ;
+	private $Switch_id ;
 	private $Start_time;
 	private $JStart_time ;
 	private $End_Time ;
@@ -28,7 +28,7 @@ class Switch_active_log extends model implements modelInterFace {
 
 	public function setFromArray($result) {
 		$this->ActivityId = $result['ActivityId'] ;
-		$this->id = $result['id'] ;
+		$this->Switch_id = $result['Switch_id'] ;
 		$this->Start_time = $result['Start_time'] ;
 		$this->JStart_time = $result['JStart_time'] ;
 		$this->End_Time = $result['End_Time'] ;
@@ -44,7 +44,7 @@ class Switch_active_log extends model implements modelInterFace {
 	}
 
 	public function returnAsArray( ) {
-		$array['id'] = $this->id ;
+		$array['Switch_id'] = $this->Switch_id ;
 		$array['ActivityId'] = $this->ActivityId ;
 		$array['Start_time'] = $this->Start_time ;
 		$array['JStart_time'] = $this->JStart_time ;
@@ -67,14 +67,6 @@ class Switch_active_log extends model implements modelInterFace {
 
 	public function getPrimaryKeyShouldNotInsertOrUpdate(){
 		return $this->primaryKeyShouldNotInsertOrUpdate;
-	}
-
-	public function getId(){
-		return $this->id;
-	}
-
-	public function setId($id){
-		$this->id = $id;
 	}
 
 	public function getStart_time(){
@@ -202,4 +194,20 @@ class Switch_active_log extends model implements modelInterFace {
 	public function setUnit($unitId) {
 		$this->unitId = $unitId;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getSwitchId()
+    {
+        return $this->Switch_id;
+    }
+
+    /**
+     * @param mixed $Switch_id
+     */
+    public function setSwitchId($Switch_id): void
+    {
+        $this->Switch_id = $Switch_id;
+    }
 }

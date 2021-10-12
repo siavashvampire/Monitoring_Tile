@@ -185,3 +185,7 @@ INSERT IGNORE INTO `per_units` (`id`, `label`) VALUES
     (-3, 'مدیران'),
     (-1, 'پشتیبانی فنی'),
     (-2, 'پشتیبانی IT');
+
+UPDATE `per_camswitch` SET `phase` = '2' WHERE `per_camswitch`.`id` = 1;
+UPDATE `per_switch_active_log_archive` SET `phase`=2;
+UPDATE `per_switch_active_log` SET `phase`=2;

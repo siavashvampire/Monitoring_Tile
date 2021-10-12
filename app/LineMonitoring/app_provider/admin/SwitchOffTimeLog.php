@@ -4,6 +4,7 @@ namespace App\LineMonitoring\app_provider\admin;
 use App\core\controller\fieldService;
 use App\LineMonitoring\app_provider\api\phases;
 use App\LineMonitoring\model\sensor_active_log_archive;
+use App\LineMonitoring\model\switch_active_log_archive;
 use App\units\app_provider\api\units;
 use App\user\app_provider\api\user;
 use controller;
@@ -78,7 +79,7 @@ class SwitchOffTimeLog extends controller {
 		} else {
 			if ($get['groupId'] != null) {
 				$value[] = $get['groupId'];
-				$variable[] = ' data.Sensor_id = ? ';
+				$variable[] = ' data.Switch_id = ? ';
 			}
 			if ($get['StartTime'] != null and $get['EndTime'] == null) {
 				$value[] = date('Y-m-d H:i:s', $get['StartTime'] / 1000);
@@ -113,7 +114,7 @@ class SwitchOffTimeLog extends controller {
 		$model = parent::model('Switch_active_log');
 
 		if ($get['howShow'] == 'all') {
-            $numberOfAll = ($model->search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), 'Switch_active_log_archive data', 'COUNT(data.Sensor_id) as co')) [0]['co'];
+            $numberOfAll = ($model->search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), 'Switch_active_log_archive data', 'COUNT(data.Switch_id) as co')) [0]['co'];
 			$pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
             
 
@@ -125,20 +126,22 @@ class SwitchOffTimeLog extends controller {
 
 
 			model::join('units units', 'data.unit = units.id');
+			model::join('phases phases', 'data.phase = phases.id');
 			model::join('off_sensor_reasons offsensor', 'data.reason = offsensor.label');
-            model::join('CamSwitch CS', 'data.Sensor_id = CS.id');
+            model::join('CamSwitch CS', 'data.Switch_id = CS.id');
 
 
-			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', 'data.* , CS.label,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitName , offsensor.parentId as parentId , ' . "concat(Floor(HOUR(TIMEDIFF(data.End_Time, data.Start_time) )/24) , ' روز ', MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' سآعت ' , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
+			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', 'data.* , phases.label as phase, CS.label,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitName , offsensor.parentId as parentId , ' . "concat(Floor(HOUR(TIMEDIFF(data.End_Time, data.Start_time) )/24) , ' روز ', MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' سآعت ' , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
 		} 
         elseif ($get['howShow'] == 'count'){
-            $numberOfAll = ($model->search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), 'Switch_active_log_archive data', 'COUNT(data.Sensor_id) as co')) [0]['co'];
+            $numberOfAll = ($model->search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), 'Switch_active_log_archive data', 'COUNT(data.Switch_id) as co')) [0]['co'];
 			$pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
             
             model::join('shift_work shift_work', 'data.Start_shift_id = shift_work.shift_id');
-            model::join('CamSwitch CS', 'data.Sensor_id = CS.id');
+            model::join('CamSwitch CS', 'data.Switch_id = CS.id');
 			model::join('units units', 'data.unit = units.id');
-			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', ' CS.label,shift_work.shift_name as shift_name, SUM(TIMESTAMPDIFF(SECOND,data.End_Time, data.Start_time) ) as OffTime ,data.phase , data.JStart_time as Time , units.label as unitName ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Sensor_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id`,`data.Start_Shift_group_id`');
+            model::join('phases phases', 'data.phase = phases.id');
+			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', ' CS.label,shift_work.shift_name as shift_name, SUM(TIMESTAMPDIFF(SECOND,data.End_Time, data.Start_time) ) as OffTime , phases.label as phase , data.JStart_time as Time , units.label as unitName ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Switch_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id`,`data.Start_Shift_group_id`');
 		}
 
 		$this->mold->path('default', 'LineMonitoring');
@@ -178,14 +181,14 @@ class SwitchOffTimeLog extends controller {
 	public function updateReason(){
         $this->mold->offAutoCompile();
 		$get = request::post('logId,type,value');
-		/** @var  sensor_active_log_archive $model */
+		/** @var  Switch_active_log_archive $model */
 		$model = $this->model('Switch_active_log_archive' , $get['logId']);
 		if ( $model->getActivityId() == $get['logId']){
 			if ( $get['type'] == 'reason' )  $model->setReason($get['value']);
 			if ( $get['type'] == 'description' )  $model->setDescription($get['value']);
 			$model->setInfoInsert(user::getUserLogin(true));
 			if ( $model->upDateDataBase() ){
-                $Switch = $this->model('CamSwitch' , $model->getId());
+                $Switch = $this->model('CamSwitch' , $model->getSwitchId());
                 $Dis = 'علت کلید  ';
                 $Dis = $Dis . $Switch->getLabel();
                 $Dis = $Dis .' به ';

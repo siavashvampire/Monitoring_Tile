@@ -13,7 +13,7 @@ class switch_active_log_archive extends model implements modelInterFace {
 	private $primaryKey = ['ActivityId'];
 	private $primaryKeyShouldNotInsertOrUpdate = 'ActivityId';
 	private $ActivityId ;
-	private $id ;
+	private $Switch_id ;
 	private $Start_time;
 	private $JStart_time ;
 	private $End_Time ;
@@ -25,14 +25,14 @@ class switch_active_log_archive extends model implements modelInterFace {
 	private $End_Shift_group_id ;
 	private $End_employers_id ;
 	private $phase ;
-	private $unitId ;
+	private $unit ;
 	private $reason ;
 	private $description ;
 	private $infoInsert ;
 
 	public function setFromArray($result) {
 		$this->ActivityId = $result['ActivityId'] ;
-		$this->id = $result['id'] ;
+		$this->Switch_id = $result['Switch_id'] ;
 		$this->Start_time = $result['Start_time'] ;
 		$this->JStart_time = $result['JStart_time'] ;
 		$this->End_Time = $result['End_Time'] ;
@@ -44,14 +44,14 @@ class switch_active_log_archive extends model implements modelInterFace {
 		$this->End_Shift_group_id = $result['End_Shift_group_id'] ;
 		$this->End_employers_id = $result['End_employers_id'] ;
 		$this->phase = $result['phase'] ;
-		$this->unitId = $result['unitId'] ;
+		$this->unit = $result['unit'] ;
 		$this->description = $result['description'] ;
 		$this->reason = $result['reason'] ;
 		$this->infoInsert = $result['infoInsert'] ;
 	}
 
 	public function returnAsArray( ) {
-		$array['id'] = $this->id ;
+		$array['Switch_id'] = $this->Switch_id ;
 		$array['ActivityId'] = $this->ActivityId ;
 		$array['Start_time'] = $this->Start_time ;
 		$array['JStart_time'] = $this->JStart_time ;
@@ -64,7 +64,7 @@ class switch_active_log_archive extends model implements modelInterFace {
 		$array['End_Shift_group_id'] = $this->End_Shift_group_id ;
 		$array['End_employers_id'] = $this->End_employers_id ;
 		$array['phase'] = $this->phase ;
-		$array['unitId'] = $this->unitId ;
+		$array['unit'] = $this->unit ;
 		$array['description'] = $this->description ;
 		$array['reason'] = $this->reason ;
 		$array['infoInsert'] = $this->infoInsert ;
@@ -77,14 +77,6 @@ class switch_active_log_archive extends model implements modelInterFace {
 
 	public function getPrimaryKeyShouldNotInsertOrUpdate(){
 		return $this->primaryKeyShouldNotInsertOrUpdate;
-	}
-
-	public function getId(){
-		return $this->id;
-	}
-
-	public function setId($id){
-		$this->id = $id;
 	}
 
 	public function getStart_time(){
@@ -192,15 +184,15 @@ class switch_active_log_archive extends model implements modelInterFace {
 	/**
 	 * @return mixed
 	 */
-	public function getUnitId() {
-		return $this->unitId;
+	public function getUnit() {
+		return $this->unit;
 	}
 
 	/**
-	 * @param mixed $unitId
+	 * @param mixed $unit
 	 */
-	public function setUnit($unitId) {
-		$this->unitId = $unitId;
+	public function setUnit($unit) {
+		$this->unit = $unit;
 	}
 
 	/**
@@ -244,5 +236,21 @@ class switch_active_log_archive extends model implements modelInterFace {
 	public function setInfoInsert($infoInsert) {
 		$this->infoInsert = $infoInsert;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getSwitchId()
+    {
+        return $this->Switch_id;
+    }
+
+    /**
+     * @param mixed $Switch_id
+     */
+    public function setSwitchId($Switch_id): void
+    {
+        $this->Switch_id = $Switch_id;
+    }
 
 }

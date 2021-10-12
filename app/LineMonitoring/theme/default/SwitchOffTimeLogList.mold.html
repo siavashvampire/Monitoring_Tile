@@ -70,7 +70,7 @@ function getReason(id,value,defaultValue){
                                                 <select class="selectpicker selectpickerNotRefresh" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت کلید">
                                                     <option value="" selected >همه</option>
                                                     {foreach from=$units key=key value=unit }
-                                                    <option value="{$unit.id}"  >{$unit.lebel}</option>
+                                                    <option value="{$unit.id}"  >{$unit.label}</option>
                                                     {/foreach}
                                                 </select>
                                             </div>
@@ -81,6 +81,7 @@ function getReason(id,value,defaultValue){
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
                                                 <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    <option value="" selected >همه</option>
                                                     {foreach from=$phases key=key value=phase }
                                                         <option value="{$phase.id}"  >{$phase.label}</option>
                                                     {/foreach}

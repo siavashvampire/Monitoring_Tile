@@ -262,7 +262,7 @@ class line_monitoring extends innerController {
 
         if ( $data['active'] == 1 ){
             $logArchive = parent::model(['LineMonitoring','Switch_active_log_archive'] , [$Switch->getId() , ''] , ' id = ? and ( End_Time is null or End_Time = ? ) ');
-            if ($logArchive->getId() == $Switch->getId() ){
+            if ($logArchive->getSwitchId() == $Switch->getId() ){
                 $logArchive->setEnd_Time( $data['time'] );
                 $logArchive->setJEnd_Time(  JDate::jdate('Y/n/j H:i:s',strtotime($data['time']) ) );
                 $logArchive->setEnd_Shift_id( $shiftId );
@@ -287,7 +287,7 @@ class line_monitoring extends innerController {
         } else {
 
             $logArchive = parent::model(['LineMonitoring','Switch_active_log_archive'] , [$Switch->getId() , ''] , ' id = ? and ( End_Time is null or End_Time = ? ) ');
-            if ( $logArchive->getId() != $Switch->getId() ){
+            if ( $logArchive->getSwitchId() != $Switch->getId() ){
                 $logArchive->setId( $Switch->getId() );
                 $logArchive->setPhase( $Switch->getPhase() );
                 $logArchive->setUnit( $Switch->getUnit() );

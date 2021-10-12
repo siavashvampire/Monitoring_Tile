@@ -88,6 +88,8 @@ class hook extends pluginController
                 $contractVote->setVoteId($TypeVote['voteId']);
                 $contractVote->setCreatDate(date('Y-m-d H:i:s'));
                 $userFind = null;
+                /* @var vote $vote */
+                $vote = $this->model(['contract', 'vote'] , $TypeVote['voteId'] );
                 if ($TypeVote['checkByUnit']) {
                     if (!isset($cacheUnitId[$TypeVote['userId']])) {
                         $user = user::getUserById($TypeVote['userId']);
@@ -113,12 +115,12 @@ class hook extends pluginController
                         $phase = $cachePhaseId[$TypeVote['userId']];
                     }
 
-                    if (!isset($cacheUsersShouldSearch[$user->getUserGroupId()])) {
-                        $usersShouldSearch = model::searching([$user->getUserGroupId()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
-                        $cacheUsersShouldSearch[$user->getUserGroupId()] = $usersShouldSearch;
+                    if (!isset($cacheUsersShouldSearch[$vote->getVoteReceiver()])) {
+                        $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+                        $cacheUsersShouldSearch[$vote->getVoteReceiver()] = $usersShouldSearch;
                     }
                     else
-                        $usersShouldSearch = $cacheUsersShouldSearch[$user->getUserGroupId()];
+                        $usersShouldSearch = $cacheUsersShouldSearch[$vote->getVoteReceiver()];
                     if ($unitId != null and $phase != null and count($usersShouldSearch) > 0) {
                         foreach ($usersShouldSearch as $index => $userSearched) {
                             if (!isset($cacheUnitId[$userSearched['userId']])) {
@@ -215,8 +217,6 @@ class hook extends pluginController
                     unset($usersShouldSearch);
                 } else {
 
-                    /* @var vote $vote */
-                    $vote = $this->model(['contract', 'vote'] , $TypeVote['voteId'] );
                     if (!isset($cacheUsersShouldSearch[$vote->getVoteReceiver()])) {
                         $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
                         $cacheUsersShouldSearch[$vote->getVoteReceiver()] = $usersShouldSearch;

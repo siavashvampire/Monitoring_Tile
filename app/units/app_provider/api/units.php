@@ -8,10 +8,8 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class units extends innerController
 {
-    public static function index(): array
+    public static function index($value = array(),$variable = array()): array
     {
-        $value = array();
-        $variable = array();
         $value[] = '-1';
         $variable[] = 'item.id <> ?';
         $value[] = '-2';
@@ -20,12 +18,16 @@ class units extends innerController
         $variable[] = 'item.id <> ?';
         $value[] = '-4';
         $variable[] = 'item.id <> ?';
-        return self::json(parent::model(['units', 'units'])->getItems($value, $variable));
+        /** @var \App\units\model\units $model */
+        $model = parent::model(['units', 'units']);
+        return self::json($model->getItems($value, $variable));
     }
 
     public static function all(): array
     {
-        return self::json(parent::model(['units', 'units'])->getItems());
+        /** @var \App\units\model\units $model */
+        $model = parent::model(['units', 'units']);
+        return self::json($model->getItems());
     }
 
     public function getById($ids): array
@@ -33,6 +35,7 @@ class units extends innerController
         if (!is_array($ids))
             $ids = explode(',', $ids);
         $data = array();
+        /** @var \App\units\model\units $model */
         $model = parent::model(['units', 'units']);
         foreach ($ids as $id)
             $data[] = $model->getById($id)[0];

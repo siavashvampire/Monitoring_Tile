@@ -29,9 +29,9 @@ class requestService extends controller {
         $phase = false;
         if (is_array($fields['result'])) {
             foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'fieldCall_siavash_sections') {
+                if ($fields['type'] == 'fieldCall_Sections_sections') {
                     $section = $fields['value'];
-                } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+                } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                     $phase = $fields['value'];
                 }
                 if ( $phase and $section) break;
@@ -148,9 +148,9 @@ class requestService extends controller {
 	    $phase = false;
 	    if (is_array($fields['result'])) {
 		    foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'fieldCall_siavash_sections') {
+                if ($fields['type'] == 'fieldCall_Sections_sections') {
 				    $section = $fields['value'];
-			    } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+			    } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
 				    $phase = $fields['value'];
 			    }
 			    if ($phase and $section) break;
@@ -211,9 +211,9 @@ class requestService extends controller {
 	    $phase = false;
 	    if (is_array($fields['result'])) {
 		    foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'fieldCall_siavash_sections') {
+                if ($fields['type'] == 'fieldCall_Sections_sections') {
 				    $section = $fields['value'];
-			    } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+			    } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
 				    $phase = $fields['value'];
 			    }
 			    if ($section and $phase) break;
@@ -261,9 +261,9 @@ class requestService extends controller {
                 $phase = false;
                 if (is_array($fields['result'])) {
                     foreach ($fields['result'] as $index => $fields) {
-                        if ($fields['type'] == 'fieldCall_siavash_sections') {
+                        if ($fields['type'] == 'fieldCall_Sections_sections') {
                             $section = $fields['value'];
-                        } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+                        } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                             $phase = $fields['value'];
                         }
                         if ($phase and $section) break;

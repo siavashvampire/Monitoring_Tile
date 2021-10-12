@@ -4,6 +4,7 @@ namespace App\LineMonitoring\app_provider\admin;
 
 use App\core\controller\fieldService;
 use App\LineMonitoring\app_provider\api\phases;
+use App\LineMonitoring\model\sensor_active_log;
 use App\shiftWork\app_provider\api\Day;
 use App\LineMonitoring\model\sensor_active_log_archive;
 use App\units\app_provider\api\units;
@@ -38,9 +39,9 @@ class sensorOffTimeLog extends controller
         $phase = false;
         if (is_array($fields['result'])) {
             foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'fieldCall_siavash_units') {
+                if ($fields['type'] == 'fieldCall_units_units') {
                     $unitId = $fields['value'];
-                } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+                } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                     $phase = $fields['value'];
                 }
                 if ($unitId and $phase) break;
@@ -125,11 +126,11 @@ class sensorOffTimeLog extends controller
             $search = $this->getActive($value, $variable, $sortWith, $get['page'], $get['perEachPage']);
         }
 
+        /** @var sensor_active_log $model */
         $model = parent::model('sensor_active_log');
         $Sensors = $model->search((array)$valueForSensor, ((count($variableForSensor) == 0) ? null : implode(' and ', $variableForSensor)), 'sensors', '*', ['column' => 'showSort', 'type' => 'asc']);
         $this->mold->set('access', $Sensors);
-        $units = $model->search((array)$valueForUnit, ((count($variableForUnit) == 0) ? null : implode(' and ', $variableForUnit)), 'units', '*', ['column' => 'label', 'type' => 'asc']);
-        $this->mold->set('units', $units);
+        $this->mold->set('units', units::index($valueForUnit , $variableForUnit)['result']);
 
         $this->mold->set('phases', phases::index()["result"]);
 
@@ -180,9 +181,9 @@ class sensorOffTimeLog extends controller
         $phase = false;
         if (is_array($fields['result'])) {
             foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'fieldCall_siavash_units') {
+                if ($fields['type'] == 'fieldCall_units_units') {
                     $unitId = $fields['value'];
-                } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+                } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                     $phase = $fields['value'];
                 }
                 if ($unitId and $phase) break;

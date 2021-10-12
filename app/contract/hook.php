@@ -17,7 +17,8 @@ class hook extends pluginController
 {
     public function _adminHeaderNavbar($vars2)
     {
-        $this->menu->after('users', 'contract', 'تنظیمات قرارداد', app::getBaseAppLink('contract', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/index/contract');
+        $this->menu->after('users', 'contractList', 'قرارداد ها', app::getBaseAppLink('contract/list', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/list/contract');
+        $this->menu->after('contractList', 'contract', 'تنظیمات قرارداد', app::getBaseAppLink('contract', 'admin'), 'fa fa-file-text', '', null, 'admin/contract/index/contract');
         $this->menu->after('users', 'evaluation', 'فرم ساز', app::getBaseAppLink('evaluation/newType', 'admin'), 'fa fa-id-badge', '', null, 'admin/evaluation/newType/contract');
         $this->menu->after('evaluation', 'evaluation_list', 'لیست ارزیابی ها', app::getBaseAppLink('evaluation/list', 'admin'), 'fa fa-list-ol', '', null, 'admin/evaluation/list/contract');
         $this->menu->after('evaluation_list', 'evaluation_insert', 'ثبت ارزیابی', app::getBaseAppLink('evaluation', 'admin'), 'fa fa-check-square-o', '', null, 'admin/evaluation/index/contract');

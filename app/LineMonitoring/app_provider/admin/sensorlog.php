@@ -108,9 +108,9 @@ class sensorlog extends controller {
         $phase = false;
         if (is_array($fields['result'])) {
             foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'fieldCall_siavash_units') {
+                if ($fields['type'] == 'fieldCall_units_units') {
                     $unitId = $fields['value'];
-                } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+                } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                     $phase = $fields['value'];
                 }
                 if ($unitId and $phase) break;

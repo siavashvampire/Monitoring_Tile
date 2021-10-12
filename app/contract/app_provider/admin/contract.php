@@ -2,6 +2,7 @@
 namespace App\contract\app_provider\admin;
 
 use App;
+use App\contract\model\contracts;
 use App\contract\model\contracts_vote;
 use App\core\controller\fieldService;
 use App\core\controller\httpErrorHandler;
@@ -10,6 +11,7 @@ use App\user\app_provider\api\user;
 use App\user\model\user_group;
 use controller;
 use paymentCms\component\cache;
+use paymentCms\component\JDate;
 use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -201,4 +203,80 @@ class contract extends controller {
 		$this->mold->path('default', 'contract');
 		$this->mold->view('contracts.user.mold.html');
 	}
+	public function list(){
+        $get = request::all('page=1,perEachPage=25,contractStartFrom,contractStartUntil,contractEndFrom,contractEndUntil,groupId,status' ,null);
+        $rules = [
+            "page" => ["required|match:>0", rlang('page')],
+            "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
+        ];
+        $valid = validate::check($get, $rules);
+        $value = array( );
+        $variable = array( );
+        $value[] = -1 ;
+        $variable[] = 'c.contractId <> ?' ;
+        $sortWith =  ['column' => 'c.contractId' , 'type' =>'desc'] ;
+        if ($valid->isFail()){
+            //TODO:: add error is not valid data
+
+        } else {
+
+            if ( $get['contractStartFrom'] != null and $get['contractStartUntil'] == null ) {
+                $value[] = date('Y-m-d 00:00:00' , ( $get['contractStartFrom'] / 1000 ) );
+                $variable[] = ' c.startDate >= ?';
+            } elseif ( $get['contractStartFrom'] == null and $get['contractStartUntil'] != null ) {
+                $value[] = date('Y-m-d 00:00:00' , ( $get['contractStartUntil'] / 1000 ) );
+                $variable[] = ' c.startDate <= ?';
+            } elseif ( $get['contractStartFrom'] != null and $get['contractStartUntil'] != null ) {
+                $value[] = date('Y-m-d 00:00:00' , ( $get['contractStartFrom'] / 1000 ) );
+                $value[] = date('Y-m-d 00:00:00' , ( $get['contractStartUntil'] / 1000 ) );
+                $variable[] = ' c.startDate between ? And ? ';
+            }
+            if ( $get['contractEndFrom'] != null and $get['contractEndUntil'] == null ) {
+                $value[] = date('Y-m-d 23:59:59' , ( $get['contractEndFrom'] / 1000 ) );
+                $variable[] = ' c.endDate >= ?';
+            } elseif ( $get['contractEndFrom'] == null and $get['contractEndUntil'] != null ) {
+                $value[] = date('Y-m-d 23:59:59' , ( $get['contractEndUntil'] / 1000 ) );
+                $variable[] = ' c.endDate <= ?';
+            } elseif ( $get['contractEndFrom'] != null and $get['contractEndUntil'] != null ) {
+                $value[] = date('Y-m-d 23:59:59' , ( $get['contractEndFrom'] / 1000 ) );
+                $value[] = date('Y-m-d 23:59:59' , ( $get['contractEndUntil'] / 1000 ) );
+                $variable[] = ' c.endDate between ? And ? ';
+            }
+
+            if ( $get['groupId'] != null ) {
+                $value = array_merge($value , $get['groupId']) ;
+                $value[] = 0 ;
+                $variable[] = 'c.contractGroup In ( '. str_repeat('? ,', count($get['groupId'])).' ? )' ;
+            }
+            if ( $get['status'] == "0" ) {
+                $variable[] = 'NOW() NOT between c.startDate and c.endDate' ;
+            } else {
+                $variable[] = 'NOW() between c.startDate and c.endDate' ;
+            }
+        }
+
+        /* @var user_group $modelAccess */
+        $modelAccess = $this->model(['user' , 'user_group']);
+        $access = $modelAccess->search(null,null);
+        $this->mold->set('access',$access);
+
+
+
+
+        /* @var contracts $model */
+        $model = parent::model('contracts');
+        $numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'contracts c' , 'COUNT(c.contractId) as co' )) [0]['co'];
+        $pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
+        model::join('user_group ug', ' c.contractGroup = ug.user_groupId ', "LEFT");
+        model::join('user u', ' c.userId = u.userId ', "LEFT");
+        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'contracts c', 'c.*,u.fname,u.lname,u.email,ug.name'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+
+        $this->mold->path('default', 'contract');
+        $this->mold->view('contractList.mold.html');
+        $this->mold->setPageTitle(rlang('contracts'));
+        $this->mold->set('activeMenu' , 'contractList');
+        $this->mold->set('contracts' , $search);
+
+
+    }
 }

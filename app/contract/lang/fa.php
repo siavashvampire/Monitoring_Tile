@@ -70,4 +70,6 @@ return [
     'orderBy'                                           => 'مرتب سازی بر اساس',
     'lastName'                                          => 'نام خانوادگی',
     'position'                                          => 'سمت',
+    'contract_for'                                      => 'قرارداد مربوط به',
+    'until'                                             => 'الی',
 ];

@@ -103,6 +103,7 @@ function getReason(id,value,defaultValue){
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
                                                 <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    <option value="" selected >همه</option>
                                                     {foreach from=$phases key=key value=phase }
                                                         <option value="{$phase.id}"  >{$phase.label}</option>
                                                     {/foreach}

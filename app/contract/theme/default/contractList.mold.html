@@ -1,0 +1,152 @@
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "searchIn"} {_ "contracts"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "date"} {_ "start"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatepicker-from">
+                                                <input type="hidden" name="contractStartFrom" class="form-control persianJustDatepicker-from-alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "until"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatepicker-to">
+                                                <input type="hidden" name="contractStartUntil" class="form-control persianJustDatepicker-to-alt">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div><div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "date"} {_ "end"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianJustDatepicker-from2">
+                                            <input type="hidden" name="contractEndFrom" class="form-control persianJustDatepicker-from-alt2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "until"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" autocomplete="off" class="form-control persianJustDatepicker-to2">
+                                            <input type="hidden" name="contractEndUntil" class="form-control persianJustDatepicker-to-alt2">
+                                        </div>
+                                    </div>
+                                </div>
+                                </div><div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "contract_for"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple data-live-search="true" name="groupId[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'permission'}">
+                                                    <option value="" selected >{_ "all"}</option>
+                                                    {foreach from=$access key=key value=access_item }
+                                                    <option value="{$access_item.user_groupId}"  >{$access_item.name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "status"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" name="status" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ 'status'}">
+                                                    <option value="1" selected >{_ "active"}</option>
+                                                    <option value="0" >{_ "deActive"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mt-1 float-left">
+                                        <button class="btn btn-link float-left" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info float-left">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-file-text-o"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "contracts"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}">
+                                <thead>
+                                <tr>
+<!--                                    <th class="text-center"></th>-->
+                                    <th style="width: 12%">{_ "firstName"}</th>
+                                    <th style="width: 15%">{_ "lastName"}</th>
+                                    <th style="width: 15%">{_ "email"}</th>
+                                    <th style="width: 15%">{_ "date"} {_ "start"}</th>
+                                    <th style="width: 15%">{_ "date"} {_ "end"}</th>
+                                    <th style="width: 20%">{_ "contract_for"}</th>
+                                    <th style="width: 20%">{_ "status"}</th>
+                                    <th style="width: 3%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$contracts key=key value=contract}
+                                <tr>
+<!--                                    <td class="text-center">{$user.userId}</td>-->
+                                    <td>{$contract.fname}</td>
+                                    <td>{$contract.lname}</td>
+                                    <td>{$contract.email}</td>
+                                    <td>{$contract.start|jDate:"j F, Y"}</td>
+                                    <td>{$contract.end|jDate:"j F, Y"}</td>
+                                    <td>{$contract.name}</td>
+                                    <td>{$contract.status}</td>
+                                    <td class="td-actions text-right">
+                                        <a class="btn btn-info btn-link" href="{url}users/profile/{$user.userId}" target=_blank>
+                                            <i class="material-icons">remove_red_eye</i>
+                                        </a>
+                                        <a class="btn btn-info btn-link" href="{url}users/profile/{$user.userId}" target=_blank>
+                                            <i class="material-icons">remove_red_eye</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="8">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

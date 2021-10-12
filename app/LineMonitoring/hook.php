@@ -159,9 +159,9 @@ class hook extends pluginController
             $phase = false;
             if (is_array($fields['result'])) {
                 foreach ($fields['result'] as $index => $fields) {
-                    if ($fields['type'] == 'fieldCall_siavash_units') {
+                    if ($fields['type'] == 'fieldCall_units_units') {
                         $unitId = $fields['value'];
-                    } elseif ($fields['type'] == 'fieldCall_siavash_phase') {
+                    } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                         $phase = $fields['value'];
                     }
                     if ($unitId and $phase) break;
@@ -200,8 +200,8 @@ class hook extends pluginController
     {
         $should_update = array();
 
-        $data = cache::get('isTileKindUpdate', null, 'siavash');
-        $dataSwitch = cache::get('isSwitchKindUpdate', null, 'siavash');
+        $data = cache::get('isTileKindUpdate', null, 'LineMonitoring');
+        $dataSwitch = cache::get('isSwitchKindUpdate', null, 'LineMonitoring');
 
         if ($data !== 'yes')
             $should_update[] = "TileKindUpdate";

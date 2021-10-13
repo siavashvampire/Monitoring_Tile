@@ -145,9 +145,10 @@ class electrical extends innerController
         }
 
 
-        $data = cache::get('isTileKindUpdate', null, 'ElectricalSubstation');
-        $dataSwitch = cache::get('isSwitchKindUpdate', null, 'ElectricalSubstation');
-        if ($data !== 'yes' or $dataSwitch !== 'yes') {
+//        $data = cache::get('isTileKindUpdate', null, 'ElectricalSubstation');
+        $data = 'no';
+        
+        if ($data !== 'yes') {
             return self::jsonError(null, 205);
         }
 

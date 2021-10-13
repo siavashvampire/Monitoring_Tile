@@ -31,6 +31,14 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class user extends innerController
 {
+    public static function index(){
+        $model = parent::model('user');
+        $value = array();
+        $variable = array();
+        $value[] = -1;
+        $variable[] = 'item.userId <> ?';
+        return self::json($model->getUsers($value,$variable));
+    }
 
 
     public static function login($getToken = true, $data = null)

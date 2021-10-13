@@ -21,5 +21,7 @@ class hook extends pluginController {
 
         $this->menu->addChild('requestServiceTab', 'Consumable_Parts', 'لیست قطعات مصرفی', app::getBaseAppLink('Consumable_Parts', 'admin'), 'fa fa-calendar', '',  'admin/RS/index/requestService');
 
+        $this->menu->addChild('Reports', 'RequestexportExcel', 'گزارش گیری خدمات', app::getBaseAppLink('requestService_export', 'admin'), 'fa fa-file-excel-o', '',  'admin/requestService_export/index/requestService');
+
     }
 }

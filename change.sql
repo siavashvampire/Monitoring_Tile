@@ -212,5 +212,5 @@ UPDATE `per_sensors` SET `phase`=1 WHERE `phase`=3;
 UPDATE `per_sensors` SET `phase`=2 WHERE `phase`=7;
 UPDATE `per_sensors` SET `phase`=3 WHERE `phase` = 'سایر';
 
-DELETE FROM `test`.`per_field` WHERE  `fieldId`=5;
-DELETE FROM `test`.`per_field` WHERE  `fieldId`=6;
+DELETE FROM `per_field` WHERE  `fieldId`=5;
+DELETE FROM `per_field` WHERE  `fieldId`=6;

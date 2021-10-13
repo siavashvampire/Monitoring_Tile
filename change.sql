@@ -177,7 +177,7 @@ SET FOREIGN_KEY_CHECKS=1;
 
 UPDATE `per_field` SET `type` = 'fieldCall_Sections_sections' WHERE `per_field`.`fieldId` = 15;
 UPDATE `per_field` SET `type`='fieldCall_units_units' WHERE `type`='fieldCall_units_units';
-UPDATE `per_field` SET `type`='fieldCall_LineMonitoring_phase' WHERE `type`='fieldCall_LineMonitoring_phase'
+UPDATE `per_field` SET `type`='fieldCall_LineMonitoring_phase' WHERE `type`='fieldCall_LineMonitoring_phase';
 
 INSERT INTO `per_phases` (`id`, `label`) VALUES ('-4', 'همه');
 INSERT IGNORE INTO `per_units` (`id`, `label`) VALUES

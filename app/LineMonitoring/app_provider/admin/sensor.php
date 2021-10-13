@@ -75,7 +75,7 @@ class sensor extends controller
         $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), 'sensors sensors', 'COUNT(sensors.id) as co')) [0]['co'];
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         model::join('tile_kind tile_kind', 'tile_kind.id = sensors.tile_id ');
-        model::join('units units', 'units.id = sensors.unitId ');
+        model::join('units units', 'units.id = sensors.unit ');
         $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensors sensors', 'sensors.*,tile_kind.label,units.label as unitName', $sortWith, [$pagination['start'], $pagination['limit']]);
         $this->mold->path('default', 'LineMonitoring');
         $this->mold->view('sensorList.mold.html');

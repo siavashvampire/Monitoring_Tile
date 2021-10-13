@@ -53,8 +53,8 @@ class quotes extends controller {
 		$model = parent::model('quotes');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'quotes quotes', 'COUNT(quotes.id) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
-        
-        model::join('devices  devices','devices.id = quotes.device_id');
+
+        $model->join('devices  devices','devices.id = quotes.device_id');
 		$search      = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'quotes quotes' , 'quotes.*,devices.label as device_Name'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
         $this->mold->set('items' , $search);
         

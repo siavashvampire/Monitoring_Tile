@@ -70,7 +70,7 @@ class requestService_failure extends model implements modelInterFace {
     }
 
 
-    public function getFailure() {
-		return parent::search( array()  ,  null  , 'requestService_failure', 'id , Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_failure', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 }

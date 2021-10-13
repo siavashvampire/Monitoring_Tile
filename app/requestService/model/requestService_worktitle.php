@@ -68,8 +68,8 @@ class requestService_worktitle extends model implements modelInterFace {
         $this->label = $label;
     }
 
-    public function getWorktitle() {
-		return parent::search( array()  ,  null  , 'requestService_worktitle', 'id , Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_worktitle', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 
 }

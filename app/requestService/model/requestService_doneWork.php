@@ -69,8 +69,8 @@ class requestService_doneWork extends model implements modelInterFace {
         $this->label = $label;
     }
 
-    public function getDoneWork() {
-		return parent::search( array()  ,  null  , 'requestService_doneWork', 'id , Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_doneWork', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 
 }

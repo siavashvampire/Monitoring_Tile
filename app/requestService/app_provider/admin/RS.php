@@ -180,7 +180,6 @@ class RS extends controller
 
         $this->mold->set('phases', phases::index([$phase])["result"]);
         $this->mold->set('sections', sections::index([$section]) ["result"]);
-        show(sections::index([2,3,4]));
 
     }
 

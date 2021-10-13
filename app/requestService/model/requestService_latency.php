@@ -70,7 +70,7 @@ class requestService_latency extends model implements modelInterFace {
         $this->label = $label;
     }
 
-    public function getLatency() {
-		return parent::search( array()  ,  null  , 'requestService_latency', 'id , Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_latency', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 }

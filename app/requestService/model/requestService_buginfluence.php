@@ -1,9 +1,7 @@
 <?php
 namespace App\requestService\model;
 
-use paymentCms\component\browser;
 use paymentCms\component\model;
-use paymentCms\component\security;
 use paymentCms\model\modelInterFace ;
 
 class requestService_buginfluence extends model implements modelInterFace {
@@ -70,7 +68,7 @@ class requestService_buginfluence extends model implements modelInterFace {
     }
 
 
-    public function getBuginfluence() {
-		return parent::search( array()  ,  null  , 'requestService_buginfluence', 'id , Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_buginfluence', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 }

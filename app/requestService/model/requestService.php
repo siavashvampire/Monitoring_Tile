@@ -570,17 +570,20 @@ class requestService extends model implements modelInterFace
     {
         $this->Consumable_Parts_Qty = $Consumable_Parts_Qty;
     }
-    public function getCount($value = array(),$variable = array()) {
 
-        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'requestService', 'COUNT(requestId) as co' )) [0]['co'];
+    public function getCount($value = array(), $variable = array())
+    {
+        return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), 'requestService', 'COUNT(requestId) as co')) [0]['co'];
     }
 
-    public function getItemsBySection($section, $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination=[0 , 25])
+    public function getItemsBySection($section, $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
     {
         $value = array();
-        $value[] = '%' . $section . '%';
         $variable = array();
+
+        $value[] = '%' . $section . '%';
         $variable[] = 'reSer.section Like ?';
+
         model::join('sections  WorkerSection', 'FIND_IN_SET(WorkerSection.id , reSer.WorkerSection) != 0 ');
         model::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
 
@@ -595,6 +598,44 @@ class requestService extends model implements modelInterFace
 
 
         return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'requestId');
+    }
 
+    public function getItemsByWorkerSection($section, $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
+    {
+        $value = array();
+        $value[] = '%' . $section . '%';
+        $variable = array();
+        $variable[] = 'reSer.WorkerSection Like ?';
+        model::join('sections sections', ' sections.id = reSer.section ');
+        model::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
+
+        $tableName = 'requestService reSer';
+        $field = array();
+        $field[] = 'requestId';
+        $field[] = 'Time_Send';
+        $field[] = 'sections.label as sectionName';
+        $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",") as BugInfluence';
+        $fields = implode(' , ', $field);
+
+
+        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'requestId');
+
+    }
+
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
+    {
+        model::join('sections  WorkerSection', 'FIND_IN_SET(WorkerSection.id , reSer.WorkerSection) != 0 ');
+        model::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
+
+        $tableName = 'requestService reSer';
+        $field = array();
+        $field[] = 'requestId';
+        $field[] = 'reSer.WorkerSection';
+        $field[] = 'GROUP_CONCAT(DISTINCT WorkerSection.label separator ",") as WorkerSectionName';
+        $field[] = 'Time_Send';
+        $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",")  as BugInfluence';
+        $fields = implode(' , ', $field);
+
+        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'requestId');
     }
 }

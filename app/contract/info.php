@@ -91,6 +91,7 @@ return [
         'contracts' => [
             'fields' => [
                 'contractId' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'fillOutedDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'startDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'endDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'userId' => "int(11) DEFAULT NULL",

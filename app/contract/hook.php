@@ -113,9 +113,9 @@ class hook extends pluginController
                         $phase = null;
                         if (is_array($fields['result'])) {
                             foreach ($fields['result'] as $index => $fields) {
-                                if ($fields['type'] == 'fieldCall_contract_units') {
+                                if ($fields['type'] == 'fieldCall_units_units') {
                                     $unitId = $fields['value'];
-                                } elseif ($fields['type'] == 'fieldCall_contract_phase') {
+                                } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                                     $phase = $fields['value'];
                                 }
                                 if ($unitId != null and $phase != null) break;
@@ -146,12 +146,12 @@ class hook extends pluginController
                                 $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                                 if (is_array($fields['result'])) {
                                     foreach ($fields['result'] as $index2 => $fields) {
-                                        if ($fields['type'] == 'fieldCall_contract_units') {
+                                        if ($fields['type'] == 'fieldCall_units_units') {
                                             if ($unitId == $fields['value']) {
                                                 $tempUserFindUnit = $userSearched['userId'];
                                                 $tempValueFindUnit = $fields['value'];
                                             }
-                                        } elseif ($fields['type'] == 'fieldCall_contract_phase') {
+                                        } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                                             if ($phase == $fields['value']) {
                                                 $tempUserFindPhase = $userSearched['userId'];
                                                 $tempValueFindPhase = $fields['value'];
@@ -182,7 +182,7 @@ class hook extends pluginController
                                 $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                                 if (is_array($fields['result'])) {
                                     foreach ($fields['result'] as $index2 => $fields) {
-                                        if ($fields['type'] == 'fieldCall_contract_units') {
+                                        if ($fields['type'] == 'fieldCall_units_units') {
                                             if ($unitId == $fields['value']) {
                                                 $userFind = $userSearched['userId'];
                                             }
@@ -207,7 +207,7 @@ class hook extends pluginController
                                 $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                                 if (is_array($fields['result'])) {
                                     foreach ($fields['result'] as $index2 => $fields) {
-                                        if ($fields['type'] == 'fieldCall_contract_phase') {
+                                        if ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                                             if ($phase == $fields['value']) {
                                                 $userFind = $userSearched['userId'];
                                             }
@@ -272,4 +272,39 @@ class hook extends pluginController
         $this->mold->set('dirStartUP', payment_path . 'startup');
 
     }
+
+
+    public function _fieldService_listOfTypes($vars2)
+    {
+        return [
+            ['type' => 'salary', 'name' => rlang('salary')],
+        ];
+    }
+
+
+    public function _fieldService_showToFillOut_salary($vars2)
+    {
+        $value = '';
+        if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+            $value = $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']];
+        } elseif (isset($this->mold->get('field')['value'])) {
+            $value = $this->mold->get('field')['value'];
+        }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <input value="'.$value.'" type="number" min="0" class="form-control" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' >
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+
+        return $html;
+
+    }
+
+    public function _fieldService_showValue_salary($fieldInformation = null)
+    {
+        return $fieldInformation['value'];
+    }
+
 }

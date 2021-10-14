@@ -13,8 +13,9 @@ class sensor extends innerController
 {
     public static function index($value = array(), $variable = array(), $isVirtual = 0, $isStorage = 0, $page = 0, $perEachPage = 0)
     {
-        $get = request::post('unitId , phase', null);
-        $appName = 'sensors';
+        $get = request::post('unitId , phase');
+        $appName = ['LineMonitoring', 'sensors'];
+
         /** @var sensors $model */
         $model = parent::model($appName);
 

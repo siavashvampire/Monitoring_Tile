@@ -452,8 +452,6 @@ class RS extends controller
                 $shamsi = explode('/', $get['Time_Send']);
                 $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
 
-                $get['Time_Start'] = $get['Time_Start'] / 1000;
-                $get['Time_End'] = $get['Time_End'] / 1000;
 
                 $requestService->setRequestCode(0);
                 $requestService->setTimeSend(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
@@ -488,6 +486,7 @@ class RS extends controller
                 $Dis = $Dis . $section->getLabel();
                 $Dis = $Dis . ' برای واحد  ';
                 $Dis = $Dis . $Workersection->getLabel();
+
                 if ($requestId == null and $requestService->insertToDataBase()) {
                     $Dis = $Dis . ' ثبت شد';
                     $this->callHooks('addLog', [$Dis, 'RequestService']);
@@ -501,6 +500,7 @@ class RS extends controller
                 } else {
                     $this->alert('danger', '', "ثبت درخواست با مشکلی مواجه شده است");
                 }
+
             }
             $this->mold->path('default', 'requestService');
             $this->mold->view('requestServiceOptimal.mold.html');

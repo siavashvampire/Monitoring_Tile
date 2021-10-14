@@ -16,7 +16,7 @@
                                     <label class="col-md-3 col-form-label">تاریخ درخواست<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Start" class="form-control" value="{if isset($Mold.post.Time_Send)}{$Mold.post.Time_Send}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"Y/m/d"|persianNumber}{/if}">
+                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send)}{$Mold.post.Time_Send}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"Y/m/d"|persianNumber}{/if}">
                                         </div>
                                     </div>
                                 </div>

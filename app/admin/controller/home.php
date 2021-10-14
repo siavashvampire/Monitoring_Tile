@@ -47,6 +47,7 @@ class home extends controller
                 if ($unitId and $phase) break;
             }
         }
+
         if ($unitId) {
             $value[] = $unitId;
             $variable[] = ' item.unit = ? ';
@@ -56,8 +57,8 @@ class home extends controller
             $variable[] = ' item.phase = ? ';
         }
 
-        $sensor = sensor::index($value,$variable)["result"];
-        $switch = cam_switch::index($value,$variable)["result"];
+        $sensor = sensor::index($value, $variable)["result"];
+        $switch = cam_switch::index($value, $variable)["result"];
 
         $this->mold->set('sensors', $sensor);
         $this->mold->set('Switchs', $switch);
@@ -68,7 +69,6 @@ class home extends controller
         $this->mold->setPageTitle(rlang('dashboard'));
         $this->mold->set('activeMenu', 'dashboard');
         $this->callHooks('adminDashboard');
-
 
 
     }

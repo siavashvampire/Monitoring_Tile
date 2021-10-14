@@ -64,7 +64,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required name="System_Status" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت دستگاه هنگام درخواست کار">
                                                 {foreach from=$system_statuses key=key value=system_status }
-                                                <option value="{$system_status.id}"  {if isset($Mold.post.System_Status)}{if $system_status.id == $Mold.post.System_Status }selected{/if}{elseif isset($requestService) and  $system_status.id == $requestService->getSystem_Status() }selected{/if}>{$system_status.Title}</option>
+                                                <option value="{$system_status.id}"  {if isset($Mold.post.System_Status)}{if $system_status.id == $Mold.post.System_Status }selected{/if}{elseif isset($requestService) and  $system_status.id == $requestService->getSystemStatus() }selected{/if}>{$system_status.Title}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -102,7 +102,7 @@
                                     <label class="col-md-3 col-form-label">یاداشت فرستنده<span class="text-danger">*</span> </label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <textarea rows="3" autocomplete="off" name="Sender_note" class="form-control">{if isset($Mold.post.Sender_note)}{$Mold.post.Sender_note}{elseif isset($requestService)}{$requestService->getSender_note()}{/if}</textarea>
+                                            <textarea rows="3" autocomplete="off" name="Sender_note" class="form-control">{if isset($Mold.post.Sender_note)}{$Mold.post.Sender_note}{elseif isset($requestService)}{$requestService->getSenderNote()}{/if}</textarea>
                                         </div>
                                     </div>
                                 </div>

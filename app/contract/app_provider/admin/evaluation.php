@@ -81,6 +81,8 @@ class evaluation extends controller
         $this->mold->path('default', 'contract');
         $this->mold->view('FD_Evaluation_choose.mold.html');
         $this->mold->setPageTitle('ارزیابی');
+        $this->mold->set('activeMenu', 'evaluation_insert');
+
     }
 
     public function list()
@@ -161,6 +163,7 @@ class evaluation extends controller
         $this->mold->set('typeNames', $type);
         $this->mold->set('eval', $eval);
         $this->mold->set('allFields', $allFields['result']);
+        $this->mold->set('activeMenu', 'evaluation_list');
 
         $this->mold->path('default', 'contract');
         $this->mold->view('FD_Evaluation_list.mold.html');
@@ -249,7 +252,7 @@ class evaluation extends controller
         $this->mold->view('evaluation_typeEditor.mold.html');
         $this->mold->path('default');
         $this->mold->setPageTitle('ارزیابی');
-        $this->mold->set('activeMenu', 'vote');
+        $this->mold->set('activeMenu', 'evaluation');
         return null;
     }
 

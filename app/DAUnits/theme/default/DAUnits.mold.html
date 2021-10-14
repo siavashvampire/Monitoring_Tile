@@ -66,9 +66,9 @@
                                         <tbody id="bodyDevice" >
                                         <tr style="display:none" id="bodyDeviceElemnt">
                                             <td>
-                                                <select class="selectpicker" name="appName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ " name"} {_ "application"}" >
+                                                <select class="selectpicker text-center" name="appName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "application"}">
                                                     {foreach from=$appsTotal key=key value=app }
-                                                        {if !is_array($app)}
+                                                        {if isset($app.label)}
                                                             <option value="{$app.label}">{$app.label}</option>
                                                         {else}
                                                             {foreach from=$app key=key value=app2 }

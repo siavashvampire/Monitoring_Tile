@@ -69,8 +69,8 @@ class requestService_cost extends model implements modelInterFace {
         $this->label = $label;
     }
     
-    public function getCost() {
-		return parent::search( array()  ,  null  , 'requestService_cost', 'id , Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_cost', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 
 }

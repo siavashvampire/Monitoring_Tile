@@ -21,19 +21,19 @@
                         <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
                             <div class="row">
                                 <div class="col-md-6 float-right form-group">
-                                    <label for="sensors" class="col-form-label col-md-3 float-right">{_ "name"}:</label>
+                                    <label for="label" class="col-form-label col-md-3 float-right">{_ "name"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="text" class="form-control text-center" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getlabel()}{/if}">
+                                            <input type="text" class="form-control text-center" id="label" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getlabel()}{/if}">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-md-6 form-group">
-                                    <label for="showSort" class="col-form-label col-md-3 float-right" >{_ "IP"}:</label>
+                                    <label for="port" class="col-form-label col-md-3 float-right" >{_ "IP"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="text" min="0" class="form-control text-center" name="port" value="{if isset($Mold.post.port)}{$Mold.post.port}{elseif isset($model)}{$model->getport()}{/if}">
+                                            <input type="text" min="0" class="form-control text-center" id="port" name="port" value="{if isset($Mold.post.port)}{$Mold.post.port}{elseif isset($model)}{$model->getport()}{/if}">
                                         </div>
                                     </div>
                                 </div>

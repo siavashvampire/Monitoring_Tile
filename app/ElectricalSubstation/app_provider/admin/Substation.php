@@ -2,24 +2,25 @@
 
 namespace App\ElectricalSubstation\app_provider\admin;
 
-use App\core\controller\fieldService;
 use App\core\controller\httpErrorHandler;
+use App\ElectricalSubstation\model\substation_Device;
+use App\ElectricalSubstation\model\substation_deviceType;
 use App\user\app_provider\api\checkAccess;
 use controller;
-use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use App\user\app_provider\api\user;
 use paymentCms\component\validate;
 use paymentCms\component\Response;
 use paymentCms\component\arrays;
+use Exception;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class Substation extends controller
 {
     public function Data($id = null)
     {
+        /** @var \App\ElectricalSubstation\model\Substation $model */
         if ($id != null) {
             $model = parent::model('Substation', $id);
 
@@ -27,8 +28,9 @@ class Substation extends controller
                 httpErrorHandler::E404();
                 return false;
             }
-
-            $this->mold->set('devices', parent::model('substation_Device')->getDevices($id));
+            /** @var substation_Device $model_device */
+            $model_device = parent::model('substation_Device');
+            $this->mold->set('devices', $model_device->getItems($id));
         } else
             $model = parent::model('Substation');
 
@@ -43,7 +45,7 @@ class Substation extends controller
 
     public function List()
     {
-        $get = request::post('page=1,perEachPage=25,label,sortWith', null);
+        $get = request::post('page=1,perEachPage=25,label,sortWith');
 
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -74,12 +76,13 @@ class Substation extends controller
         }
 
         $sortWith = [['column' => 'id', 'type' => 'asc']];
+        /** @var \App\ElectricalSubstation\model\Substation $model */
         $model = parent::model('Substation');
         $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $search = $model->getItems($value, $variable, $sortWith, $pagination);
+        $items = $model->getItems($value, $variable, $sortWith, $pagination);
 
-        $this->mold->set('items', $search);
+        $this->mold->set('items', $items);
 
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'Substation', 'index', 'ElectricalSubstation')["status"];
         $this->mold->set('editAccess', $editAccess);
@@ -93,10 +96,16 @@ class Substation extends controller
 
     public function index($id = null)
     {
-        $get = request::post('label,port,unitId,deviceType,deviceName,refreshTime', null);
+        /** @var \App\ElectricalSubstation\model\Substation $model */
+        /** @var substation_Device $model_device */
+        /** @var substation_deviceType $model_device_type */
+
+        $get = request::post('label,port,unitId,deviceType,deviceName,refreshTime');
         if ($id != null) {
             $model = parent::model('Substation', $id);
-            $this->mold->set('devices', parent::model('substation_Device')->getDevices($id));
+
+            $model_device = parent::model('substation_Device');
+            $this->mold->set('devices', $model_device->getItems($id));
 
 
             if ($model->getId() != $id) {
@@ -109,8 +118,8 @@ class Substation extends controller
 
         $this->mold->set('model', $model);
 
-        $this->mold->set('devicesType', parent::model('substation_deviceType')->getItems());
-//        show( parent::model('substation_deviceType')->getItems());
+        $model_device_type = parent::model('substation_deviceType');
+        $this->mold->set('devicesType', $model_device_type->getItems());
 
         if (request::ispost()) {
             $rules = [
@@ -124,27 +133,25 @@ class Substation extends controller
                 return false;
             }
 
-            $value = array();
-            $variable = array();
             $model->setlabel($get['label']);
             $model->setPort($get['port']);
 
             $Dis = 'پست با نام ';
             $Dis = $Dis . $model->getlabel();
 
-            if ($id == null  ) {
-                if($model->insertToDataBase()) {
+            if ($id == null) {
+                if ($model->insertToDataBase()) {
                     $Dis = $Dis . ' ثبت شد';
                     $this->callHooks('addLog', [$Dis, 'Substation']);
-                }else {
+                } else {
                     Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
                 }
 
-            } elseif ($id != null ) {
-                if ( $model->upDateDataBase()) {
+            } else {
+                if ($model->upDateDataBase()) {
                     $Dis = $Dis . ' تغییر یافت';
                     $this->callHooks('addLog', [$Dis, 'Substation']);
-                }else {
+                } else {
                     Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
                 }
 
@@ -152,31 +159,31 @@ class Substation extends controller
 
             if ($model->getId() > 0) {
 
-                $modelDevice = parent::model('substation_Device');
+                $model_device = parent::model('substation_Device');
 
-                $modelDevice->setSubstationId($model->getId());
-                $modelDevice->deleteAllRow();
+                $model_device->setSubstationId($model->getId());
+                $model_device->deleteAllRow();
 
 
                 for ($i = 0; $i < count($get['deviceType']); $i++) {
-                    for ($j = $i+1; $j < count($get['deviceType']); $j++) {
+                    for ($j = $i + 1; $j < count($get['deviceType']); $j++) {
                         if ($get['unitId'][$i] == $get['unitId'][$j])
                             Response::jsonMessage(arrays::dataToStrArray(rlang('similarUnitId'), [$i + 1, $j + 1]), false);
-                        if ( $get['deviceName'][$i] == $get['deviceName'][$j])
+                        if ($get['deviceName'][$i] == $get['deviceName'][$j])
                             Response::jsonMessage(arrays::dataToStrArray(rlang('similarNames'), [$i + 1, $j + 1]), false);
                     }
 
 
                     if ($get['deviceType'][$i] != "") {
-                        $modelDevice->setUnitId($get['unitId'][$i]);
-                        $modelDevice->setDeviceType($get['deviceType'][$i]);
-                        $modelDevice->setName($get['deviceName'][$i]);
-                        $modelDevice->setRefreshTime($get['refreshTime'][$i]);
+                        $model_device->setUnitId($get['unitId'][$i]);
+                        $model_device->setDeviceType($get['deviceType'][$i]);
+                        $model_device->setName($get['deviceName'][$i]);
+                        $model_device->setRefreshTime($get['refreshTime'][$i]);
 
                         try {
-                            $modelDevice->insertToDataBase();
+                            $model_device->insertToDataBase();
                         } catch (Exception $e) {
-                            $modelDevice->deleteAllRow();
+                            $model_device->deleteAllRow();
                             Response::jsonMessage(rlang('pleaseTryAGain'), false);
                             return false;
                         }
@@ -196,7 +203,7 @@ class Substation extends controller
         $this->mold->set('activeMenu', 'Substation');
         if ($id == null)
             $this->mold->setPageTitle(rlang('insert') . ' ' . rlang('Substation'));
-        elseif ($id != null)
+        else
             $this->mold->setPageTitle(rlang('edit') . ' ' . rlang('Substation'));
     }
 

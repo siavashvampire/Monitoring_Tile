@@ -27,11 +27,14 @@ class electrical extends innerController
     {
         /** @var Substation $model */
         $model = parent::model(['ElectricalSubstation', 'Substation']);
-        return self::json($model->search(array(), null, 'Substation item', 'CONCAT("ElectricalSubstation_", item.id) as label'));
+        return self::json($model->search(array(), null, 'Substation item', 'CONCAT("ElectricalSubstation_", item.label) as label'));
     }
 
-    public static function device($substation_id = 1): array
+    public static function device($substation_id = 0): array
     {
+        $get = request::post('substation_id');
+        if ($get['substation_id'] != "")
+            $substation_id = $get['substation_id'];
         /** @var substation_Device $model */
         $model = parent::model(['ElectricalSubstation', 'substation_Device']);
         return self::json($model->getItems($substation_id));
@@ -145,9 +148,10 @@ class electrical extends innerController
         }
 
 
-        $data = cache::get('isTileKindUpdate', null, 'ElectricalSubstation');
-        $dataSwitch = cache::get('isSwitchKindUpdate', null, 'ElectricalSubstation');
-        if ($data !== 'yes' or $dataSwitch !== 'yes') {
+//        $data = cache::get('isTileKindUpdate', null, 'ElectricalSubstation');
+        $data = 'no';
+
+        if ($data !== 'yes') {
             return self::jsonError(null, 205);
         }
 

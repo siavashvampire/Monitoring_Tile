@@ -84,7 +84,7 @@ class consumable_Parts extends model implements modelInterFace {
 		$this->Unit = $Unit;
 	}
 
-    public function getParts() {
+    public function getItems() {
 		return parent::search( array()  ,  null  , 'consumable_Parts', '*'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 }

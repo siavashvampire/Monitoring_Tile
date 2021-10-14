@@ -135,15 +135,28 @@ class substation_Device  extends model implements modelInterFace {
         $value = array();
 		$variable = array();
 
-        $value[] = $substation_id;
-        $variable[] = 'substation_id = ?';
+		if ($substation_id != 0) {
+            $value[] = $substation_id;
+            $variable[] = 'item.substation_id = ?';
+        }
         if ($type != null){
             $value[] = $type;
-            $variable[] = 'deviceType = ?';
+            $variable[] = 'item.deviceType = ?';
         }
+        $field = array();
+        $field[]='item.substation_id';
+        $field[]='Substation.label as substation_name';
+        $field[]='item.unitId';
+        $field[]='item.Name';
+        $field[]='item.deviceType';
+        $field[]='item.refreshTime';
+        $field = implode(" , ",$field);
 
+        $order = ['column' => 'item.substation_id', 'type' => 'asc'];
 
-		return parent::search($value ,  implode(' and ', $variable) , 'substation_Device', 'unitId,deviceType,Name,refreshTime'  );
+        model::join('Substation  Substation','Substation.id = item.substation_id');
+
+		return parent::search($value ,  implode(' and ', $variable) , 'substation_Device item',  $field ,$order);
 	}
 
     public function deleteAllRow($id = null){

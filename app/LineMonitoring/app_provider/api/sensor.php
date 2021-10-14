@@ -13,31 +13,31 @@ class sensor extends innerController
 {
     public static function index($value = array(), $variable = array(), $isVirtual = 0, $isStorage = 0, $page = 0, $perEachPage = 0)
     {
-        $get = request::post('unitId , phase', null);
+        $get = request::post('unitId , phase');
         $appName = ['LineMonitoring', 'sensors'];
+
         /** @var sensors $model */
         $model = parent::model($appName);
 
         $order = ['column' => 'item.showSort', 'type' => 'asc'];
 
         if (isset($_POST['unitId']) and $_POST['unitId'] != null) {
-            $variable[] = ' item.unitId IN ' . $_POST['unitId'];
+            $variable[] = ' item.unit IN ' . $_POST['unitId'];
         }
         if (isset($_POST['phase']) and $_POST['phase'] != null) {
             $value[] = $_POST['phase'];
             $variable[] = ' item.phase = ? ';
-
         }
 
+        if ($isVirtual != -1) {
+            $value[] = $isVirtual;
+            $variable[] = ' item.isVirtual = ?';
+        }
 
-
-
-        $value[] = $isVirtual;
-        $variable[] = ' item.isVirtual = ?';
-
-        $value[] = $isStorage;
-        $variable[] = ' item.isStorage = ?';
-
+        if ($isVirtual != -1) {
+            $value[] = $isStorage;
+            $variable[] = ' item.isStorage = ?';
+        }
         if (!$isStorage and !$isVirtual) {
             $value[] = 0;
             $variable[] = ' item.Sensor_plc_id <> ? ';
@@ -47,8 +47,7 @@ class sensor extends innerController
         if ($perEachPage != 0 and $page != 0) {
             $pagination = parent::pagination(parent::model($appName)->getCount($value, $variable), $page, $perEachPage);
             $page = [$pagination['start'], $pagination['limit']];
-        }
-        else
+        } else
             $page = null;
 
         cache::save('yes', 'isTileKindUpdate', 2592000, 'LineMonitoring');

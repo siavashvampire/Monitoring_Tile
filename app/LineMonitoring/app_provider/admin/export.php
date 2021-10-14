@@ -3,6 +3,7 @@ namespace App\LineMonitoring\app_provider\admin;
 
 use App\LineMonitoring\app_provider\api\phases;
 use App\LineMonitoring\app_provider\api\tiles;
+use App\requestService\model\requestService;
 use App\shiftWork\app_provider\api\Day;
 use App\shiftWork\app_provider\api\shift;
 use App\LineMonitoring\model\data_archive;
@@ -707,8 +708,9 @@ class export extends controller {
 		$get = request::post('unitId,phase,StartTime,EndTime,line' ,null);
         
 		$variable = array( );
-		/* @var \app\LineMonitoring\model\requestservice $model */
-		$model = parent::model('requestservice');
+
+        /** @var requestservice $model */
+        $model = parent::model('requestService');
 
 		$value  = [] ;
 		if (request::isPost() ) {

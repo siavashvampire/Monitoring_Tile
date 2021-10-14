@@ -23,19 +23,18 @@ class Sections extends controller {
 		if ($valid->isFail()){
 			//TODO:: add error is not valid data
 
-		} else {
-			if ( $get['name'] != null ) {
-				$value[] = '%'.$get['name'].'%' ;
-				$variable[] = ' Name Like ? ';
-			}
-
 		}
+
+        if ( $get['name'] != null ) {
+            $value[] = '%'.$get['name'].'%' ;
+            $variable[] = ' item.label Like ? ';
+        }
         
 		/* @var \app\Sections\model\sections $model */
 		$model = parent::model('sections');
         $numberOfAll = $model->getCount($value, $variable);
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
-        $search = $model->getItems($value, $variable, ['column' => 'id' , 'type' =>'asc'], $pagination);
+        $search = $model->getItems($value, $variable, ['column' => 'item.id' , 'type' =>'asc'], $pagination);
 		$this->mold->path('default', 'Sections');
 		$this->mold->view('SectionsList.mold.html');
 		$this->mold->setPageTitle('لیست بخش ها');

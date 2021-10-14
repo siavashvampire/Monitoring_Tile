@@ -69,7 +69,7 @@ class requestService_system_status extends model implements modelInterFace {
         $this->label = $label;
     }
 
-    public function getSystem_status() {
-		return parent::search( array()  ,  null  , 'requestService_system_status', 'id Title as label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems() {
+		return parent::search( array()  ,  null  , 'requestService_system_status', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 }

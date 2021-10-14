@@ -2,27 +2,23 @@
 
 namespace App\DAUnits\app_provider\admin;
 
-use App;
-use App\core\controller\fieldService;
 use App\core\controller\httpErrorHandler;
 use App\user\app_provider\api\checkAccess;
 use controller;
 use Exception;
-use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use App\user\app_provider\api\user;
 use paymentCms\component\validate;
 use paymentCms\component\Response;
 use paymentCms\component\arrays;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class DAUnits extends controller
 {
     public function List()
     {
-        $get = request::post('page=1,perEachPage=25', null);
+        $get = request::post('page=1,perEachPage=25');
 
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -44,7 +40,7 @@ class DAUnits extends controller
         $model = parent::model('DAUnits');
         $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $search = $model->getItems($value, $variable, $sortWith, $pagination,false);
+        $search = $model->getItems($value, $variable, $sortWith, $pagination, false);
         $this->mold->set('items', $search);
 
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'DAUnits', 'index', 'DAUnits')["status"];
@@ -59,7 +55,7 @@ class DAUnits extends controller
 
     public function index($id = null)
     {
-        $get = request::post('label,IP,type,appName', null);
+        $get = request::post('label,IP,type,appName');
         if ($id != null) {
             $model = parent::model('DAUnits', $id);
 
@@ -104,7 +100,7 @@ class DAUnits extends controller
                 } else
                     Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
 
-            } elseif ($id != null) {
+            } else {
                 if ($model->upDateDataBase()) {
                     $Dis = $Dis . 'تغییر یافت. ';
                     $this->callHooks('addLog', [$Dis, 'DAUnits']);

@@ -11,7 +11,6 @@ use App\Sections\app_provider\api\sections;
 use App\requestService\app_provider\api\request_service;
 use controller;
 use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\validate;
 use paymentCms\component\Response;
@@ -127,7 +126,6 @@ class RS extends controller
         $RequestAdmin = $this->setting('RequestAdmin');
         $this->mold->set('RequestAdmin', $RequestAdmin);
         $get = request::post('page=1,perEachPage=25,StartTime,EndTime,phase,sortWith', null);
-
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -140,13 +138,12 @@ class RS extends controller
         /** @var requestService $requestService */
         $requestService = parent::model('requestService');
 
-        $this->mold->set('phases', phases::index()["result"]);
-        $this->mold->set('sections', sections::index() ["result"]);
 
         $user = user::getUserLogin(false);
         $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
-        $section = false;
-        $phase = false;
+        $section = null;
+        $phase = null;
+
         if (is_array($fields['result'])) {
             foreach ($fields['result'] as $index => $fields) {
                 if ($fields['type'] == 'fieldCall_Sections_sections') {
@@ -167,7 +164,8 @@ class RS extends controller
         } elseif ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
             $numberOfAll = $requestService->getCount();
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-            $requestServices = $requestService->getItems(array(),array(), $sortWith, $pagination);
+            $pagination = [$pagination["start"], $pagination["limit"]];
+            $requestServices = $requestService->getItems(array(), array(), $sortWith, $pagination);
         } else {
             $this->alert('danger', '', "شما سمت مناسبی برای استفاده از این بخش ندارید");
         }
@@ -178,6 +176,9 @@ class RS extends controller
         $this->mold->view('requestServiceList_Send.mold.html');
         $this->mold->setPageTitle('نمایش خدمات');
         $this->mold->set('activeMenu', 'requestServiceList_Send');
+
+        $this->mold->set('phases', phases::index([$phase])["result"]);
+        $this->mold->set('sections', sections::index([$section]) ["result"]);
 
     }
 
@@ -226,7 +227,7 @@ class RS extends controller
         } elseif ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
             $numberOfAll = $requestService->getCount();
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-            $requestServices = $requestService->getItems(array(),array(), $sortWith, $pagination);
+            $requestServices = $requestService->getItems(array(), array(), $sortWith, $pagination);
         } else {
             $this->alert('danger', '', "شما سمت مناسبی برای استفاده از این بخش ندارید");
         }
@@ -338,16 +339,12 @@ class RS extends controller
             $this->mold->set('ServiceSections', sections::index() ["result"]);
             $this->mold->set('Parts', request_service::consumable_Parts() ["result"]);
 
-            $value = array();
-            $variable = array();
-
             if (request::ispost()) {
                 $shamsi = explode('/', $get['Time_Send']);
                 $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
 
                 $get['Time_Start'] = $get['Time_Start'] / 1000;
                 $get['Time_End'] = $get['Time_End'] / 1000;
-
                 $requestService->setRequestCode($get['requestCode']);
                 $requestService->setTimeSend(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
                 $requestService->setJTimeSend(JDate::jdate('Y-m-d', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
@@ -358,6 +355,7 @@ class RS extends controller
                 $requestService->setLine($get['Line']);
                 $requestService->setSection($get['ServiceSection']);
                 $requestService->setCost(',' . implode(',', $get['Cost']) . ',');
+
 //                $requestService->setWorkerSection(',' . implode(',',$get['Workersection']) . ',');
                 $requestService->setWorkerSection($get['Workersection']);
                 $requestService->setOffTime($get['offTime']);
@@ -376,12 +374,12 @@ class RS extends controller
                 $requestService->setConsumableParts(',' . implode(',', $get['PartName']) . ',');
                 $requestService->setConsumablePartsQty(',' . implode(',', $get['PartQuantity']) . ',');
 
-                $section = $this->model('sections', $requestService->getSection());
-                $Workersection = $this->model('sections', $requestService->getWorkerSection());
+                $section = sections::getSectionModelById($requestService->getSection());
+                $Workersection = sections::getSectionModelById($requestService->getWorkerSection());
                 $Dis = 'درخواست واحد  ';
-                $Dis = $Dis . $section->getName();
+                $Dis = $Dis . $section->getLabel();
                 $Dis = $Dis . ' برای واحد  ';
-                $Dis = $Dis . $Workersection->getName();
+                $Dis = $Dis . $Workersection->getLabel();
                 if ($requestId == null and $requestService->insertToDataBase()) {
                     $Dis = $Dis . ' ثبت شد';
                     $this->callHooks('addLog', [$Dis, 'RequestService']);
@@ -454,7 +452,7 @@ class RS extends controller
                 $get['Time_End'] = $get['Time_End'] / 1000;
 
                 $requestService->setRequestCode(0);
-                $requestService->setTime_Send(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
+                $requestService->setTimeSend(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
                 $requestService->setJTimeSend(JDate::jdate('Y-m-d', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
                 $requestService->setTimeStart(date('Y-m-d H:i:s'));
                 $requestService->setTimeEnd(date('Y-m-d H:i:s'));
@@ -475,7 +473,7 @@ class RS extends controller
                 $requestService->setLatency(3);
                 $requestService->setLatencyTime(0);
                 $requestService->setUnitPersonId(user::getUserLogin(true));
-                $requestService->setworkerPerson_id($get['workerPerson']);
+                $requestService->setWorkerPersonId($get['workerPerson']);
                 $requestService->setSenderNote($get['Sender_note']);
                 $requestService->setHumanNumber(1);
                 $requestService->setConsumableParts(',,');

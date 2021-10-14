@@ -26,8 +26,6 @@ class hook extends pluginController
 
         $this->menu->after('InsertsensorOfflog', 'Reports', 'گزارش ها', "#", 'fa fa-file-excel-o', '', null, 'admin/export/Merge/LineMonitoring');
 
-        $this->menu->addChild('Reports', 'RequestexportExcel', 'گزارش گیری خدمات', app::getBaseAppLink('export/requestService', 'admin'), 'fa fa-file-excel-o', '',  'admin/export/requestService/LineMonitoring');
-
         $this->menu->addChild('Reports', 'exportExcel', 'گزارش گیری', app::getBaseAppLink('sensorlog/export', 'admin'), 'fa fa-file-excel-o', '',  'admin/sensorlog/export/LineMonitoring');
 
         $this->menu->addChild('Reports', 'exportProduction', 'گزارش گیری تولید', app::getBaseAppLink('export/Production', 'admin'), 'fa fa-file-excel-o', '',  'admin/export/Production/LineMonitoring');

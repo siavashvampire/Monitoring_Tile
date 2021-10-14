@@ -52,7 +52,7 @@ class CamSwitch extends controller {
 			}
 			if ( $get['unitId'] != null ) {
 				$value[] = $get['unitId'] ;
-				$variable[] = ' CamSwitch.unitId = ? ';
+				$variable[] = ' CamSwitch.unit = ? ';
 			}
 			if ( $get['sortWith'] != null and is_array($get['sortWith']) ) {
 				unset($sortWith);
@@ -67,7 +67,7 @@ class CamSwitch extends controller {
 		$model = parent::model('CamSwitch');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'CamSwitch CamSwitch', 'COUNT(CamSwitch.id) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
-		model::join('units units' , 'units.id = CamSwitch.unitId ');
+		model::join('units units' , 'units.id = CamSwitch.unit ');
 		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'CamSwitch CamSwitch' , 'CamSwitch.*,units.label as unitName'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
 		$this->mold->path('default', 'LineMonitoring');
 		$this->mold->view('CamSwitchList.mold.html');

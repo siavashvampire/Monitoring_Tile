@@ -67,7 +67,7 @@
                                         <div class="form-group has-default ">
                                            <select class="selectpicker selectpickerNotRefresh" required name="ServiceSection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش درخواست کننده">
                                                 {foreach from=$ServiceSections key=key value=ServiceSection }
-                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.Name}  - {$ServiceSection.id}</option>
+                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.label}  - {$ServiceSection.id}</option>
                                                     {/foreach}
                                            </select>
                                        </div>
@@ -93,7 +93,7 @@
                                            <select class="selectpicker selectpickerNotRefresh" multiple name="Cost[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرکز هزینه">
                                             
                                                 {foreach from=$costs key=key value=cost }
-                                                <option value="{$cost.id}"  {if isset($Mold.post.Cost)}{if in_array($cost.id,$Mold.post.Cost) }selected{/if}{elseif isset($requestService) and in_array( $cost.id , $requestService->getCost() )}selected{/if}>{$cost.Title}</option>
+                                                <option value="{$cost.id}"  {if isset($Mold.post.Cost)}{if in_array($cost.id,$Mold.post.Cost) }selected{/if}{elseif isset($requestService) and in_array( $cost.id , $requestService->getCost() )}selected{/if}>{$cost.label}</option>
                                                 {/foreach}
                                            </select>
                                        </div>
@@ -105,7 +105,7 @@
                                        <div class="form-group has-default">
                                            <select class="selectpicker selectpickerNotRefresh" required name="Workersection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش انجام دهنده">
                                                 {foreach from=$Workersections key=key value=Workersection }
-                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.Name}  -  {$Workersection.id}</option>
+                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.label}  -  {$Workersection.id}</option>
                                                 {/foreach}
                                            </select>
                                        </div>
@@ -119,7 +119,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required name="System_Status" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت دستگاه هنگام درخواست کار">
                                                 {foreach from=$system_statuses key=key value=system_status }
-                                                <option value="{$system_status.id}"  {if isset($Mold.post.System_Status)}{if $system_status.id == $Mold.post.System_Status }selected{/if}{elseif isset($requestService) and  $system_status.id == $requestService->getSystemStatus() }selected{/if}>{$system_status.Title}</option>
+                                                <option value="{$system_status.id}"  {if isset($Mold.post.System_Status)}{if $system_status.id == $Mold.post.System_Status }selected{/if}{elseif isset($requestService) and  $system_status.id == $requestService->getSystemStatus() }selected{/if}>{$system_status.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -139,7 +139,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" multiple required name="WorkTitle[]" data-live-search="true"  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فعالیت مورد نظر">
                                                 {foreach from=$worktitles key=key value=worktitle }
-                                                <option value="{$worktitle.id}" {if isset($Mold.post.WorkTitle)}{if in_array($worktitle.id,$Mold.post.WorkTitle) }selected{/if}{elseif isset($requestService) and in_array( $worktitle.id , $requestService->getWorkTitle() )}selected{/if}> {$worktitle.Title}</option>
+                                                <option value="{$worktitle.id}" {if isset($Mold.post.WorkTitle)}{if in_array($worktitle.id,$Mold.post.WorkTitle) }selected{/if}{elseif isset($requestService) and in_array( $worktitle.id , $requestService->getWorkTitle() )}selected{/if}> {$worktitle.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -152,7 +152,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" multiple required name="BugInfluence[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="اثرات خرابی">
                                                 {foreach from=$BugInfluences key=key value=BugInfluence }
-                                                <option value="{$BugInfluence.id}"  {if isset($Mold.post.BugInfluence)}{if in_array($BugInfluence.id,$Mold.post.BugInfluence) }selected{/if}{elseif isset($requestService) and in_array( $BugInfluence.id , $requestService->getBugInfluence() )}selected{/if}>{$BugInfluence.Title}</option>
+                                                <option value="{$BugInfluence.id}"  {if isset($Mold.post.BugInfluence)}{if in_array($BugInfluence.id,$Mold.post.BugInfluence) }selected{/if}{elseif isset($requestService) and in_array( $BugInfluence.id , $requestService->getBugInfluence() )}selected{/if}>{$BugInfluence.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -205,7 +205,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required name="failure" data-style="btn btn-outline-info btn-round text-{$float}" title="علت خرابی">
                                                 {foreach from=$failures key=key value=failure }
-                                                <option value="{$system_status.id}"  {if isset($Mold.post.failure)}{if $failure.id == $Mold.post.failure }selected{/if}{elseif isset($requestService) and  $failure.id == $requestService->getFailure() }selected{/if}>{$failure.Title}</option>
+                                                <option value="{$system_status.id}"  {if isset($Mold.post.failure)}{if $failure.id == $Mold.post.failure }selected{/if}{elseif isset($requestService) and  $failure.id == $requestService->getFailure() }selected{/if}>{$failure.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -226,8 +226,8 @@
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required name="Donework" data-style="btn btn-outline-info btn-round text-{$float}" title="عملیات انجام شده">
-                                                {foreach from=$Doneworks key=key value=Donework }
-                                                <option value="{$Donework.id}"  {if isset($Mold.post.Donework)}{if $Donework.id == $Mold.post.Donework }selected{/if}{elseif isset($requestService) and  $Donework.id == $requestService->getDonework() }selected{/if}>{$Donework.Title}</option>
+                                                {foreach from=$doneWork      key=key value=Donework }
+                                                <option value="{$Donework.id}"  {if isset($Mold.post.Donework)}{if $Donework.id == $Mold.post.Donework }selected{/if}{elseif isset($requestService) and  $Donework.id == $requestService->getDonework() }selected{/if}>{$Donework.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -249,7 +249,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required name="Latency" data-style="btn btn-outline-info btn-round text-{$float}" title="علت تاخیر">
                                                 {foreach from=$Latencys key=key value=Latency }
-                                                <option value="{$Latency.id}"  {if isset($Mold.post.Latency)}{if $Latency.id == $Mold.post.Latency }selected{/if}{elseif isset($requestService) and  $Latency.id == $requestService->getLatency() }selected{/if}>{$Latency.Title}</option>
+                                                <option value="{$Latency.id}"  {if isset($Mold.post.Latency)}{if $Latency.id == $Mold.post.Latency }selected{/if}{elseif isset($requestService) and  $Latency.id == $requestService->getLatency() }selected{/if}>{$Latency.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>

@@ -2,6 +2,7 @@
 namespace App\LineMonitoring\app_provider\admin;
 
 use app;
+use App\LineMonitoring\app_provider\api\sensor;
 use App\LineMonitoring\app_provider\api\phases;
 use app\LineMonitoring\model\data;
 use app\LineMonitoring\model\diagrams;
@@ -97,9 +98,9 @@ class diagram extends controller {
 			$diagram = parent::model('diagrams', $diagramID);
 			if ( ! request::isPost('sensorSelect') ) {
 				$sensors = array_keys($diagram->getDiagram());
-				model::join('units u ', 'u.id = s.unitId');
-				$search = $diagram->search($sensors, ' id IN ( ' . substr(str_repeat('? ,', count($sensors)), 0, -1) . ')', 'sensors s', 's.id as id , s.label as name , s.phase as phase , u.label as unit ', ['column' => 's.showSort', 'type' => 'asc']);
-                $this->mold->set('sensorSelectPost' , $search);
+				$variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($sensors)), 0, -1) . ')';
+				$search = sensor::index($sensors,$variable,-1,-1)["result"];
+				$this->mold->set('sensorSelectPost' , $search);
 			}
 			$this->mold->set('diagram' , $diagram);
 		}
@@ -151,7 +152,7 @@ class diagram extends controller {
 	public function getSensor($phase = 0 , $unitId = 0){
 		/* @var data $model */
 		$model = parent::model('data');
-		$search = $model->search( [intval($phase) , intval($unitId) ]  ,  'phase = ?  and unitId = ?'  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
+		$search = $model->search( [intval($phase) , intval($unitId) ]  ,  'phase = ?  and unit = ?'  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
 
 		$html = '<div class="form-group has-default" id="getSensor">
                                                     <select class="selectpicker" multiple id="sensorId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">

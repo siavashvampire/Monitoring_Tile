@@ -101,20 +101,20 @@
                                         <table class="table text-right">
                                             <thead>
                                             <tr>
-                                                <th class="text-center">نام سنسور</th>
-                                                <th class="text-center">فاز</th>
-                                                <th class="text-center">واحد</th>
-                                                <th class="text-center" style="width: 25px;"></th>
+                                                <th>نام سنسور</th>
+                                                <th>فاز</th>
+                                                <th>واحد</th>
+                                                <th style="width: 25px;"></th>
                                             </tr>
                                             </thead>
                                             <tbody id="listSensorAdded">
                                             {if isset($sensorSelectPost)}
                                                 {foreach from=$sensorSelectPost key=key value=sensorSelect }
                                                 <tr class="rowOFSensorSelect_{$sensorSelect.id}">
-                                                    <td class="text-center">{$sensorSelect.name}</td>
-                                                    <td class="text-center">{$sensorSelect.phase}</td>
-                                                    <td class="text-center">{$sensorSelect.unit}</td>
-                                                    <td class="text-center"> <button type="button" class="btn btn-danger" onclick="deleteSensor({$sensorSelect.id});">
+                                                    <td>{$sensorSelect.label}</td>
+                                                    <td>{$sensorSelect.phase}</td>
+                                                    <td>{$sensorSelect.unitName}</td>
+                                                    <td> <button type="button" class="btn btn-danger" onclick="deleteSensor({$sensorSelect.id});">
                                                                                                     <i class="fa fa-trash"></i>
                                                                             حذف سنسور                                        <div class="ripple-container"></div></button></td>
                                                 </tr>
@@ -129,20 +129,20 @@
                                         <table class="table text-right">
                                             <thead>
                                             <tr>
-                                                <th class="text-center">نام سنسور</th>
-                                                <th class="text-center">فاز</th>
-                                                <th class="text-center">واحد</th>
-                                                <th class="text-center">مکان نمایش تعداد روی نقشه</th>
+                                                <th>نام سنسور</th>
+                                                <th>فاز</th>
+                                                <th>واحد</th>
+                                                <th>مکان نمایش تعداد روی نقشه</th>
                                             </tr>
                                             </thead>
                                             <tbody id="listSensorAddedForMapping">
                                             {if isset($sensorSelectPost)}
                                                 {foreach from=$sensorSelectPost key=key value=sensorSelect }
                                                 <tr class="rowOFSensorSelect_{$sensorSelect.id}">
-                                                    <td class="text-center">{$sensorSelect.name}</td>
-                                                    <td class="text-center">{$sensorSelect.phase}</td>
-                                                    <td class="text-center">{$sensorSelect.unit}</td>
-                                                    <td class="text-center"><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation({$sensorSelect.id} , this);">
+                                                    <td>{$sensorSelect.label}</td>
+                                                    <td>{$sensorSelect.phase}</td>
+                                                    <td>{$sensorSelect.unitName}</td>
+                                                    <td><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation({$sensorSelect.id} , this);">
                                                                                                         <i class="fa fa-eye"></i>
                                                         <div class="ripple-container"></div></button><button type="button" class="btn btn-info" onclick="editSensorLocation({$sensorSelect.id});">
                                                                                                         <i class="fa fa-pencil"></i><div class="ripple-container"></div></button></td>
@@ -156,9 +156,9 @@
                                         {if isset($sensorSelectPost)}
                                             {foreach from=$sensorSelectPost key=key value=sensorSelect }
                                                 <input name="sensorSelect[{$sensorSelect.id}][id]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.id}">
-                                                <input name="sensorSelect[{$sensorSelect.id}][name]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.name}">
+                                                <input name="sensorSelect[{$sensorSelect.id}][label]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.label}">
                                                 <input name="sensorSelect[{$sensorSelect.id}][phase]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.phase}">
-                                                <input name="sensorSelect[{$sensorSelect.id}][unit]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="'{$sensorSelect.unit}">
+                                                <input name="sensorSelect[{$sensorSelect.id}][unitName]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="'{$sensorSelect.unitName}">
                                             {/foreach}
                                         {/if}
                                         {if isset($diagram)}
@@ -269,7 +269,7 @@
         {foreach from=$sensorSelectPost key=key value=sensorSelect }
         //{$sensorSelect.id}
 
-        sensors.push( { id :  {$sensorSelect.id} , name : '{$sensorSelect.name}' } );
+        sensors.push( { id :  {$sensorSelect.id} , name : '{$sensorSelect.label}' } );
         {/foreach}
     {/if}
 
@@ -495,10 +495,10 @@
                     '                                                حذف سنسور                                        <div class="ripple-container"></div></button></td>' +
                     '</tr>');
                 $('#listSensorAddedForMapping').append('<tr class="rowOFSensorSelect_'+$(this).val()+'">' +
-                    '<td class="text-center">'+$(this).text()+'</td>' +
-                    '<td class="text-center">'+$( "#phase option:selected" ).text()+'</td>' +
-                    '<td class="text-center">'+$( "#unitId option:selected" ).text()+'</td>' +
-                    '<td class="text-center"><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation('+$(this).val()+' , this);">\n' +
+                    '<td>'+$(this).text()+'</td>' +
+                    '<td>'+$( "#phase option:selected" ).text()+'</td>' +
+                    '<td>'+$( "#unitId option:selected" ).text()+'</td>' +
+                    '<td><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation('+$(this).val()+' , this);">\n' +
                     '                                                <i class="fa fa-eye"></i>\n' +
                     '<div class="ripple-container"></div></button><button type="button" class="btn btn-info" onclick="editSensorLocation('+$(this).val()+');">\n' +
                     '                                                <i class="fa fa-pencil"></i>\n' +

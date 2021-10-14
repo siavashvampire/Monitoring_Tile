@@ -110,27 +110,27 @@
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">بخش</th>
-                                    <th class="text-center">مشکل</th>
-                                    <th class="text-center">زمان</th>
-                                    <th class="text-center">نمایش</th>
-                                    <th class="text-center">ویرایش</th>
+                                    <th>بخش</th>
+                                    <th>مشکل</th>
+                                    <th>زمان</th>
+                                    <th>نمایش</th>
+                                    <th>ویرایش</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$requestServices key=key value=requestService}
                                 <tr>
-                                    <td class="text-center">{$requestService.WorkerSectionName|str_replace:',':' - '}</td>
-                                    <td class="text-center">{$requestService.BugInfluence|str_replace:',':' - '}</td>
-                                    <td class="text-center">{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
-                                    <td class="text-center">
+                                    <td>{$requestService.WorkerSectionName|str_replace:',':' - '}</td>
+                                    <td>{$requestService.BugInfluence|str_replace:',':' - '}</td>
+                                    <td>{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
+                                    <td>
                                         <button class="btn btn-link text-info mr-2" onclick="openReSerView('{$requestService.requestId}')"><i class="fa fa-eye"></i></button>
                                     </td>
-                                    <td class="text-center">
+                                    <td>
                                         {if $userLogin.user_group_id == 1 or $userLogin.user_group_id == $RequestAdmin} 
-                                            <a class="btn btn-link text-info mr-2" href= "{url 'admin'}requestService/adminService/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-link text-info mr-2" href= "{url 'admin'}RS/adminService/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
                                         {else}
-                                            <a class="btn btn-link text-info mr-2" href= "{url 'admin'}requestService/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-link text-info mr-2" href= "{url 'admin'}RS/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
                                         {/if}
                                     </td>
                                 </tr>
@@ -175,7 +175,7 @@
     var urlTheme= "{url themeBase}" ;
     var div = '{$loadDivID}' ;
     function openReSerView(id){
-        ajaxRunUrlHtml(urlAdmin+'requestService/Ajax_View/' + id, '#ReSerContent' , 'openModule');
+        ajaxRunUrlHtml(urlAdmin+'RS/Ajax_View/' + id, '#ReSerContent' , 'openModule');
     }
     function openModule() {
         $('#exampleModal').modal('show');

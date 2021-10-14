@@ -16,35 +16,57 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class request_service extends innerController
 {
-    public static function buginfluence(): array
+    public static function buginfluence($ids = null): array
     {
-
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_buginfluence $model */
         $model = parent::model('requestService_buginfluence');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
     }
 
-    public static function worktitle(): array
+    public static function worktitle($ids = null): array
     {
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_worktitle $model */
         $model = parent::model('requestService_worktitle');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
 
     }
 
-    public static function system_status(): array
+    public static function system_status($ids = null): array
     {
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_system_status $model */
         $model = parent::model('requestService_system_status');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value, $variable));
     }
 
-    public static function cost(): array
+    public static function cost($ids = null): array
     {
-
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_cost $model */
         $model = parent::model('requestService_cost');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
     }
 
     public static function failure(): array
@@ -67,6 +89,7 @@ class request_service extends innerController
         $model = parent::model('requestService_latency');
         return self::json($model->getItems());
     }
+
     public static function consumable_Parts(): array
     {
         /** @var consumable_Parts $model */

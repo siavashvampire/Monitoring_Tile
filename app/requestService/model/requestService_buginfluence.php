@@ -68,7 +68,7 @@ class requestService_buginfluence extends model implements modelInterFace {
     }
 
 
-    public function getItems() {
-		return parent::search( array()  ,  null  , 'requestService_buginfluence', 'id , label'  , ['column' => 'id' , 'type' =>'asc'] );
+    public function getItems($value,$variable) {
+		return parent::search( $value, (count($variable) == 0) ? null : implode(' and ', $variable)  , 'requestService_buginfluence item', 'item.id , item.label'  , ['column' => 'item.id' , 'type' =>'asc'] );
 	}
 }

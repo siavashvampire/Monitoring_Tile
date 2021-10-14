@@ -16,7 +16,7 @@
                                     <label class="col-md-3 col-form-label">تاریخ درخواست<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send)}{$Mold.post.Time_Send}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"Y/m/d"|persianNumber}{/if}">
+                                            <input type="date" autocomplete="off" required name="Time_Start" class="form-control" value="{if isset($Mold.post.Time_Send)}{$Mold.post.Time_Send}{elseif isset($requestService)}{$requestService->getTime_Send()|jDate:"Y/m/d"|persianNumber}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -35,7 +35,7 @@
                                         <div class="form-group has-default ">
                                            <select class="selectpicker selectpickerNotRefresh" required name="ServiceSection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش درخواست کننده">
                                                 {foreach from=$ServiceSections key=key value=ServiceSection }
-                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.Name}  - {$ServiceSection.id}</option>
+                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.label}  - {$ServiceSection.id}</option>
                                                     {/foreach}
                                            </select>
                                        </div>
@@ -61,7 +61,7 @@
                                        <div class="form-group has-default">
                                            <select class="selectpicker selectpickerNotRefresh" required name="Workersection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش انجام دهنده">
                                                 {foreach from=$Workersections key=key value=Workersection }
-                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.Name}  -  {$Workersection.id}</option>
+                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.label}  -  {$Workersection.id}</option>
                                                 {/foreach}
                                            </select>
                                        </div>

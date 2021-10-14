@@ -269,27 +269,30 @@ class RS extends controller
             }
 
             $Cost = explode(',', $requestService->getCost());
-            $WorkerSection = explode(',', $requestService->getWorkerSection());
+//            $WorkerSection = explode(',', $requestService->getWorkerSection());
             $System_Status = explode(',', $requestService->getSystemStatus());
             $WorkTitle = explode(',', $requestService->getWorkTitle());
             $BugInfluence = explode(',', $requestService->getBugInfluence());
 
             $BugInfluences = $requestService->search($BugInfluence, 'id in (' . substr(str_repeat(', ? ', count($BugInfluence)), 1) . ')', 'requestService_buginfluence', '*', ['column' => 'id', 'type' => 'asc']);
-            $this->mold->set('BugInfluences', array_column($BugInfluences, 'Title'));
+            $this->mold->set('BugInfluences', array_column($BugInfluences, 'label'));
 
             $worktitles = $requestService->search($WorkTitle, 'id in (' . substr(str_repeat(', ? ', count($WorkTitle)), 1) . ')', 'requestService_worktitle', '*', ['column' => 'id', 'type' => 'asc']);
-            $this->mold->set('worktitles', array_column($worktitles, 'Title'));
+            $this->mold->set('worktitles', array_column($worktitles, 'label'));
 
             $system_statuses = $requestService->search($System_Status, 'id in (' . substr(str_repeat(', ? ', count($System_Status)), 1) . ')', 'requestService_system_status', '*', ['column' => 'id', 'type' => 'asc']);
-            $this->mold->set('system_statuses', array_column($system_statuses, 'Title'));
+            $this->mold->set('system_statuses', array_column($system_statuses, 'label'));
 
-            $costs = $requestService->search($Cost, 'id in (' . substr(str_repeat(', ? ', count($Cost)), 1) . ')', 'requestService_cost', 'label', ['column' => 'id', 'type' => 'asc']);
-            $this->mold->set('costs', array_column($costs, 'Title'));
-            $WorkerSection = $requestService->search($WorkerSection, 'id in (' . substr(str_repeat(', ? ', count($WorkerSection)), 1) . ')', 'sections', 'label', ['column' => 'id', 'type' => 'asc']);
-            $this->mold->set('WorkerSection', array_column($WorkerSection, 'label'));
+            $requestService->setWorkerSection(array_column(sections::index([$requestService->getWorkerSection()])['result'], 'label')[0]);
+            $requestService->setSection(array_column(sections::index([$requestService->getSection()])['result'], 'label')[0]);
+            $requestService->setSystemStatus(array_column(request_service::system_status([$requestService->getSystemStatus()])['result'], 'label')[0]);
+            $requestService->setCost(array_column(request_service::cost(explode(',',$requestService->getCost()))['result'], 'label')[0]);
+            $requestService->setPhase(array_column(phases::index([$requestService->getPhase()])['result'], 'label')[0]);
+            $requestService->setBugInfluence(array_column(request_service::buginfluence(explode(',', $requestService->getBugInfluence()))['result'], 'label')[0]);
+            $requestService->setWorkTitle(array_column(request_service::worktitle(explode(',',$requestService->getWorkTitle()))['result'], 'label')[0]);
 
 
-//            $this->mold->set('user', $user);
+//           $this->mold->set('user', $user);
             $this->mold->set('requestService', $requestService);
             $this->mold->path('default', 'requestService');
             $this->mold->view('requestServiceAjax.mold.html');
@@ -319,7 +322,7 @@ class RS extends controller
                 $requestService->setConsumablePartsQty(explode(',', substr($requestService->getConsumablePartsQty(), 1, strlen($requestService->getConsumablePartsQty()) - 2)));
                 $requestService->setConsumableParts(explode(',', substr($requestService->getConsumableParts(), 1, strlen($requestService->getConsumableParts()) - 2)));
                 $requestService->setTimeSend(jdate::jdate('Y/m/d' , strtotime($requestService->getTimeSend())));
-                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));
+//                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));
                 $this->mold->set('requestService', $requestService);
             } else
 
@@ -479,12 +482,12 @@ class RS extends controller
                 $requestService->setHumanNumber(1);
                 $requestService->setConsumableParts(',,');
                 $requestService->setConsumablePartsQty(',,');
-                $section = $this->model('sections', $requestService->getSection());
-                $Workersection = $this->model('sections', $requestService->getWorkerSection());
+                $section = sections::getSectionModelById($requestService->getSection());
+                $Workersection = sections::getSectionModelById($requestService->getWorkerSection());
                 $Dis = 'درخواست واحد  ';
-                $Dis = $Dis . $section->getName();
+                $Dis = $Dis . $section->getLabel();
                 $Dis = $Dis . ' برای واحد  ';
-                $Dis = $Dis . $Workersection->getName();
+                $Dis = $Dis . $Workersection->getLabel();
                 if ($requestId == null and $requestService->insertToDataBase()) {
                     $Dis = $Dis . ' ثبت شد';
                     $this->callHooks('addLog', [$Dis, 'RequestService']);

@@ -8,7 +8,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class sections extends innerController
 {
-    public static function index($ids)
+    public static function index($ids = null)
     {
         $value = array();
         $variable = array();

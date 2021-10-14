@@ -61,8 +61,6 @@ class RS extends controller
 
         $get = request::post('Line,Cost,Workersection,System_Status,WorkTitle,BugInfluence,Sender_note', null);
 
-        $value = array();
-        $variable = array();
         /* @var \app\requestService\model\requestService $model */
 
         $this->mold->set('phases', phases::index()["result"]);
@@ -86,7 +84,7 @@ class RS extends controller
                     $requestService->setLine($get['Line']);
                     $requestService->setSection($section);
                     $requestService->setCost(',' . implode(',', $get['Cost']) . ',');
-//                $requestService->setWorkerSection(',' . implode(',',$get['Workersection']) . ',');
+//                 $requestService->setWorkerSection(',' . implode(',',$get['Workersection']) . ',');
                     $requestService->setWorkerSection($get['Workersection']);
                     $requestService->setSystemStatus($get['System_Status']);
                     $requestService->setWorkTitle(',' . implode(',', $get['WorkTitle']) . ',');
@@ -95,12 +93,12 @@ class RS extends controller
                     $requestService->setTime_Send(date('Y-m-d H:i:s'));
                     $requestService->setSenderNote($get['Sender_note']);
 
-                    $section = $this->model('sections', $requestService->getSection());
-                    $Workersection = $this->model('sections', $requestService->getWorkerSection());
+                    $section = sections::getSectionModelById($requestService->getSection());
+                    $Workersection = sections::getSectionModelById($requestService->getWorkerSection());
                     $Dis = 'درخواست واحد  ';
-                    $Dis = $Dis . $section->getName();
+                    $Dis = $Dis . $section->getLabel();
                     $Dis = $Dis . ' برای واحد  ';
-                    $Dis = $Dis . $Workersection->getName();
+                    $Dis = $Dis . $Workersection->getLabel();
                     if ($requestService->insertToDataBase()) {
                         Response::redirect(App::getBaseAppLink('RS/Send_lists', 'admin'));
                         $Dis = $Dis . ' ثبت شد';
@@ -245,8 +243,10 @@ class RS extends controller
         $Person_id = user::getUserLogin(true);
         $user = user::getUserLogin(false);
         if ($requestId != null) {
-            $requestService = $this->model(['requestService', 'requestService'], $requestId);
-            if ($requestService->getRequestId() != $requestId or !($requestService->getUnitPersonId() == $Person_id or $requestService->getworkerPerson_id() == $Person_id or $user['user_group_id'] == $this->setting('RequestAdmin') or $user['user_group_id'] == 1)) {
+
+            /** @var requestService $requestService */
+            $requestService = $this->model( 'requestService', $requestId);
+            if ($requestService->getRequestId() != $requestId or !($requestService->getUnitPersonId() == $Person_id or $requestService->getWorkerPersonId() == $Person_id or $user['user_group_id'] == $this->setting('RequestAdmin') or $user['user_group_id'] == 1)) {
 
                 $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
                 $section = false;
@@ -283,11 +283,10 @@ class RS extends controller
             $system_statuses = $requestService->search($System_Status, 'id in (' . substr(str_repeat(', ? ', count($System_Status)), 1) . ')', 'requestService_system_status', '*', ['column' => 'id', 'type' => 'asc']);
             $this->mold->set('system_statuses', array_column($system_statuses, 'Title'));
 
-            $costs = $requestService->search($Cost, 'id in (' . substr(str_repeat(', ? ', count($Cost)), 1) . ')', 'requestService_cost', 'Title', ['column' => 'id', 'type' => 'asc']);
+            $costs = $requestService->search($Cost, 'id in (' . substr(str_repeat(', ? ', count($Cost)), 1) . ')', 'requestService_cost', 'label', ['column' => 'id', 'type' => 'asc']);
             $this->mold->set('costs', array_column($costs, 'Title'));
-
-            $WorkerSection = $requestService->search($WorkerSection, 'id in (' . substr(str_repeat(', ? ', count($WorkerSection)), 1) . ')', 'sections', 'Name', ['column' => 'id', 'type' => 'asc']);
-            $this->mold->set('WorkerSection', array_column($WorkerSection, 'Name'));
+            $WorkerSection = $requestService->search($WorkerSection, 'id in (' . substr(str_repeat(', ? ', count($WorkerSection)), 1) . ')', 'sections', 'label', ['column' => 'id', 'type' => 'asc']);
+            $this->mold->set('WorkerSection', array_column($WorkerSection, 'label'));
 
 
 //            $this->mold->set('user', $user);
@@ -306,6 +305,8 @@ class RS extends controller
         $this->mold->set('RequestAdmin', $RequestAdmin);
         if ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
             if ($requestId != null) {
+
+                /** @var requestService $requestService */
                 $requestService = parent::model('requestService', $requestId);
                 if ($requestService->getRequestId() != $requestId) {
                     httpErrorHandler::E404();
@@ -317,8 +318,8 @@ class RS extends controller
                 $requestService->setBugInfluence(explode(',', $requestService->getBugInfluence()));
                 $requestService->setConsumablePartsQty(explode(',', substr($requestService->getConsumablePartsQty(), 1, strlen($requestService->getConsumablePartsQty()) - 2)));
                 $requestService->setConsumableParts(explode(',', substr($requestService->getConsumableParts(), 1, strlen($requestService->getConsumableParts()) - 2)));
-                //$requestService->setTime_Send(jdate::jdate('Y/m/d' , strtotime($requestService->getTime_Send())));
-//                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));
+                $requestService->setTimeSend(jdate::jdate('Y/m/d' , strtotime($requestService->getTimeSend())));
+                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));
                 $this->mold->set('requestService', $requestService);
             } else
 

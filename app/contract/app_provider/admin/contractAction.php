@@ -68,7 +68,10 @@ class contractAction extends controller
                     '[|T|]',
                     '[|SC|]',
                     '[|SE|]',
-                    '[|SD|]'
+                    '[|SD|]',
+                    '[|FD|]',
+                    '[|FT|]',
+                    '[|TS|]',
                 ],
                 [
                     $user->getFname(),
@@ -81,12 +84,22 @@ class contractAction extends controller
                     JDate::jdate('Y/m/d', strtotime($contract->getStartDate())),
                     JDate::jdate('Y/m/d', strtotime($contract->getEndDate())),
                     $contract->getContractDays(),
+                    JDate::jdate('Y/m/d', strtotime($contract->getFillOutedDate())),
+                    JDate::jdate('H:i:s', strtotime($contract->getFillOutedDate())),
                 ],
                 $modelUserGroup->getContractTemplate()
             );
-            if (is_array($fields['result']))
-                foreach ($fields['result'] as $field)
+            if (is_array($fields['result'])){
+                $totalSalary = 0 ;
+                foreach ($fields['result'] as $field) {
+                    if ($fields['type'] == 'fieldCall_contract_salary') {
+                        $totalSalary = $totalSalary + intval($field['value']);
+                    }
                     $contractTemplate = str_replace('[|C' . $field['fieldId'] . '|]', $field['value'], $contractTemplate);
+                }
+                $contractTemplate = str_replace('[|TS|]', $totalSalary, $contractTemplate);
+                $this->mold->set('totalSalary', $totalSalary);
+            }
             $fields = fieldService::showFilledOutFormWithAllFields($user->getUserGroupId(), 'user_register', $user->getUserId(), 'user_register', true);
             if (is_array($fields['result']))
                 foreach ($fields['result'] as $field)
@@ -225,9 +238,9 @@ class contractAction extends controller
             $phase = null;
             if (is_array($fields['result'])) {
                 foreach ($fields['result'] as $index => $fields) {
-                    if ($fields['type'] == 'fieldCall_contract_units') {
+                    if ($fields['type'] == 'fieldCall_units_units') {
                         $unitId = $fields['value'];
-                    } elseif ($fields['type'] == 'fieldCall_contract_phase') {
+                    } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                         $phase = $fields['value'];
                     }
                     if ($unitId != null and $phase != null) break;
@@ -242,11 +255,11 @@ class contractAction extends controller
                     $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                     if (is_array($fields['result'])) {
                         foreach ($fields['result'] as $index2 => $fields) {
-                            if ($fields['type'] == 'fieldCall_contract_units') {
+                            if ($fields['type'] == 'fieldCall_units_units') {
                                 if ($unitId == $fields['value']) {
                                     $tempUserFindUnit = $userSearched['userId'];
                                 }
-                            } elseif ($fields['type'] == 'fieldCall_contract_phase') {
+                            } elseif ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                                 if ($phase == $fields['value']) {
                                     $tempUserFindPhase = $userSearched['userId'];
                                 }
@@ -264,7 +277,7 @@ class contractAction extends controller
                     $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                     if (is_array($fields['result'])) {
                         foreach ($fields['result'] as $index2 => $fields) {
-                            if ($fields['type'] == 'fieldCall_contract_units') {
+                            if ($fields['type'] == 'fieldCall_units_units') {
                                 if ($unitId == $fields['value']) {
                                     $userFind = $userSearched['userId'];
                                 }
@@ -279,7 +292,7 @@ class contractAction extends controller
                     $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                     if (is_array($fields['result'])) {
                         foreach ($fields['result'] as $index2 => $fields) {
-                            if ($fields['type'] == 'fieldCall_contract_phase') {
+                            if ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                                 if ($phase == $fields['value']) {
                                     $userFind = $userSearched['userId'];
                                 }
@@ -434,6 +447,7 @@ class contractAction extends controller
         $contract->setContractGroup($user->getUserGroupId());
 
         if ($contractId == null) {
+            $contract->setFillOutedDate(date('Y-m-d H:i:s'));
             if ($contract->insertToDataBase()) {
                 $resultFillOutForm = fieldService::fillOutForm($user->getUserGroupId(), 'contract_with_user', $get['customField'], $contract->getContractId(), 'contract_with_user');
             }

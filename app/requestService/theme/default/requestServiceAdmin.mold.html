@@ -67,7 +67,7 @@
                                         <div class="form-group has-default ">
                                            <select class="selectpicker selectpickerNotRefresh" required name="ServiceSection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش درخواست کننده">
                                                 {foreach from=$ServiceSections key=key value=ServiceSection }
-                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.Name}  - {$ServiceSection.id}</option>
+                                                    <option value="{$ServiceSection.id}" {if isset($Mold.post.ServiceSection)}{if $ServiceSection.id == $Mold.post.ServiceSection }selected{/if}{elseif isset($requestService) and $ServiceSection.id == $requestService->getSection()}selected{/if}>{$ServiceSection.label}  - {$ServiceSection.id}</option>
                                                     {/foreach}
                                            </select>
                                        </div>
@@ -105,7 +105,7 @@
                                        <div class="form-group has-default">
                                            <select class="selectpicker selectpickerNotRefresh" required name="Workersection" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش انجام دهنده">
                                                 {foreach from=$Workersections key=key value=Workersection }
-                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.Name}  -  {$Workersection.id}</option>
+                                                <option value="{$Workersection.id}"  {if isset($Mold.post.Workersection)}{if $Workersection.id == $Mold.post.Workersection }selected{/if}{elseif isset($requestService) and $Workersection.id == $requestService->getWorkerSection()}selected{/if}>{$Workersection.label}  -  {$Workersection.id}</option>
                                                 {/foreach}
                                            </select>
                                        </div>
@@ -226,7 +226,7 @@
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required name="Donework" data-style="btn btn-outline-info btn-round text-{$float}" title="عملیات انجام شده">
-                                                {foreach from=$doneWork key=key value=Donework }
+                                                {foreach from=$doneWork      key=key value=Donework }
                                                 <option value="{$Donework.id}"  {if isset($Mold.post.Donework)}{if $Donework.id == $Mold.post.Donework }selected{/if}{elseif isset($requestService) and  $Donework.id == $requestService->getDonework() }selected{/if}>{$Donework.label}</option>
                                                 {/foreach}
                                             </select>

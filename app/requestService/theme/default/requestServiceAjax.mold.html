@@ -11,33 +11,43 @@
             <div class="tab-pane active" id="linkView">
                 <table class="table table-striped text-{$text_align}">
                     <tr>
-                        <td>
-                            خط:
+                        <td style="width: 20%">
+                            شماره درخواست:
                         </td>
-                        <td>
-                            {$requestService->getLine()}
+                        <td style="width: 10%">
+                            {$requestService->getRequestCode()}
                         </td>
-                        <td>
-                            مرکز هزینه :
+                        <td style="width: 20%">
+                            تاریخ درخواست :
                         </td>
-                        <td>
-                            {$costs|implode:' - '}
+                        <td style="width: 20%">
+                            {$requestService->getJTimeSend()}
+                        </td>
+                        <td style="width: 20%">
+                            فاز مورد نظر:
+                        </td>
+                        <td style="width: 5%">
+                            {$requestService->getPhase()}
                         </td>
                     </tr>
                     <tr>
-                        {if $userid == $requestService->getworkerPerson_id()}
-                            <td>
-                                بخش انجام دهنده:
+                            <td style="width: 10%">
+                                  بخش انجام دهنده:
                             </td>
-                            <td>
-                                {$WorkerSection|implode:' - '}
+                            <td style="width: 20%">
+                                {$requestService->getWorkerSection()}
                             </td>
-                        {/if}
-                        <td>
+                        <td style="width: 30%">
                             وضعیت دستگاه هنگام درخواست کار :
                         </td>
-                        <td>
-                            {$system_statuses|implode:' - '}
+                        <td style="width: 20%">
+                            {$requestService->getSystemStatus()}
+                        </td>
+                        <td style="width: 20%">
+                            بخش درخواست کننده :
+                        </td>
+                        <td style="width: 5%">
+                           {$requestService->getSection()}
                         </td>
                     </tr>
                     <tr>
@@ -45,13 +55,13 @@
                             فعالیت مورد نظر :
                         </td>
                         <td>
-                            {$worktitles|implode:' - '}
+                            {$requestService->getWorkTitle()}
                         </td>
                         <td>
                             اثرات خرابی:
                         </td>
                         <td>
-                            {$BugInfluences|implode:' - '}
+                            {$requestService->getBugInfluence()}
                         </td>
                         
                         <td>

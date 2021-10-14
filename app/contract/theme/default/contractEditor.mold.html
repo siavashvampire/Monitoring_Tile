@@ -146,17 +146,20 @@
         ['نام و نام خانوادگی', '[|N|]'],
         ['شماره همراه', '[|P|]'],
         ['شماره پرسنلی', '[|E|]'],
-        ['تاریخ', '[|D|]'],
-        ['زمان', '[|T|]'],
+        {foreach from=$fieldsUser key=key value=field }
+            ['{$field.title}','[|U{$field.fieldId}|]'],
+        {/foreach}
+        ['تاریخ چاپ', '[|D|]'],
+        ['زمان چاپ', '[|T|]'],
+        ['تاریخ عقد قرارداد', '[|FD|]'],
+        ['زمان عقد قرارداد', '[|FT|]'],
         ['تاریخ شروع قرار داد', '[|SC|]'],
         ['تاریخ پایان قرار داد', '[|SE|]'],
         ['مدت زمان قرار داد', '[|SD|]'],
         {foreach from=$fieldsContract key=key value=field }
         ['{$field.title}','[|C{$field.fieldId}|]'],
         {/foreach}
-        {foreach from=$fieldsUser key=key value=field }
-        ['{$field.title}','[|U{$field.fieldId}|]'],
-        {/foreach}
+        ['مجموع کلیه واریزی ها', '[|TS|]'],
 
     ];
     {/if}

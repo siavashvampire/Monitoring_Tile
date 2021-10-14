@@ -28,6 +28,7 @@ class contracts extends model implements modelInterFace {
 	private $primaryKey = ['contractId'];
 	private $primaryKeyShouldNotInsertOrUpdate = 'contractId';
 	private $contractId ;
+	private $fillOutedDate ;
 	private $startDate ;
 	private $endDate ;
 	private $userId ;
@@ -37,6 +38,7 @@ class contracts extends model implements modelInterFace {
 	public function setFromArray($result) {
 		$this->contractId = $result['contractId'] ;
 		$this->startDate = $result['startDate'] ;
+		$this->fillOutedDate = $result['fillOutedDate'] ;
 		$this->endDate = $result['endDate'] ;
 		$this->userId = $result['userId'] ;
 		$this->contractor = $result['contractor'] ;
@@ -46,6 +48,7 @@ class contracts extends model implements modelInterFace {
 	public function returnAsArray( ) {
 		$array['contractId'] = $this->contractId ;
 		$array['startDate'] = $this->startDate ;
+		$array['fillOutedDate'] = $this->fillOutedDate ;
 		$array['endDate'] = $this->endDate ;
 		$array['userId'] = $this->userId ;
 		$array['contractor'] = $this->contractor ;
@@ -171,5 +174,21 @@ class contracts extends model implements modelInterFace {
 	public function setContractGroup($contractGroup) {
 		$this->contractGroup = $contractGroup;
 	}
+
+    /**
+     * @return mixed
+     */
+    public function getFillOutedDate()
+    {
+        return $this->fillOutedDate;
+    }
+
+    /**
+     * @param mixed $fillOutedDate
+     */
+    public function setFillOutedDate($fillOutedDate): void
+    {
+        $this->fillOutedDate = $fillOutedDate;
+    }
 
 }

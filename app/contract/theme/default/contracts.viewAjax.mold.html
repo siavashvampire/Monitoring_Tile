@@ -86,11 +86,17 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="2">
+                                <td>
                                     {_ "contract"} {_ "Adjusted"} {_ "by"}:
                                 </td>
-                                <td colspan="2">
+                                <td>
                                     <a href="{url 'admin'}users/profile/{$contractor->getUserId()}" target="_blank">{$contractor->getFname()} {$contractor->getlname()}</a>
+                                </td>
+                                <td>
+                                    {_ "date"} {_ "aghd"} {_ "contract"}:
+                                </td>
+                                <td>
+                                    {$contract->getFillOutedDate()|jDate:"j F Y - H&#58;i&#58;s"}
                                 </td>
                             </tr>
                             {foreach from=$fields key=key value=field }
@@ -111,6 +117,13 @@
                                     {$field.value}{/if}</td>
 
                             {/foreach}
+                            {math format="x + 1" x=$key set="key"}
+                            {if $key % 2 == 0 }
+                            </tr><tr>
+                            {/if}
+                            <td>{_ "total"} {_ "salary"}:</td>
+                            <td>{$totalSalary}</td>
+                            </tr>
                         </table>
                         <div id="printableAreaContractContent" style="display: none">
                             {$contractTemplate|html}

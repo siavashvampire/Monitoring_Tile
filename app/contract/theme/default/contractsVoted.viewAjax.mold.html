@@ -2,9 +2,9 @@
     <table class="table table-striped text-{$text_align}">
         <thead>
             <tr>
-                <th class="text-center">{_ "title"} {_ "form"}</th>
-                <th class="text-center">{_ "date"} {_ "Complete"}</th>
-                <th class="text-center"></th>
+                <th>{_ "title"} {_ "form"}</th>
+                <th>{_ "date"} {_ "Complete"}</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -13,20 +13,20 @@
                 <td>
                     {$voteDoneForm.voteName}
                 </td>
-                <td class="text-center">
+                <td>
                     {if  $voteDoneForm.fillOutDate != "" }
                         {$voteDoneForm.fillOutDate|jDate:"j F Y - H&#58;i&#58;s"}
                     {else}
                     {_ "notCompletedYet"}!
                     {/if}
                 </td>
-                <td  class="text-center">
+                <td>
                     <button class="btn btn-link text-info mr-2" onclick="openContractVote('{$voteDoneForm.fillOutId}')"><i class="fa fa-eye"></i></button>
                 </td>
             </tr>
             {foreachelse}
                 <tr>
-                    <td class="text-center" colspan="3">{_ "hasNotDataYet"}</td>
+                    <td colspan="3">{_ "hasNotDataYet"}</td>
                 </tr>
             {/foreach}
         </tbody>

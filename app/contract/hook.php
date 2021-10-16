@@ -15,6 +15,10 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class hook extends pluginController
 {
+    private $unitsOneInSendVote = [
+        '1' => [ 2, 3 , 4 ], // sarparsti ba unit id 1 , javabe nazarsanji unit haye 2 , 3 , 4 ra midahad
+        '8' => [ 5, 6 , 7 ], // sarparsti ba unit id 8 , javabe nazarsanji unit haye 5 , 6 , 7 ra midahad
+    ];
     public function _adminHeaderNavbar($vars2)
     {
         $this->menu->after('users', 'contractList', 'قرارداد ها', app::getBaseAppLink('contract/list', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/list/contract');
@@ -280,8 +284,8 @@ class hook extends pluginController
                             foreach ($fields['result'] as $index => $fields) {
                                 if ($fields['type'] == 'fieldCall_units_units') {
                                     $unitId = $fields['value'];
+                                    break;
                                 }
-                                if ($unitId != null ) break;
                             }
                         }
                         unset($fields);
@@ -308,6 +312,9 @@ class hook extends pluginController
                                             if ($unitId == $fields['value'] or $fields['value'] == -4 ) {
                                                 $userFind = $userSearched['userId'];
                                             }
+                                            if ( isset($this->unitsOneInSendVote[$fields['value']]) and in_array($unitId , $this->unitsOneInSendVote[$fields['value']] )){
+                                                $userFind = $userSearched['userId'];
+                                            }
                                             $cacheUnitId[$userSearched['userId']] = $fields['value'];
                                             break;
                                         }
@@ -317,6 +324,10 @@ class hook extends pluginController
                                 unset($fields);
                             } else {
                                 if ($unitId == $cacheUnitId[$userSearched['userId']] or $cacheUnitId[$userSearched['userId']] == -4 ) {
+                                    $userFind = $userSearched['userId'];
+                                    break;
+                                }
+                                if ( isset($this->unitsOneInSendVote[$cacheUnitId[$userSearched['userId']]]) and in_array($unitId , $this->unitsOneInSendVote[$cacheUnitId[$userSearched['userId']]] )){
                                     $userFind = $userSearched['userId'];
                                     break;
                                 }

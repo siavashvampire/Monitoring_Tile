@@ -15,6 +15,10 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class hook extends pluginController
 {
+    private $unitsOneInSendVote = [
+        '1' => [ 2, 3 , 4 ], // sarparsti ba unit id 1 , javabe nazarsanji unit haye 2 , 3 , 4 ra midahad
+        '8' => [ 5, 6 , 7 ], // sarparsti ba unit id 8 , javabe nazarsanji unit haye 5 , 6 , 7 ra midahad
+    ];
     public function _adminHeaderNavbar($vars2)
     {
         $this->menu->after('users', 'contractList', 'قرارداد ها', app::getBaseAppLink('contract/list', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/list/contract');
@@ -87,7 +91,7 @@ class hook extends pluginController
 
     }
 
-    public function _doBeforeLogin()
+    public function _doBeforeLoginWithPhase()
     {
         if (cache::get('lastContractCheck', null, 'contract') != date('Y-m-d')) {
             model::join('contracts contracts', '( contracts.contractGroup = vote.contractGroup and DATE_SUB(DATE_FORMAT(contracts.endDate, "%Y-%m-%d") , INTERVAL vote.ShowToReceiver DAY) = DATE_FORMAT(NOW(), "%Y-%m-%d" ) )', 'INNER');
@@ -253,6 +257,111 @@ class hook extends pluginController
             cache::save(date('Y-m-d'), 'lastContractCheck', 48 * 60 * 60, 'contract');
         }
     }
+
+    public function _doBeforeLogin(){
+        if (cache::get('lastContractCheck', null, 'contract') != date('Y-m-d')) {
+            model::join('contracts contracts', '( contracts.contractGroup = vote.contractGroup and DATE_SUB(DATE_FORMAT(contracts.endDate, "%Y-%m-%d") , INTERVAL vote.ShowToReceiver DAY) = DATE_FORMAT(NOW(), "%Y-%m-%d" ) )', 'INNER');
+            $listTypeVote = model::searching([1], ' ? and ShowToReceiver >= 0 and ShowToReceiver is not null ', 'vote vote', 'contracts.contractId,contracts.userId,vote.voteId,vote.checkByUnit');
+
+
+            $cacheUnitId = [];
+            $cacheUsersShouldSearch = [];
+            foreach ($listTypeVote as $TypeVote) {
+                /* @var contracts_vote $contractVote */
+                $contractVote = $this->model(['contract', 'contracts_vote']);
+                $contractVote->setContractId($TypeVote['contractId']);
+                $contractVote->setVoteId($TypeVote['voteId']);
+                $contractVote->setCreatDate(date('Y-m-d H:i:s'));
+                $userFind = null;
+                /* @var vote $vote */
+                $vote = $this->model(['contract', 'vote'] , $TypeVote['voteId'] );
+                if ($TypeVote['checkByUnit']) {
+                    if (!isset($cacheUnitId[$TypeVote['userId']])) {
+                        $user = user::getUserById($TypeVote['userId']);
+                        $fields = fieldService::showFilledOutFormWithAllFields($user->getUserGroupId(), 'user_register', $user->getUserId(), 'user_register', true);
+                        $unitId = null;
+                        if (is_array($fields['result'])) {
+                            foreach ($fields['result'] as $index => $fields) {
+                                if ($fields['type'] == 'fieldCall_units_units') {
+                                    $unitId = $fields['value'];
+                                    break;
+                                }
+                            }
+                        }
+                        unset($fields);
+                        $cacheUnitId[$TypeVote['userId']] = $unitId;
+                    }
+                    else {
+                        $unitId = $cacheUnitId[$TypeVote['userId']];
+                    }
+                    if ( $unitId == -4  ) $unitId = null ;
+                    if (!isset($cacheUsersShouldSearch[$vote->getVoteReceiver()])) {
+                        $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+                        $cacheUsersShouldSearch[$vote->getVoteReceiver()] = $usersShouldSearch;
+                    }
+                    else
+                        $usersShouldSearch = $cacheUsersShouldSearch[$vote->getVoteReceiver()];
+
+                    if ($unitId != null and count($usersShouldSearch) > 0) {
+                        foreach ($usersShouldSearch as $index => $userSearched) {
+                            if (!isset($cacheUnitId[$userSearched['userId']])) {
+                                $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
+                                if (is_array($fields['result'])) {
+                                    foreach ($fields['result'] as $index2 => $fields) {
+                                        if ($fields['type'] == 'fieldCall_units_units') {
+                                            if ($unitId == $fields['value'] or $fields['value'] == -4 ) {
+                                                $userFind = $userSearched['userId'];
+                                            }
+                                            if ( isset($this->unitsOneInSendVote[$fields['value']]) and in_array($unitId , $this->unitsOneInSendVote[$fields['value']] )){
+                                                $userFind = $userSearched['userId'];
+                                            }
+                                            $cacheUnitId[$userSearched['userId']] = $fields['value'];
+                                            break;
+                                        }
+                                    }
+                                    if ($userFind != null) break;
+                                }
+                                unset($fields);
+                            } else {
+                                if ($unitId == $cacheUnitId[$userSearched['userId']] or $cacheUnitId[$userSearched['userId']] == -4 ) {
+                                    $userFind = $userSearched['userId'];
+                                    break;
+                                }
+                                if ( isset($this->unitsOneInSendVote[$cacheUnitId[$userSearched['userId']]]) and in_array($unitId , $this->unitsOneInSendVote[$cacheUnitId[$userSearched['userId']]] )){
+                                    $userFind = $userSearched['userId'];
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    elseif ($unitId == null  and count($usersShouldSearch) > 0) {
+                        $userFind = $usersShouldSearch[0]['userId'];
+                    }
+                    unset($usersShouldSearch);
+                } else {
+
+                    if (!isset($cacheUsersShouldSearch[$vote->getVoteReceiver()])) {
+                        $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+                        $cacheUsersShouldSearch[$vote->getVoteReceiver()] = $usersShouldSearch;
+                    } else
+                        $usersShouldSearch = $cacheUsersShouldSearch[$vote->getVoteReceiver()];
+                    if (count($usersShouldSearch) > 0) {
+                        $userFind = $usersShouldSearch[0]['userId'];
+                    }
+                    unset($usersShouldSearch);
+                }
+
+                if ($userFind == null) {
+                    break;
+                }
+
+                $contractVote->setUserId($userFind);
+                $contractVote->insertToDataBase();
+            }
+            cache::save(date('Y-m-d'), 'lastContractCheck', 48 * 60 * 60, 'contract');
+        }
+    }
+
 
     public function _settingFooter()
     {

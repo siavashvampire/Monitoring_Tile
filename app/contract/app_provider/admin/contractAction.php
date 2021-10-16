@@ -21,6 +21,10 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class contractAction extends controller
 {
+    private $unitsOneInSendVote = [
+            '1' => [ 2, 3 , 4 ], // sarparsti ba unit id 1 , javabe nazarsanji unit haye 2 , 3 , 4 ra midahad
+            '8' => [ 5, 6 , 7 ], // sarparsti ba unit id 8 , javabe nazarsanji unit haye 5 , 6 , 7 ra midahad
+        ];
     public function index($userId, $contractId = null)
     {
         $user = user::getUserById($userId);
@@ -92,7 +96,7 @@ class contractAction extends controller
             if (is_array($fields['result'])){
                 $totalSalary = 0 ;
                 foreach ($fields['result'] as $field) {
-                    if ($fields['type'] == 'fieldCall_contract_salary') {
+                    if ($field['type'] == 'fieldCall_contract_salary') {
                         $totalSalary = $totalSalary + intval($field['value']);
                     }
                     $contractTemplate = str_replace('[|C' . $field['fieldId'] . '|]', $field['value'], $contractTemplate);
@@ -201,7 +205,7 @@ class contractAction extends controller
         $this->mold->view('contractsVote.viewAjax.mold.html');
     }
 
-    public function sendVote($contractId)
+    private function sendVoteWithPhase($contractId)
     {
         /* @var contracts $contract */
         $contract = $this->model(['contract', 'contracts'], $contractId);
@@ -294,6 +298,97 @@ class contractAction extends controller
                         foreach ($fields['result'] as $index2 => $fields) {
                             if ($fields['type'] == 'fieldCall_LineMonitoring_phase') {
                                 if ($phase == $fields['value']) {
+                                    $userFind = $userSearched['userId'];
+                                }
+                                break;
+                            }
+                        }
+                        if ($userFind != null) break;
+                    }
+                }
+            } elseif ($unitId == null and count($usersShouldSearch) > 0) {
+                $userFind = $usersShouldSearch[0]['userId'];
+            }
+            unset($usersShouldSearch);
+        } else {
+            //$user = user::getUserById($contract->getUserId());
+            $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+            if (count($usersShouldSearch) > 0) {
+                $userFind = $usersShouldSearch[0]['userId'];
+            }
+            unset($usersShouldSearch);
+        }
+
+        if ($userFind == null) {
+            $this->mold->set('errors', 'کاربری برای تکمیل فرم یافت نشد!');
+            $this->index($contract->getUserId(), $contract->getContractId());
+            return null;
+        }
+
+        $contractVote->setUserId($userFind);
+        if ($contractVote->insertToDataBase())
+            $this->mold->set('success', 'نظرسنجی با موفقیت برای کاربر مد نظر ایجاد شد!');
+        else
+            $this->mold->set('errors', 'لطفا مجددا تلاش کنید!');
+        $this->index($contract->getUserId(), $contract->getContractId());
+        return null;
+    }
+
+    public function sendVote($contractId)
+    {
+        /* @var contracts $contract */
+        $contract = $this->model(['contract', 'contracts'], $contractId);
+        if ($contract->getContractId() != $contractId) {
+//			httpErrorHandler::E404();
+//			return false ;
+        }
+        $get = request::post('voteId', null);
+        $rules = [
+            "voteId" => ["required|int|match:>0", 'نوع نظرسنجی'],
+        ];
+        $valid = validate::check($get, $rules);
+        if ($valid->isFail()) {
+            $this->mold->set('errors', $valid->errorsIn());
+            $this->index($contract->getUserId(), $contract->getContractId());
+            return null;
+        }
+        /* @var vote $vote */
+        $vote = $this->model(['contract', 'vote'], $get['voteId']);
+        if ($vote->getVoteId() != $get['voteId'] or $vote->getContractGroup() != $contract->getContractGroup()) {
+            httpErrorHandler::E404();
+            return false;
+        }
+        /* @var contracts_vote $contractVote */
+        $contractVote = $this->model(['contract', 'contracts_vote']);
+        $contractVote->setContractId($contract->getContractId());
+        $contractVote->setVoteId($vote->getVoteId());
+        $contractVote->setCreatDate(date('Y-m-d H:i:s'));
+        $userFind = null;
+        if ($vote->getCheckByUnit()) {
+            $user = user::getUserById($contract->getUserId());
+            $fields = fieldService::showFilledOutFormWithAllFields($user->getUserGroupId(), 'user_register', $user->getUserId(), 'user_register', true);
+            $unitId = null;
+            if (is_array($fields['result'])) {
+                foreach ($fields['result'] as $index => $fields) {
+                    if ($fields['type'] == 'fieldCall_units_units') {
+                        $unitId = $fields['value'];
+                        break;
+                    }
+                }
+            }
+
+            if ( $unitId == -4  ) $unitId = null ;
+            $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+            if ($unitId != null and count($usersShouldSearch) > 0) {
+                foreach ($usersShouldSearch as $index => $userSearched) {
+                    $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
+                    if (is_array($fields['result'])) {
+                        foreach ($fields['result'] as $index2 => $fields) {
+                            if ($fields['type'] == 'fieldCall_units_units') {
+                                if ($unitId == $fields['value']  or $fields['value'] == -4) {
+                                    $userFind = $userSearched['userId'];
+                                }
+                                if ( isset($this->unitsOneInSendVote[$fields['value']]) and in_array($unitId , $this->unitsOneInSendVote[$fields['value']] )){
                                     $userFind = $userSearched['userId'];
                                 }
                                 break;
@@ -453,7 +548,7 @@ class contractAction extends controller
             }
         } else {
             if ($contract->upDateDataBase()) {
-                $resultFillOutForm = fieldService::updateFillOutForm($user->getUserGroupId(), 'contract_with_user', $get['customField'], $contract->getUserId(), 'contract_with_user');
+                $resultFillOutForm = fieldService::updateFillOutForm($user->getUserGroupId(), 'contract_with_user', $get['customField'], $contract->getContractId(), 'contract_with_user');
             }
         }
 

@@ -92,7 +92,7 @@ class contractAction extends controller
             if (is_array($fields['result'])){
                 $totalSalary = 0 ;
                 foreach ($fields['result'] as $field) {
-                    if ($fields['type'] == 'fieldCall_contract_salary') {
+                    if ($field['type'] == 'fieldCall_contract_salary') {
                         $totalSalary = $totalSalary + intval($field['value']);
                     }
                     $contractTemplate = str_replace('[|C' . $field['fieldId'] . '|]', $field['value'], $contractTemplate);
@@ -453,7 +453,7 @@ class contractAction extends controller
             }
         } else {
             if ($contract->upDateDataBase()) {
-                $resultFillOutForm = fieldService::updateFillOutForm($user->getUserGroupId(), 'contract_with_user', $get['customField'], $contract->getUserId(), 'contract_with_user');
+                $resultFillOutForm = fieldService::updateFillOutForm($user->getUserGroupId(), 'contract_with_user', $get['customField'], $contract->getContractId(), 'contract_with_user');
             }
         }
 

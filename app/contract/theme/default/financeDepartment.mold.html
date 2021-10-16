@@ -86,8 +86,8 @@
     var urlTheme= "{url themeBase}" ;
     var userId = "{$user->getUserId()}" ;
     var div = '{$loadDivID}' ;
-    function openContractView(id){
-        ajaxRunUrlHtml(urlAdmin+'contractAction/otherVoted/'+id + '/' + , '#contractContent' , 'openModule');
+    function openContractView(uid,id){
+        ajaxRunUrlHtml(urlAdmin+'contractAction/otherVoted/'+uid + '/' + id, '#contractContent' , 'openModule');
     }
     function openContractVote(id){
         ajaxRunUrlHtml(urlAdmin+'contractAction/showFillVote/'+id, '#voteContent' , 'openModule2');
@@ -98,6 +98,17 @@
     }
     function  openModule2() {
         $('#exampleModal2').modal('show');
+    }
+    function printDiv(divName) {
+        var divToPrint=document.getElementById(divName);
+        var newWin=window.open('','Print-Window');
+        newWin.document.open();
+        newWin.document.write('<html><meta charset="utf-8" /><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/>' +
+            '<link href="'+urlTheme+'assets/ajax/libs/bootstrap-rtl/3.4.0/css/bootstrap-rtl.css" rel="stylesheet">\n' +
+            '<link href="'+urlTheme+'assets/css/material-dashboard.minf066.css?v=2.1.0" rel="stylesheet" />' +
+            '<body onload="window.print()" class="rtl text-right">'+divToPrint.innerHTML+'</body></html>');
+        //newWin.document.close();
+        //setTimeout(function(){newWin.close();},10);
     }
 </script>
 {/map}

@@ -78,19 +78,21 @@ class CamSwitch extends model implements modelInterFace {
 		return $this->primaryKeyShouldNotInsertOrUpdate;
 	}
 
-	/**
-	 * @return mixed
-	 */
-	public function getId() {
-		return $this->id;
-	}
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-	/**
-	 * @param mixed $Sensor_id
-	 */
-	public function setId($id) {
-		$this->id = $id;
-	}
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
+    }
 
     /**
      * @return mixed
@@ -108,41 +110,54 @@ class CamSwitch extends model implements modelInterFace {
         $this->label = $label;
     }
 
-	/**
-	 * @return mixed
-	 */
-	public function getSwitchPlcId() {
-		return $this->Switch_plc_id;
-	}
+    /**
+     * @return mixed
+     */
+    public function getSwitchPlcId()
+    {
+        return $this->Switch_plc_id;
+    }
 
-	/**
-	 * @param mixed $Sensor_plc_id
-	 */
-	public function setSwitchPlcId($Switch_plc_id) {
-		$this->Switch_plc_id = $Switch_plc_id;
-	}
-	/**
-	 * @return mixed
-	 */
-	public function getPlcRead() {
-		return $this->plc_read;
-	}
+    /**
+     * @param mixed $Switch_plc_id
+     */
+    public function setSwitchPlcId($Switch_plc_id): void
+    {
+        $this->Switch_plc_id = $Switch_plc_id;
+    }
 
-	/**
-	 * @param mixed $plc_read
-	 */
-	public function setPlcRead($plc_read) {
-		$this->plc_read = $plc_read;
-	}
-        
-    public function getActive() {
-		return $this->Active;
-	}
-    
-	public function setActive($Active) {
-		$this->Active = $Active;
-	}
-    
+    /**
+     * @return mixed
+     */
+    public function getPlcRead()
+    {
+        return $this->plc_read;
+    }
+
+    /**
+     * @param mixed $plc_read
+     */
+    public function setPlcRead($plc_read): void
+    {
+        $this->plc_read = $plc_read;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActive()
+    {
+        return $this->Active;
+    }
+
+    /**
+     * @param mixed $Active
+     */
+    public function setActive($Active): void
+    {
+        $this->Active = $Active;
+    }
+
 	public function setUnreadForPlc($tileId = null , $plcId = null){
 		if ( $tileId == null )
 			$tileId = $this->getId();
@@ -244,10 +259,11 @@ class CamSwitch extends model implements modelInterFace {
         if ($field == null) {
             $field = array();
             $field[] = 'item.id';
-            $field[] = 'item.label';
-            $field[] = 'item.unit';
+            $field[] = 'item.label as Name';
+            $field[] = 'item.unit as unitId';
             $field[] = 'units.label as unitName';
             $field[] = 'phases.label as phase';
+            $field[] = 'phases.id as Phase';
             $field[] = 'item.Switch_plc_id as PLC_id';
             $field[] = 'item.Active as Active';
         }

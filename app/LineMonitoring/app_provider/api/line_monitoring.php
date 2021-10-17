@@ -3,7 +3,10 @@
 namespace App\LineMonitoring\app_provider\api;
 
 use App\api\controller\innerController;
+use App\LineMonitoring\model\CamSwitch;
 use App\LineMonitoring\model\sensor_active_log_archive;
+use App\LineMonitoring\model\Switch_active_log;
+use App\LineMonitoring\model\switch_active_log_archive;
 use App\shiftWork\app_provider\api\shift;
 use app\LineMonitoring\model\data;
 use app\LineMonitoring\model\sensors;
@@ -50,7 +53,8 @@ class line_monitoring extends innerController
         $data = cache::get('isTileKindUpdate', null, 'LineMonitoring');
         $dataSwitch = cache::get('isSwitchKindUpdate', null, 'LineMonitoring');
         if ($data !== 'yes' or $dataSwitch !== 'yes') {
-            return self::jsonError(null, 205);
+//            return self::jsonError(null, 205);
+            return self::jsonError(null, 204);
         }
 
         return self::jsonError(null, 204);
@@ -66,7 +70,6 @@ class line_monitoring extends innerController
         }
 
         $Time = $data['start_time'];
-
         if ($Time == null)
             $Time = date('Y-m-d H:i:s');
         $strTime = strtotime($Time);
@@ -179,8 +182,8 @@ class line_monitoring extends innerController
         $shift_time_group = $shifts['shift_time_group'];
 
         /* @var sensor_active_log_archive $logArchive */
+        $logArchive = parent::model(['LineMonitoring', 'sensor_active_log_archive'], [$sensor->getId(), ''], ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
         if ($data['active'] == 1) {
-            $logArchive = parent::model(['LineMonitoring', 'sensor_active_log_archive'], [$sensor->getId(), ''], ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
             if ($logArchive->getSensor_id() == $sensor->getId()) {
                 $logArchive->setEnd_Time($Time);
                 $logArchive->setJEnd_Time(JDate::jdate('Y/n/j H:i:s', $strTime));
@@ -201,7 +204,6 @@ class line_monitoring extends innerController
                 return self::json('Cant Find Deactive log!');
             }
         } else {
-            $logArchive = parent::model(['LineMonitoring', 'sensor_active_log_archive'], [$sensor->getId(), ''], ' Sensor_id = ? and ( End_Time is null or End_Time = ? ) ');
             if ($logArchive->getSensor_id() != $sensor->getId()) {
                 $logArchive->setSensor_id($sensor->getId());
                 $logArchive->setPhase($sensor->getPhase());
@@ -239,12 +241,12 @@ class line_monitoring extends innerController
 
     public static function camSwitchActivity()
     {
-        $data = request::post('id,time,active');
-        $Switch = parent::model(['LineMonitoring', 'CamSwitch'], [$data['id']], 'id = ? ');
-        if ($Switch->getid() != $data['id']) {
+        $data = request::post('Switch_id,time,active');
+        /** @var CamSwitch $Switch */
+        $Switch = parent::model(['LineMonitoring', 'CamSwitch'], [$data['Switch_id']], 'id = ? ');
+        if ($Switch->getId() != $data['Switch_id']) {
             return self::jsonError('شماره یکتا کلید یافت نشد!');
         }
-
         $Time = $data['time'];
 
         if ($Time == null)
@@ -267,9 +269,10 @@ class line_monitoring extends innerController
         $shiftId = $shifts['shift_id'];
         $shiftWorker = $shifts['taskmaster_id'];
         $shift_time_group = $shifts['shift_time_group'];
+        /** @var Switch_active_log_archive $logArchive */
+        $logArchive = parent::model(['LineMonitoring', 'Switch_active_log_archive'], [$Switch->getId(), ''], ' Switch_id = ? and ( End_Time is null or End_Time = ? ) ');
 
         if ($data['active'] == 1) {
-            $logArchive = parent::model(['LineMonitoring', 'Switch_active_log_archive'], [$Switch->getId(), ''], ' id = ? and ( End_Time is null or End_Time = ? ) ');
             if ($logArchive->getSwitchId() == $Switch->getId()) {
                 $logArchive->setEnd_Time($data['time']);
                 $logArchive->setJEnd_Time(JDate::jdate('Y/n/j H:i:s', strtotime($data['time'])));
@@ -293,10 +296,8 @@ class line_monitoring extends innerController
                 return self::json('Cant Find Deactive log!');
             }
         } else {
-
-            $logArchive = parent::model(['LineMonitoring', 'Switch_active_log_archive'], [$Switch->getId(), ''], ' id = ? and ( End_Time is null or End_Time = ? ) ');
-            if ($logArchive->getSwitchId() != $Switch->getId()) {
-                $logArchive->setId($Switch->getId());
+             if ($logArchive->getSwitchId() != $Switch->getId()) {
+                $logArchive->setSwitchId($Switch->getId());
                 $logArchive->setPhase($Switch->getPhase());
                 $logArchive->setUnit($Switch->getUnit());
                 $logArchive->setStart_time($data['time']);
@@ -315,6 +316,7 @@ class line_monitoring extends innerController
                     $Switch->setActive(0);
                     $Switch->upDateDataBase();
 
+                    /** @var Switch_active_log $log */
                     $log = parent::model(['LineMonitoring', 'Switch_active_log']);
                     $log->setFromArray($logArchive->returnAsArray());
                     $log->insertToDataBase();

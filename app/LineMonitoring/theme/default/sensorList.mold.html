@@ -133,77 +133,39 @@
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">نام سنسور</th>
-                                    <th class="text-center">شماره پورت سنسور</th>
-                                    <th class="text-center">نوع کاشی</th>
-                                    <th class="text-center">درجه کاشی</th>
-                                    <th class="text-center">تعداد کاشی</th>
-									<th class="text-center">سقف خاموشی</th>
-									<th class="text-center">سقف خاموشی بله</th>
-									<th class="text-center">سقف خاموشی اس ام اس</th>
-									<th class="text-center">فاز</th>
-									<th class="text-center">واحد</th>
-                                    <th class="text-center">وضعیت</th>
-                                    <th class="text-center" style="width: 25px;"></th>
+                                    <th>نام سنسور</th>
+                                    <th>شماره پورت سنسور</th>
+                                    <th>نوع کاشی</th>
+                                    <th>درجه کاشی</th>
+                                    <th>تعداد کاشی</th>
+									<th>سقف خاموشی</th>
+									<th>سقف خاموشی بله</th>
+									<th>سقف خاموشی اس ام اس</th>
+									<th>فاز</th>
+									<th>واحد</th>
+                                    <th>وضعیت</th>
+                                    <th style="width: 25px;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$sensors key=key value=sensor}
                                 <tr>
-                                    {if $sensor.Sensor_plc_id == 0}
-                                        <td class="text-center text-muted">{$sensor.label}</td>
-                                        <td class="text-center text-muted">{$sensor.Sensor_plc_id}</td>
-                                        <td class="text-center text-muted">{$sensor.tile_name}</td>
-                                        <td class="text-center text-muted">{$sensor.tileDegree}</td>
-                                        <td class="text-center text-muted">{$sensor.tile_Count}</td>
-                                        <td class="text-center text-muted">{$sensor.OffTime}</td>
-                                        <td class="text-center text-muted">{$sensor.OffTime_Bale}</td>
-                                        <td class="text-center text-muted">{$sensor.OffTime_SMS}</td>
-                                        <td class="text-center text-muted">{$sensor.phase}</td>
-                                        <td class="text-center text-muted">{$sensor.unitName}</td>
-                                        <td class="text-center text-muted">خارج از سیستم</td>
-                                    {elseif $sensor.Active == 1}
-                                        <td class="text-center text-success">{$sensor.label}</td>
-                                        <td class="text-center text-success">{$sensor.Sensor_plc_id}</td>
-                                        <td class="text-center text-success">{$sensor.tile_name}</td>
-                                        <td class="text-center text-success">{$sensor.tileDegree}</td>
-                                        <td class="text-center text-success">{$sensor.tile_Count}</td>
-                                        <td class="text-center text-success">{$sensor.OffTime}</td>
-                                        <td class="text-center text-success">{$sensor.OffTime_Bale}</td>
-                                        <td class="text-center text-success">{$sensor.OffTime_SMS}</td>
-                                        <td class="text-center text-success">{$sensor.phase}</td>
-                                        <td class="text-center text-success">{$sensor.unitName}</td>
-                                        <td class="text-center text-success">فعال</td>
-                                    {elseif $sensor.Active == 0}
-                                        <td class="text-center text-danger">{$sensor.label}</td>
-                                        <td class="text-center text-danger">{$sensor.Sensor_plc_id}</td>
-                                        <td class="text-center text-danger">{$sensor.tile_name}</td>
-                                        <td class="text-center text-danger">{$sensor.tileDegree}</td>
-                                        <td class="text-center text-danger">{$sensor.tile_Count}</td>
-                                        <td class="text-center text-danger">{$sensor.OffTime}</td>
-                                        <td class="text-center text-danger">{$sensor.OffTime_Bale}</td>
-                                        <td class="text-center text-danger">{$sensor.OffTime_SMS}</td>
-                                        <td class="text-center text-danger">{$sensor.phase}</td>
-                                        <td class="text-center text-danger">{$sensor.unitName}</td>
-                                        <td class="text-center text-danger">غیر فعال</td>
-                                    {else}
-                                        <td class="text-center text-muted">{$sensor.label}</td>
-                                        <td class="text-center text-muted">{$sensor.Sensor_plc_id}</td>
-                                        <td class="text-center text-muted">{$sensor.tile_name}</td>
-                                        <td class="text-center text-muted">{$sensor.tileDegree}</td>
-                                        <td class="text-center text-muted">{$sensor.tile_Count}</td>
-                                        <td class="text-center text-muted">{$sensor.OffTime}</td>
-                                        <td class="text-center text-muted">{$sensor.OffTime_Bale}</td>
-                                        <td class="text-center text-muted">{$sensor.OffTime_SMS}</td>
-                                        <td class="text-center text-muted">{$sensor.phase}</td>
-                                        <td class="text-center text-muted">{$sensor.unitName}</td>
-                                        <td class="text-center text-muted">خارج از سیستم</td>
-                                    {/if}
-                                    <td class="text-center"><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.Sensor_plc_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.label}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.Sensor_plc_id}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tile_name}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tileDegree}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tile_Count}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_Bale}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_SMS}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.phase}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.unitName}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{if $sensor.Sensor_plc_id == 0}خارج از سیستم{elseif $sensor.Active == 1}فعال{elseif $sensor.Active == 0}غیر فعال{else}خارج از سیستم{/if}</td>
+                                    <td><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.Sensor_plc_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                    <td colspan="4">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>

@@ -4,6 +4,7 @@ namespace App\requestService\app_provider\admin;
 
 use App;
 use App\core\controller\fieldService;
+use App\core\controller\httpErrorHandler;
 use App\LineMonitoring\app_provider\api\phases;
 use App\user\app_provider\api\user;
 use App\requestService\model\requestService;
@@ -11,6 +12,7 @@ use App\Sections\app_provider\api\sections;
 use App\requestService\app_provider\api\request_service;
 use controller;
 use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\validate;
 use paymentCms\component\Response;
@@ -22,6 +24,7 @@ class RS extends controller
     public function index($requestId = null)
     {
         $RequestAdmin = $this->setting('RequestAdmin');
+
         $this->mold->set('RequestAdmin', $RequestAdmin);
 
         $Person_id = user::getUserLogin(true);
@@ -42,6 +45,8 @@ class RS extends controller
         }
 
         if ($requestId != null) {
+
+            /** @var requestService $requestService */
             $requestService = parent::model('requestService', $requestId);
 
             if ($requestService->getRequestId() != $requestId or (!($requestService->getUnitPersonId() == $Person_id) and $user['user_group_id'] != $RequestAdmin and $user['user_group_id'] != 1)) {
@@ -90,7 +95,7 @@ class RS extends controller
                     $requestService->setWorkTitle(',' . implode(',', $get['WorkTitle']) . ',');
                     $requestService->setBugInfluence(',' . implode(',', $get['BugInfluence']) . ',');
                     $requestService->setUnitPersonId(user::getUserLogin(true));
-                    $requestService->setTime_Send(date('Y-m-d H:i:s'));
+                    $requestService->setTimeSend(date('Y-m-d H:i:s'));
                     $requestService->setSenderNote($get['Sender_note']);
 
                     $section = sections::getSectionModelById($requestService->getSection());
@@ -459,7 +464,7 @@ class RS extends controller
                 $requestService->setTimeStart(date('Y-m-d H:i:s'));
                 $requestService->setTimeEnd(date('Y-m-d H:i:s'));
                 $requestService->setSystemName("");
-                $requestService->setPhase(0);
+                $requestService->setPhase(-4);
                 $requestService->setLine(1);
                 $requestService->setSection($get['ServiceSection']);
                 $requestService->setCost(',,');

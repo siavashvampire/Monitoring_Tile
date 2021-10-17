@@ -12,7 +12,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class requestService_export extends controller {
 	public function  index(){
-		$get = request::post('unitId,phase,StartTime,EndTime,line' ,null);
+		$get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line' ,null);
         
 		$variable = array( );
 
@@ -23,15 +23,19 @@ class requestService_export extends controller {
 		if (request::isPost() ) {
 			if (is_array($get['phase']) and count($get['phase']) > 0) {
 				$variable[] = ' rs.phase IN( ' . implode(' , ', $get['phase']) . ' ) ';
-				array_merge($value,$get['phase']);
+                $value = array_merge($value,$get['phase']);
 			}
-			if (is_array($get['unitId']) and count($get['unitId']) > 0) {
-				$variable[] = ' rs.unitId IN( ' . implode(' , ', $get['unitId']) . ' ) ';
-				array_merge($value,$get['unitId']);
+			if (is_array($get['section']) and count($get['section']) > 0) {
+				$variable[] = ' rs.section IN( ' . implode(' , ', $get['section']) . ' ) ';
+                $value = array_merge($value,$get['section']);
+                }
+			if (is_array($get['giver_section']) and count($get['giver_section']) > 0) {
+				$variable[] = ' rs.WorkerSection IN( ' . implode(' , ', $get['giver_section']) . ' ) ';
+                $value = array_merge($value,$get['giver_section']);
 			}
 			if (is_array($get['line']) and count($get['line']) > 0) {
 				$variable[] = ' rs.Line IN( ' . implode(' , ', $get['line']) . ' ) ';
-				array_merge($value,$get['line']);
+                $value = array_merge($value,$get['line']);
 			}
 			if ($get['StartTime'] != null and $get['EndTime'] == null) {
 				$variable[] = ' rs.Time_Send > "' . date('Y-m-d H:i:s', $get['StartTime'] / 1000) . '"';
@@ -66,14 +70,14 @@ class requestService_export extends controller {
 			$requestservice_worktitles = $model->search( null , ' 1 ' , 'requestservice_worktitle');
 			if ( is_array($requestservice_worktitles) ){
 				for ( $i = 0 ; $i < count($requestservice_worktitles) ; $i++ ){
-					$header[] = $requestservice_worktitles[$i]['Title'];
+					$header[] = $requestservice_worktitles[$i]['label'];
 				}
 			}
             
 			model::join('sections units', 'units.id = rs.section ' );
 			model::join('sections unitsWorker', 'unitsWorker.id = rs.WorkerSection ' );
 			model::join('requestservice_system_status system_status', 'system_status.id = rs.System_Status ' );
-			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)) , 'requestservice' .' rs' , 'rs.JTime_Send ,rs.requestCode ,DATE_FORMAT(rs.Time_Send,\'%H:%i:%s\') as Time_Send_jt ,units.label as senderUnitName  ,rs.phase ,rs.System_Name ,system_status.Title as systemStatus ,rs.offTime , unitsWorker.Name as workerUnitName , DATE_FORMAT(rs.Time_Start,\'%H:%i:%s\') as Time_start_jt , DATE_FORMAT(rs.Time_End,\'%H:%i:%s\') as Time_end_jt , TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime ,rs.Sender_note ,rs.HumanNumber , rs.HumanNumber * TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime2 , rs.WorkTitle as WorkTitle' ) ;
+			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)) , 'requestservice' .' rs' , 'rs.JTime_Send ,rs.requestCode ,DATE_FORMAT(rs.Time_Send,\'%H:%i:%s\') as Time_Send_jt ,units.label as senderUnitName  ,rs.phase ,rs.System_Name ,system_status.label as systemStatus ,rs.offTime , unitsWorker.label as workerUnitName , DATE_FORMAT(rs.Time_Start,\'%H:%i:%s\') as Time_start_jt , DATE_FORMAT(rs.Time_End,\'%H:%i:%s\') as Time_end_jt , TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime ,rs.Sender_note ,rs.HumanNumber , rs.HumanNumber * TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime2 , rs.WorkTitle as WorkTitle' ) ;
             if ( is_array($search) and count($search) > 0 ) {
                 header('Content-Encoding: UTF-8');
 				header('Content-type: text/csv; charset=UTF-8');

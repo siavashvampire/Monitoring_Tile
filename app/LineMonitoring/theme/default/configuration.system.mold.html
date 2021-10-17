@@ -54,14 +54,14 @@
 </div>
 
 <div class="col-md-12 mb-3">
-    <label class="col-md-4 col-form-label" for="field_OFFAdmin"> گروه کاربری ادمین توقفات:<span class="text-danger">*</span> </label>
+    <label class="col-md-4 col-form-label" for="OFFAdmin"> گروه کاربری ادمین توقفات:<span class="text-danger">*</span> </label>
     <div class="col-md-8">
-        <select class="selectpicker" id="field_OFFAdmin" name="setting[field_OFFAdmin]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+        <select class="selectpicker" id="OFFAdmin" name="setting[field_OFFAdmin]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
             {if isset($values.[$nameApp])}
             {set value=$values.[$nameApp] name="valueThisOne"}
             {/if}
             {foreach from=$listGroups key=keyValue value=valueOne}
-            <option value="{$valueOne.groupId}" {if isset($valueThisOne.field_OFFAdmin)}{if $valueThisOne.field_OFFAdmin == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.field_OFFAdmin)}{if $Mold.post.setting.field_OFFAdmin == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+            <option value="{$valueOne.groupId}" {if isset($valueThisOne.OFFAdmin)}{if $valueThisOne.OFFAdmin == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.OFFAdmin)}{if $Mold.post.setting.OFFAdmin == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
             {/foreach}
         </select>
         <div class="small text-gray"></div>

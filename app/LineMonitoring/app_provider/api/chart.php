@@ -3,6 +3,7 @@
 namespace App\LineMonitoring\app_provider\api;
 
 use App\api\controller\innerController;
+use App\LineMonitoring\model\data_merge;
 use App\shiftWork\app_provider\api\Day;
 use DateTime;
 use paymentCms\component\cache;
@@ -26,7 +27,7 @@ class chart extends innerController
         }
         if ($date == "")
             $date = JDate::jdate('Y/m/d');
-        $date = "۱۴۰۰/۰۵/۰۹";
+
         $dateg = cache::get('chart ' . $Timing, null, 'LineMonitoring')['date'];
         if ($dateg == null)
             $dateg = array();
@@ -57,7 +58,7 @@ class chart extends innerController
         return self::json($result);
     }
 
-    private function GetHourData($dates, $sensors, $movAvgFlag = false, $movAvg = 5)
+    private static function GetHourData($dates, $sensors, $movAvgFlag = false, $movAvg = 5)
     {
 //        $result['labels'] = (array) array_values((array)array_unique((array)array_column($search, 'h')));
         $result['labels'] = array();
@@ -128,7 +129,7 @@ class chart extends innerController
         return ['data' => $result, 'jtime' => JDate::jdate("l - H:i:s"), "dayStart" => $dayStart['result']['dayStart'], "dayEnd" => $dayEnd['result']['dayEnd'], "jdayStart" => $dayStart['result']['jdayStart'], "jdayEnd" => $dayEnd['result']['jdayEnd']];
     }
 
-    private function GetHourSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
+    private static function GetHourSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
     {
         $series = null;
         $safety = 0;
@@ -145,7 +146,7 @@ class chart extends innerController
         $dayFirst[] = Day::index(0, strtotime($dateFirst))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
         if ($BudgetFlag or $BudgetPishFlag) {
-            $Budgets = get::Budget($dayStart['result']['dayStart']);
+            $Budgets = phases::Budget($dayStart);
             $Budgets = round($Budgets / 24);
         }
 
@@ -158,7 +159,7 @@ class chart extends innerController
         return $series;
     }
 
-    private function GetDayData($dates, $sensors, $MovAvgFlag = false, $movAvg = 5)
+    private static function GetDayData($dates, $sensors, $MovAvgFlag = false, $movAvg = 5)
     {
         $result['labels'] = array();
         $result['labels'][] = 1;
@@ -216,7 +217,7 @@ class chart extends innerController
         return ['data' => $result, 'jtime' => JDate::jdate("l - H:i:s"), "dayStart" => $day['result']['dayStart'], "dayEnd" => $day['result']['dayEnd'], "jdayStart" => $day['result']['jdayStart'], "jdayEnd" => $day['result']['jdayEnd']];
     }
 
-    private function GetDaySeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
+    private static function GetDaySeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
     {
         $series = null;
         $safety = 5;
@@ -234,7 +235,7 @@ class chart extends innerController
         unset($_SERVER['JsonOff']);
 
         if ($BudgetFlag or $BudgetPishFlag) {
-            $Budgets = get::Budget($dayStart);
+            $Budgets = phases::Budget($dayStart);
         }
 
         $sensorText = '(' . implode(',', $sensors) . ')';
@@ -248,7 +249,7 @@ class chart extends innerController
         return $series;
     }
 
-    private function GetMonthData($dates, $sensors, $MovAvgFlag = false, $movAvg = 5)
+    private static function GetMonthData($dates, $sensors, $MovAvgFlag = false, $movAvg = 5)
     {
         $result['labels'] = array();
         $result['labels'][] = 1;
@@ -283,7 +284,7 @@ class chart extends innerController
         return ['data' => $result, 'jtime' => JDate::jdate("l - H:i:s"), "dayStart" => $day['result']['dayStart'], "dayEnd" => $day['result']['dayEnd'], "jdayStart" => $day['result']['jdayStart'], "jdayEnd" => $day['result']['jdayEnd']];
     }
 
-    private function GetMonthSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
+    private static function GetMonthSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
     {
         $series = null;
         $safety = 3;
@@ -300,7 +301,7 @@ class chart extends innerController
         unset($_SERVER['JsonOff']);
 
         if ($BudgetFlag or $BudgetPishFlag) {
-            $Budgets = get::Budget($dayStart) * 30;
+            $Budgets = phases::Budget($dayStart) * 30;
         }
         $sensorText = '(' . implode(',', $sensors) . ')';
         $search = parent::model('data_merge')->getMonthData($sensorText, $dateShamsi, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
@@ -312,7 +313,7 @@ class chart extends innerController
         return $series;
     }
 
-    private function GetYearData($dates, $sensors)
+    private static function GetYearData($dates, $sensors)
     {
         $result['labels'] = array();
         $result['labels'][] = 1399;
@@ -338,7 +339,7 @@ class chart extends innerController
         return ['data' => $result, 'jtime' => JDate::jdate("l - H:i:s"), "dayStart" => $day['result']['dayStart'], "dayEnd" => $day['result']['dayEnd'], "jdayStart" => $day['result']['jdayStart'], "jdayEnd" => $day['result']['jdayEnd']];
     }
 
-    private function GetYearSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0)
+    private static function GetYearSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0)
     {
         $dateShamsi = explode('/', $date);
         $dateStart = JDate::jalali_to_gregorian($dateShamsi[0], 1, 1, "-") . ' 12:59:59';
@@ -351,7 +352,7 @@ class chart extends innerController
         $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
         if ($BudgetFlag or $BudgetPishFlag) {
-            $Budgets = get::Budget($dayStart) * 365;
+            $Budgets = phases::Budget($dayStart) * 365;
         }
         if (is_array($sensors)) {
             $value = $sensors;
@@ -368,7 +369,7 @@ class chart extends innerController
         return $series;
     }
 
-    private function GetDay_WeekData($dates, $sensors)
+    private static function GetDay_WeekData($dates, $sensors)
     {
         $result['labels'] = array();
         $result['labels'][] = 1;
@@ -405,7 +406,7 @@ class chart extends innerController
         return ['data' => $result, 'jtime' => JDate::jdate("l - H:i:s"), "dayStart" => $day['result']['dayStart'], "dayEnd" => $day['result']['dayEnd'], "jdayStart" => $day['result']['jdayStart'], "jdayEnd" => $day['result']['jdayEnd']];
     }
 
-    private function GetDay_WeekSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0)
+    private static function GetDay_WeekSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0)
     {
         $dateShamsi = explode('/', $date);
         $dateStart = JDate::jalali_to_gregorian($dateShamsi[0], $dateShamsi[1], 1, "-") . ' 12:59:59';
@@ -419,7 +420,7 @@ class chart extends innerController
         $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
         if ($BudgetFlag or $BudgetPishFlag) {
-            $Budgets = get::Budget($day['result']['dayStart']);
+            $Budgets = phases::Budget($dayStart);
         }
 
         if (is_array($sensors)) {
@@ -431,8 +432,10 @@ class chart extends innerController
         $value[] = $dayEnd;
 
         $variable[] = ' data.Start_time BETWEEN  ? and ?  ';
+
+        /** @var data_merge $model */
         $model = parent::model('data_merge');
-        model::join('sensors sensors', 'data.Sensor_id = sensors.id');
+        $model->join('sensors sensors', 'data.Sensor_id = sensors.id');
         $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_merge data', 'CEIL(SUM(data.counter)/CEIL(SUM(1)/2)) as counter , sensors.label , data.Sensor_id as id , data.Shift_group_id as Day', [['column' => 'data.Start_time', 'type' => 'asc']], null, 'data.Shift_group_id, data.Sensor_id');
 
         $i = 0;
@@ -579,7 +582,7 @@ class chart extends innerController
         return self::json($dataFinal);
     }
 
-    private function Convert2GoogleData($result, $Timing, $MovAvgFlag)
+    private static function Convert2GoogleData($result, $Timing, $MovAvgFlag)
     {
 
         $series = $result['series'];

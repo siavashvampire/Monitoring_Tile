@@ -50,7 +50,7 @@ class phases extends innerController
         $Budgets = $modelBudgets->getBudgetWithTime(2, strtotime($Time));
         if (!isset($Budgets))
             $Budgets = 5000;
-        
+
         return $Budgets;
     }
 

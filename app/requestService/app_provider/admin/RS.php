@@ -228,7 +228,7 @@ class RS extends controller
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
             $requestServices = $requestService->getItemsByWorkerSection($section, $sortWith, $pagination);
         } elseif ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
-            $numberOfAll = $requestService->getCount();
+            $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
             $requestServices = $requestService->getItems(array(), array(), $sortWith, $pagination);
         } else {

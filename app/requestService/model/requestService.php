@@ -20,6 +20,7 @@ class requestService extends model implements modelInterFace
     private $Time_End;
     private $System_Name;
     private $phase;
+    private $send_phase;
     private $section;
     private $Line;
     private $Cost;

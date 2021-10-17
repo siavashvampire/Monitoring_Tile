@@ -1,14 +1,20 @@
 <?php
 return [
     'info' => [
-        'name' => 'requestService',
-        'description' => 'requestService',
+        'name' => 'request service',
+        'description' => 'system for send request',
         'version' => '1.0.0.0',
         'author' => 'Siavash Sepahi',
         'support' => '09379206248',
         'PLCNeed' => false,
     ],
     'configuration' => [
+        'offSensorDescription' => [
+            'type' => 'number',
+            'status' => '',
+            'value' => '',
+            'valueDe' =>  null
+        ],
     ],
     'db' => [
         'requestService' => [

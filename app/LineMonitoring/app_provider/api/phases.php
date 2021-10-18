@@ -16,16 +16,23 @@ class phases extends innerController
         if ($ids != null) {
             $value = array_merge($value, $ids);
             $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        } else {
+            $value[] = '-4';
+            $variable[] = 'item.id <> ?';
         }
-
-        $value[] = '-4';
-        $variable[] = 'item.id <> ?';
         return self::json(parent::model(['LineMonitoring', 'phases'])->getItems($value, $variable));
     }
 
-    public static function all(): array
+    public static function all($ids = null): array
     {
-        return self::json(parent::model(['LineMonitoring', 'phases'])->getItems());
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
+
+        return self::json(parent::model(['LineMonitoring', 'phases'])->getItems($value, $variable));
     }
 
     public function getById($ids): array

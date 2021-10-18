@@ -22,7 +22,7 @@
                                                 <select class="selectpicker selectpickerNotRefresh" name="id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
                                                     <option value="" selected >همه</option>
                                                     {foreach from=$sections key=key value=section }
-                                                    <option value="{$section.id}"  >{$section.Name}</option>
+                                                    <option value="{$section.id}"  >{$section.label}</option>
                                                     {/foreach}
                                                 </select>
                                             </div>
@@ -111,7 +111,7 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 5%">شماره</th>
-                                    <th style="width: 15%">بخش</th>
+                                    <th style="width: 15%">گیرنده</th>
                                     <th style="width: 40%">عنوان درخواست</th>
                                     <th style="width: 30%">زمان</th>
                                     <th style="width: 5%"></th>
@@ -122,7 +122,7 @@
                                 {foreach from=$requestServices key=key value=requestService}
                                 <tr>
                                     <td>{$requestService.requestId}</td>
-                                    <td>{$requestService.WorkerSectionName|str_replace:',':' - '}</td>
+                                    <td>{$requestService.WorkerSectionName}</td>
                                     <td>{$requestService.Sender_note}</td>
                                     <td>{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
                                     <td>

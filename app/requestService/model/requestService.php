@@ -20,7 +20,6 @@ class requestService extends model implements modelInterFace
     private $Time_End;
     private $System_Name;
     private $phase;
-    private $send_phase;
     private $section;
     private $Line;
     private $Cost;
@@ -585,59 +584,36 @@ class requestService extends model implements modelInterFace
         $value[] = '%' . $section . '%';
         $variable[] = 'reSer.section Like ?';
 
-        model::join('sections  WorkerSection', 'FIND_IN_SET(WorkerSection.id , reSer.WorkerSection) != 0 ');
-        model::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
-
-        $tableName = 'requestService reSer';
-        $field = array();
-        $field[] = 'requestId';
-        $field[] = 'reSer.WorkerSection';
-        $field[] = 'GROUP_CONCAT(DISTINCT WorkerSection.label separator ",") as WorkerSectionName';
-        $field[] = 'Time_Send';
-        $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",")  as BugInfluence';
-        $fields = implode(' , ', $field);
-
-
-        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'requestId');
+        return self::getItems($value,$variable,$sortWith,$pagination);
     }
 
     public function getItemsByWorkerSection($section, $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
     {
         $value = array();
-        $value[] = '%' . $section . '%';
         $variable = array();
+        $value[] = '%' . $section . '%';
         $variable[] = 'reSer.WorkerSection Like ?';
-        model::join('sections sections', ' sections.id = reSer.section ');
-        model::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
 
-        $tableName = 'requestService reSer';
-        $field = array();
-        $field[] = 'requestId';
-        $field[] = 'Time_Send';
-        $field[] = 'sections.label as sectionName';
-        $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",") as BugInfluence';
-        $fields = implode(' , ', $field);
-
-
-        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'requestId');
-
+        return self::getItems($value,$variable,$sortWith,$pagination);
     }
 
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
     {
-        model::join('sections  WorkerSection', 'FIND_IN_SET(WorkerSection.id , reSer.WorkerSection) != 0 ');
-        model::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
+        parent::join('sections  senderSection', 'FIND_IN_SET(senderSection.id , reSer.section) != 0 ');
+        parent::join('sections  WorkerSection', 'FIND_IN_SET(WorkerSection.id , reSer.WorkerSection) != 0 ');
+        parent::join('requestService_BugInfluence BugInfluence', 'FIND_IN_SET(BugInfluence.id , reSer.BugInfluence) != 0');
 
         $tableName = 'requestService reSer';
         $field = array();
-        $field[] = 'requestId';
+        $field[] = 'reSer.requestId';
+        $field[] = 'reSer.section';
+        $field[] = 'GROUP_CONCAT(DISTINCT senderSection.label separator ",") as senderSectionName';
         $field[] = 'reSer.WorkerSection';
-        $field[] = 'reSer.Sender_note';
         $field[] = 'GROUP_CONCAT(DISTINCT WorkerSection.label separator ",") as WorkerSectionName';
-        $field[] = 'Time_Send';
+        $field[] = 'reSer.Sender_note';
+        $field[] = 'reSer.Time_Send';
         $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",")  as BugInfluence';
         $fields = implode(' , ', $field);
-
-        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'requestId');
+        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination,'reSer.requestId');
     }
 }

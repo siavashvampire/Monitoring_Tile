@@ -110,20 +110,22 @@
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th class="text-center">بخش</th>
-                                    <th class="text-center">مشکل</th>
-                                    <th class="text-center">زمان</th>
-                                    <th class="text-center">نمایش</th>
+                                    <th style="width: 5%">شماره</th>
+                                    <th style="width: 15%">فرستنده</th>
+                                    <th style="width: 45%">عنوان درخواست</th>
+                                    <th style="width: 30%">زمان</th>
+                                    <th style="width: 5%"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$requestServices key=key value=requestService}
                                 <tr>
-                                    <td class="text-center">{$requestService.sectionName|str_replace:',':' - '}</td>
-                                    <td class="text-center">{$requestService.BugInfluence|str_replace:',':' - '}</td>
-                                    <td class="text-center">{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
-                                    <td class="text-center">
-                                        <button class="btn btn-link text-info mr-2" onclick="openReSerView('{$requestService.requestId}')"><i class="fa fa-eye"></i></button>
+                                    <td>{$requestService.requestId}</td>
+                                    <td>{$requestService.senderSectionName}</td>
+                                    <td>{$requestService.Sender_note}</td>
+                                    <td>{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
+                                    <td>
+                                        <button class="btn btn-link text-info mr-2" style="padding: unset!important;" onclick="openReSerView('{$requestService.requestId}')"><i class="fa fa-eye"></i></button>
                                     </td>
                                 </tr>
                                 {foreachelse}

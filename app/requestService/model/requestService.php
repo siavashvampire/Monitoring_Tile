@@ -632,6 +632,7 @@ class requestService extends model implements modelInterFace
         $field = array();
         $field[] = 'requestId';
         $field[] = 'reSer.WorkerSection';
+        $field[] = 'reSer.Sender_note';
         $field[] = 'GROUP_CONCAT(DISTINCT WorkerSection.label separator ",") as WorkerSectionName';
         $field[] = 'Time_Send';
         $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",")  as BugInfluence';

@@ -51,6 +51,9 @@ return [
             'KEY' => [
                 'phase',
                 'section',
+                'WorkerSection',
+                'unitPerson_id',
+                'workerPerson_id',
             ],
             'PRIMARY KEY' => [
                 'requestId'
@@ -58,6 +61,9 @@ return [
             'REFERENCES' => [
                 'phase' => [ 'table' => 'phases' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
                 'section' => [ 'table' => 'sections' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'WorkerSection' => [ 'table' => 'sections' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'unitPerson_id' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'workerPerson_id' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
 
             ]
         ],

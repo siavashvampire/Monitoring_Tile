@@ -8,11 +8,11 @@ use controller;
 use paymentCms\component\model;
 use paymentCms\component\request;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class requestService_export extends controller {
 	public function  index(){
-		$get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line' ,null);
+		$get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line');
         
 		$variable = array( );
 
@@ -77,7 +77,9 @@ class requestService_export extends controller {
 			model::join('sections units', 'units.id = rs.section ' );
 			model::join('sections unitsWorker', 'unitsWorker.id = rs.WorkerSection ' );
 			model::join('requestservice_system_status system_status', 'system_status.id = rs.System_Status ' );
-			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)) , 'requestservice' .' rs' , 'rs.JTime_Send ,rs.requestCode ,DATE_FORMAT(rs.Time_Send,\'%H:%i:%s\') as Time_Send_jt ,units.label as senderUnitName  ,rs.phase ,rs.System_Name ,system_status.label as systemStatus ,rs.offTime , unitsWorker.label as workerUnitName , DATE_FORMAT(rs.Time_Start,\'%H:%i:%s\') as Time_start_jt , DATE_FORMAT(rs.Time_End,\'%H:%i:%s\') as Time_end_jt , TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime ,rs.Sender_note ,rs.HumanNumber , rs.HumanNumber * TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime2 , rs.WorkTitle as WorkTitle' ) ;
+			model::join('phases phase', 'phase.id = rs.phase' );
+
+			$search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)) , 'requestservice' .' rs' , 'rs.JTime_Send ,rs.requestCode ,DATE_FORMAT(rs.Time_Send,\'%H:%i:%s\') as Time_Send_jt ,units.label as senderUnitName  ,phase.label as phase ,rs.System_Name ,system_status.label as systemStatus ,rs.offTime , unitsWorker.label as workerUnitName , DATE_FORMAT(rs.Time_Start,\'%H:%i:%s\') as Time_start_jt , DATE_FORMAT(rs.Time_End,\'%H:%i:%s\') as Time_end_jt , TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime ,rs.Sender_note ,rs.HumanNumber , rs.HumanNumber * TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime2 , rs.WorkTitle as WorkTitle' ) ;
             if ( is_array($search) and count($search) > 0 ) {
                 header('Content-Encoding: UTF-8');
 				header('Content-type: text/csv; charset=UTF-8');
@@ -121,7 +123,6 @@ class requestService_export extends controller {
 		$this->mold->set('activeMenu' , 'RequestexportExcel');
 
         $this->mold->set('sections', sections::index() ["result"]);
-
         $this->mold->set('phases', phases::index()["result"]);
 	}
 }

@@ -47,7 +47,7 @@
                                         <div class="form-group has-default ">
                                            <select class="selectpicker selectpickerNotRefresh" required name="workerPerson" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام درخواست کننده">
                                                 {foreach from=$Users key=key value=User }
-                                                    <option value="{$User.userId}" {if isset($Mold.post.workerPerson)}{if $User.userId == $Mold.post.workerPerson }selected{/if}{elseif isset($requestService) and $User.userId == $requestService->getworkerPerson_id()}selected{/if}>{$User.fname} {$User.lname}</option>
+                                                    <option value="{$User.userId}" {if isset($Mold.post.workerPerson)}{if $User.userId == $Mold.post.workerPerson }selected{/if}{elseif isset($requestService) and $User.userId == $requestService->getworkerPerson_id()}selected{/if}>{$User.userId} - {$User.fname} {$User.lname}</option>
                                                     {/foreach}
                                            </select>
                                        </div>
@@ -70,7 +70,7 @@
                             </div>
                             <div class="row" style="border: 1px solid darkcyan;">
                                 <div class="col-md-12">
-                                    <label class="col-md-3 col-form-label">شرح خرابی و عملیات انجام شده</label>
+                                    <label class="col-md-3 col-form-label">شرح خرابی و عملیات مورد نظر</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <textarea rows="3" autocomplete="off" name="Sender_note" class="form-control">{if isset($Mold.post.Sender_note)}{$Mold.post.Sender_note}{elseif isset($requestService)}{$requestService->getSenderNote()}{/if}</textarea>

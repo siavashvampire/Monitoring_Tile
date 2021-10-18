@@ -181,6 +181,7 @@ class RS extends controller
         $this->mold->set('activeMenu', 'requestServiceList_Send');
 
         $this->mold->set('phases', phases::index([$phase])["result"]);
+//        show(phases::index([$phase])["result"]);
         $this->mold->set('sections', sections::index([$section]) ["result"]);
 
     }
@@ -248,7 +249,6 @@ class RS extends controller
         $Person_id = user::getUserLogin(true);
         $user = user::getUserLogin(false);
         if ($requestId != null) {
-
             /** @var requestService $requestService */
             $requestService = $this->model( 'requestService', $requestId);
             if ($requestService->getRequestId() != $requestId or !($requestService->getUnitPersonId() == $Person_id or $requestService->getWorkerPersonId() == $Person_id or $user['user_group_id'] == $this->setting('RequestAdmin') or $user['user_group_id'] == 1)) {
@@ -479,8 +479,8 @@ class RS extends controller
                 $requestService->setDoneworkDes("");
                 $requestService->setLatency(3);
                 $requestService->setLatencyTime(0);
-                $requestService->setUnitPersonId(user::getUserLogin(true));
-                $requestService->setWorkerPersonId($get['workerPerson']);
+                $requestService->setUnitPersonId($get['workerPerson']);
+                $requestService->setWorkerPersonId(user::getUserLogin(true));
                 $requestService->setSenderNote($get['Sender_note']);
                 $requestService->setHumanNumber(1);
                 $requestService->setConsumableParts(',,');

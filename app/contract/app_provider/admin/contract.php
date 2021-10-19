@@ -203,7 +203,7 @@ class contract extends controller {
 		$this->mold->path('default', 'contract');
 		$this->mold->view('contracts.user.mold.html');
 	}
-	public function list(){
+    public function list(){
         $get = request::all('page=1,perEachPage=25,contractStartFrom,contractStartUntil,contractEndFrom,contractEndUntil,groupIds,status' ,null);
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -277,6 +277,75 @@ class contract extends controller {
         $this->mold->view('contractList.mold.html');
         $this->mold->setPageTitle(rlang('contracts'));
         $this->mold->set('activeMenu' , 'contractList');
+        $this->mold->set('contracts' , $search);
+
+
+    }
+    public function listVote(){
+        $get = request::all('page=1,perEachPage=25,voteSendFrom,voteSendUntil,voteCompletedFrom,voteCompletedUntil,status=all' ,null);
+        $rules = [
+            "page" => ["required|match:>0", rlang('page')],
+            "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
+        ];
+        $valid = validate::check($get, $rules);
+        $value = array( );
+        $variable = array( );
+        $value[] = -1 ;
+        $variable[] = 'c.contractId <> ?' ;
+        $sortWith =  ['column' => 'c.contractId' , 'type' =>'desc'] ;
+        if ($valid->isFail()){
+            //TODO:: add error is not valid data
+
+        } else {
+
+            if ( $get['voteSendFrom'] != null and $get['voteSendUntil'] == null ) {
+                $value[] = date('Y-m-d 00:00:00' , ( $get['voteSendFrom'] / 1000 ) );
+                $variable[] = ' c.creatDate >= ?';
+            } elseif ( $get['voteSendFrom'] == null and $get['voteSendUntil'] != null ) {
+                $value[] = date('Y-m-d 00:00:00' , ( $get['voteSendUntil'] / 1000 ) );
+                $variable[] = ' c.creatDate <= ?';
+            } elseif ( $get['voteSendFrom'] != null and $get['voteSendUntil'] != null ) {
+                $value[] = date('Y-m-d 00:00:00' , ( $get['voteSendFrom'] / 1000 ) );
+                $value[] = date('Y-m-d 00:00:00' , ( $get['voteSendUntil'] / 1000 ) );
+                $variable[] = ' c.creatDate between ? And ? ';
+            }
+            if ( $get['voteCompletedFrom'] != null and $get['voteCompletedUntil'] == null ) {
+                $value[] = date('Y-m-d 23:59:59' , ( $get['voteCompletedFrom'] / 1000 ) );
+                $variable[] = ' c.fillOutDate >= ?';
+            } elseif ( $get['voteCompletedFrom'] == null and $get['voteCompletedUntil'] != null ) {
+                $value[] = date('Y-m-d 23:59:59' , ( $get['voteCompletedUntil'] / 1000 ) );
+                $variable[] = ' c.fillOutDate <= ?';
+            } elseif ( $get['voteCompletedFrom'] != null and $get['voteCompletedUntil'] != null ) {
+                $value[] = date('Y-m-d 23:59:59' , ( $get['voteCompletedFrom'] / 1000 ) );
+                $value[] = date('Y-m-d 23:59:59' , ( $get['voteCompletedUntil'] / 1000 ) );
+                $variable[] = ' c.fillOutDate between ? And ? ';
+            }
+
+            if ( $get['status'] != "all") {
+                if ($get['status'] == "0") {
+                    $variable[] = 'c.fillOutDate is null';
+                } else {
+                    $variable[] = 'c.fillOutDate is not null';
+                }
+            }
+        }
+
+
+
+        /* @var contracts_vote $model */
+        $model = parent::model('contracts_vote');
+        $numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'contracts_vote c' , 'COUNT(c.fillOutId) as co' )) [0]['co'];
+        $pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
+        model::join('vote v', ' c.voteId = v.voteId ', "LEFT");
+        model::join('user u', ' c.userId = u.userId ', "LEFT");
+        model::join('contracts co', ' c.contractId = co.contractId ', "LEFT");
+        model::join('user_group ug', ' u.user_group_id = ug.user_groupId ', "LEFT");
+        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'contracts_vote c', 'c.*,co.userId as contactUserId,v.voteName,u.fname,u.lname,ug.name, IF(c.fillOutDate is not null, "1", "0") as status'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+        //show(model::getLastQuery());
+        $this->mold->path('default', 'contract');
+        $this->mold->view('contractVoteList.mold.html');
+        $this->mold->setPageTitle(rlang(['Poll','contracts']));
+        $this->mold->set('activeMenu' , 'contractVoteList');
         $this->mold->set('contracts' , $search);
 
 

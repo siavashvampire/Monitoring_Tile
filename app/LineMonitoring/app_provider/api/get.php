@@ -487,7 +487,6 @@ class get extends innerController
         $showField[] = "data.p5";
         $showField[] = "concat(Floor(SUM(TIMESTAMPDIFF(MINUTE,arch1.Start_time,arch1.End_Time))/60 ), ' ساعت ' , MOD(SUM(TIMESTAMPDIFF(MINUTE,arch1.Start_time,arch1.End_Time)),60) , ' دقیقه') as OFFTime";
 
-
         if (isset($_SERVER['JsonOff']))
             $isSet = false;
         else

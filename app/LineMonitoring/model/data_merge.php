@@ -2,10 +2,7 @@
 
 namespace App\LineMonitoring\model;
 
-use App\shiftWork\app_provider\api\shift;
-use paymentCms\component\browser;
 use paymentCms\component\model;
-use paymentCms\component\security;
 use paymentCms\model\modelInterFace;
 
 class data_merge extends model implements modelInterFace
@@ -48,6 +45,7 @@ class data_merge extends model implements modelInterFace
     case when tileDegree = "درجه U" then counterNotAll end as m4
   from ' . $perfix . 'temp_table3 table3
 ;');
+
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  ' . $perfix . 'temp_table5 SELECT 
     table4.counterAll  ,table4.Start_time,table4.JStart_time,table4.counterNotAll ,table4.Tile_Kind ,table4.Sensor_id ,table4.phase ,table4.unit ,table4.tileDegree,table4.percent , table4.label, table4.tile_width , table4.tile_length ,
     sum(p1) as p1,
@@ -63,6 +61,7 @@ class data_merge extends model implements modelInterFace
   from ' . $perfix . 'temp_table4 table4 
   group by table4.phase ,table4.unit, table4.Tile_Kind
 ; ');
+
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  ' . $perfix . 'temp_table6_0  SELECT 
     counterAll    ,Start_time  ,JStart_time,Tile_Kind ,table5.phase ,unit  , label, tile_width , tile_length ,
     coalesce(p1, 0) as p1,

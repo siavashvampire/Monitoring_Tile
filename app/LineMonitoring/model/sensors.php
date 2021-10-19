@@ -124,9 +124,9 @@ class sensors extends model implements modelInterFace
         $result = parent::insertToDataBase();
         if ($result) {
             if ($this->getisVirtual()) {
-                if ($this->getisStorage()) {
+                if ($this->getisStorage())
                     (new data)->InsertZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnit(), $this->getTileDegree());
-                }
+
 
                 $db = (model::db());
                 $perfix = $db::$prefix;

@@ -32,7 +32,7 @@ class export extends controller {
 				$variable[] = ' arch1.phase IN( '. implode(' , ' , $get['phase']) .' ) ';
 			}
 			if (is_array($get['unitId'] ) and count($get['unitId'] ) > 0 ) {
-				$variable[] = ' arch1.unitId IN( '. implode(' , ' , $get['unitId']) .' ) ';
+				$variable[] = ' arch1.unit IN( '. implode(' , ' , $get['unitId']) .' ) ';
 			}
 			if (is_array($get['tile_kind'] ) and count($get['tile_kind'] ) > 0 ) {
 				$variable[] = ' arch1.Tile_Kind IN( ' . implode(' , ', $get['tile_kind']) . ' ) ';
@@ -106,13 +106,13 @@ class export extends controller {
 			$search = data_archive::creatExportTable(((count($variable) == 0) ?  ' 1 '  : implode(' and ', $variable)));
             if ($joinWith){
                 if ($get['StartTime'] != null and $get['EndTime'] == null ) {
-				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'.date('Y-m-d H:i:s', $get['StartTime'] / 1000).'" and arch1.End_Time > arch1.Start_time  ' );
+				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'.date('Y-m-d H:i:s', $get['StartTime'] / 1000).'" and arch1.End_Time > arch1.Start_time  ' );
                 } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and arch1.Start_time < "'.date('Y-m-d H:i:s', $get['EndTime'] / 1000).'" and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and arch1.Start_time < "'.date('Y-m-d H:i:s', $get['EndTime'] / 1000).'" and arch1.End_Time > arch1.Start_time ' );
                 } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. date('Y-m-d H:i:s', $get['StartTime'] / 1000).'" AND "'.date('Y-m-d H:i:s', $get['EndTime'] / 1000).'") and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. date('Y-m-d H:i:s', $get['StartTime'] / 1000).'" AND "'.date('Y-m-d H:i:s', $get['EndTime'] / 1000).'") and arch1.End_Time > arch1.Start_time ' );
                 } elseif ($get['StartTime'] == null and $get['EndTime'] == null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $shiftStart .'" AND "'.$shiftEnd.'") and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $shiftStart .'" AND "'.$shiftEnd.'") and arch1.End_Time > arch1.Start_time ' );
                 }
                 model::join('off_sensor_reasons offsensor', 'arch1.reason = offsensor.label');
                 model::join('off_sensor_reasons Parent'   , 'offsensor.parentId = Parent.id');
@@ -206,7 +206,7 @@ class export extends controller {
 				$variable[] = ' arch1.phase IN( '. implode(' , ' , $get['phase']) .' ) ';
 			}
 			if (is_array($get['unitId'] ) and count($get['unitId'] ) > 0 ) {
-				$variable[] = ' arch1.unitId IN( '. implode(' , ' , $get['unitId']) .' ) ';
+				$variable[] = ' arch1.unit IN( '. implode(' , ' , $get['unitId']) .' ) ';
 			}
 			if (is_array($get['tile_kind'] ) and count($get['tile_kind'] ) > 0 ) {
 				$variable[] = ' arch1.Tile_Kind IN( ' . implode(' , ', $get['tile_kind']) . ' ) ';
@@ -284,11 +284,11 @@ class export extends controller {
 			$search = data_merge::creatExportTable(((count($variable) == 0) ?  ' 1 '  : implode(' and ', $variable)));
             if ($joinWith){
                 if ($get['StartTime'] != null and $get['EndTime'] == null ) {
-				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'. $get['StartTime'].'" and arch1.End_Time > arch1.Start_time  ' );
+				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'. $get['StartTime'].'" and arch1.End_Time > arch1.Start_time  ' );
                 } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and arch1.Start_time < "'.$get['EndTime'].'" and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and arch1.Start_time < "'.$get['EndTime'].'" and arch1.End_Time > arch1.Start_time ' );
                 } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $get['StartTime'] .'" AND "'.$get['EndTime'].'") and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $get['StartTime'] .'" AND "'.$get['EndTime'].'") and arch1.End_Time > arch1.Start_time ' );
                 } 
                 model::join('sensors sensors', 'sensors.id = arch1.Sensor_id');
                 model::join('off_sensor_reasons offsensor', 'arch1.reason = offsensor.label');
@@ -382,7 +382,7 @@ class export extends controller {
 				$variable[] = ' arch1.phase IN( '. implode(' , ' , $get['phase']) .' ) ';
 			}
 			if (is_array($get['unitId'] ) and count($get['unitId'] ) > 0 ) {
-				$variable[] = ' arch1.unitId IN( '. implode(' , ' , $get['unitId']) .' ) ';
+				$variable[] = ' arch1.unit IN( '. implode(' , ' , $get['unitId']) .' ) ';
 			}
 			if (is_array($get['tile_kind'] ) and count($get['tile_kind'] ) > 0 ) {
 				$variable[] = ' arch1.Tile_Kind IN( ' . implode(' , ', $get['tile_kind']) . ' ) ';
@@ -460,11 +460,11 @@ class export extends controller {
 			$search = data_merge::creatExportTable(((count($variable) == 0) ?  ' 1 '  : implode(' and ', $variable)));
             if ($joinWith){
                 if ($get['StartTime'] != null and $get['EndTime'] == null ) {
-				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'. $get['StartTime'].'" and arch1.End_Time > arch1.Start_time  ' );
+				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'. $get['StartTime'].'" and arch1.End_Time > arch1.Start_time  ' );
                 } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and arch1.Start_time < "'.$get['EndTime'].'" and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and arch1.Start_time < "'.$get['EndTime'].'" and arch1.End_Time > arch1.Start_time ' );
                 } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $get['StartTime'] .'" AND "'.$get['EndTime'].'") and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $get['StartTime'] .'" AND "'.$get['EndTime'].'") and arch1.End_Time > arch1.Start_time ' );
                 } 
                 model::join('sensors sensors', 'sensors.id = arch1.Sensor_id');
                 model::join('off_sensor_reasons offsensor', 'arch1.reason = offsensor.label');
@@ -557,7 +557,7 @@ class export extends controller {
 				$variable[] = ' arch1.phase IN( '. implode(' , ' , $get['phase']) .' ) ';
 			}
 			if (is_array($get['unitId'] ) and count($get['unitId'] ) > 0 ) {
-				$variable[] = ' arch1.unitId IN( '. implode(' , ' , $get['unitId']) .' ) ';
+				$variable[] = ' arch1.unit IN( '. implode(' , ' , $get['unitId']) .' ) ';
 			}
 			if (is_array($get['tile_kind'] ) and count($get['tile_kind'] ) > 0 ) {
 				$variable[] = ' arch1.Tile_Kind IN( ' . implode(' , ', $get['tile_kind']) . ' ) ';
@@ -635,11 +635,11 @@ class export extends controller {
 			$search = data_merge::creatExportTable(((count($variable) == 0) ?  ' 1 '  : implode(' and ', $variable)));
             if ($joinWith){
                 if ($get['StartTime'] != null and $get['EndTime'] == null ) {
-				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'. $get['StartTime'].'" and arch1.End_Time > arch1.Start_time  ' );
+				model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and arch1.Start_time > "'. $get['StartTime'].'" and arch1.End_Time > arch1.Start_time  ' );
                 } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and arch1.Start_time < "'.$get['EndTime'].'" and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and arch1.Start_time < "'.$get['EndTime'].'" and arch1.End_Time > arch1.Start_time ' );
                 } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unitId = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $get['StartTime'] .'" AND "'.$get['EndTime'].'") and arch1.End_Time > arch1.Start_time ' );
+                    model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and (arch1.Start_time BETWEEN "'. $get['StartTime'] .'" AND "'.$get['EndTime'].'") and arch1.End_Time > arch1.Start_time ' );
                 }  
                 model::join('sensors sensors', 'sensors.id = arch1.Sensor_id');
                 model::join('off_sensor_reasons offsensor', 'arch1.reason = offsensor.label');

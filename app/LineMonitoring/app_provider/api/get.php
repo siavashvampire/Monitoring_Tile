@@ -6,6 +6,8 @@ use App\api\controller\innerController;
 use app\LineMonitoring\model\data;
 use App\LineMonitoring\model\phases_budget;
 use app\LineMonitoring\model\sensors;
+use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\shift;
 use paymentCms\component\cache;
 use paymentCms\component\JDate;
 use paymentCms\component\model;
@@ -33,16 +35,6 @@ class get extends innerController
         model::join('units units', 'units.id =  sensors.unitId');
         $sensorsActivity = $sensors->search(( array )$value, ((count($variable) == 0) ? null : '? and ' . implode(' and ', $variable) . ' and ') . 'sensors.Sensor_plc_id <> 0 and sensors.isVirtual = 0 and sensors.OffTime <> 0', 'sensors sensors', 'sensors.label as Name , units.label as unit , sensors.phase as Phase  , sensors.Active as Active', ['column' => 'sensors.showSort', 'type' => 'asc']);
         return self::json($sensorsActivity);
-    }
-
-    public static function camSwitch()
-    {
-        /* @var sensors $tile */
-
-        $CamSwitch = parent::model(['LineMonitoring', 'CamSwitch']);
-        $CamSwitchSiavash = $CamSwitch->search([1], '? and  CS.id <> "0" ', 'CamSwitch CS', 'CS.id as id , CS.label as Name , CS.unitId as unitId , CS.phase as Phase , CS.Switch_plc_id as PLC_id , CS.Active as Active', ['column' => 'CS.Switch_plc_id', 'type' => 'asc']);
-        cache::save('yes', 'isSwitchKindUpdate', 2592000, 'LineMonitoring');
-        return self::json($CamSwitchSiavash);
     }
 
     public static function Counter()
@@ -479,7 +471,7 @@ class get extends innerController
         $variable = array();
         $unitId = array();
         $unitId[] = 13;
-        $variable[] = ' arch1.unitId IN( ' . implode(' , ', $unitId) . ' ) ';
+        $variable[] = ' arch1.unit IN( ' . implode(' , ', $unitId) . ' ) ';
         $showField = array();
         $showField[] = "data.phase";
         $showField[] = "data.counterAll";
@@ -501,11 +493,11 @@ class get extends innerController
         else
             $isSet = true;
         $_SERVER['JsonOff'] = true;
-        $DayData = self::Day(1)['result'];
+        $DayData = Day::index(1)['result'];
         $DayStart = $DayData['dayStart'];
         $DayEnd = $DayData['dayEnd'];
         $variable[] = ' (arch1.Start_time BETWEEN "' . $DayStart . '" AND "' . $DayEnd . '") ';
-        $Data = export::index(1, $variable, $showField);
+        $Data = (new export)->index(1, $variable, $showField);
         if ($isSet)
             unset($_SERVER['JsonOff']);
 
@@ -513,6 +505,7 @@ class get extends innerController
         /** @var phases_budget $modelBudgets */
         $modelBudgets = parent::model('phases_budget');
         $modelBudgets->setPhase_id(2);
+
         $Budgets = $modelBudgets->getBudgetWithTime(null, strtotime($DayStart));
 
         cache::save('yes', 'isDayUpdated', 2592000, 'LineMonitoring');

@@ -2,6 +2,7 @@
 
 namespace App\LineMonitoring\model;
 
+use App\shiftWork\app_provider\api\shift;
 use paymentCms\component\browser;
 use paymentCms\component\model;
 use paymentCms\component\security;
@@ -29,8 +30,8 @@ class data_merge extends model implements modelInterFace
     {
         $db = (model::db());
         $perfix = $db::$prefix;
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'temp_table1 SELECT SUM(arch1.counter) as counterAll ,arch1.Tile_Kind ,arch1.Sensor_id  ,arch1.phase ,arch1.unit from ' . $perfix . 'data_merge arch1 LEFT JOIN ' . $perfix . 'sensors sensor on ( arch1.Sensor_id = sensor.Sensor_id) WHERE sensor.Export = 1 and arch1.tileDegree = \'همه\' and ' . $variable . ' GROUP by arch1.Sensor_id,arch1.phase ,arch1.unit , arch1.Tile_Kind ORDER BY sensor.showSort ASC');
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'temp_table2 SELECT archAll.counterAll , SUM(arch1.counter) as counterNotAll , arch1.Tile_Kind,arch1.Sensor_id, arch1.phase ,arch1.unit,arch1.tileDegree  ,arch1.Start_time ,arch1.JStart_time FROM ' . $perfix . 'data_merge arch1 LEFT JOIN ' . $perfix . 'temp_table1 archAll on ( archAll.unit = arch1.unit and archAll.Tile_Kind = arch1.Tile_Kind and arch1.phase = archAll.phase ) LEFT JOIN ' . $perfix . 'sensors sensor on ( archAll.Sensor_id = sensor.Sensor_id) WHERE sensor.Export = 1 and arch1.tileDegree != \'همه\' and ' . $variable . ' GROUP by arch1.phase ,arch1.unit ,arch1.Sensor_id, arch1.Tile_Kind ORDER BY sensor.showSort ASC;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'temp_table1 SELECT SUM(arch1.counter) as counterAll ,arch1.Tile_Kind ,arch1.Sensor_id  ,arch1.phase ,arch1.unit from ' . $perfix . 'data_merge arch1 LEFT JOIN ' . $perfix . 'sensors sensor on ( arch1.Sensor_id = sensor.id) WHERE sensor.Export = 1 and arch1.tileDegree = \'همه\' and ' . $variable . ' GROUP by arch1.Sensor_id,arch1.phase ,arch1.unit , arch1.Tile_Kind ORDER BY sensor.showSort ASC');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'temp_table2 SELECT archAll.counterAll , SUM(arch1.counter) as counterNotAll , arch1.Tile_Kind,arch1.Sensor_id, arch1.phase ,arch1.unit,arch1.tileDegree  ,arch1.Start_time ,arch1.JStart_time FROM ' . $perfix . 'data_merge arch1 LEFT JOIN ' . $perfix . 'temp_table1 archAll on ( archAll.unit = arch1.unit and archAll.Tile_Kind = arch1.Tile_Kind and arch1.phase = archAll.phase ) LEFT JOIN ' . $perfix . 'sensors sensor on ( archAll.Sensor_id = sensor.id) WHERE sensor.Export = 1 and arch1.tileDegree != \'همه\' and ' . $variable . ' GROUP by arch1.phase ,arch1.unit ,arch1.Sensor_id, arch1.Tile_Kind ORDER BY sensor.showSort ASC;');
         model::queryUnprepared('INSERT INTO ' . $perfix . 'temp_table2 SELECT archAll.counterAll , SUM(arch1.counter) as counterNotAll , arch1.Tile_Kind,arch1.Sensor_id, arch1.phase ,arch1.unit,arch1.tileDegree  ,arch1.Start_time ,arch1.JStart_time  FROM ' . $perfix . 'data_merge arch1 LEFT JOIN ' . $perfix . 'temp_table1 archAll  on ( archAll.Sensor_id = arch1.Sensor_id  ) WHERE archAll.unit not in ( SELECT unit FROM ' . $perfix . 'temp_table2) and archAll.unit in ( SELECT unit FROM ' . $perfix . 'temp_table1) and ' . $variable . ' GROUP by arch1.phase ,arch1.unit ,arch1.Sensor_id, arch1.Tile_Kind ;');
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'temp_table3 SELECT t.* , ROUND( counterNotAll / counterAll * 100 , 2 ) as percent , tk.label, tk.tile_width , tk.tile_length  from ' . $perfix . 'temp_table2 t LEFT JOIN ' . $perfix . 'tile_kind tk on ( t.Tile_Kind = tk.id ) ; ');
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'temp_table4 SELECT
@@ -77,7 +78,8 @@ class data_merge extends model implements modelInterFace
   from  ' . $perfix . 'temp_table5 table5 
 ;
  ');
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  ' . $perfix . 'temp_table6  SELECT counterAll ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unitName , units.id as unit  , label, tile_width , tile_length , p1 , p2 , p3 , p4 , p5 , m1 , m2 , m3 , m4 , m5 from  ' . $perfix . 'temp_table6_0 t6 LEFT JOIN ' . $perfix . 'units units on ( t6.unit = units.id );');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  ' . $perfix . 'temp_table6  SELECT counterAll ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unitName , units.id as unit  , t6.label, t6.tile_width , t6.tile_length , t6.p1 , t6.p2 , t6.p3 , t6.p4 , t6.p5 , t6.m1 , t6.m2 , t6.m3 , t6.m4 , t6.m5 from  ' . $perfix . 'temp_table6_0 t6 LEFT JOIN ' . $perfix . 'units units on ( t6.unit = units.id );');
+
         return 'temp_table6';
     }
 
@@ -386,7 +388,7 @@ class data_merge extends model implements modelInterFace
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName1 . ';');
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName2 . ';');
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , MIN(data.Start_time) AS Start_time , data.Sensor_id as id,JDAY(MIN(data.Start_time)) as Day , sensor.sensors as sensors FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.Sensor_id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.`Shift_group_id`,data.Sensor_id , MONTH(data.`Start_time`) ,Round(DAY(data.`Start_time`)/7),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , MIN(data.Start_time) AS Start_time , data.Sensor_id as id,JDAY(MIN(data.Start_time)) as Day , sensor.sensors as sensors FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.`Shift_group_id`,data.Sensor_id , MONTH(data.`Start_time`) ,Round(DAY(data.`Start_time`)/7),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
 
         if (!$movAvgFlag) {
             model::queryUnprepared('DELETE FROM ' . $tempDBName1 . ' WHERE JMONTH(`Start_time`) <> ' . $month . ' OR JYear(`Start_time`) <> ' . $year . ';');
@@ -412,7 +414,7 @@ class data_merge extends model implements modelInterFace
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName1 . ';');
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName2 . ';');
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , DATE_FORMAT(jdate(MIN(data.Start_time)), "%Y-%m-01") AS Start_time , data.Sensor_id as id,jmonth(MIN(data.Start_time)) as Day , sensor.sensors as sensors FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.Sensor_id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.Sensor_id , JMONTH(data.`Start_time`),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , DATE_FORMAT(jdate(MIN(data.Start_time)), "%Y-%m-01") AS Start_time , data.Sensor_id as id,jmonth(MIN(data.Start_time)) as Day , sensor.sensors as sensors FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.Sensor_id , JMONTH(data.`Start_time`),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
 
         if (!$movAvgFlag) {
             model::queryUnprepared('DELETE FROM ' . $tempDBName1 . ' WHERE Year(`Start_time`) <> ' . $year . ';');

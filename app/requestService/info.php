@@ -1,14 +1,20 @@
 <?php
 return [
     'info' => [
-        'name' => 'requestService',
-        'description' => 'requestService',
+        'name' => 'request service',
+        'description' => 'system for send request',
         'version' => '1.0.0.0',
         'author' => 'Siavash Sepahi',
         'support' => '09379206248',
         'PLCNeed' => false,
     ],
     'configuration' => [
+        'offSensorDescription' => [
+            'type' => 'number',
+            'status' => '',
+            'value' => '',
+            'valueDe' =>  null
+        ],
     ],
     'db' => [
         'requestService' => [
@@ -45,6 +51,9 @@ return [
             'KEY' => [
                 'phase',
                 'section',
+                'WorkerSection',
+                'unitPerson_id',
+                'workerPerson_id',
             ],
             'PRIMARY KEY' => [
                 'requestId'
@@ -52,6 +61,9 @@ return [
             'REFERENCES' => [
                 'phase' => [ 'table' => 'phases' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
                 'section' => [ 'table' => 'sections' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'WorkerSection' => [ 'table' => 'sections' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'unitPerson_id' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'workerPerson_id' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
 
             ]
         ],

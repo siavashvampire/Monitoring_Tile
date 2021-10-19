@@ -73,8 +73,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendParts();" >ارسال</button>
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal"  style="position: absolute;">بستن</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton"  onclick="sendParts();" >ارسال</button>
             </div>
         </div>
     </div>
@@ -102,7 +102,6 @@ function openPartEditor(id,name,unit){
         $("#id").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
-//        show()
         $("#exampleModalLabel").html("ویرایش قطعه");
         $("#name").val(name);
         $("#id").val(id);

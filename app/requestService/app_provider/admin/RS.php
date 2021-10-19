@@ -4,6 +4,7 @@ namespace App\requestService\app_provider\admin;
 
 use App;
 use App\core\controller\fieldService;
+use App\core\controller\httpErrorHandler;
 use App\LineMonitoring\app_provider\api\phases;
 use App\user\app_provider\api\user;
 use App\requestService\model\requestService;
@@ -11,6 +12,7 @@ use App\Sections\app_provider\api\sections;
 use App\requestService\app_provider\api\request_service;
 use controller;
 use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\validate;
 use paymentCms\component\Response;
@@ -22,6 +24,7 @@ class RS extends controller
     public function index($requestId = null)
     {
         $RequestAdmin = $this->setting('RequestAdmin');
+
         $this->mold->set('RequestAdmin', $RequestAdmin);
 
         $Person_id = user::getUserLogin(true);
@@ -42,6 +45,8 @@ class RS extends controller
         }
 
         if ($requestId != null) {
+
+            /** @var requestService $requestService */
             $requestService = parent::model('requestService', $requestId);
 
             if ($requestService->getRequestId() != $requestId or (!($requestService->getUnitPersonId() == $Person_id) and $user['user_group_id'] != $RequestAdmin and $user['user_group_id'] != 1)) {
@@ -90,7 +95,7 @@ class RS extends controller
                     $requestService->setWorkTitle(',' . implode(',', $get['WorkTitle']) . ',');
                     $requestService->setBugInfluence(',' . implode(',', $get['BugInfluence']) . ',');
                     $requestService->setUnitPersonId(user::getUserLogin(true));
-                    $requestService->setTime_Send(date('Y-m-d H:i:s'));
+                    $requestService->setTimeSend(date('Y-m-d H:i:s'));
                     $requestService->setSenderNote($get['Sender_note']);
 
                     $section = sections::getSectionModelById($requestService->getSection());
@@ -168,6 +173,38 @@ class RS extends controller
             $this->alert('danger', '', "شما سمت مناسبی برای استفاده از این بخش ندارید");
         }
 
+        if (request::isPost()) {
+            $get = request::post('page=1,perEachPage=25,StartTime,EndTime,phase,sortWith', null);
+
+            if (is_array($get['phase']) and count($get['phase']) > 0) {
+                $variable[] = ' rs.phase IN( ' . implode(' , ', $get['phase']) . ' ) ';
+                $value = array_merge($value, $get['phase']);
+            }
+            if (is_array($get['section']) and count($get['section']) > 0) {
+                $variable[] = ' rs.section IN( ' . implode(' , ', $get['section']) . ' ) ';
+                $value = array_merge($value, $get['section']);
+            }
+            if (is_array($get['giver_section']) and count($get['giver_section']) > 0) {
+                $variable[] = ' rs.WorkerSection IN( ' . implode(' , ', $get['giver_section']) . ' ) ';
+                $value = array_merge($value, $get['giver_section']);
+            }
+            if (is_array($get['line']) and count($get['line']) > 0) {
+                $variable[] = ' rs.Line IN( ' . implode(' , ', $get['line']) . ' ) ';
+                $value = array_merge($value, $get['line']);
+            }
+            if ($get['StartTime'] != null and $get['EndTime'] == null) {
+                $variable[] = ' rs.Time_Send > "' . date('Y-m-d H:i:s', $get['StartTime'] / 1000) . '"';
+                $value[] = date('Y-m-d H:i:s', $get['StartTime'] / 1000);
+            } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
+                $variable[] = ' rs.Time_Send < "' . date('Y-m-d H:i:s', $get['EndTime'] / 1000) . '"';
+                $value[] = date('Y-m-d H:i:s', $get['EndTime'] / 1000);
+            } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
+                $variable[] = ' (rs.Time_Send BETWEEN "' . date('Y-m-d H:i:s', $get['StartTime'] / 1000) . '" AND "' . date('Y-m-d H:i:s', $get['EndTime'] / 1000) . '") ';
+                $value[] = date('Y-m-d H:i:s', $get['StartTime'] / 1000);
+                $value[] = date('Y-m-d H:i:s', $get['EndTime'] / 1000);
+            }
+        }
+
 
         $this->mold->set('requestServices', $requestServices);
         $this->mold->path('default', 'requestService');
@@ -175,8 +212,9 @@ class RS extends controller
         $this->mold->setPageTitle('نمایش خدمات');
         $this->mold->set('activeMenu', 'requestServiceList_Send');
 
-        $this->mold->set('phases', phases::index([$phase])["result"]);
-        $this->mold->set('sections', sections::index([$section]) ["result"]);
+        $this->mold->set('phases', phases::index($phase)["result"]);
+//        show(phases::index([$phase])["result"]);
+        $this->mold->set('sections', sections::index($section) ["result"]);
 
     }
 
@@ -221,12 +259,13 @@ class RS extends controller
             $variable[] = 'reSer.WorkerSection Like ?';
             $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-            $requestServices = $requestService->getItemsByWorkerSection($section, $sortWith, $pagination);
+            $requestServices = $requestService->getItemsByWorkerSection($section, $sortWith, [$pagination['start'] , $pagination['limit'] ]);
         } elseif ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
-            $numberOfAll = $requestService->getCount();
+            $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-            $requestServices = $requestService->getItems(array(), array(), $sortWith, $pagination);
+            $requestServices = $requestService->getItems(array(), array(), $sortWith, [$pagination['start'] , $pagination['limit'] ]);
         } else {
+            $requestServices = array();
             $this->alert('danger', '', "شما سمت مناسبی برای استفاده از این بخش ندارید");
         }
 
@@ -243,9 +282,8 @@ class RS extends controller
         $Person_id = user::getUserLogin(true);
         $user = user::getUserLogin(false);
         if ($requestId != null) {
-
             /** @var requestService $requestService */
-            $requestService = $this->model( 'requestService', $requestId);
+            $requestService = $this->model('requestService', $requestId);
             if ($requestService->getRequestId() != $requestId or !($requestService->getUnitPersonId() == $Person_id or $requestService->getWorkerPersonId() == $Person_id or $user['user_group_id'] == $this->setting('RequestAdmin') or $user['user_group_id'] == 1)) {
 
                 $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
@@ -286,10 +324,10 @@ class RS extends controller
             $requestService->setWorkerSection(array_column(sections::index([$requestService->getWorkerSection()])['result'], 'label')[0]);
             $requestService->setSection(array_column(sections::index([$requestService->getSection()])['result'], 'label')[0]);
             $requestService->setSystemStatus(array_column(request_service::system_status([$requestService->getSystemStatus()])['result'], 'label')[0]);
-            $requestService->setCost(array_column(request_service::cost(explode(',',$requestService->getCost()))['result'], 'label')[0]);
+            $requestService->setCost(array_column(request_service::cost(explode(',', $requestService->getCost()))['result'], 'label')[0]);
             $requestService->setPhase(array_column(phases::index([$requestService->getPhase()])['result'], 'label')[0]);
             $requestService->setBugInfluence(array_column(request_service::buginfluence(explode(',', $requestService->getBugInfluence()))['result'], 'label')[0]);
-            $requestService->setWorkTitle(array_column(request_service::worktitle(explode(',',$requestService->getWorkTitle()))['result'], 'label')[0]);
+            $requestService->setWorkTitle(array_column(request_service::worktitle(explode(',', $requestService->getWorkTitle()))['result'], 'label')[0]);
 
 
 //           $this->mold->set('user', $user);
@@ -321,7 +359,7 @@ class RS extends controller
                 $requestService->setBugInfluence(explode(',', $requestService->getBugInfluence()));
                 $requestService->setConsumablePartsQty(explode(',', substr($requestService->getConsumablePartsQty(), 1, strlen($requestService->getConsumablePartsQty()) - 2)));
                 $requestService->setConsumableParts(explode(',', substr($requestService->getConsumableParts(), 1, strlen($requestService->getConsumableParts()) - 2)));
-                $requestService->setTimeSend(jdate::jdate('Y/m/d' , strtotime($requestService->getTimeSend())));
+                $requestService->setTimeSend(jdate::jdate('Y/m/d', strtotime($requestService->getTimeSend())));
 //                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));
                 $this->mold->set('requestService', $requestService);
             } else
@@ -459,7 +497,7 @@ class RS extends controller
                 $requestService->setTimeStart(date('Y-m-d H:i:s'));
                 $requestService->setTimeEnd(date('Y-m-d H:i:s'));
                 $requestService->setSystemName("");
-                $requestService->setPhase(0);
+                $requestService->setPhase(-4);
                 $requestService->setLine(1);
                 $requestService->setSection($get['ServiceSection']);
                 $requestService->setCost(',,');
@@ -474,8 +512,8 @@ class RS extends controller
                 $requestService->setDoneworkDes("");
                 $requestService->setLatency(3);
                 $requestService->setLatencyTime(0);
-                $requestService->setUnitPersonId(user::getUserLogin(true));
-                $requestService->setWorkerPersonId($get['workerPerson']);
+                $requestService->setUnitPersonId($get['workerPerson']);
+                $requestService->setWorkerPersonId(user::getUserLogin(true));
                 $requestService->setSenderNote($get['Sender_note']);
                 $requestService->setHumanNumber(1);
                 $requestService->setConsumableParts(',,');

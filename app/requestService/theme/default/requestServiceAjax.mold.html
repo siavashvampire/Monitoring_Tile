@@ -1,79 +1,59 @@
-﻿
-<div class="modal-body" id="ReSerContent">
+﻿<div class="modal-body" id="ReSerContent">
     {if isset($success)}
-        <div class="alert alert-success text-right">{$success}</div>
+    <div class="alert alert-success text-right">{$success}</div>
     {/if}
     {if isset($errors)}
-        <div class="alert alert-danger text-right">{$errors}</div>
+    <div class="alert alert-danger text-right">{$errors}</div>
     {/if}
     <div class="tab-content tab-space">
         {if isset($requestService)}
-            <div class="tab-pane active" id="linkView">
-                <table class="table table-striped text-{$text_align}">
-                    <tr>
-                        <td style="width: 20%">
-                            شماره درخواست:
-                        </td>
-                        <td style="width: 10%">
-                            {$requestService->getRequestCode()}
-                        </td>
-                        <td style="width: 20%">
-                            تاریخ درخواست :
-                        </td>
-                        <td style="width: 20%">
-                            {$requestService->getJTimeSend()}
-                        </td>
-                        <td style="width: 20%">
-                            فاز مورد نظر:
-                        </td>
-                        <td style="width: 5%">
-                            {$requestService->getPhase()}
-                        </td>
-                    </tr>
-                    <tr>
-                            <td style="width: 10%">
-                                  بخش انجام دهنده:
-                            </td>
-                            <td style="width: 20%">
-                                {$requestService->getWorkerSection()}
-                            </td>
-                        <td style="width: 30%">
-                            وضعیت دستگاه هنگام درخواست کار :
-                        </td>
-                        <td style="width: 20%">
-                            {$requestService->getSystemStatus()}
-                        </td>
-                        <td style="width: 20%">
-                            بخش درخواست کننده :
-                        </td>
-                        <td style="width: 5%">
-                           {$requestService->getSection()}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            فعالیت مورد نظر :
-                        </td>
-                        <td>
-                            {$requestService->getWorkTitle()}
-                        </td>
-                        <td>
-                            اثرات خرابی:
-                        </td>
-                        <td>
-                            {$requestService->getBugInfluence()}
-                        </td>
-                        
-                        <td>
-                            یاداشت فرستنده:
-                        </td>
-                        <td>
-                            {$requestService->getSenderNote()}
-                        </td>
-                    </tr>
+        <div class="tab-pane active" id="linkView">
+            <table class="table table-striped text-{$text_align}">
+                <tr>
+                    <td style="width: 27.5%">
+                        شماره درخواست:
+                    </td>
+                    <td style="width: 7.5%">
+                        {$requestService->getRequestCode()}
+                    </td>
+                    <td style="width: 15%">
+                        تاریخ درخواست :
+                    </td>
+                    <td style="width: 25%">
+                        {$requestService->getJTimeSend()}
+                    </td>
+                    <td style="width: 15%">
+                        فاز مورد نظر:
+                    </td>
+                    <td style="width: 10%">
+                        {$requestService->getPhase()}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        بخش انجام دهنده:
+                    </td>
+                    <td colspan="2">
+                        {$requestService->getWorkerSection()}
+                    </td>
+                    <td>
+                        بخش درخواست کننده :
+                    </td>
+                    <td colspan="2">
+                        {$requestService->getSection()}
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="1">
+                        شرح خرابی و عملیات مورد نظر:
+                    </td>
+                    <td colspan="5">
+                        {$requestService->getSenderNote()}
+                    </td>
+                </tr>
 
-                </table>
-            </div>
+            </table>
+        </div>
         {/if}
     </div>
 </div>

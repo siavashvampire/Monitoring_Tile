@@ -12,7 +12,7 @@ use App\requestService\model\requestService_latency;
 use App\requestService\model\requestService_system_status;
 use App\requestService\model\requestService_worktitle;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class request_service extends innerController
 {
@@ -69,32 +69,56 @@ class request_service extends innerController
         return self::json($model->getItems($value,$variable));
     }
 
-    public static function failure(): array
+    public static function failure($ids = null): array
     {
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_failure $model */
         $model = parent::model('requestService_failure');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
     }
 
-    public static function doneWork(): array
+    public static function doneWork($ids = null): array
     {
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_doneWork $model */
         $model = parent::model('requestService_doneWork');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
     }
 
-    public static function latency(): array
+    public static function latency($ids = null): array
     {
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var requestService_latency $model */
         $model = parent::model('requestService_latency');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
     }
 
-    public static function consumable_Parts(): array
+    public static function consumable_Parts($ids = null): array
     {
+        $value = array();
+        $variable = array();
+        if ($ids != null) {
+            $value = array_merge($value, $ids);
+            $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
+        }
         /** @var consumable_Parts $model */
         $model = parent::model('consumable_Parts');
-        return self::json($model->getItems());
+        return self::json($model->getItems($value,$variable));
 
     }
 

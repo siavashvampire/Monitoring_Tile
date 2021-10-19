@@ -26,39 +26,38 @@ class hook extends pluginController
 
         $this->menu->after('InsertsensorOfflog', 'Reports', 'گزارش ها', "#", 'fa fa-file-excel-o', '', null, 'admin/export/Merge/LineMonitoring');
 
-        $this->menu->addChild('Reports', 'exportExcel', 'گزارش گیری', app::getBaseAppLink('sensorlog/export', 'admin'), 'fa fa-file-excel-o', '',  'admin/sensorlog/export/LineMonitoring');
+        $this->menu->addChild('Reports', 'exportExcel', 'گزارش گیری', app::getBaseAppLink('sensorlog/export', 'admin'), 'fa fa-file-excel-o', '', 'admin/sensorlog/export/LineMonitoring');
 
-        $this->menu->addChild('Reports', 'exportProduction', 'گزارش گیری تولید', app::getBaseAppLink('export/Production', 'admin'), 'fa fa-file-excel-o', '',  'admin/export/Production/LineMonitoring');
+        $this->menu->addChild('Reports', 'exportProduction', 'گزارش گیری تولید', app::getBaseAppLink('export/Production', 'admin'), 'fa fa-file-excel-o', '', 'admin/export/Production/LineMonitoring');
 
-        $this->menu->addChild('Reports', 'exportStops', 'گزارش گیری توقفات', app::getBaseAppLink('export/Stops', 'admin'), 'fa fa-file-excel-o', '',  'admin/export/Stops/LineMonitoring');
-        $this->menu->addChild('Reports', 'chart', 'گزارش گیری نموداری', app::getBaseAppLink('export/chart', 'admin'), 'fa fa-file-excel-o', '',  'admin/export/chart/LineMonitoring');
+        $this->menu->addChild('Reports', 'exportStops', 'گزارش گیری توقفات', app::getBaseAppLink('export/Stops', 'admin'), 'fa fa-file-excel-o', '', 'admin/export/Stops/LineMonitoring');
+        $this->menu->addChild('Reports', 'chart', 'گزارش گیری نموداری', app::getBaseAppLink('export/chart', 'admin'), 'fa fa-file-excel-o', '', 'admin/export/chart/LineMonitoring');
 
         $this->menu->after('Reports', 'alllogs', 'لاگ ها', "#", 'fa fa-history', '', null, 'admin/sensorlog/index/LineMonitoring');
 
-        $this->menu->addChild('alllogs', 'sensorlog', 'لاگ سنسور ها', app::getBaseAppLink('sensorlog', 'admin'), 'fa fa-history', '',  'admin/sensorlog/index/LineMonitoring');
+        $this->menu->addChild('alllogs', 'sensorlog', 'لاگ سنسور ها', app::getBaseAppLink('sensorlog', 'admin'), 'fa fa-history', '', 'admin/sensorlog/index/LineMonitoring');
 
-        $this->menu->addChild('alllogs', 'sensorOfflog', 'لاگ توقفات واحدها', app::getBaseAppLink('sensorOffTimeLog/lists', 'admin'), 'fa fa-history', '',  'admin/sensorOffTimeLog/lists/LineMonitoring');
+        $this->menu->addChild('alllogs', 'sensorOfflog', 'لاگ توقفات واحدها', app::getBaseAppLink('sensorOffTimeLog/lists', 'admin'), 'fa fa-history', '', 'admin/sensorOffTimeLog/lists/LineMonitoring');
 
-        $this->menu->addChild('alllogs', 'SwitchOfflog', 'لاگ توقفات کلیدها', app::getBaseAppLink('SwitchOffTimeLog', 'admin'), 'fa fa-history', '',  'admin/SwitchOffTimeLog/index/LineMonitoring');
+        $this->menu->addChild('alllogs', 'SwitchOfflog', 'لاگ توقفات کلیدها', app::getBaseAppLink('SwitchOffTimeLog', 'admin'), 'fa fa-history', '', 'admin/SwitchOffTimeLog/index/LineMonitoring');
 
-       $this->menu->after('alllogs', 'configurationLine', 'تنظیمات خط تولید', "#", 'fa fa-cogs', '', null, 'admin/sensor/index/LineMonitoring');
-
-
-        $this->menu->addChild('configurationLine', 'sensors', 'تنظیمات سنسورها', app::getBaseAppLink('sensor', 'admin'), 'fa fa-usb', '',  'admin/sensor/index/LineMonitoring');
-        $this->menu->addChild('configurationLine', 'virtualSensor', 'تنظیمات سنسورهای مجازی', app::getBaseAppLink('virtualSensor/List', 'admin'), 'fa fa-usb', '',  'admin/virtualSensor/index/LineMonitoring');
-        $this->menu->addChild('configurationLine', 'storageSensor', 'تنظیمات سنسورهای دخیره ساز', app::getBaseAppLink('storageSensor/List', 'admin'), 'fa fa-usb', '',  'admin/storageSensor/index/LineMonitoring');
-        $this->menu->addChild('configurationLine', 'CamSwitch', 'تنظیمات کلیدها', app::getBaseAppLink('CamSwitch', 'admin'), 'fa fa-usb', '',  'admin/CamSwitch/index/LineMonitoring');
-        $this->menu->addChild('configurationLine', 'tile', 'لیست کاشی‌ها', app::getBaseAppLink('tile', 'admin'), 'fa fa-delicious', '',  'admin/tile/index/LineMonitoring');
-
-        $this->menu->after('configurationLine', 'configurationManufactor', 'تنظیمات کارخانه', "#", 'fa fa-building-o ', '',null,  'admin/off_sensor_reasons/lists/LineMonitoring');
+        $this->menu->after('alllogs', 'configurationLine', 'تنظیمات خط تولید', "#", 'fa fa-cogs', '', null, 'admin/sensor/index/LineMonitoring');
 
 
+        $this->menu->addChild('configurationLine', 'sensors', 'تنظیمات سنسورها', app::getBaseAppLink('sensor', 'admin'), 'fa fa-usb', '', 'admin/sensor/index/LineMonitoring');
+        $this->menu->addChild('configurationLine', 'virtualSensor', 'تنظیمات سنسورهای مجازی', app::getBaseAppLink('virtualSensor/List', 'admin'), 'fa fa-usb', '', 'admin/virtualSensor/index/LineMonitoring');
+        $this->menu->addChild('configurationLine', 'storageSensor', 'تنظیمات سنسورهای دخیره ساز', app::getBaseAppLink('storageSensor/List', 'admin'), 'fa fa-usb', '', 'admin/storageSensor/index/LineMonitoring');
+        $this->menu->addChild('configurationLine', 'CamSwitch', 'تنظیمات کلیدها', app::getBaseAppLink('CamSwitch', 'admin'), 'fa fa-usb', '', 'admin/CamSwitch/index/LineMonitoring');
+        $this->menu->addChild('configurationLine', 'tile', 'لیست کاشی‌ها', app::getBaseAppLink('tile', 'admin'), 'fa fa-delicious', '', 'admin/tile/index/LineMonitoring');
 
-        $this->menu->addChild('configurationManufactor', 'phases', rlang('PhaseAndBudgetDefinition'), app::getBaseAppLink('phases/List', 'admin'), 'fa fa-calendar', '',  'admin/phases/lists /LineMonitoring');
+        $this->menu->after('configurationLine', 'configurationManufactor', 'تنظیمات کارخانه', "#", 'fa fa-building-o ', '', null, 'admin/off_sensor_reasons/lists/LineMonitoring');
 
-        $this->menu->addChild('configurationManufactor', 'off_sensor_reasons', 'تنظیمات علت توقفات', app::getBaseAppLink('off_sensor_reasons', 'admin'), 'fa fa-file-text-o', '',  'admin/off_sensor_reasons/lists/LineMonitoring');
 
-        $this->menu->addChild('configurationManufactor', 'diagramSetting', 'تنظیمات نقشه‌های کارخانه', app::getBaseAppLink('diagram', 'admin'), 'fa fa-map-signs', '',  'admin/diagram/index/LineMonitoring');
+        $this->menu->addChild('configurationManufactor', 'phases', rlang('PhaseAndBudgetDefinition'), app::getBaseAppLink('phases/List', 'admin'), 'fa fa-calendar', '', 'admin/phases/lists /LineMonitoring');
+
+        $this->menu->addChild('configurationManufactor', 'off_sensor_reasons', 'تنظیمات علت توقفات', app::getBaseAppLink('off_sensor_reasons', 'admin'), 'fa fa-file-text-o', '', 'admin/off_sensor_reasons/lists/LineMonitoring');
+
+        $this->menu->addChild('configurationManufactor', 'diagramSetting', 'تنظیمات نقشه‌های کارخانه', app::getBaseAppLink('diagram', 'admin'), 'fa fa-map-signs', '', 'admin/diagram/index/LineMonitoring');
     }
 
     /*
@@ -193,6 +192,7 @@ class hook extends pluginController
 //        $this->mold->path($getPath['folder'], $getPath['app']);
 
     }
+
     public function _should_update()
     {
         $should_update = array();
@@ -212,6 +212,7 @@ class hook extends pluginController
 
         return $should_update;
     }
+
     public function _need_plc()
     {
         return ["label" => "LineMonitoring"];

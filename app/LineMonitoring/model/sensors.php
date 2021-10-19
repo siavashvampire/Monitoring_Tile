@@ -124,9 +124,9 @@ class sensors extends model implements modelInterFace
         $result = parent::insertToDataBase();
         if ($result) {
             if ($this->getisVirtual()) {
-                if ($this->getisStorage()) {
+                if ($this->getisStorage())
                     (new data)->InsertZeroStorage($this->getId(), $this->getTileId(), $this->getPhase(), $this->getUnit(), $this->getTileDegree());
-                }
+
 
                 $db = (model::db());
                 $perfix = $db::$prefix;
@@ -494,10 +494,11 @@ class sensors extends model implements modelInterFace
         if ($field == null) {
             $field = array();
             $field[] = 'item.id';
-            $field[] = 'item.label';
-            $field[] = 'item.unit';
+            $field[] = 'item.label as Name';
+            $field[] = 'item.unit as unitId';
             $field[] = 'units.label as unitName';
             $field[] = 'phases.label as phase';
+            $field[] = 'phases.id as Phase';
             $field[] = 'item.Sensor_plc_id as PLC_id';
             $field[] = 'item.Active as Active';
             $field[] = 'item.tile_Count';
@@ -507,6 +508,7 @@ class sensors extends model implements modelInterFace
             $field[] = 'item.OffTime_SMS';
             $field[] = 'tile_kind.tile_width';
             $field[] = 'tile_kind.tile_length';
+            $field[] = 'tile_kind.id as tile_id';
             $field[] = 'item.isStorage';
         }
 

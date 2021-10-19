@@ -22,7 +22,7 @@
                                                 <select class="selectpicker selectpickerNotRefresh" name="id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
                                                     <option value="" selected >همه</option>
                                                     {foreach from=$sections key=key value=section }
-                                                    <option value="{$section.id}"  >{$section.Name}</option>
+                                                    <option value="{$section.id}"  >{$section.label}</option>
                                                     {/foreach}
                                                 </select>
                                             </div>
@@ -110,27 +110,29 @@
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th>بخش</th>
-                                    <th>مشکل</th>
-                                    <th>زمان</th>
-                                    <th>نمایش</th>
-                                    <th>ویرایش</th>
+                                    <th style="width: 5%">شماره</th>
+                                    <th style="width: 15%">گیرنده</th>
+                                    <th style="width: 40%">عنوان درخواست</th>
+                                    <th style="width: 30%">زمان</th>
+                                    <th style="width: 5%"></th>
+                                    <th style="width: 5%"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$requestServices key=key value=requestService}
                                 <tr>
-                                    <td>{$requestService.WorkerSectionName|str_replace:',':' - '}</td>
-                                    <td>{$requestService.BugInfluence|str_replace:',':' - '}</td>
+                                    <td>{$requestService.requestId}</td>
+                                    <td>{$requestService.WorkerSectionName}</td>
+                                    <td>{$requestService.Sender_note}</td>
                                     <td>{$requestService.Time_Send|jDate:"j F Y - H&#58;i&#58;s"}</td>
                                     <td>
-                                        <button class="btn btn-link text-info mr-2" onclick="openReSerView('{$requestService.requestId}')"><i class="fa fa-eye"></i></button>
+                                        <button class="btn btn-link text-info mr-2" style="padding: unset!important;" onclick="openReSerView('{$requestService.requestId}')"><i class="fa fa-eye"></i></button>
                                     </td>
                                     <td>
                                         {if $userLogin.user_group_id == 1 or $userLogin.user_group_id == $RequestAdmin} 
-                                            <a class="btn btn-link text-info mr-2" href= "{url 'admin'}RS/adminService/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-link text-info mr-2" style="padding: unset!important;" href= "{url 'admin'}RS/adminService/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
                                         {else}
-                                            <a class="btn btn-link text-info mr-2" href= "{url 'admin'}RS/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
+                                            <a class="btn btn-link text-info mr-2" style="padding: unset!important;" href= "{url 'admin'}RS/{$requestService.requestId}" ><i class="fa fa-pencil"></i></a>
                                         {/if}
                                     </td>
                                 </tr>

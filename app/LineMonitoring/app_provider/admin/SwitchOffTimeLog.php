@@ -64,7 +64,7 @@ class SwitchOffTimeLog extends controller {
 			$this->mold->set('canChange', false);
 		}		
         
-		if ($user['user_group_id'] == $this->setting('field_OFFAdmin') or $user['user_group_id'] == 1) {
+		if ($user['user_group_id'] == $this->setting('OFFAdmin') or $user['user_group_id'] == 1) {
 			$this->mold->set('canChange2', true);
 			$this->mold->set('canChange', true);
 

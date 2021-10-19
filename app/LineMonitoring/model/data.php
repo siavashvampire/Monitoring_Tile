@@ -273,7 +273,6 @@ class data extends model implements modelInterFace {
     public function InsertZeroStorage($SensorID , $Tile_Kind , $phase , $unit , $tileDegree){
 		$db = (model::db());
 		$perfix = $db::$prefix ;
-		show('INSERT INTO '.$perfix.'data(`Sensor_id`, `AbsTime`, `counter`, `Shift_id`, `Shift_group_id`, `employers_id`, `Tile_Kind`, `Motor_Speed`, `phase`, `unit`, `tileDegree`) VALUES ('.$SensorID.',100,0,-1,0,-1,'.$Tile_Kind.',100,'.$phase.','.$unit.',"'.$tileDegree.'");');
 		model::queryUnprepared('INSERT INTO '.$perfix.'data(`Sensor_id`, `AbsTime`, `counter`, `Shift_id`, `Shift_group_id`, `employers_id`, `Tile_Kind`, `Motor_Speed`, `phase`, `unit`, `tileDegree`) VALUES ('.$SensorID.',100,0,-1,0,-1,'.$Tile_Kind.',100,'.$phase.','.$unit.',"'.$tileDegree.'");');
 	}
     public function UpdateZeroStorage($SensorID , $Tile_Kind , $phase , $unitId , $tileDegree){

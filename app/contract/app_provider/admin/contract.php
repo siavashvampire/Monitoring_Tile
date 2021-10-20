@@ -282,7 +282,7 @@ class contract extends controller {
 
     }
     public function listVote(){
-        $get = request::all('page=1,perEachPage=25,voteSendFrom,voteSendUntil,voteCompletedFrom,voteCompletedUntil,status=all' ,null);
+        $get = request::all('page=1,perEachPage=25,voteSendFrom,voteSendUntil,voteCompletedFrom,voteCompletedUntil,status=all,votesIds' ,null);
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -328,12 +328,26 @@ class contract extends controller {
                     $variable[] = 'c.fillOutDate is not null';
                 }
             }
+
+            if ( $get['votesIds'] != null ){
+                $value = array_merge($value , $get['votesIds']) ;
+                $value[] = 0 ;
+                $variable[] = 'v.voteId In ( '. str_repeat('? ,', count($get['votesIds'])).' ? )' ;
+            }
         }
+
+        /* @var vote $modelVote */
+        $modelVote = $this->model('vote');
+        model::join('user_group ug', ' v.contractGroup = ug.user_groupId ', "LEFT");
+        $access = $modelVote->search(null,null , 'vote v' , 'v.* ,  ug.name' , ['column' => 'ug.name' , 'type' =>'asc'] );
+        $this->mold->set('access',$access);
+
 
 
 
         /* @var contracts_vote $model */
         $model = parent::model('contracts_vote');
+        model::join('vote v', ' c.voteId = v.voteId ', "LEFT");
         $numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'contracts_vote c' , 'COUNT(c.fillOutId) as co' )) [0]['co'];
         $pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
         model::join('vote v', ' c.voteId = v.voteId ', "LEFT");

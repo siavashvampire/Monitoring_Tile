@@ -498,7 +498,6 @@ class get extends innerController
         $DayEnd = $DayData['dayEnd'];
         $variable[] = ' (arch1.Start_time BETWEEN "' . $DayStart . '" AND "' . $DayEnd . '") ';
         $Data = (new export)->index(1, $variable, $showField);
-        show($Data);
         if ($isSet)
             unset($_SERVER['JsonOff']);
 

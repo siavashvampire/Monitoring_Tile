@@ -53,7 +53,25 @@
                                     </div>
                                 </div>
                                 </div><div class="row">
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "title"} {_ "form"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple data-live-search="true" name="votesIds[]"  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "title"} {_ "form"}">
+                                                    {math format="x" x=""  set="tempMint"}
+                                                    {foreach from=$access key=key value=access_item }
+                                                        {if $tempMint != $access_item.name }
+                                                        </optgroup>
+                                                        <optgroup label="{$access_item.name}">
+                                                        {math format="x" x=$access_item.name  set="tempMint"}
+                                                        {/if}
+                                                        <option value="{$access_item.voteId}" >{$access_item.voteName}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
                                         <label class="col-md-3 col-form-label">{_ "status"}</label>
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
@@ -65,7 +83,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mt-1 float-left">
+                                    <div class="col-md-4 mt-1 float-left">
                                         <button class="btn btn-link float-left" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
                                         <button type="submit" class="btn btn-fill btn-info float-left">{_ "search"}</button>
                                     </div>

@@ -1,0 +1,209 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">تنظیمات خروجی فایل گزارش</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            <form class="form-horizontal" method="post">
+                                <div class="row" >
+                                    <div class="col-md-8">
+                                        <label class="col-md-3 col-form-label">   بخش درخواست کننده :</label>
+                                        <div class="col-md-6">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" style="width: 30%" multiple name="section[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش">
+                                                    {foreach from=$sections key=key value=section }
+                                                    <option value="{$section.id}"  >{$section.label}  - {$section.id}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label"> فاز:</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="phase[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                                    {foreach from=$phases key=key value=phase }
+                                                    <option value="{$phase.id}"  >{$phase.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="col-md-3 col-form-label">  بخش انجام دهنده :</label>
+                                        <div class="col-md-6">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="giver_section[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="بخش">
+                                                    {foreach from=$sections key=key value=section }
+                                                    <option value="{$section.id}"  >{$section.label}  - {$section.id}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label"> از تاریخ :</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" name="StartTime"
+                                                                                       class="form-control persianJustDatePickerDay pwt-datepicker-input-element text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">تا تاریخ :</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" name="EndTime"
+                                                       class="form-control persianJustDatePickerDay pwt-datepicker-input-element text-center">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                       <div class="col-md-12">
+                                           <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                       </div>
+                                    </div>
+                                </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش بخش درخواست کننده شیفت</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="section"  type="hidden" value="0">
+                                <input name="Shift"  type="hidden" value="0">
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش بخش انجام دهنده شیفت</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="giver_section"  type="hidden" value="0">
+                                <input name="Shift"  type="hidden" value="0">
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش بخش درخواست کننده امروز</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="section" type="hidden" value="0">
+                                <input name="Day"    type="hidden" value="0">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12"> گزارش بخش انجام دهنده امروز </h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="giver_section" type="hidden" value="0">
+                                <input name="Day"    type="hidden" value="0">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

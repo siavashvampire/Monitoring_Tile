@@ -227,4 +227,24 @@ $(document).ready(function() {
         },
         autoClose: true,
     });
+    $(".persianJustDatePickerDay").persianDatepicker({
+        persianDigit: false,
+        initialValueType: 'persian',
+        minDate: null,
+        maxDate: new persianDate().valueOf(),
+        format: 'YYYY/MM/DD',
+        timePicker: {
+            enabled: false,
+            meridiem: {
+                enabled: false
+            },
+            second: {
+                enabled: false
+            },
+            minute: {
+                enabled: false
+            }
+        },
+        autoClose: true,
+    });
 });

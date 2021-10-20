@@ -343,7 +343,7 @@ class export extends controller {
 
 	}
     public function  Production() {
-		$get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1,Shift,Day' ,null);
+		$get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1,Shift,Day');
 
         $_SERVER['JsonOff'] = true;
         if ($get['StartTime'] != null){

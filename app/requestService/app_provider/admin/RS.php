@@ -163,7 +163,9 @@ class RS extends controller
             $variable[] = 'item.section Like ?';
             $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
+            $pagination = [$pagination["start"], $pagination["limit"]];
             $requestServices = $requestService->getItemsBySection($section, $sortWith, $pagination);
+
         } elseif ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
             $numberOfAll = $requestService->getCount();
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
@@ -256,7 +258,7 @@ class RS extends controller
 
         if ($section) {
             $value[] = '%' . $section . '%';
-            $variable[] = 'reSer.WorkerSection Like ?';
+            $variable[] = 'item.WorkerSection Like ?';
             $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
             $requestServices = $requestService->getItemsByWorkerSection($section, $sortWith, [$pagination['start'] , $pagination['limit'] ]);

@@ -597,7 +597,7 @@ class requestService extends model implements modelInterFace
         return self::getItems($value,$variable,$sortWith,$pagination);
     }
 
-    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.Time_Send', 'type' => 'desc'], $pagination = [0, 25])
     {
         parent::join('sections  senderSection', 'FIND_IN_SET(senderSection.id , item.section) != 0 ');
         parent::join('sections  WorkerSection', 'FIND_IN_SET(WorkerSection.id , item.WorkerSection) != 0 ');

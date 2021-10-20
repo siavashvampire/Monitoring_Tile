@@ -73,7 +73,7 @@ class export extends innerController
             $header = [];
             $joinWith = false;
             for ($i = 0; $i < count($get['showField']); $i++) {
-                if ($get['showField'][$i] == "data.phase")
+                if ($get['showField'][$i] == "phase.label as phase")
                     $header[] = 'فاز';
                 elseif ($get['showField'][$i] == "data.unit") {
                     $header[] = 'واحد';
@@ -138,6 +138,8 @@ class export extends innerController
             } else {
                 model::join('sensor_active_log_archive arch1', 'data.phase = arch1.phase and arch1.unit = data.unit and data.Tile_Kind = arch1.Start_Tile_Kind and ' . implode(' and ', $variable) . ' and arch1.End_Time > arch1.Start_time ');
             }
+
+            model::join('phases phase', 'data.phase = phase.id ');
             $search = $model->search([1], '?', $search . ' data', implode(' , ', $get['showField']));
             if ($Data == 1)
                 return $search;

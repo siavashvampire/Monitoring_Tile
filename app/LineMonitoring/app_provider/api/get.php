@@ -472,8 +472,9 @@ class get extends innerController
         $unitId = array();
         $unitId[] = 13;
         $variable[] = ' arch1.unit IN( ' . implode(' , ', $unitId) . ' ) ';
+
         $showField = array();
-        $showField[] = "data.phase";
+        $showField[] = "phase.label as phase";
         $showField[] = "data.counterAll";
         $showField[] = "data.m1";
         $showField[] = "data.m2";

@@ -472,8 +472,9 @@ class get extends innerController
         $unitId = array();
         $unitId[] = 13;
         $variable[] = ' arch1.unit IN( ' . implode(' , ', $unitId) . ' ) ';
+
         $showField = array();
-        $showField[] = "data.phase";
+        $showField[] = "phase.label as phase";
         $showField[] = "data.counterAll";
         $showField[] = "data.m1";
         $showField[] = "data.m2";
@@ -497,6 +498,7 @@ class get extends innerController
         $DayEnd = $DayData['dayEnd'];
         $variable[] = ' (arch1.Start_time BETWEEN "' . $DayStart . '" AND "' . $DayEnd . '") ';
         $Data = (new export)->index(1, $variable, $showField);
+        show($Data);
         if ($isSet)
             unset($_SERVER['JsonOff']);
 

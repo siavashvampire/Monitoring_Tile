@@ -160,7 +160,7 @@ class RS extends controller
 
         if ($section) {
             $value[] = '%' . $section . '%';
-            $variable[] = 'reSer.section Like ?';
+            $variable[] = 'item.section Like ?';
             $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
             $requestServices = $requestService->getItemsBySection($section, $sortWith, $pagination);
@@ -211,10 +211,10 @@ class RS extends controller
         $this->mold->view('requestServiceList_Send.mold.html');
         $this->mold->setPageTitle('نمایش خدمات');
         $this->mold->set('activeMenu', 'requestServiceList_Send');
+        $phase = null;
+        $this->mold->set('phases', phases::index([$phase])["result"]);
+        $this->mold->set('sections', sections::index([$section]) ["result"]);
 
-        $this->mold->set('phases', phases::index($phase)["result"]);
-//        show(phases::index([$phase])["result"]);
-        $this->mold->set('sections', sections::index($section) ["result"]);
 
     }
 

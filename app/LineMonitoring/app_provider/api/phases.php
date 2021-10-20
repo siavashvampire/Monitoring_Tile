@@ -13,7 +13,7 @@ class phases extends innerController
     {
         $value = array();
         $variable = array();
-        if ($ids != null) {
+        if ($ids != null and $ids[0] != null) {
             $value = array_merge($value, $ids);
             $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
         } else {
@@ -27,7 +27,7 @@ class phases extends innerController
     {
         $value = array();
         $variable = array();
-        if ($ids != null) {
+        if ($ids != null and $ids[0] != null) {
             $value = array_merge($value, $ids);
             $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
         }

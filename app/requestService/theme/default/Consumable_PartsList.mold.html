@@ -60,21 +60,19 @@
                 </div>
                 <form>
                     <div class="form-group">
-                        <label for="part_name" class="col-form-label float-right">نام قطعه:</label>
+                        <label for="name" class="col-form-label float-right">نام قطعه:</label>
                         <input type="text" class="form-control" id="name" value="">
-                        <input type="hidden" class="form-control" id="name" value="">
                     </div>
                     
                     <div class="form-group">
-                        <label for="part_unit" class="col-form-label float-right">واحد قطعه:</label>
+                        <label for="unit" class="col-form-label float-right">واحد قطعه:</label>
                         <input type="text" class="form-control" id="unit" value="">
-                        <input type="hidden" class="form-control" id="unit" value="">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning float-left" data-dismiss="modal"  style="position: absolute;">بستن</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton"  onclick="sendParts();" >ارسال</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton"  onclick="sendParts()" >ارسال</button>
             </div>
         </div>
     </div>
@@ -135,6 +133,9 @@ function sendParts(){
             }
         }
     });
+    function refreshPage(){
+        window.location.reload();
+    }
 }
 </script>
 {/map}

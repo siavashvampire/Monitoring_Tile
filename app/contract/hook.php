@@ -21,12 +21,13 @@ class hook extends pluginController
     ];
     public function _adminHeaderNavbar($vars2)
     {
-        $this->menu->after('users', 'contractList', 'قرارداد ها', app::getBaseAppLink('contract/list', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/list/contract');
-        $this->menu->after('contractList', 'contractVoteList', 'نظرسنجی قرارداد', app::getBaseAppLink('contract/listVote', 'admin'), 'fa fa-file-text-o', '', null, 'admin/contract/list/contract');
-        $this->menu->after('contractVoteList', 'contract', 'تنظیمات قرارداد', app::getBaseAppLink('contract', 'admin'), 'fa fa-file-text', '', null, 'admin/contract/index/contract');
-        $this->menu->after('users', 'evaluation', 'فرم ساز', app::getBaseAppLink('evaluation/newType', 'admin'), 'fa fa-id-badge', '', null, 'admin/evaluation/newType/contract');
-        $this->menu->after('evaluation', 'evaluation_list', 'لیست ارزیابی ها', app::getBaseAppLink('evaluation/list', 'admin'), 'fa fa-list-ol', '', null, 'admin/evaluation/list/contract');
-        $this->menu->after('evaluation_list', 'evaluation_insert', 'ثبت ارزیابی', app::getBaseAppLink('evaluation', 'admin'), 'fa fa-check-square-o', '', null, 'admin/evaluation/index/contract');
+        $this->menu->after('users', 'contractTab', 'قرارداد', "#", 'fa fa-file-text-o', '', null, 'admin/contract/list/contract');
+        $this->menu->addChild('contractTab', 'contractList', 'قرارداد ها', app::getBaseAppLink('contract/list', 'admin'), 'fa fa-file-text-o', '',  'admin/contract/list/contract');
+        $this->menu->addChild('contractTab', 'contractVoteList', 'نظرسنجی قرارداد', app::getBaseAppLink('contract/listVote', 'admin'), 'fa fa-file-text-o', '', 'admin/contract/list/contract');
+        $this->menu->addChild('contractTab', 'contract', 'تنظیمات قرارداد', app::getBaseAppLink('contract', 'admin'), 'fa fa-file-text', '', 'admin/contract/index/contract');
+        $this->menu->addChild('contractTab', 'evaluation', 'فرم ساز', app::getBaseAppLink('evaluation/newType', 'admin'), 'fa fa-id-badge', '', 'admin/evaluation/newType/contract');
+        $this->menu->addChild('contractTab', 'evaluation_list', 'لیست ارزیابی ها', app::getBaseAppLink('evaluation/list', 'admin'), 'fa fa-list-ol', '',  'admin/evaluation/list/contract');
+        $this->menu->addChild('contractTab', 'evaluation_insert', 'ثبت ارزیابی', app::getBaseAppLink('evaluation', 'admin'), 'fa fa-check-square-o', '',  'admin/evaluation/index/contract');
         $user = user::getUserLogin();
         $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
 

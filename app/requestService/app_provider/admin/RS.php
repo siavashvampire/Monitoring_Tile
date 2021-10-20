@@ -281,11 +281,13 @@ class RS extends controller
 
     public function Ajax_View($requestId)
     {
+
         $Person_id = user::getUserLogin(true);
         $user = user::getUserLogin(false);
         if ($requestId != null) {
             /** @var requestService $requestService */
             $requestService = $this->model('requestService', $requestId);
+
             if ($requestService->getRequestId() != $requestId or !($requestService->getUnitPersonId() == $Person_id or $requestService->getWorkerPersonId() == $Person_id or $user['user_group_id'] == $this->setting('RequestAdmin') or $user['user_group_id'] == 1)) {
 
                 $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
@@ -301,11 +303,8 @@ class RS extends controller
                         if ($phase and $section) break;
                     }
                 }
-
-                if ((!($phase == $requestService->getPhase() or $section == $requestService->getSection())) and $user['user_group_id'] != $this->setting('RequestAdmin') and $user['user_group_id'] != 1)
-
+                if ((!($phase == $requestService->getPhase() or $section == $requestService->getSection() or -4 == $requestService->getPhase())) and $user['user_group_id'] != $this->setting('RequestAdmin') and $user['user_group_id'] != 1)
                     httpErrorHandler::E404();
-                return false;
             }
 
             $Cost = explode(',', $requestService->getCost());
@@ -322,7 +321,6 @@ class RS extends controller
 
             $system_statuses = $requestService->search($System_Status, 'id in (' . substr(str_repeat(', ? ', count($System_Status)), 1) . ')', 'requestService_system_status', '*', ['column' => 'id', 'type' => 'asc']);
             $this->mold->set('system_statuses', array_column($system_statuses, 'label'));
-
             $requestService->setWorkerSection(array_column(sections::index([$requestService->getWorkerSection()])['result'], 'label')[0]);
             $requestService->setSection(array_column(sections::index([$requestService->getSection()])['result'], 'label')[0]);
             $requestService->setSystemStatus(array_column(request_service::system_status([$requestService->getSystemStatus()])['result'], 'label')[0]);

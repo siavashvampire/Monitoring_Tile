@@ -169,6 +169,7 @@
     var div = '{$loadDivID}' ;
     function openReSerView(id){
         ajaxRunUrlHtml(urlAdmin+'RS/Ajax_View/' + id, '#ReSerContent' , 'openModule');
+        console.log((urlAdmin+'RS/Ajax_View/' + id));
     }
     function  openModule() {
         $('#exampleModal').modal('show');

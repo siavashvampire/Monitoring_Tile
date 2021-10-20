@@ -16,8 +16,22 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 class hook extends pluginController
 {
     private $unitsOneInSendVote = [
-        '1' => [ 2, 3 , 4 ], // sarparsti ba unit id 1 , javabe nazarsanji unit haye 2 , 3 , 4 ra midahad
-        '8' => [ 5, 6 , 7 ], // sarparsti ba unit id 8 , javabe nazarsanji unit haye 5 , 6 , 7 ra midahad
+        '23' => [ 20 , 19 ],
+        '5' => [ 27 , 28 ],
+        '31' => [ 30 ],
+        '30' => [ 31 ],
+        '7' => [37 , 38 , 52 , 53],
+        '13' => [43 , 44],
+        '9' => [50 , 51],
+        '14' => [57],
+        '56' => [58 , 32],
+        '40' => [33 , 35],
+        '55' => [16]
+
+
+    ];
+    private $userGroupOneInSendVote = [
+        '7' => [ 12 ],
     ];
     public function _adminHeaderNavbar($vars2)
     {
@@ -300,9 +314,15 @@ class hook extends pluginController
                     if (!isset($cacheUsersShouldSearch[$vote->getVoteReceiver()])) {
                         $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
                         $cacheUsersShouldSearch[$vote->getVoteReceiver()] = $usersShouldSearch;
+                        if ( isset($this->userGroupOneInSendVote[$vote->getVoteReceiver()]) ){
+                            foreach ($this->userGroupOneInSendVote[$vote->getVoteReceiver()] as $newGroups) {
+                                $usersShouldSearch = model::searching([$newGroups], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+                                $cacheUsersShouldSearch[$vote->getVoteReceiver()] = array_merge($cacheUsersShouldSearch[$vote->getVoteReceiver()] , $usersShouldSearch);
+                            }
+                        }
                     }
-                    else
-                        $usersShouldSearch = $cacheUsersShouldSearch[$vote->getVoteReceiver()];
+
+                    $usersShouldSearch = $cacheUsersShouldSearch[$vote->getVoteReceiver()];
 
                     if ($unitId != null and count($usersShouldSearch) > 0) {
                         foreach ($usersShouldSearch as $index => $userSearched) {
@@ -354,9 +374,8 @@ class hook extends pluginController
                 }
 
                 if ($userFind == null) {
-                    break;
+                    continue;
                 }
-
                 $contractVote->setUserId($userFind);
                 $contractVote->insertToDataBase();
             }

@@ -354,7 +354,7 @@ class contract extends controller {
         model::join('user u', ' c.userId = u.userId ', "LEFT");
         model::join('contracts co', ' c.contractId = co.contractId ', "LEFT");
         model::join('user_group ug', ' u.user_group_id = ug.user_groupId ', "LEFT");
-        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'contracts_vote c', 'c.*,co.userId as contactUserId,v.voteName,u.fname,u.lname,ug.name, IF(c.fillOutDate is not null, "1", "0") as status'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+        $search = $model->search( $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'contracts_vote c', 'c.*,co.userId as contactUserId,v.voteName,u.fname,u.lname,ug.name, IF(c.fillOutDate is not null, "1", "0") as status'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
         //show(model::getLastQuery());
         $this->mold->path('default', 'contract');
         $this->mold->view('contractVoteList.mold.html');

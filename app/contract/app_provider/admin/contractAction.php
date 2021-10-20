@@ -22,9 +22,24 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 class contractAction extends controller
 {
     private $unitsOneInSendVote = [
-            '1' => [ 2, 3 , 4 ], // sarparsti ba unit id 1 , javabe nazarsanji unit haye 2 , 3 , 4 ra midahad
-            '8' => [ 5, 6 , 7 ], // sarparsti ba unit id 8 , javabe nazarsanji unit haye 5 , 6 , 7 ra midahad
-        ];
+        '23' => [20, 19],
+        '5' => [27, 28],
+        '31' => [30],
+        '30' => [31],
+        '7' => [37, 38, 52, 53],
+        '13' => [43, 44],
+        '9' => [50, 51],
+        '14' => [57],
+        '56' => [58, 32],
+        '40' => [33, 35],
+        '55' => [16]
+
+
+    ];
+    private $userGroupOneInSendVote = [
+        '7' => [12],
+    ];
+
     public function index($userId, $contractId = null)
     {
         $user = user::getUserById($userId);
@@ -93,8 +108,8 @@ class contractAction extends controller
                 ],
                 $modelUserGroup->getContractTemplate()
             );
-            if (is_array($fields['result'])){
-                $totalSalary = 0 ;
+            if (is_array($fields['result'])) {
+                $totalSalary = 0;
                 foreach ($fields['result'] as $field) {
                     if ($field['type'] == 'fieldCall_contract_salary') {
                         $totalSalary = $totalSalary + intval($field['value']);
@@ -119,7 +134,7 @@ class contractAction extends controller
         $this->mold->view('contracts.viewAjax.mold.html');
     }
 
-    public function otherVoted( $userId , $contractId )
+    public function otherVoted($userId, $contractId)
     {
         $user = user::getUserById($userId);
         if ($user->getUserId() == null) {
@@ -377,18 +392,24 @@ class contractAction extends controller
                 }
             }
 
-            if ( $unitId == -4  ) $unitId = null ;
+            if ($unitId == -4) $unitId = null;
             $usersShouldSearch = model::searching([$vote->getVoteReceiver()], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+            if (isset($this->userGroupOneInSendVote[$vote->getVoteReceiver()])) {
+                foreach ($this->userGroupOneInSendVote[$vote->getVoteReceiver()] as $newGroups) {
+                    $usersShouldSearch1 = model::searching([$newGroups], ' user_group_id 	= ? and block = 0 and verified = 1 ', 'user', '*');
+                    $usersShouldSearch = array_merge($usersShouldSearch, $usersShouldSearch1);
+                }
+            }
             if ($unitId != null and count($usersShouldSearch) > 0) {
                 foreach ($usersShouldSearch as $index => $userSearched) {
                     $fields = fieldService::showFilledOutFormWithAllFields($userSearched['user_group_id'], 'user_register', $userSearched['userId'], 'user_register', true);
                     if (is_array($fields['result'])) {
                         foreach ($fields['result'] as $index2 => $fields) {
                             if ($fields['type'] == 'fieldCall_units_units') {
-                                if ($unitId == $fields['value']  or $fields['value'] == -4) {
+                                if ($unitId == $fields['value'] or $fields['value'] == -4) {
                                     $userFind = $userSearched['userId'];
                                 }
-                                if ( isset($this->unitsOneInSendVote[$fields['value']]) and in_array($unitId , $this->unitsOneInSendVote[$fields['value']] )){
+                                if (isset($this->unitsOneInSendVote[$fields['value']]) and in_array($unitId, $this->unitsOneInSendVote[$fields['value']])) {
                                     $userFind = $userSearched['userId'];
                                 }
                                 break;
@@ -427,6 +448,18 @@ class contractAction extends controller
 
     public function listVote($status = false)
     {
+        $get = request::all('page=1,perEachPage=25,voteSendFrom,voteSendUntil,voteCompletedFrom,voteCompletedUntil,status=all,votesIds');
+
+        $value = array( );
+        $variable = array( );
+
+        if ( $get['votesIds'] != null ){
+            $value = array_merge($value , $get['votesIds']) ;
+            $value[] = 0 ;
+            $variable[] = 'vote.voteId In ( '. str_repeat('? ,', count($get['votesIds'])).' ? )' ;
+        }
+
+
         if ($status) {
             $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
         }
@@ -434,17 +467,39 @@ class contractAction extends controller
 
         model::join('contracts contracts', 'contracts.contractId =  contracts_vote.contractId');
         model::join('user user', 'contracts.userId =  user.userId');
-        $contractsVote = model::searching([$userId], ' contracts_vote.userId	= ?  and fillOutDate is null', 'contracts_vote contracts_vote', 'user.fname,user.lname,contracts_vote.fillOutId,contracts_vote.creatDate');
+        model::join('vote vote', 'contracts_vote.voteId =  vote.voteId');
+
+        $field[] = 'user.fname';
+        $field[] = 'user.lname';
+        $field[] = 'contracts_vote.fillOutId';
+        $field[] = 'contracts_vote.creatDate';
+        $field[] = 'vote.voteName';
+        $field = implode(',',$field);
+
+        $value[] = $userId ;
+        $variable[] = 'contracts_vote.userId	= ?' ;
+        $variable[] = 'fillOutDate is null' ;
+
+        $contractsVote = model::searching($value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) ) , 'contracts_vote contracts_vote', $field);
+
+/*
         if ($contractsVote !== true and count($contractsVote) == 0) {
             Response::redirect(app::getBaseAppLink('home', 'admin'));
             return null;
         }
         if ($contractsVote !== true and count($contractsVote) == 1) {
-            Response::redirect(app::getBaseAppLink('contractAction/fill/' . $contractsVote[0]['fillOutId'] , 'admin'));
+            Response::redirect(app::getBaseAppLink('contractAction/fill/' . $contractsVote[0]['fillOutId'], 'admin'));
             return null;
         }
+*/
         if ($contractsVote !== true and count($contractsVote) > 1)
             $this->mold->set('contractsVote', $contractsVote);
+
+        /* @var vote $modelVote */
+        $modelVote = $this->model('vote');
+        model::join('user_group ug', ' v.contractGroup = ug.user_groupId ', "LEFT");
+        $access = $modelVote->search(null,null , 'vote v' , 'v.* ,  ug.name' , ['column' => 'ug.name' , 'type' =>'asc'] );
+        $this->mold->set('access',$access);
 
         $this->mold->path('default', 'contract');
         $this->mold->view('financeDepartmentList.mold.html');

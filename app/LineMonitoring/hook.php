@@ -79,14 +79,14 @@ class hook extends pluginController
             foreach ($phases as $phase) {
                 $selected = '';
                 if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
-                    if (in_array($phase['label'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                    if (in_array($phase['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
                         $selected = 'selected';
                 } elseif (isset($this->mold->get('field')['value'])) {
                     $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
-                    if (in_array($phase['label'], $explodeSelectedValue))
+                    if (in_array($phase['id'], $explodeSelectedValue))
                         $selected = 'selected';
                 }
-                $options .= '<option value ="' . $phase['label'] . '" ' . $selected . '>' . $phase['label'] . '</option>';
+                $options .= '<option value ="' . $phase['id'] . '" ' . $selected . '>' . $phase['label'] . '</option>';
 
             }
         $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">

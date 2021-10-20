@@ -1,1 +1,5 @@
-INSERT INTO `per_contracts`(`fillOutedDate`, `startDate`, `endDate`, `userId`, `contractGroup`, `contractor`) SELECT '2021-10-20 14:30:59' as fillOutedDate, '2021-06-22 00:00:00' as startDate , '2021-10-22 23:59:59' as endDate , `userId` as userId , '9' as contractGroup , '15' as contractor FROM `per_user` WHERE `user_group_id` =9 and userId != 8 AND userId != 10;
+UPDATE `per_customfieldvalue_7_user_register` SET `f_22`=10 WHERE `f_22` = 1;
+UPDATE `per_customfieldvalue_7_user_register` SET `f_22`=1 WHERE `f_22` = 3;
+UPDATE `per_customfieldvalue_7_user_register` SET `f_22`=2 WHERE `f_22` = 7;
+UPDATE `per_customfieldvalue_7_user_register` SET `f_22`=3 WHERE `f_22` = 'سایر';
+UPDATE `per_customfieldvalue_7_user_register` SET `f_22`=-4 WHERE `f_22` = 'همه';

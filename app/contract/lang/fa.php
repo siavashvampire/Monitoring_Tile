@@ -48,7 +48,7 @@ return [
     'send'                                              => 'ارسال',
     'request'                                           => 'درخواست',
     'title'                                             => 'عنوان',
-    'notCompletedYet'                                   => 'هنچنان تکمیل نشده است',
+    'notCompletedYet'                                   => 'همچنان تکمیل نشده است',
     'be'                                                => 'به',
     'testedGroup'                                       => 'گروه ارزیابی شونده',
     'test'                                              => 'ارزیابی',

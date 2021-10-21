@@ -374,8 +374,9 @@ class sensorOffTimeLog extends controller
         model::join('units units', 'data.unit = units.id');
         model::join('off_sensor_reasons offsensor', 'data.reason = offsensor.label');
         model::join('sensors sensors', 'data.Sensor_id = sensors.id');
+        model::join('phases phase', 'data.phase = phase.id');
 
-        $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_archive data', 'data.* , sensors.label,tile_kind.label as Stile_name,etile_kind.label as Etile_name,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitName , offsensor.parentId as parentId , ' . "concat(IF(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ) !=0 , concat(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' ساعت و ') , '' ) , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
+        $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_archive data', 'data.* ,phase.label as phase, sensors.label,tile_kind.label as Stile_name,etile_kind.label as Etile_name,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitName , offsensor.parentId as parentId , ' . "concat(IF(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ) !=0 , concat(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' ساعت و ') , '' ) , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
         return $search;
     }
 

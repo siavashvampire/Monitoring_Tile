@@ -448,15 +448,21 @@ class contractAction extends controller
 
     public function listVote($status = false)
     {
-        $get = request::all('page=1,perEachPage=25,voteSendFrom,voteSendUntil,voteCompletedFrom,voteCompletedUntil,status=all,votesIds');
+        $get = request::all('page=1,perEachPage=25,user,voteSendFrom,voteSendUntil,voteCompletedFrom,voteCompletedUntil,status=all,votesIds');
 
-        $value = array( );
-        $variable = array( );
+        $value = array();
+        $variable = array();
 
-        if ( $get['votesIds'] != null ){
-            $value = array_merge($value , $get['votesIds']) ;
-            $value[] = 0 ;
-            $variable[] = 'vote.voteId In ( '. str_repeat('? ,', count($get['votesIds'])).' ? )' ;
+        if ($get['votesIds'] != null) {
+            $value = array_merge($value, $get['votesIds']);
+            $value[] = 0;
+            $variable[] = 'vote.voteId In ( ' . str_repeat('? ,', count($get['votesIds'])) . ' ? )';
+        }
+
+        if ($get['user'] != null) {
+            $value = array_merge($value, $get['user']);
+            $value[] = 0;
+            $variable[] = 'user.userId In ( ' . str_repeat('? ,', count($get['user'])) . ' ? )';
         }
 
 
@@ -469,37 +475,43 @@ class contractAction extends controller
         model::join('user user', 'contracts.userId =  user.userId');
         model::join('vote vote', 'contracts_vote.voteId =  vote.voteId');
 
-        $field[] = 'user.fname';
-        $field[] = 'user.lname';
         $field[] = 'contracts_vote.fillOutId';
         $field[] = 'contracts_vote.creatDate';
         $field[] = 'vote.voteName';
-        $field = implode(',',$field);
+        $field[] = 'concat(user.fname," ",user.lname) as contactUserName';
+        $field[] = 'user.userId as contactUserID';
+        $field = implode(',', $field);
 
-        $value[] = $userId ;
-        $variable[] = 'contracts_vote.userId	= ?' ;
-        $variable[] = 'fillOutDate is null' ;
+        $value[] = $userId;
+        $variable[] = 'contracts_vote.userId	= ?';
+        $variable[] = 'fillOutDate is null';
 
-        $contractsVote = model::searching($value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) ) , 'contracts_vote contracts_vote', $field);
+        $contractsVote = model::searching($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'contracts_vote contracts_vote', $field);
 
-/*
-        if ($contractsVote !== true and count($contractsVote) == 0) {
-            Response::redirect(app::getBaseAppLink('home', 'admin'));
-            return null;
+        $user = array();
+        foreach ($contractsVote as $date) {
+            $user[] = ['name' => $date['contactUserName'],'userId' =>  $date['contactUserID']];
         }
-        if ($contractsVote !== true and count($contractsVote) == 1) {
-            Response::redirect(app::getBaseAppLink('contractAction/fill/' . $contractsVote[0]['fillOutId'], 'admin'));
-            return null;
-        }
-*/
-        if ($contractsVote !== true and count($contractsVote) > 1)
+
+        $this->mold->set('users', $user);
+        /*
+                if ($contractsVote !== true and count($contractsVote) == 0) {
+                    Response::redirect(app::getBaseAppLink('home', 'admin'));
+                    return null;
+                }
+                if ($contractsVote !== true and count($contractsVote) == 1) {
+                    Response::redirect(app::getBaseAppLink('contractAction/fill/' . $contractsVote[0]['fillOutId'], 'admin'));
+                    return null;
+                }
+        */
+        if ($contractsVote !== true)
             $this->mold->set('contractsVote', $contractsVote);
 
         /* @var vote $modelVote */
         $modelVote = $this->model('vote');
         model::join('user_group ug', ' v.contractGroup = ug.user_groupId ', "LEFT");
-        $access = $modelVote->search(null,null , 'vote v' , 'v.* ,  ug.name' , ['column' => 'ug.name' , 'type' =>'asc'] );
-        $this->mold->set('access',$access);
+        $access = $modelVote->search(null, null, 'vote v', 'v.* ,  ug.name', ['column' => 'ug.name', 'type' => 'asc']);
+        $this->mold->set('access', $access);
 
         $this->mold->path('default', 'contract');
         $this->mold->view('financeDepartmentList.mold.html');

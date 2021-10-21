@@ -469,8 +469,6 @@ class RS extends controller
                 $requestService = parent::model('requestService');
 
             $get = request::post('Time_Send,Time_Send_justT,ServiceSection,Workersection,workerPerson,Sender_note', null);
-            $value = array();
-            $variable = array();
 
             $this->mold->set('Users', user::index()["result"]);
             $this->mold->set('phases', phases::index()["result"]);

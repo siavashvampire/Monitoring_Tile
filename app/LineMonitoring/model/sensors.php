@@ -494,8 +494,10 @@ class sensors extends model implements modelInterFace
         if ($field == null) {
             $field = array();
             $field[] = 'item.id';
-            $field[] = 'item.label as Name';
-            $field[] = 'item.unit as unitId';
+//            $field[] = 'item.label as Name';
+//            $field[] = 'item.unit as unitId';
+            $field[] = 'item.label';
+            $field[] = 'item.unit';
             $field[] = 'units.label as unitName';
             $field[] = 'phases.label as phase';
             $field[] = 'phases.id as Phase';
@@ -506,6 +508,7 @@ class sensors extends model implements modelInterFace
             $field[] = 'item.OffTime';
             $field[] = 'item.OffTime_Bale';
             $field[] = 'item.OffTime_SMS';
+            $field[] = 'tile_kind.label as tile_label';
             $field[] = 'tile_kind.tile_width';
             $field[] = 'tile_kind.tile_length';
             $field[] = 'tile_kind.id as tile_id';

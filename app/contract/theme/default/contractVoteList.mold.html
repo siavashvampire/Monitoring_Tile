@@ -33,26 +33,28 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div><div class="row">
-                                <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "date"} {_ "Complete"}</label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default">
-                                            <input type="text" autocomplete="off" class="form-control persianJustDatepicker-from2">
-                                            <input type="hidden" name="voteCompletedFrom" class="form-control persianJustDatepicker-from-alt2">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "date"} {_ "Complete"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatepicker-from2">
+                                                <input type="hidden" name="voteCompletedFrom" class="form-control persianJustDatepicker-from-alt2">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "until"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatepicker-to2">
+                                                <input type="hidden" name="voteCompletedUntil" class="form-control persianJustDatepicker-to-alt2">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "until"}</label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default">
-                                            <input type="text" autocomplete="off" class="form-control persianJustDatepicker-to2">
-                                            <input type="hidden" name="voteCompletedUntil" class="form-control persianJustDatepicker-to-alt2">
-                                        </div>
-                                    </div>
-                                </div>
-                                </div><div class="row">
+                                <div class="row">
                                     <div class="col-md-4">
                                         <label class="col-md-3 col-form-label">{_ "title"} {_ "form"}</label>
                                         <div class="col-md-9">
@@ -83,7 +85,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mt-1 float-left">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">نام فرد</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default ">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="user[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="همه">
+                                                    {foreach from=$users key=key value=User }
+                                                        <option value="{$User.userId}">{$User.userId} - {$User.fname} {$User.lname}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 float-left">
                                         <button class="btn btn-link float-left" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
                                         <button type="submit" class="btn btn-fill btn-info float-left">{_ "search"}</button>
                                     </div>
@@ -109,18 +125,20 @@
                         <div class="table-responsive">
                             <table class="table text-{$text_align}">
                                 <thead>
-                                <tr>
-                                    <th style="width: 12%">{_ "title"} {_ "form"}</th>
-                                    <th style="width: 15%">{_ "time"} {_ "Creation"} {_ "form"}</th>
-                                    <th style="width: 15%">{_ "Complementary"}</th>
-                                    <th style="width: 15%">{_ "unit"} {_ "Complementary"}</th>
-                                    <th style="width: 15%">{_ "time"} {_ "Complete"} {_ "form"}</th>
-                                    <th style="width: 20%"></th>
-                                </tr>
+                                    <tr>
+                                        <th style="width: 10%">{_ "firstName"}</th>
+                                        <th style="width: 10%">{_ "title"} {_ "form"}</th>
+                                        <th style="width: 20%">{_ "time"} {_ "Creation"} {_ "form"}</th>
+                                        <th style="width: 15%">{_ "firstName"} {_ "Complementary"}</th>
+                                        <th style="width: 15%">{_ "unit"} {_ "Complementary"}</th>
+                                        <th style="width: 15%">{_ "time"} {_ "Complete"} {_ "form"}</th>
+                                        <th style="width: 15%"></th>
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$contracts key=key value=contract}
                                 <tr>
+                                    <td><a href="{url admin}users/profile/{$contract.contactUserId}" target="_blank">{$contract.contactUserName}</td>
                                     <td>{$contract.voteName}</td>
                                     <td>{$contract.creatDate|jDate:"j F Y - H&#58;i&#58;s"}</td>
                                     <td><a href="{url admin}users/profile/{$contract.userId}" target="_blank">{$contract.fname} {$contract.lname}</a></td>
@@ -134,7 +152,7 @@
                                 </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="6">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="7">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>

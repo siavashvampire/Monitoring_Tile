@@ -5,6 +5,7 @@ namespace App\LineMonitoring;
 use app;
 use App\core\controller\fieldService;
 use App\LineMonitoring\model\data;
+use App\LineMonitoring\model\phases;
 use App\user\app_provider\api\user;
 use App\vakilnet\model\specialties;
 use paymentCms\component\cache;
@@ -105,7 +106,9 @@ class hook extends pluginController
 
     public function _fieldService_showValue_phase($fieldInformation = null)
     {
-        return $fieldInformation['value'];
+        /** @var phases $model */
+        $model = $this->model(['LineMonitoring', 'phases'], $fieldInformation['value']);
+        return $model->getLabel();
     }
 
     public function _settingFooter()

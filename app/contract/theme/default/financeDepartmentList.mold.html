@@ -23,19 +23,31 @@
                         {math format="x" x=""  set="tempMint"}
                         {foreach from=$access key=key value=access_item }
                         {if $tempMint != $access_item.name }
-                        </optgroup>
                         <optgroup label="{$access_item.name}">
                           {math format="x" x=$access_item.name  set="tempMint"}
                           {/if}
                           <option value="{$access_item.voteId}" >{$access_item.voteName}</option>
                           {/foreach}
                           </select>
+                        </optgroup>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-4">
+                    <label class="col-md-3 col-form-label">نام فرد</label>
+                    <div class="col-md-9">
+                      <div class="form-group has-default ">
+                        <select class="selectpicker selectpickerNotRefresh" multiple name="user[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام درخواست کننده">
+                          {foreach from=$users key=key value=User }
+                          <option value="{$User.userId}">{$User.userId} - {$User.name}</option>
+                          {/foreach}
+                        </select>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="row">
-                  <div class="col-md-4 mt-1 float-left">
+                  <div class="col-md-12 mt-1 float-left">
                     <button class="btn btn-link float-left" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
                     <button type="submit" class="btn btn-fill btn-info float-left">{_ "search"}</button>
                   </div>
@@ -62,7 +74,7 @@
               <thead>
               <tr>
                 <th style="width: 31%">{_ "name"}</th>
-                <th style="width: 31%">{_ "date"} {_ "Creation"}</th>
+                <th style="width: 31%">{_ "date"} {_ "Creation"} {_ "form"}</th>
                 <th style="width: 31%">{_ "title"} {_ "form"}</th>
                 <th style="width: 7%"></th>
               </tr>
@@ -70,8 +82,8 @@
               <tbody>
               {foreach from=$contractsVote key=key value=contractVote }
               <tr>
-                <td>
-                  {$contractVote.fname} {$contractVote.lname}
+                <td><a href="{url admin}users/profile/{$contractVote.contactUserID}" target="_blank">
+                  {$contractVote.contactUserName}
                 </td>
                 <td>
                   {$contractVote.creatDate|jDate:"j F Y"}

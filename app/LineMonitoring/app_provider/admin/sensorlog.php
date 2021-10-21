@@ -4,6 +4,7 @@ namespace App\LineMonitoring\app_provider\admin;
 use App\LineMonitoring\app_provider\api\phases;
 use App\LineMonitoring\app_provider\api\sensor;
 use App\LineMonitoring\app_provider\api\tiles;
+use App\LineMonitoring\model\data_merge;
 use App\shiftWork\app_provider\api\Day;
 use App\shiftWork\app_provider\api\shift;
 use app\LineMonitoring\model\data;
@@ -194,12 +195,13 @@ class sensorlog extends controller {
         $model->join('sensors sensors','data.Sensor_id = sensors.id');
         $model->join('tile_kind tile_kind','data.Tile_Kind = tile_kind.id');
         $model->join('units units','data.unit = units.id');
+        $model->join('phases phase','sensors.phase = phase.id');
         $field = array();
         $field[] = 'SUM(data.counter) as counter';
         $field[] = 'sensors.label as Name';
         $field[] = 'tile_kind.tile_width * tile_kind.tile_length / 10000 * SUM(data.counter) as MetrCounter';
         $field[] = 'sensors.label';
-        $field[] = 'sensors.phase';
+        $field[] = 'phase.label as phase';
         $field[] = 'sensors.tileDegree';
         $field[] = 'sensors.Active';
         $field[] = 'sensors.OffTime';
@@ -217,7 +219,8 @@ class sensorlog extends controller {
         if ( $search === true ) {
 			$search = array();
 		}
-        $sensorHasCount = (array) array_column($search, 'Sensor_id');
+        $sensorHasCount = array_column($search, 'Sensor_id');
+
 		foreach ( $Sensors as $sensor ){
 			if ( ! in_array($sensor['id'] , $sensorHasCount ) ) {
                 $search[] = [
@@ -236,7 +239,8 @@ class sensorlog extends controller {
                 ];
 			}
 		}
-
+		if (count($search) == 0)
+            $search = true;
         $this->mold->set('logs' , $search);
 		$this->mold->set('access' , $Sensors);
 		$this->mold->set('tiles'  , tiles::index()["result"]);
@@ -261,6 +265,8 @@ class sensorlog extends controller {
             $value[] = -1;
             $variable[] = '(data.Start_time BETWEEN ? AND ?)';
             $variable[] = 'data.Shift_id <> ?';
+
+            /** @var data_merge $model */
             $model = parent::model('data_merge');
             model::join('tile_kind tile_kind','data.Tile_Kind = tile_kind.id');
             $DayLogs = $model->search( (array) $value  ,  ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'data_merge data', ' data.Sensor_id,SUM(data.counter) as counter ,tile_kind.tile_width * tile_kind.tile_length / 10000 * SUM(data.counter) as MetrCounter' , null , null ,'data.Sensor_id');

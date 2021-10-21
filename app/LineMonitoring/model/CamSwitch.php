@@ -259,8 +259,10 @@ class CamSwitch extends model implements modelInterFace {
         if ($field == null) {
             $field = array();
             $field[] = 'item.id';
-            $field[] = 'item.label as Name';
-            $field[] = 'item.unit as unitId';
+//            $field[] = 'item.label as Name';
+//            $field[] = 'item.unit as unitId';
+            $field[] = 'item.label';
+            $field[] = 'item.unit';
             $field[] = 'units.label as unitName';
             $field[] = 'phases.label as phase';
             $field[] = 'phases.id as Phase';

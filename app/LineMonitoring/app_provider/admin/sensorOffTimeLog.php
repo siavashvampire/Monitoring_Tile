@@ -397,7 +397,8 @@ class sensorOffTimeLog extends controller
         $model ->join('shift_time shift_time', '(data.Start_Shift_group_id = shift_time.shift_time_group AND data.Start_shift_id = shift_time.shift_id AND TIME(data.Start_time) between shift_time.startTime AND shift_time.endTime)');
         $model ->join('sensors sensors', 'data.Sensor_id = sensors.id');
         $model ->join('units units', 'data.unit = units.id');
-        $OFFCount = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_merge data', 'sensors.label,shift_work.shift_name as shift_name,shift_time.onDay as Day_Name, SUM(TIMESTAMPDIFF(SECOND,data.Start_time,data.End_Time) ) as OffTime , DATE(data.JStart_time) as Time ,data.phase , units.label as unitName ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Sensor_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id` , `data.Start_Shift_group_id`');
+        model::join('phases phase', 'data.phase = phase.id');
+        $OFFCount = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_merge data', 'sensors.label,shift_work.shift_name as shift_name,shift_time.onDay as Day_Name, SUM(TIMESTAMPDIFF(SECOND,data.Start_time,data.End_Time) ) as OffTime , DATE(data.JStart_time) as Time ,phase.label as phase , units.label as unitName ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Sensor_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id` , `data.Start_Shift_group_id`');
         return $OFFCount;
     }
 

@@ -35,11 +35,12 @@ class DAUnits extends controller
 
         }
 
-        $sortWith = [['column' => 'unit.id', 'type' => 'asc']];
+        $sortWith = [['column' => 'item.id', 'type' => 'asc']];
         /** @var \App\DAUnits\model\DAUnits $model */
         $model = parent::model('DAUnits');
         $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
+        $pagination = [$pagination['start'], $pagination['limit']];
         $search = $model->getItems($value, $variable, $sortWith, $pagination, false);
         $this->mold->set('items', $search);
 
@@ -143,8 +144,6 @@ class DAUnits extends controller
                 Response::jsonMessage("ثبت اطلاعات با موفقیت انجام شد", true);
             else
                 Response::jsonMessage("ویرایش اطلاعات با موفقیت انجام شد", true);
-
-
         }
 //        show( parent::callHooks('need_plc'));
         $this->mold->set('appsTotal', parent::callHooks('need_plc'));

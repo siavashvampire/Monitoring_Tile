@@ -219,7 +219,7 @@ class sensorlog extends controller {
         if ( $search === true ) {
 			$search = array();
 		}
-        $sensorHasCount = array_column($search, 'Sensor_id');
+        $sensorHasCount = array_column($search, 'id');
 
 		foreach ( $Sensors as $sensor ){
 			if ( ! in_array($sensor['id'] , $sensorHasCount ) ) {

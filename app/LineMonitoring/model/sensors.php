@@ -498,10 +498,12 @@ class sensors extends model implements modelInterFace
 //            $field[] = 'item.unit as unitId';
             $field[] = 'item.label';
             $field[] = 'item.unit';
+            $field[] = 'item.showSort';
             $field[] = 'units.label as unitName';
             $field[] = 'phases.label as phase';
             $field[] = 'phases.id as Phase';
-            $field[] = 'item.Sensor_plc_id as PLC_id';
+//            $field[] = 'item.Sensor_plc_id as PLC_id';
+            $field[] = 'item.Sensor_plc_id';
             $field[] = 'item.Active as Active';
             $field[] = 'item.tile_Count';
             $field[] = 'item.tileDegree';

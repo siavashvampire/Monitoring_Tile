@@ -28,8 +28,10 @@ class sensor extends controller
         $valid = validate::check($get, $rules);
         $value = array();
         $variable = array();
-        $variable[] = ' sensors.isVirtual Like ? ';
+        $variable[] = ' item.isVirtual Like ? ';
         $value[] = 0;
+
+        $sortWith = [['column' => 'item.showSort', 'type' => 'asc']];
 
         if ($valid->isFail()) {
             show($valid->errorsIn());
@@ -37,27 +39,27 @@ class sensor extends controller
         } else {
             if ($get['name'] != null) {
                 $value[] = '%' . $get['name'] . '%';
-                $variable[] = ' sensors.label Like ? ';
+                $variable[] = ' item.label Like ? ';
             }
             if ($get['tile_kind'] != null) {
                 $value[] = $get['tile_kind'];
-                $variable[] = ' sensors.id = ? ';
+                $variable[] = ' item.id = ? ';
             }
             if ($get['Sensor_plc_id'] != null) {
                 $value[] = $get['Sensor_plc_id'];
-                $variable[] = ' sensors.Sensor_plc_id = ? ';
+                $variable[] = ' item.Sensor_plc_id = ? ';
             }
             if ($get['Active'] != null) {
                 $value[] = $get['Active'];
-                $variable[] = ' sensors.Active = ? ';
+                $variable[] = ' item.Active = ? ';
             }
             if ($get['phase'] != null) {
                 $value[] = $get['phase'];
-                $variable[] = ' sensors.phase = ? ';
+                $variable[] = ' item.phase = ? ';
             }
             if ($get['unitId'] != null) {
                 $value[] = $get['unitId'];
-                $variable[] = ' sensors.unitId = ? ';
+                $variable[] = ' item.unit = ? ';
             }
             if ($get['sortWith'] != null and is_array($get['sortWith'])) {
                 unset($sortWith);
@@ -68,15 +70,14 @@ class sensor extends controller
             }
 
         }
-
+//        $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), 'sensors sensors', 'COUNT(sensors.id) as co')) [0]['co'];
+//        $numberOfAll = \App\LineMonitoring\app_provider\api\sensor::index($value,$variable);
         /* @var sensors $model */
         $model = parent::model('sensors');
-        $sortWith = [['column' => 'sensors.showSort', 'type' => 'asc']];
-        $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), 'sensors sensors', 'COUNT(sensors.id) as co')) [0]['co'];
+        $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        model::join('tile_kind tile_kind', 'tile_kind.id = sensors.tile_id ');
-        model::join('units units', 'units.id = sensors.unit ');
-        $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensors sensors', 'sensors.*,tile_kind.label,units.label as unitName', $sortWith, [$pagination['start'], $pagination['limit']]);
+        $pagination = [$pagination['start'], $pagination['limit']];
+        $search = $model->getItems($value, $variable, $sortWith, $pagination);
         $this->mold->path('default', 'LineMonitoring');
         $this->mold->view('sensorList.mold.html');
         $this->mold->setPageTitle('لیست سنسور ها');

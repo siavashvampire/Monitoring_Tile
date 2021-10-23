@@ -205,7 +205,7 @@ class sensorlog extends controller {
         $field[] = 'sensors.tileDegree';
         $field[] = 'sensors.Active';
         $field[] = 'sensors.OffTime';
-        $field[] = 'sensors.id';
+        $field[] = 'sensors.id as Sensor_id';
         $field[] = 'tile_kind.label as tile_label';
         $field[] = 'units.label as unitName';
         $field[] = 'units.id';
@@ -219,7 +219,7 @@ class sensorlog extends controller {
         if ( $search === true ) {
 			$search = array();
 		}
-        $sensorHasCount = array_column($search, 'id');
+        $sensorHasCount = array_column($search, 'Sensor_id');
 
 		foreach ( $Sensors as $sensor ){
 			if ( ! in_array($sensor['id'] , $sensorHasCount ) ) {

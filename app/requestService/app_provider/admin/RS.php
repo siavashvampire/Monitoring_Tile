@@ -359,17 +359,23 @@ class RS extends controller
                 $requestService->setBugInfluence(explode(',', $requestService->getBugInfluence()));
                 $requestService->setConsumablePartsQty(explode(',', substr($requestService->getConsumablePartsQty(), 1, strlen($requestService->getConsumablePartsQty()) - 2)));
                 $requestService->setConsumableParts(explode(',', substr($requestService->getConsumableParts(), 1, strlen($requestService->getConsumableParts()) - 2)));
-                $requestService->setTimeSend(jdate::jdate('Y/m/d', strtotime($requestService->getTimeSend())));
+                if (count($requestService->getConsumableParts()) == 1 and $requestService->getConsumableParts()[0] == null)
+                    $requestService->setConsumableParts(null);
+
+                $requestService->setTimeSend(jdate::jdate('Y/m/d H:i:s', strtotime($requestService->getTimeSend())));
+                $requestService->setJTimeSend( $this->tr_num(str_replace("-","/",$requestService->getJTimeSend()) , 'fa'));
+                $requestService->setTimeStart(strtotime($requestService->getTimeStart())*1000);
+                $requestService->setTimeEnd(strtotime($requestService->getTimeEnd())*1000);
 //                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));
                 $this->mold->set('requestService', $requestService);
-            } else
 
+            } else
                 /** @var requestService $requestService */
                 $requestService = parent::model('requestService');
 
             $get = request::post('requestCode,Time_Send,Time_Send_justT,Time_Start,Time_End,System_Name,phase,ServiceSection,Line,Cost,Workersection,offTime,System_Status,WorkTitle,BugInfluence,Latency,LatencyTime,DoneworkDes,Donework,failureDes,failure,Sender_note,HumanNumber,PartName,PartQuantity', null);
 
-            $this->mold->set('phases', phases::index()["result"]);
+            $this->mold->set('phases', phases::all()["result"]);
             $this->mold->set('Workersections', sections::index() ["result"]);
             $this->mold->set('BugInfluences', request_service::buginfluence() ["result"]);
             $this->mold->set('worktitles', request_service::worktitle() ["result"]);
@@ -384,12 +390,12 @@ class RS extends controller
             if (request::ispost()) {
                 $shamsi = explode('/', $get['Time_Send']);
                 $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
-
                 $get['Time_Start'] = $get['Time_Start'] / 1000;
                 $get['Time_End'] = $get['Time_End'] / 1000;
                 $requestService->setRequestCode($get['requestCode']);
                 $requestService->setTimeSend(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
                 $requestService->setJTimeSend(JDate::jdate('Y-m-d', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
+
                 $requestService->setTimeStart(date('Y-m-d H:i:s', $get['Time_Start']));
                 $requestService->setTimeEnd(date('Y-m-d H:i:s', $get['Time_End']));
                 $requestService->setSystemName($get['System_Name']);
@@ -440,6 +446,7 @@ class RS extends controller
             $this->mold->view('requestServiceAdmin.mold.html');
             $this->mold->setPageTitle('درخواست خدمات');
             $this->mold->set('activeMenu', 'requestServiceAdmin');
+
         } else {
             $this->alert('danger', '', "شما سمت مناسبی برای استفاده از این بخش ندارید");
         }
@@ -501,9 +508,9 @@ class RS extends controller
                 $requestService->setCost(',,');
                 $requestService->setWorkerSection($get['Workersection']);
                 $requestService->setOffTime(0);
-                $requestService->setSystemStatus('0');
-                $requestService->setWorkTitle(',,');
-                $requestService->setBugInfluence(',,');
+                $requestService->setSystemStatus('1');
+                $requestService->setWorkTitle(',1,');
+                $requestService->setBugInfluence(',1,');
                 $requestService->setFailure(4);
                 $requestService->setFailureDes("");
                 $requestService->setDonework(1);
@@ -545,5 +552,12 @@ class RS extends controller
         } else {
             $this->alert('danger', '', "شما سمت مناسبی برای استفاده از این بخش ندارید");
         }
+    }
+
+    private static function tr_num($str, $mod = 'en')
+    {
+        $num_a = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
+        $key_a = array('۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹');
+        return ($mod == 'fa') ? str_replace($num_a, $key_a, $str) : str_replace($key_a, $num_a, $str);
     }
 }

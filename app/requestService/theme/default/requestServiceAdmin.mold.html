@@ -26,7 +26,7 @@
                                     <label class="col-md-3 col-form-label">تاریخ درخواست<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{jDate:"Y/m/d"|persianNumber}">
+                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getJTimeSend()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -40,10 +40,10 @@
                                 </div>
 
                                 <div class="col-md-6">                
-                                    <label class="col-md-3 col-form-label">نام دستگاه/تجهیز<span class="text-danger">*</span> </label>
+                                    <label class="col-md-3 col-form-label">نام دستگاه/تجهیز </label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <textarea rows="1" autocomplete="off" required name="System_Name" class="form-control">{if isset($Mold.post.System_Name)}{$Mold.post.System_Name}{elseif isset($requestService)}{$requestService->getSystemName()}{/if}</textarea>
+                                            <textarea rows="1" autocomplete="off" name="System_Name" class="form-control">{if isset($Mold.post.System_Name)}{$Mold.post.System_Name}{elseif isset($requestService)}{$requestService->getSystemName()}{/if}</textarea>
                                         </div>
                                     </div>
 
@@ -164,8 +164,8 @@
                                     <label class="col-md-3 col-form-label">ساعت شروع<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-from">
-                                            <input type="hidden" name="Time_Start" required class="form-control persianDatepicker-from-alt">
+                                            <input type="text" autocomplete="off" value="{if isset($requestService)}{$requestService->getTimeStart()|jDate:"Y/n/jساعتH&#58;i"}{/if}" class="form-control persianDatepicker-from">
+                                            <input type="hidden" name="Time_Start" value="{if isset($requestService)}{$requestService->getTimeStart()}{/if}" required class="form-control persianDatepicker-from-alt">
                                         </div>
                                     </div>
                                 </div>
@@ -173,8 +173,8 @@
                                     <label class="col-md-3 col-form-label">ساعت اتمام<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="text" autocomplete="off" class="form-control persianDatepicker-to">
-                                            <input type="hidden" name="Time_End"  required class="form-control persianDatepicker-to-alt">
+                                            <input type="text" autocomplete="off" value="{if isset($requestService)}{$requestService->getTimeEnd()|jDate:"Y/n/jساعتH&#58;i"}{/if}" class="form-control persianDatepicker-from">
+                                            <input type="hidden" name="Time_End" value="{if isset($requestService)}{$requestService->getTimeEnd()}{/if}" required class="form-control persianDatepicker-from-alt">
                                         </div>
                                     </div>
                                 </div>

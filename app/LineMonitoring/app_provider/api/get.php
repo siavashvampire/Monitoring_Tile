@@ -511,6 +511,7 @@ class get extends innerController
         cache::save('yes', 'isDayUpdated', 2592000, 'LineMonitoring');
 
         return self::json([
+            'status' => true,
             'Data' => $Data,
             'Time' => $DayStart,
             'Budget' => $Budgets,

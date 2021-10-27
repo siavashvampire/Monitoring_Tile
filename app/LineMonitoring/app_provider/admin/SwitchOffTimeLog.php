@@ -131,7 +131,7 @@ class SwitchOffTimeLog extends controller {
             model::join('CamSwitch CS', 'data.Switch_id = CS.id');
 
 
-			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', 'data.* , phases.label as phase, CS.label,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitName , offsensor.parentId as parentId , ' . "concat(Floor(HOUR(TIMEDIFF(data.End_Time, data.Start_time) )/24) , ' روز ', MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' سآعت ' , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
+			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', 'data.* , phases.label as phase, CS.label,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitLabel , offsensor.parentId as parentId , ' . "concat(Floor(HOUR(TIMEDIFF(data.End_Time, data.Start_time) )/24) , ' روز ', MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' سآعت ' , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
 		} 
         elseif ($get['howShow'] == 'count'){
             $numberOfAll = ($model->search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), 'Switch_active_log_archive data', 'COUNT(data.Switch_id) as co')) [0]['co'];
@@ -141,7 +141,7 @@ class SwitchOffTimeLog extends controller {
             model::join('CamSwitch CS', 'data.Switch_id = CS.id');
 			model::join('units units', 'data.unit = units.id');
             model::join('phases phases', 'data.phase = phases.id');
-			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', ' CS.label,shift_work.shift_name as shift_name, SUM(TIMESTAMPDIFF(SECOND,data.End_Time, data.Start_time) ) as OffTime , phases.label as phase , data.JStart_time as Time , units.label as unitName ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Switch_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id`,`data.Start_Shift_group_id`');
+			$search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'Switch_active_log_archive data', ' CS.label,shift_work.shift_name as shift_name, SUM(TIMESTAMPDIFF(SECOND,data.End_Time, data.Start_time) ) as OffTime , phases.label as phase , data.JStart_time as Time , units.label as unitLabel ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Switch_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id`,`data.Start_Shift_group_id`');
 		}
 
 		$this->mold->path('default', 'LineMonitoring');

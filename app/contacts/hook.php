@@ -11,4 +11,18 @@ class hook extends pluginController {
         $this->menu->after('users' ,'contacts', rlang('contacts') , app::getBaseAppLink('contacts','admin') , 'fa fa-history' ,'',null,'admin/contacts/index/contacts');
         $this->menu->after('contacts' ,'contactsList', rlang('contactsList') , app::getBaseAppLink('contacts/List','admin') , 'fa fa-history' ,'',null,'admin/contacts/index/contacts');
     }
+    public function _should_update()
+    {
+        $should_update = array();
+
+//        $data = cache::get('isSubstation', null, 'ElectricalSubstation');
+//
+//        if ($data !== 'yes')
+//            $should_update[] = "TileKindUpdate";
+
+        if (count($should_update) == 0)
+            return null;
+
+        return $should_update;
+    }
 }

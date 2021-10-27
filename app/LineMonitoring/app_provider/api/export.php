@@ -77,7 +77,7 @@ class export extends innerController
                     $header[] = 'فاز';
                 elseif ($get['showField'][$i] == "data.unit") {
                     $header[] = 'واحد';
-                    $get['showField'][$i] = "data.unitName";
+                    $get['showField'][$i] = "data.unitLabel";
                 } elseif ($get['showField'][$i] == "CONCAT(data.tile_width, '×', data.tile_length)")
                     $header[] = 'سایز تولیدی';
                 elseif ($get['showField'][$i] == "data.label")

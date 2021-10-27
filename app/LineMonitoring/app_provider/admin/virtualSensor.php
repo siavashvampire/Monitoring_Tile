@@ -67,7 +67,7 @@ class virtualSensor extends controller {
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
         $model->join('tile_kind tile_kind' , 'tile_kind.id = VS.tile_id ');
         $model->join('units units' , 'units.id = VS.unit ');
-        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'sensors VS' , 'VS.*,tile_kind.label,units.label as unitName'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+        $search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'sensors VS' , 'VS.*,tile_kind.label,units.label as unitLabel'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
 		$this->mold->path('default', 'LineMonitoring');
 		$this->mold->view('VirtualsensorList.mold.html');
 		$this->mold->setPageTitle('لیست سنسور های مجازی');

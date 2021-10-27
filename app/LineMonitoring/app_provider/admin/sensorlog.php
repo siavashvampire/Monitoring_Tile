@@ -81,7 +81,7 @@ class sensorlog extends controller {
         $model->join('sensors sensors','data.Sensor_id = sensors.id');
         $model->join('tile_kind tile_kind','data.Tile_Kind = tile_kind.id');
         $model->join('units units','data.unit = units.id');
-		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'data_archive data', 'data.*, sensors.label,tile_kind.label,units.label as unitName'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'data_archive data', 'data.*, sensors.label,tile_kind.label,units.label as unitLabel'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
         
 		$this->mold->path('default', 'LineMonitoring');
 		$this->mold->view('logList.mold.html');
@@ -207,7 +207,7 @@ class sensorlog extends controller {
         $field[] = 'sensors.OffTime';
         $field[] = 'sensors.id as Sensor_id';
         $field[] = 'tile_kind.label as tile_label';
-        $field[] = 'units.label as unitName';
+        $field[] = 'units.label as unitLabel';
         $field[] = 'units.id';
         $field[] = 'sensors.isStorage';
         $field = implode(',',$field);
@@ -233,7 +233,7 @@ class sensorlog extends controller {
                     'Active' => $sensor['Active'] ,
                     'OffTime' => $sensor['OffTime'] ,
                     'tile_label' => '-' ,
-                    'unitName' => '-' ,
+                    'unitLabel' => '-' ,
                     'unit' => $sensor['unit'] ,
                     'isStorage' => $sensor['isStorage'] ,
                 ];

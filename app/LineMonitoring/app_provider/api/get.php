@@ -284,9 +284,9 @@ class get extends innerController
         model::join('tile_kind tile_kind', 'data.Tile_Kind = tile_kind.id');
         model::join('units units', 'data.unit = units.id');
         if ($get['perEachPage'] != -1) {
-            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_archive data', 'data.*, sensors.label,tile_kind.label,units.label as unitName', $sortWith, [$pagination['start'], $pagination['limit']]);
+            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_archive data', 'data.*, sensors.label,tile_kind.label,units.label as unitLabel', $sortWith, [$pagination['start'], $pagination['limit']]);
         } else {
-            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_archive data', 'data.*, sensors.label,tile_kind.label,units.label as unitName', $sortWith);
+            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_archive data', 'data.*, sensors.label,tile_kind.label,units.label as unitLabel', $sortWith);
         }
         return self::json($search);
     }
@@ -385,9 +385,9 @@ class get extends innerController
         model::join('tile_kind tile_kind', 'data.Tile_Kind = tile_kind.id');
         model::join('units units', 'data.unit = units.id');
         if ($get['perEachPage'] != -1) {
-            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,tile_kind.label,units.label as unitName', $sortWith, [$pagination['start'], $pagination['limit']]);
+            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,tile_kind.label,units.label as unitLabel', $sortWith, [$pagination['start'], $pagination['limit']]);
         } else {
-            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,tile_kind.label,units.label as unitName', $sortWith);
+            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,tile_kind.label,units.label as unitLabel', $sortWith);
         }
         return self::json($search);
     }
@@ -459,9 +459,9 @@ class get extends innerController
         model::join('sensors sensors', 'data.Sensor_id = sensors.id');
         model::join('units units', 'data.unit = units.id');
         if ($get['perEachPage'] != -1) {
-            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,units.label as unitName , Parent.label as SubReason', $sortWith, [$pagination['start'], $pagination['limit']]);
+            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,units.label as unitLabel , Parent.label as SubReason', $sortWith, [$pagination['start'], $pagination['limit']]);
         } else {
-            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,units.label as unitName , Parent.label as SubReason', $sortWith);
+            $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $table, 'data.*, sensors.label,units.label as unitLabel , Parent.label as SubReason', $sortWith);
         }
         return self::json($search);
     }

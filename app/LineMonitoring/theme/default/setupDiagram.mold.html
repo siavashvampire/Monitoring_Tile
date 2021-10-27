@@ -113,7 +113,7 @@
                                                 <tr class="rowOFSensorSelect_{$sensorSelect.id}">
                                                     <td>{$sensorSelect.label}</td>
                                                     <td>{$sensorSelect.phase}</td>
-                                                    <td>{$sensorSelect.unitName}</td>
+                                                    <td>{$sensorSelect.unitLabel}</td>
                                                     <td> <button type="button" class="btn btn-danger" onclick="deleteSensor({$sensorSelect.id});">
                                                                                                     <i class="fa fa-trash"></i>
                                                                             حذف سنسور                                        <div class="ripple-container"></div></button></td>
@@ -141,7 +141,7 @@
                                                 <tr class="rowOFSensorSelect_{$sensorSelect.id}">
                                                     <td>{$sensorSelect.label}</td>
                                                     <td>{$sensorSelect.phase}</td>
-                                                    <td>{$sensorSelect.unitName}</td>
+                                                    <td>{$sensorSelect.unitLabel}</td>
                                                     <td><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation({$sensorSelect.id} , this);">
                                                                                                         <i class="fa fa-eye"></i>
                                                         <div class="ripple-container"></div></button><button type="button" class="btn btn-info" onclick="editSensorLocation({$sensorSelect.id});">
@@ -158,7 +158,7 @@
                                                 <input name="sensorSelect[{$sensorSelect.id}][id]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.id}">
                                                 <input name="sensorSelect[{$sensorSelect.id}][label]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.label}">
                                                 <input name="sensorSelect[{$sensorSelect.id}][phase]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="{$sensorSelect.phase}">
-                                                <input name="sensorSelect[{$sensorSelect.id}][unitName]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="'{$sensorSelect.unitName}">
+                                                <input name="sensorSelect[{$sensorSelect.id}][unitLabel]" class="sensorSelect{$sensorSelect.id}" type="hidden" value="'{$sensorSelect.unitLabel}">
                                             {/foreach}
                                         {/if}
                                         {if isset($diagram)}

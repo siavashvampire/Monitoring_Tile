@@ -68,7 +68,7 @@ class CamSwitch extends controller {
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'CamSwitch CamSwitch', 'COUNT(CamSwitch.id) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
 		model::join('units units' , 'units.id = CamSwitch.unit ');
-		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'CamSwitch CamSwitch' , 'CamSwitch.*,units.label as unitName'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'CamSwitch CamSwitch' , 'CamSwitch.*,units.label as unitLabel'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
 		$this->mold->path('default', 'LineMonitoring');
 		$this->mold->view('CamSwitchList.mold.html');
 		$this->mold->setPageTitle('لیست کلید توقفات');

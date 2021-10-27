@@ -158,10 +158,10 @@
                                     <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime}</td>
                                     <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_Bale}</td>
                                     <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_SMS}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.phase}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.unitName}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.phaseLabel}</td>
+                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.unitLabel}</td>
                                     <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{if $sensor.Sensor_plc_id == 0}خارج از سیستم{elseif $sensor.Active == 1}فعال{elseif $sensor.Active == 0}غیر فعال{else}خارج از سیستم{/if}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.Sensor_plc_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase_id}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.Sensor_plc_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>

@@ -207,7 +207,7 @@ function getReason(id,value,defaultValue){
                                     {foreach from=$logs key=key value=log}
                                     <tr id="rowOf_{$log.Sensor_id}" style="{if $howToShow == 'all' or $howToShow == 'yesterday' or $howToShow == 'today'}border-style : hidden!important;background: aliceblue!important;border-top: 2px solid!important;border-bottom: 1.5px solid!important;color: darkcyan;{/if}">
                                         <td class="text-center">{$log.label}</td>
-                                        <td class="text-center">{$log.unitName}</td>
+                                        <td class="text-center">{$log.unitLabel}</td>
                                         <td class="text-center">{$log.phase}</td>
 
                                         {if $howToShow == 'all' or $howToShow == 'yesterday' or $howToShow == 'today'}

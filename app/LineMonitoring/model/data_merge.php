@@ -77,7 +77,7 @@ class data_merge extends model implements modelInterFace
   from  ' . $perfix . 'temp_table5 table5 
 ;
  ');
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  ' . $perfix . 'temp_table6  SELECT counterAll ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unitName , units.id as unit  , t6.label, t6.tile_width , t6.tile_length , t6.p1 , t6.p2 , t6.p3 , t6.p4 , t6.p5 , t6.m1 , t6.m2 , t6.m3 , t6.m4 , t6.m5 from  ' . $perfix . 'temp_table6_0 t6 LEFT JOIN ' . $perfix . 'units units on ( t6.unit = units.id );');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  ' . $perfix . 'temp_table6  SELECT counterAll ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unitLabel , units.id as unit  , t6.label, t6.tile_width , t6.tile_length , t6.p1 , t6.p2 , t6.p3 , t6.p4 , t6.p5 , t6.m1 , t6.m2 , t6.m3 , t6.m4 , t6.m5 from  ' . $perfix . 'temp_table6_0 t6 LEFT JOIN ' . $perfix . 'units units on ( t6.unit = units.id );');
 
         return 'temp_table6';
     }

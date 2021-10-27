@@ -181,7 +181,7 @@ function getReason(id,value,defaultValue){
                                 {foreach from=$logs key=key value=log}
                                 <tr id="rowOf_{$log.id}">
                                     <td>{$log.label}</td>
-                                    <td>{$log.unitName}</td>
+                                    <td>{$log.unitLabel}</td>
                                     <td>{$log.phase}</td>
 
                                     {if $howToShow == 'all'}

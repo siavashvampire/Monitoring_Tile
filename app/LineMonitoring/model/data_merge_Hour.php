@@ -74,7 +74,7 @@ class data_merge_Hour extends model implements modelInterFace {
   from  '.$perfix.'temp_table5 table5 
 ;
  ');
-	model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  '.$perfix.'temp_table6  select counterAll ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unitName , units.id as unit  , label, tile_width , tile_length , p1 , p2 , p3 , p4 , p5 , m1 , m2 , m3 , m4 , m5 from  '.$perfix.'temp_table6_0 t6 LEFT JOIN '.$perfix.'units units on ( t6.unit = units.id );');
+	model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS  '.$perfix.'temp_table6  select counterAll ,Start_time  ,JStart_time,Tile_Kind ,phase , units.label as unitLabel , units.id as unit  , label, tile_width , tile_length , p1 , p2 , p3 , p4 , p5 , m1 , m2 , m3 , m4 , m5 from  '.$perfix.'temp_table6_0 t6 LEFT JOIN '.$perfix.'units units on ( t6.unit = units.id );');
 		return 'temp_table6';
 	}
     

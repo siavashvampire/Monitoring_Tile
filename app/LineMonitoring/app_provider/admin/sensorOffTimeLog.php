@@ -376,7 +376,7 @@ class sensorOffTimeLog extends controller
         model::join('sensors sensors', 'data.Sensor_id = sensors.id');
         model::join('phases phase', 'data.phase = phase.id');
 
-        $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_archive data', 'data.* ,phase.label as phase, sensors.label,tile_kind.label as Stile_name,etile_kind.label as Etile_name,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitName , offsensor.parentId as parentId , ' . "concat(IF(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ) !=0 , concat(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' ساعت و ') , '' ) , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
+        $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_archive data', 'data.* ,phase.label as phase, sensors.label,tile_kind.label as Stile_name,etile_kind.label as Etile_name,shift_work.shift_name as Sshift_name,eshift_work.shift_name as Eshift_name,user.fname as Sfname,user.lname as Slname,euser.fname as Efname,euser.lname as Elname , units.label as unitLabel , offsensor.parentId as parentId , ' . "concat(IF(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ) !=0 , concat(MOD(HOUR(TIMEDIFF(data.End_Time, data.Start_time) ),24 ), ' ساعت و ') , '' ) , minute(TIMEDIFF(data.End_Time, data.Start_time) ) , ' دقیقه') as OffTime", $sortWith, [$pagination['start'], $pagination['limit']]);
         return $search;
     }
 
@@ -398,7 +398,7 @@ class sensorOffTimeLog extends controller
         $model ->join('sensors sensors', 'data.Sensor_id = sensors.id');
         $model ->join('units units', 'data.unit = units.id');
         model::join('phases phase', 'data.phase = phase.id');
-        $OFFCount = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_merge data', 'sensors.label,shift_work.shift_name as shift_name,shift_time.onDay as Day_Name, SUM(TIMESTAMPDIFF(SECOND,data.Start_time,data.End_Time) ) as OffTime , DATE(data.JStart_time) as Time ,phase.label as phase , units.label as unitName ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Sensor_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id` , `data.Start_Shift_group_id`');
+        $OFFCount = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'sensor_active_log_merge data', 'sensors.label,shift_work.shift_name as shift_name,shift_time.onDay as Day_Name, SUM(TIMESTAMPDIFF(SECOND,data.Start_time,data.End_Time) ) as OffTime , DATE(data.JStart_time) as Time ,phase.label as phase , units.label as unitLabel ', $sortWith, [$pagination['start'], $pagination['limit']], 'data.Sensor_id , YEAR(`data.Start_time`), MONTH(`data.Start_time`) , DAY(`data.Start_time`) , `data.Start_shift_id` , `data.Start_Shift_group_id`');
         return $OFFCount;
     }
 

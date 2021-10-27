@@ -61,6 +61,7 @@ class Truck extends controller {
 	public function index($id = null){
         $get = request::post('mainNumberPlate,Number1Plate,CharNumberPlate,Number2Plate,Weight,Truck_Kind,workTitle,driverPhone1,driverName1,driverPhone2,driverName2,driverPhone3,driverName3,description' ,null);
         if ($id != null){
+            /** @var Truck $model */
             $model = parent::model('Truck',$id);
             
             if ( $model->getId() != $id){
@@ -68,9 +69,10 @@ class Truck extends controller {
                     return false ;
                 }
         }
-        else
+
+            /** @var Truck $model */
             $model = parent::model('Truck');
-        
+
         $this->mold->set('model', $model);
         
         $result = array( );

@@ -14,6 +14,7 @@ return [
     'Credit'                                       => 'اعتبار',
     'address'                                      => 'آدرس',
     'telePhone'                                    => 'تلفن',
+    'mobilePhone'                                  => ' تلفن همراه',
     'accountNumber'                                => 'شماره حساب',
     'settlementType'                               => 'نوع تسویه',
     'Carrier'                                      => 'حمل کننده',

@@ -16,6 +16,6 @@ class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
         $this->menu->after('users' ,'Truck', rlang('Truck') , app::getBaseAppLink('Truck/List','admin') , 'fa fa-history' ,'',null,'admin/Truck/index/weighbridge');
         $this->menu->after('Truck' ,'Truck_Kind', rlang('Truck_Kind') , app::getBaseAppLink('Truck_Kind/List','admin') , 'fa fa-history' ,'',null,'admin/Truck_Kind/index/weighbridge');
-        $this->menu->after('Truck' ,'customer', rlang('customer') , app::getBaseAppLink('customer/List','admin') , 'fa fa-history' ,'',null,'admin/customer/index/weighbridge');
+        $this->menu->after('Truck' ,'customer', rlang('customer') , app::getBaseAppLink('customers/List','admin') , 'fa fa-history' ,'',null,'admin/customers/index/weighbridge');
 	}
 }

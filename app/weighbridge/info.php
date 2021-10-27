@@ -140,6 +140,15 @@ return [
         ],
     ],
     'sqlInstall' => [
+        "INSERT IGNORE INTO `{prefix}Truck_Work_Title` (`id`, `label`) VALUES (1, 'شرکتی');",
+        "INSERT IGNORE INTO `{prefix}Truck_Work_Title` (`id`, `label`) VALUES (2, 'غیر شرکتی');",
+        "INSERT IGNORE INTO `{prefix}Truck_Kind` (`id`, `label`) VALUES (1, 'ده چرخ');",
+        "INSERT IGNORE INTO `{prefix}customer_status` (`id`, `label`) VALUES (1, 'فعال');",
+        "INSERT IGNORE INTO `{prefix}customer_status` (`id`, `label`) VALUES (2, 'غیر فعال ');",
+        "INSERT IGNORE INTO `{prefix}customer_settlementType` (`id`, `label`) VALUES (1, 'نقدی');",
+        "INSERT IGNORE INTO `{prefix}customer_settlementType` (`id`, `label`) VALUES (2, 'غیر نقدی ');",
+        "INSERT IGNORE INTO `{prefix}customer_Carrier` (`id`, `label`) VALUES (1, 'خریدار');",
+        "INSERT IGNORE INTO `{prefix}customer_Carrier` (`id`, `label`) VALUES (2, 'فروشنده');",
         "CREATE FUNCTION IF NOT EXISTS `gdate`(`jy` smallint, `jm` smallint, `jd` smallint) RETURNS datetime
     READS SQL DATA
     DETERMINISTIC

@@ -102,7 +102,7 @@
                                             <td><i class="fa fa-minus"></i></td>
                                             {/if}
                                             {if $editAccess == 'true'}
-                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}customer/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
+                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}customers/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
                                             {/if}
                                         </tr>
                                     {foreachelse}
@@ -122,7 +122,7 @@
 </div>
 
 {map navBarButton}
-<a class="btn btn-info"  href="{url admin}customer">
+<a class="btn btn-info"  href="{url admin}customers">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>

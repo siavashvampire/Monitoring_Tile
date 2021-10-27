@@ -72,7 +72,7 @@
                                 </div>
 
                                 <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "phone"} <span class="text-danger">*</span> </label>
+                                    <label class="col-md-3 col-form-label">{_ "mobilePhone"} <span class="text-danger">*</span> </label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <textarea rows="1" autocomplete="off" required name="phone" class="form-control text-center">{if isset($Mold.post.phone)}{$Mold.post.phone}{elseif isset($model)}{$model->getCellPhone()}{/if}</textarea>
@@ -97,7 +97,7 @@
                                     <label class="col-md-3 col-form-label">{_ "status"}</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <select class="selectpicker selectpickerNotRefresh" name="status" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت">
+                                            <select class="selectpicker selectpickerNotRefresh"  required name="status" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت">
                                                 {foreach from=$status key=key value=item }
                                                 <option value="{$item.id}"  {if isset($Mold.post.status)}{if $item.id == $Mold.post.status }selected{/if}{elseif isset($model) and  $item.id == $model->getActive() }selected{/if}>{$item.label}</option>
                                                 {/foreach}
@@ -111,7 +111,7 @@
                                     <label class="col-md-3 col-form-label">{_ "settlementType"}</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <select class="selectpicker"  name="settlementType" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع تسویه">
+                                            <select class="selectpicker" required name="settlementType" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع تسویه">
                                                 {foreach from=$settlementType key=key value=item }
                                                 <option value="{$item.id}"  {if isset($Mold.post.settlementType)}{if $item.id == $Mold.post.settlementType }selected{/if}{elseif isset($model) and  $item.id == $model->getSettlementType() }selected{/if}>{$item.label}</option>
                                                 {/foreach}
@@ -123,7 +123,7 @@
                                     <label class="col-md-3 col-form-label">{_ "Carrier"}</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <select class="selectpicker"  name="Carrier" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="حمل کننده">
+                                            <select class="selectpicker" required name="Carrier" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="حمل کننده">
                                                 {foreach from=$carrier key=key value=item }
                                                 <option value="{$item.id}"  {if isset($Mold.post.Carrier)}{if $item.id == $Mold.post.Carrier }selected{/if}{elseif isset($model) and  $item.id == $model->getCarrier() }selected{/if}>{$item.label}</option>
                                                 {/foreach}
@@ -286,7 +286,7 @@
 </div>
 
 {map navBarButton}
-<a class="btn btn-info"  href="{url admin}customer/List">
+<a class="btn btn-info"  href="{url admin}customers/List">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>

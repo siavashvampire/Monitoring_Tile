@@ -138,6 +138,30 @@ return [
                 'Carrier' => [ 'table' => 'customer_Carrier' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
             ]
         ],
+        'payment' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'Time_Send'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'JTime_Send'     => "date NOT NULL",
+                'customer'  => "varchar(65) COLLATE utf8_persian_ci",
+                'account_status'     => "varchar(65) COLLATE utf8_persian_ci",
+                'operation_type'  => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'amount'           => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'description'          => "varchar(65) COLLATE utf8_persian_ci",
+                'payment_method'    => "varchar(65) COLLATE utf8_persian_ci",
+                'receipt_number'    => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'user'          => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'user' =>  [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'customer' => [ 'table' => 'customer' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+            ]
+        ],
     ],
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}Truck_Work_Title` (`id`, `label`) VALUES (1, 'شرکتی');",

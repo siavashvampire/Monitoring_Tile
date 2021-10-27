@@ -265,7 +265,7 @@ class CamSwitch extends model implements modelInterFace {
             $field[] = 'item.unit';
             $field[] = 'units.label as unitName';
             $field[] = 'phases.label as phase';
-            $field[] = 'phases.id as Phase';
+            $field[] = 'phases.id as phase_id';
             $field[] = 'item.Switch_plc_id as PLC_id';
             $field[] = 'item.Active as Active';
         }

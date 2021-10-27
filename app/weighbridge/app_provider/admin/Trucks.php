@@ -1,21 +1,18 @@
 <?php
 namespace App\weighbridge\app_provider\admin;
 
-use App\core\controller\fieldService;
 use App\core\controller\httpErrorHandler;
 use App\user\app_provider\api\checkAccess;
+use App\weighbridge\model\Truck;
 use controller;
-use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use App\user\app_provider\api\user;
 use paymentCms\component\validate;
 use paymentCms\component\Response;
-use paymentCms\component\arrays;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class Truck extends controller {
+class Trucks extends controller {
     public function List(){
 		$get = request::post('page=1,perEachPage=25,sortWith' ,null);
         
@@ -50,7 +47,7 @@ class Truck extends controller {
 		$search      = $model->getItems($value,$variable,$sortWith,$pagination);
         $this->mold->set('items' , $search);
         
-        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'],'admin','Truck','index','weighbridge')["status"];
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'],'admin','Trucks','index','weighbridge')["status"];
         $this->mold->set('editAccess' , $editAccess);
         
 		$this->mold->path('default', 'weighbridge');
@@ -117,10 +114,7 @@ class Truck extends controller {
                 Response::jsonMessage($valid->errorsIn(),false);
                 return false;
             }
-            $value = array( );
-            $variable = array( );
-            
-            
+
             $model->setMainNumberPlate($get['mainNumberPlate']);
             $model->setNumber1Plate($get['Number1Plate']);
             $model->setCharNumberPlate($get['CharNumberPlate']);

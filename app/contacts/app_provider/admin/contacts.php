@@ -7,6 +7,7 @@ use App\LineMonitoring\app_provider\api\phases;
 use App\units\app_provider\api\units;
 use App\user\app_provider\api\checkAccess;
 use controller;
+use paymentCms\component\cache;
 use paymentCms\component\request;
 use App\user\app_provider\api\user;
 use paymentCms\component\validate;
@@ -140,6 +141,7 @@ class contacts extends controller
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'contacts', 'List', 'contacts')["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('ChangeURL', 'contacts/List');
+        cache::clear('is_contract_update' , 'contacts');
 
     }
 

@@ -200,15 +200,15 @@ class hook extends pluginController
     {
         $should_update = array();
 
-        $data = cache::get('isTileKindUpdate', null, 'LineMonitoring');
-        $dataSwitch = cache::get('isSwitchKindUpdate', null, 'LineMonitoring');
+        $data = cache::get('is_sensor_update', null, 'LineMonitoring');
+        $dataSwitch = cache::get('is_switch_update', null, 'LineMonitoring');
 
         if ($data !== 'yes')
-            $should_update[] = "TileKindUpdate";
+            $should_update[] = "sensor_update";
 
 
         if ($dataSwitch !== 'yes')
-            $should_update[] = "SwitchKindUpdate";
+            $should_update[] = "switch_update";
 
         if (count($should_update) == 0)
             return null;

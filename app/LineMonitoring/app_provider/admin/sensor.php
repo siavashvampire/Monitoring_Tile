@@ -156,7 +156,7 @@ class sensor extends controller
             $this->callHooks('addLog', [$Dis, 'Sensor']);
             $model->insertToDataBase();
         }
-        cache::clear('isTileKindUpdate', 'LineMonitoring');
+        cache::clear('is_sensor_update', 'LineMonitoring');
         Response::jsonMessage('تغییرات انجام شد.', true);
         return false;
     }

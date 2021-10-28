@@ -139,7 +139,7 @@ class CamSwitch extends controller {
             $this->callHooks('addLog', [$Dis , 'Switch']);
 			$model->insertToDataBase();
         }
-		cache::clear('isSwitchKindUpdate' , 'LineMonitoring');
+		cache::clear('is_switch_update' , 'LineMonitoring');
 		Response::jsonMessage("تغییرات با موفقیت انجام شد.",true);
 		return false;
 	}

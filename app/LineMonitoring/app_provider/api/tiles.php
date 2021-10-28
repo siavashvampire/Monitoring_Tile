@@ -9,8 +9,6 @@ if ( !defined( 'paymentCMS' ) ) die( '<link rel="stylesheet" href="http://maxcdn
 
 class tiles extends innerController {
     public  static function index() {
-        cache::save( 'yes', 'isTileKindUpdate', 2592000, 'LineMonitoring' );
-
         /** @var tile_kind $model */
         $model = parent::model( ['LineMonitoring', 'tile_kind'] );
         return self::json( $model->getItems());

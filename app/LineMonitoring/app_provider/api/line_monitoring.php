@@ -50,8 +50,8 @@ class line_monitoring extends innerController
         }
 
 
-        $data = cache::get('isTileKindUpdate', null, 'LineMonitoring');
-        $dataSwitch = cache::get('isSwitchKindUpdate', null, 'LineMonitoring');
+        $data = cache::get('is_sensor_update', null, 'LineMonitoring');
+        $dataSwitch = cache::get('is_switch_update', null, 'LineMonitoring');
         if ($data !== 'yes' or $dataSwitch !== 'yes') {
 //            return self::jsonError(null, 205);
             return self::jsonError(null, 204);

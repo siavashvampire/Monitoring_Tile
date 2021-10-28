@@ -28,7 +28,7 @@ class hook extends pluginController
         $data = cache::get('isSubstation', null, 'ElectricalSubstation');
 
         if ($data !== 'yes')
-            $should_update[] = "TileKindUpdate";
+            $should_update[] = "Substation";
 
         if (count($should_update) == 0)
             return null;

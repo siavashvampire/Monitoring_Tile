@@ -16,10 +16,10 @@ class hook extends pluginController {
     {
         $should_update = array();
 
-//        $data = cache::get('isSubstation', null, 'ElectricalSubstation');
-//
-//        if ($data !== 'yes')
-//            $should_update[] = "TileKindUpdate";
+        $data = cache::get('is_DAUnits_update', null, 'DAUnits');
+
+        if ($data !== 'yes')
+            $should_update[] = "DAUnits";
 
         if (count($should_update) == 0)
             return null;

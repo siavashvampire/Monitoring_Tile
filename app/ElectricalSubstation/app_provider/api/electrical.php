@@ -17,7 +17,6 @@ class electrical extends innerController
 {
     public static function index(): array
     {
-        cache::save('yes', 'isSubstation', 2592000, 'ElectricalSubstation');
         /** @var Substation $model */
         $model = parent::model(['ElectricalSubstation', 'Substation']);
         return self::json($model->getItems());
@@ -147,8 +146,6 @@ class electrical extends innerController
             }
         }
 
-
-//        $data = cache::get('isTileKindUpdate', null, 'ElectricalSubstation');
         $data = 'no';
 
         if ($data !== 'yes') {

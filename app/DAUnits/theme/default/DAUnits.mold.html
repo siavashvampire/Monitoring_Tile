@@ -91,10 +91,10 @@
                                                 <select class="selectpicker text-center" name="appName[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "application"}">
                                                     {foreach from=$appsTotal key=key value=app }
                                                         {if isset($app.label)}
-                                                            <option value="{$app.label}">{$app.label}</option>
+                                                            <option value="{$app.label}" {if isset($model) and $app.label == $appOne.label}selected{/if}>{$app.label}</option>
                                                         {else}
                                                             {foreach from=$app key=key value=app2 }
-                                                                <option value="{$app2.label}">{$app2.label}</option>
+                                                                <option value="{$app2.label}" {if isset($model) and $app2.label == $appOne.label}selected{/if}>{$app2.label}</option>
                                                             {/foreach}
                                                         {/if}
                                                     {/foreach}

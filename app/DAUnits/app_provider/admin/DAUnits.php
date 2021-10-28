@@ -3,9 +3,11 @@
 namespace App\DAUnits\app_provider\admin;
 
 use App\core\controller\httpErrorHandler;
+use App\DAUnits\model\DAUnits_app;
 use App\user\app_provider\api\checkAccess;
 use controller;
 use Exception;
+use paymentCms\component\cache;
 use paymentCms\component\request;
 use App\user\app_provider\api\user;
 use paymentCms\component\validate;
@@ -56,6 +58,8 @@ class DAUnits extends controller
 
     public function index($id = null)
     {
+        /** @var \App\DAUnits\model\DAUnits $model */
+
         $get = request::post('label,IP,type,appName');
         if ($id != null) {
             $model = parent::model('DAUnits', $id);
@@ -63,8 +67,11 @@ class DAUnits extends controller
             if ($model->getId() != $id) {
                 httpErrorHandler::E404();
             }
-            $this->mold->set('apps', parent::model('DAUnits_app')->getAppWithId($model->getId()));
 
+            /** @var DAUnits_app $model_app */
+            $model_app = parent::model('DAUnits_app');
+
+            $this->mold->set('apps', $model_app->getAppWithId($model->getId()));
 
         } else
             $model = parent::model('DAUnits');
@@ -145,7 +152,7 @@ class DAUnits extends controller
             else
                 Response::jsonMessage("ویرایش اطلاعات با موفقیت انجام شد", true);
         }
-//        show( parent::callHooks('need_plc'));
+        cache::clear('is_DAUnits_update' , 'DAUnits');
         $this->mold->set('appsTotal', parent::callHooks('need_plc'));
         $this->mold->set('types', parent::model('DAUnits_Type')->getType());
         $this->mold->path('default', 'DAUnits');

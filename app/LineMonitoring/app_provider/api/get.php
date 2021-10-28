@@ -25,7 +25,7 @@ class get extends innerController
         $variable = array();
         $value[] = 1;
         if ($_POST['unitId'] != null) {
-            $variable[] = ' sensors.unitId IN ' . $_POST['unitId'];
+            $variable[] = ' sensors.unit IN ' . $_POST['unitId'];
         }
         if ($_POST['phase'] != null) {
             $value[] = $_POST['phase'];

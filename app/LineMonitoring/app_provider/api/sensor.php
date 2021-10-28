@@ -50,7 +50,6 @@ class sensor extends innerController
         } else
             $page = null;
 
-        cache::save('yes', 'isTileKindUpdate', 2592000, 'LineMonitoring');
         return self::json($model->getItems($value, $variable, $order, $page));
     }
 }

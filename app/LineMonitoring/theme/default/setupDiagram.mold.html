@@ -112,7 +112,7 @@
                                                 {foreach from=$sensorSelectPost key=key value=sensorSelect }
                                                 <tr class="rowOFSensorSelect_{$sensorSelect.id}">
                                                     <td>{$sensorSelect.label}</td>
-                                                    <td>{$sensorSelect.phase}</td>
+                                                    <td>{$sensorSelect.phaseLabel}</td>
                                                     <td>{$sensorSelect.unitLabel}</td>
                                                     <td> <button type="button" class="btn btn-danger" onclick="deleteSensor({$sensorSelect.id});">
                                                                                                     <i class="fa fa-trash"></i>
@@ -140,7 +140,7 @@
                                                 {foreach from=$sensorSelectPost key=key value=sensorSelect }
                                                 <tr class="rowOFSensorSelect_{$sensorSelect.id}">
                                                     <td>{$sensorSelect.label}</td>
-                                                    <td>{$sensorSelect.phase}</td>
+                                                    <td>{$sensorSelect.phaseLabel}</td>
                                                     <td>{$sensorSelect.unitLabel}</td>
                                                     <td><button type="button" class="btn btn-info btnShowSensor" onclick="showSensorLocation({$sensorSelect.id} , this);">
                                                                                                         <i class="fa fa-eye"></i>

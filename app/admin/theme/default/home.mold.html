@@ -45,12 +45,12 @@
                                         {if $sensor.Active == 1}
                                             <td class="text-success">{$sensor.label}</td>
                                             <td class="text-success">{$sensor.unitLabel}</td>
-                                            <td class="text-success">{$sensor.phase}</td>
+                                            <td class="text-success">{$sensor.phaseLabel}</td>
                                             <td class="text-success">فعال</td>
                                         {elseif $sensor.Active == 0}
                                             <td class="text-danger">{$sensor.label}</td>
                                             <td class="text-danger">{$sensor.unitLabel}</td>
-                                            <td class="text-danger">{$sensor.phase}</td>
+                                            <td class="text-danger">{$sensor.phaseLabel}</td>
                                             <td class="text-danger" >غیر فعال </td>
                                         {/if}
                                     </tr>
@@ -94,12 +94,12 @@
                                     {if $Switch.Active == 1}
                                         <td class="text-success">{$Switch.label}</td>
                                         <td class="text-success">{$Switch.unitLabel}</td>
-                                        <td class="text-success">{$Switch.phase}</td>
+                                        <td class="text-success">{$Switch.phaseLabel}</td>
                                         <td class="text-success">فعال</td>
                                     {elseif $Switch.Active == 0}
                                         <td class="text-danger">{$Switch.label}</td>
                                         <td class="text-danger">{$Switch.unitLabel}</td>
-                                        <td class="text-danger">{$Switch.phase}</td>
+                                        <td class="text-danger">{$Switch.phaseLabel}</td>
                                         <td class="text-danger" >غیر فعال </td>                                    
                                     {/if}
                                 </tr>

@@ -51,7 +51,7 @@ class customers extends controller
 
         $this->mold->set('items', $search);
 //        show($search);
-        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'Truck', 'index', 'weighbridge')["status"];
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'Trucks', 'index', 'weighbridge')["status"];
         $this->mold->set('editAccess', $editAccess);
 
         $this->mold->path('default', 'weighbridge');
@@ -114,8 +114,7 @@ class customers extends controller
             $model->setRegisterTime(date('Y-m-d H:i:s'));
             $model->setTruckId(implode(',', $get['truckId']));
 
-            $Dis = 'کامیون با نام ';
-//            Response::jsonMessage($id, false);
+            $Dis = 'مشتری با نام ';
             if ($id == null) {
                 if ($model->insertToDataBase()) {
 

@@ -363,7 +363,7 @@ class RS extends controller
                     $requestService->setConsumableParts(null);
 
                 $requestService->setTimeSend(jdate::jdate('Y/m/d H:i:s', strtotime($requestService->getTimeSend())));
-                $requestService->setJTimeSend( $this->tr_num(str_replace("-","/",$requestService->getJTimeSend()) , 'fa'));
+                $requestService->setJTimeSend($this->tr_num(str_replace("-","/",$requestService->getJTimeSend()) , 'fa'));
                 $requestService->setTimeStart(strtotime($requestService->getTimeStart())*1000);
                 $requestService->setTimeEnd(strtotime($requestService->getTimeEnd())*1000);
 //                $requestService->setWorkerSection(explode(',',$requestService->getWorkerSection()));

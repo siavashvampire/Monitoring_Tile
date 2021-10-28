@@ -22,4 +22,11 @@ return [
     'deleteOnExport'                               => 'حذف قبض های این کد در گزارشات نوع دوم',
     'code'                                         => 'کد',
     'customerTruck'                                => 'کامیون های متعلق به مشتری',
+    'acceptance'                                   => 'دریافت',
+    'payment'                                      => 'پرداخت',
+    'va'                                           => 'و',
+    'receipt'                                      => 'رسید',
+    'number'                                       => 'شماره',
+    'date'                                         => 'تاریخ',
+    'time'                                         => 'زمان',
 ];

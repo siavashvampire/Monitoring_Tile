@@ -135,6 +135,7 @@ class payment extends controller
         }
 
         $sortWith = [['column' => 'id', 'type' => 'asc']];
+        /** @var payments $model */
         $model = parent::model('payments');
         $numberOfAll = $model->getItemCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);

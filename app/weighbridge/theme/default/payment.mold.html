@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "account_status"}  </label>
+                                    <label class="col-md-3 col-form-label">{_ "account_status"}</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <textarea rows="1" autocomplete="off"  name="account_status" class="form-control text-center">{if isset($Mold.post.account_status)}{$Mold.post.account_status}{elseif isset($model)}{$model->getAccountStatus()}{/if}</textarea>

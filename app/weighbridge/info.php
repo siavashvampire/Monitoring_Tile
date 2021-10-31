@@ -188,6 +188,36 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label'        => 'varchar(65) COLLATE utf8_persian_ci',
+                'weight_loss'    => "INT(11) NOT NULL ",
+                'unit'     => "INT(11) NOT NULL",
+                'description'          => "varchar(65) COLLATE utf8_persian_ci",
+                'standard'  => "tinyint(1) NOT NULL",
+                'amount'           => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'mass'    => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'massInReceipt'    => "tinyint(1) NOT NULL",
+                'unit_price_sale'          => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'previous_price_sale'          => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'Time_Send_sale'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'previous_Time_Send_sale'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'unit_price_buy'          => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'previous_price_buy'          => "INT(11) COLLATE utf8_persian_ci NOT NULL",
+                'Time_Send_buy'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
+                'previous_Time_Send_buy'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'user' =>  [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'customer' => [ 'table' => 'customer' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+            ]
+        ],
 
     ],
     'sqlInstall' => [

@@ -35,4 +35,5 @@ return [
     'description'                                  => 'توضیحات',
     'payment_method'                               => 'نوع پرداخت',
     'user'                                         => 'کاربر',
+    'product'                                      => 'کالا',
 ];

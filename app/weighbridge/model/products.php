@@ -4,7 +4,7 @@ namespace App\weighbridge\model;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace ;
 
-class product extends model implements modelInterFace {
+class products extends model implements modelInterFace {
 	private $primaryKey = ['id'];
 	private $primaryKeyShouldNotInsertOrUpdate = 'id';
 	private $id ;

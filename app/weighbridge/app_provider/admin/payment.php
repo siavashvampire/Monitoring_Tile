@@ -3,8 +3,11 @@
 namespace App\weighbridge\app_provider\admin;
 
 use App\core\controller\httpErrorHandler;
+use App\user\app_provider\api\checkAccess;
 use App\weighbridge\app_provider\api\customer;
 use App\weighbridge\app_provider\api\customer_api;
+use App\weighbridge\app_provider\api\operation_type;
+use App\weighbridge\app_provider\api\payment_method;
 use App\weighbridge\model\payments;
 use controller;
 use paymentCms\component\JDate;
@@ -32,9 +35,12 @@ class payment extends controller
             }
         }
 
-
+        $user = user::getUserLogin(false);
+        $this->mold->set('user', $user);
         $this->mold->set('model2', $model);
         $this->mold->set('customers', customer::index()["result"]);
+        $this->mold->set('operation_type', operation_type::index()["result"]);
+        $this->mold->set('payment_method', payment_method::index()["result"]);
         if (request::ispost()) {
 
             $rules = [
@@ -48,8 +54,12 @@ class payment extends controller
                 Response::jsonMessage($valid->errorsIn(), false);
                 return false;
             }
-            $model->setTimeSend(jdate::jdate('Y/m/d H:i:s', strtotime($model->getTimeSend())));
-            $model->setJTimeSend($this->tr_num(str_replace("-","/",$model->getJTimeSend()) , 'fa'));
+            $shamsi = explode('/', $get['Time_Send']);
+            $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
+            $get['Time_Start'] = $get['Time_Start'] / 1000;
+            $get['Time_End'] = $get['Time_End'] / 1000;
+            $model->setTimeSend(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
+            $model->setJTimeSend(JDate::jdate('Y-m-d', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
             $model->setCustomer($get['customer']);
             $model->setAccountStatus($get['account_status']);
             $model->setOperationType($get['operation_type']);
@@ -76,7 +86,7 @@ class payment extends controller
             } else{
                 if ($model->upDateDataBase()) {
                     $Dis = $Dis . ' تغییر یافت';
-                    $this->callHooks('addLog', [$Dis, 'Truck']);
+                    $this->callHooks('addLog', [$Dis, 'payment']);
 
                     Response::jsonMessage(rlang('insert') . ' ' . rlang("successfully") . ' ' . rlang("was"), true);
                     return false;
@@ -95,6 +105,51 @@ class payment extends controller
         else
             $this->mold->setPageTitle(rlang('edit') . ' ' . rlang('payment'));
     }
+
+    public function List()
+    {
+        $get = request::post('page=1,perEachPage=25,sortWith', null);
+
+        $rules = [
+            "page" => ["required|match:>0", rlang('page')],
+            "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
+        ];
+
+        $valid = validate::check($get, $rules);
+        $value = array();
+        $variable = array();
+
+
+        if ($valid->isFail()) {
+            //TODO:: add error is not valid data
+
+        } else {
+            if ($get['sortWith'] != null and is_array($get['sortWith'])) {
+                unset($sortWith);
+                foreach ($get['sortWith'] as $sort) {
+                    $temp = explode('|', $sort);
+                    $sortWith[] = ['column' => $temp[0], 'type' => $temp[1]];
+                }
+            }
+
+        }
+
+        $sortWith = [['column' => 'id', 'type' => 'asc']];
+        $model = parent::model('payments');
+        $numberOfAll = $model->getItemCount($value, $variable);
+        $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
+        $search = $model->getItems($value, $variable, $sortWith, $pagination);
+
+        $this->mold->set('items', $search);
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'payment', 'index', 'weighbridge')["status"];
+        $this->mold->set('editAccess', $editAccess);
+
+        $this->mold->path('default', 'weighbridge');
+        $this->mold->view('paymentList.mold.html');
+        $this->mold->setPageTitle(rlang('payment'));
+        $this->mold->set('activeMenu', 'payment');
+    }
+
 
     private static function tr_num($str, $mod = 'en')
     {

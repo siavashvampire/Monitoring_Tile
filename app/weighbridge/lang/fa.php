@@ -29,4 +29,10 @@ return [
     'number'                                       => 'شماره',
     'date'                                         => 'تاریخ',
     'time'                                         => 'زمان',
+    'account_status'                               => 'وضعیت حساب',
+    'operation_type'                               => 'نوع عملیات',
+    'amount'                                       => 'مبلغ',
+    'description'                                  => 'توضیحات',
+    'payment_method'                               => 'نوع پرداخت',
+    'user'                                         => 'کاربر',
 ];

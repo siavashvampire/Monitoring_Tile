@@ -143,7 +143,7 @@ return [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'Time_Send'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
                 'JTime_Send'     => "date NOT NULL",
-                'customer'  => "varchar(65) COLLATE utf8_persian_ci",
+                'customer'    => "INT(11) NOT NULL ",
                 'account_status'     => "varchar(65) COLLATE utf8_persian_ci",
                 'operation_type'  => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
                 'amount'           => "INT(11) COLLATE utf8_persian_ci NOT NULL",
@@ -162,6 +162,33 @@ return [
                 'customer' => [ 'table' => 'customer' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
             ]
         ],
+        'operation_type' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'payment_method' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+
     ],
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}Truck_Work_Title` (`id`, `label`) VALUES (1, 'شرکتی');",

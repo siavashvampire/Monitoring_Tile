@@ -138,7 +138,7 @@ return [
                 'Carrier' => [ 'table' => 'customer_Carrier' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
             ]
         ],
-        'payment' => [
+        'payments' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'Time_Send'        => 'datetime NOT NULL DEFAULT CURRENT_TIMESTAMP',
@@ -188,7 +188,7 @@ return [
             'REFERENCES' => [
             ]
         ],
-        'product' => [
+        'products' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label'        => 'varchar(65) COLLATE utf8_persian_ci',
@@ -243,6 +243,7 @@ return [
         "INSERT IGNORE INTO `{prefix}customer_Carrier` (`id`, `label`) VALUES (2, 'فروشنده');",
         "INSERT IGNORE INTO `{prefix}weight_unit` (`id`, `label`) VALUES (1, 'تن');",
         "INSERT IGNORE INTO `{prefix}weight_unit` (`id`, `label`) VALUES (2, 'کیلوگرم');",
+
         "CREATE FUNCTION IF NOT EXISTS `gdate`(`jy` smallint, `jm` smallint, `jd` smallint) RETURNS datetime
     READS SQL DATA
     DETERMINISTIC

@@ -35,7 +35,7 @@ class product extends controller
         $user = user::getUserLogin(false);
         $this->mold->set('model2', $model);
         $this->mold->set('weight_unit', weight_unit::index()["result"]);
-
+//        show($model);
 
 
 
@@ -121,7 +121,6 @@ class product extends controller
         $value = array();
         $variable = array();
 
-
         if ($valid->isFail()) {
             //TODO:: add error is not valid data
 
@@ -144,13 +143,15 @@ class product extends controller
         $search = $model->getItems($value, $variable, $sortWith, $pagination);
 
         $this->mold->set('items', $search);
-        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'payment', 'index', 'weighbridge')["status"];
+
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'product', 'index', 'weighbridge')["status"];
         $this->mold->set('editAccess', $editAccess);
 
         $this->mold->path('default', 'weighbridge');
-        $this->mold->view('paymentList.mold.html');
+        $this->mold->view('productList.mold.html');
         $this->mold->setPageTitle(rlang('product'));
         $this->mold->set('activeMenu', 'product');
+
     }
 
 

@@ -15,80 +15,40 @@
                         <div class="card-icon" >
                             <i class="fa fa-file-excel-o fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">{_ "acceptance"} {_ "va"} {_ "payment"} {_ "customer"}</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "Specifications"} {_ "product"} </h4>
                     </div>
                     <div class="card-body">
                         <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
-                            <div class="row" style="border: 1px solid darkcyan;">
-                                <div class="col-md-3">
-                                    <label class="col-md-6 col-form-label">{_ "number"} {_ "receipt"} : {$model.id}</label>
-                                </div>
-                                <div class="col-md-3">
-                                    <label class="col-md-3 col-form-label">{_ "date"} </label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getJTimeSend()}{/if}">
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="col-md-3 col-form-label">{_ "time"}</label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Send_justT" data-onlyTime="1"  class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getTimeSend()|jDate:"H&#58;i"}{/if}">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                                <div class="col-md-3">
-                                    <label class="col-md-9 col-form-label">{_ "user"} : {$user.fname} {$user.lname} </label>
-                                </div>
-                            </div>
-
+                           <div style="border: 1px solid darkcyan;">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "customer"} <span class="text-danger">*</span> </label>
-                                    <div class="col-md-9 text-right">
-                                        <div class="form-group has-default">
-                                            <select class="selectpicker" required name="customer" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مشتری">
-                                                {foreach from=$customers key=key value=item }
-                                                <option value="{$item.id}"  {if isset($Mold.post.customer)}{if $item.id == $Mold.post.customer }selected{/if}{elseif isset($model) and  $item.id == $model->getCustomer() }selected{/if}>{$item.name}</option>
-                                                {/foreach}
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <label class="col-md-6 col-form-label">{_ "code"} {_ "product"} : {$model.id}</label>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "account_status"}</label>
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "product"}: <span class="text-danger">*</span></label>
                                     <div class="col-md-9">
-                                        <div class="form-group has-default">
-                                            <textarea rows="1" autocomplete="off"  name="account_status" class="form-control text-center">{if isset($Mold.post.account_status)}{$Mold.post.account_status}{elseif isset($model)}{$model->getAccountStatus()}{/if}</textarea>
+                                        <div class="form-group has-default ">
+                                            <input type="text" autocomplete="off" required name="label" class="form-control" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getLabel()}{/if}">
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "amount"} <span class="text-danger">*</span> </label>
+                                    <label class="col-md-3 col-form-label">{_ "weight_loss"}: <span class="text-danger">*</span> </label>
                                     <div class="col-md-9">
-                                        <div class="form-group has-default">
-                                            <textarea rows="1" autocomplete="off"  name="amount" required class="form-control text-center">{if isset($Mold.post.amount)}{$Mold.post.amount}{elseif isset($model)}{$model->getAmount()}{/if}</textarea>
+                                        <div class="form-group has-default text-right">
+                                            <input type="number" min="0" max="100" autocomplete="off" name="weight_loss" required class="form-control text-center" value="{if isset($Mold.post.weight_loss)}{$Mold.post.weight_loss}{elseif isset($model)}{$model->getWeightLoss()}{/if}">
                                         </div>
                                     </div>
-
                                 </div>
-
-
-                                <div class="col-md-6 form-group">
-                                    <label class="col-md-3 col-form-label">{_ "operation_type"} <span class="text-danger">*</span> </label>
-                                    <div class="col-md-9 text-right">
-                                        <div class="form-group has-default">
-                                            <select class="selectpicker selectpickerNotRefresh" required name="operation_type" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع عملیات">
-                                                {foreach from=$operation_type key=key value=item }
-                                                <option value="{$item.id}"  {if isset($Mold.post.operation_type)}{if $item.id == $Mold.post.operation_type }selected{/if}{elseif isset($model) and  $item.id == $model->getOperationType() }selected{/if}>{$item.label}</option>
+                                <div class="col-md-6">
+                                    <label class="col-md-2 col-form-label">{_ "weight_unit"} </label>
+                                    <div class="col-md-10 ">
+                                        <div class="form-group has-default text-right">
+                                            <select class="selectpicker "  name="weight_unit" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد وزن">
+                                                {foreach from=$weight_unit key=key value=item }
+                                                <option value="{$item.id}"  {if isset($Mold.post.weight_unit)}{if $item.id == $Mold.post.weight_unit }selected{/if}{elseif isset($model) and  $item.id == $model->getWeightUnit() }selected{/if}>{$item.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -97,7 +57,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-12">
-                                    <label class="col-md-1 col-form-label">{_ "description"}</label>
+                                    <label class="col-md-1 col-form-label">{_ "description"}:</label>
                                     <div class="col-md-11">
                                         <div class="form-group has-default">
                                             <textarea rows="1" autocomplete="off"  name="description" class="form-control text-center">{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}</textarea>
@@ -106,27 +66,134 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-12">
-                                    <label class="col-md-1 col-form-label">{_ "payment_method"} <span class="text-danger">*</span> </label>
-                                    <div class="col-md-11 text-right">
-                                        <div class="form-group has-default">
-                                            <select class="selectpicker" required name="payment_method" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع پراخت">
-                                                {foreach from=$payment_method key=key value=item }
-                                                <option value="{$item.id}"  {if isset($Mold.post.payment_method)}{if $item.id == $Mold.post.payment_method }selected{/if}{elseif isset($model) and  $item.id == $model->getPaymentMethod() }selected{/if}>{$item.label}</option>
-                                                {/foreach}
-                                            </select>
+                                <div class="col-md-6">
+                                    <label class="col-md-5 col-form-label text-right">{_ "mass"} :</label>
+                                    <div class="col-md-7">
+                                        <div class="form-group has-default ">
+                                            <input type="text" autocomplete="off" required name="mass" class="form-control" value="{if isset($Mold.post.mass)}{$Mold.post.mass}{elseif isset($model)}{$model->getMass()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                            </div>
+                          </div>
+                            <div class="row" style="height: 10px"></div>
+                            <div class="row">
+                                <div class="col-md-6 ">
+                                    <div class="form-check text-right">
+                                        <label class="form-check-label">
+                                            <input autocomplete="off"  class="form-check-input" name="standard" type="checkbox" {if isset($Mold.post.standard)}{if $Mold.post.standard == 1 }checked{/if}{else}{if isset($model)}{if $model->getStandard()}checked{/if}{else}checked{/if}{/if} value="1">{_ "standard"}
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input autocomplete="off"  class="form-check-input" name="massInReceipt" type="checkbox" {if isset($Mold.post.massInReceipt)}{if $Mold.post.massInReceipt == 1 }checked{/if}{else}{if isset($model)}{if $model->getMassInReceipt()}checked{/if}{else}checked{/if}{/if} value="1">{_ "massInReceipt"}
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row">
+                                <div class="card-header card-header-info card-header-icon">
+                                    <h4 class="card-title float-{$float} m-3">{_ "price"} {_ "sale"} </h4>
+                                </div>
+                            </div>
+                            <div style="border: 1px solid darkcyan;">
+                                <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "unit_price"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <input type="text" autocomplete="off"  name="unit_price_sale" class="form-control" value="{if isset($Mold.post.unit_price_sale)}{$Mold.post.unit_price_sale}{elseif isset($model)}{$model->getUnitPriceSale()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "date"} </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="date" autocomplete="off"  name="Time_Send_sale" class="form-control" value="{if isset($Mold.post.Time_Send_sale)}{$Mold.post.Time_Send_sale}{elseif isset($model)}{/$model->getTimeSendSale()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "previous_price"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <input type="text" autocomplete="off"  name="previous_price_sale" class="form-control" value="{if isset($Mold.post.previous_price_sale)}{$Mold.post.previous_price_sale}{elseif isset($model)}{$model->getPreviousPriceSale()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "date"} </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="date" autocomplete="off"  name="previous_Time_Send_sale" class="form-control" value="{if isset($Mold.post.previous_Time_Send_sale)}{$Mold.post.previous_Time_Send_sale}{elseif isset($model)}{/$model->getPreviousTimeSendSale()}{/if}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
+                            <div class="row">
+                                <div class="card-header card-header-info card-header-icon">
+                                    <h4 class="card-title float-{$float} m-3">{_ "price"} {_ "buy"} </h4>
+                                </div>
+                            </div>
+                            <div style="border: 1px solid darkcyan;">
+                                <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "unit_price"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <input type="text" autocomplete="off"  name="unit_price_buy" class="form-control" value="{if isset($Mold.post.unit_price_buy)}{$Mold.post.unit_price_buy}{elseif isset($model)}{$model->getUnitPriceBuy()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "date"} </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="date" autocomplete="off"  name="Time_Send_buy" class="form-control" value="{if isset($Mold.post.Time_Send_buy)}{$Mold.post.Time_Send_buy}{elseif isset($model)}{/$model->getTimeSendBuy()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "previous_price"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <input type="text" autocomplete="off"  name="previous_price_buy" class="form-control" value="{if isset($Mold.post.previous_price_buy)}{$Mold.post.previous_price_buy}{elseif isset($model)}{$model->getPreviousPriceBuy()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "date"} </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="date" autocomplete="off"  name="previous_Time_Send_buy" class="form-control" value="{if isset($Mold.post.previous_Time_Send_buy)}{$Mold.post.previous_Time_Send_buy}{elseif isset($model)}{/$model->getPreviousTimeSendBuy()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-md-12">
                                     <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "information"}</button>
                                 </div>
                             </div>
                         </form>
+                    </div>
                     </div>
 
                 </div>
@@ -142,42 +209,4 @@
                       </span>
     {_ "backTo"} {_ "list"} {_ "payment"}
 </a>
-{/map}
-
-{map footerjs}
-
-<script>
-    var urlc = '{url current}' ;
-    var urlApi = '{url api}' ;
-    var oneRowTruck ='<tr>'+ $('#bodyTruckElemnt').html()+"</tr>";
-    $('#bodyTruckElemnt').remove();
-    function  refreshPageJs() {
-        $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
-    }
-    function  updateTruckDetail(obj,id) {
-        let closestTr    = obj.closest('tr');
-        let WeightLabel  = closestTr.children[2].children[0].children[0];
-        let NumberLabel0 = closestTr.children[1].children[0].children[0].children[0].children[0];
-        let NumberLabel1 = closestTr.children[1].children[0].children[1].children[0].children[0];
-        let NumberLabel2 = closestTr.children[1].children[0].children[2].children[0].children[0];
-        let NumberLabel3 = closestTr.children[1].children[0].children[3].children[0].children[0];
-        $.ajax({
-            url: urlApi+'getWeighbridge/Trucks',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                'id': id,
-            },
-            success: function (result) {
-                WeightLabel.innerHTML = result[0]['Weight'];
-                NumberLabel0.innerHTML = result[0]['mainNumberPlate'];
-                NumberLabel1.innerHTML = result[0]['Number1Plate'];
-                NumberLabel2.innerHTML = result[0]['CharNumberPlate'];
-                NumberLabel3.innerHTML = result[0]['Number2Plate'];
-            },
-            error: function (jqXHR, exception) {
-            },
-        });
-    }
-</script>
 {/map}

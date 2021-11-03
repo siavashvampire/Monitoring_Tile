@@ -1,0 +1,111 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "search"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "customer"}</label>
+                                        <div class="col-md-9">
+                                           <div class="form-group has-default">
+                                               <input type="text" name="label" autocomplete="off" class="form-control">
+                                           </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "orderBy"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرتب سازی">
+                                                    <option value="phases.label|desc" >{_ "name"} {_ "customer"} | {_ "descending"}</option>
+                                                    <option value="phases.label|asc" >{_ "name"} {_ "customer"} | {_ "ascending"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                   <div class="col-md-12">
+                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                   </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {_ "payment"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                    <tr>
+                                        <th>{_ "name"} {_ "customer"} </th>
+                                        <th>{_ "date"} </th>
+                                        <th>{_ "account_status"} </th>
+                                        <th>{_ "amount"} </th>
+                                        <th>{_ "operation_type"} </th>
+                                        <th>{_ "payment_method"} </th>
+                                        {if $$editAccess == 'true'}
+                                            <th class="text-center" style="width: 25px;"></th>
+                                        {/if}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {foreach from=$items key=key value=item}
+                                        <tr>
+                                            <td>{$item.customer}</td>
+                                            <td>{$item.Time_Send}</td>
+                                            <td>{$item.account_status}</td>
+                                            <td>{$item.amount}</td>
+                                            <td>{$item.operation_type}</td>
+                                            <td>{$item.payment_method}</td>
+                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}payment/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
+                                            {/if}
+                                        </tr>
+                                    {foreachelse}
+                                        <tr>
+                                            <td class="text-center" colspan="13">{_ "hasNotDataYet"}</td>
+                                        </tr>
+                                    {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}payment">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+{_ "add"} {_ "payment"} {_ "new"}
+</a>
+{/map}
+

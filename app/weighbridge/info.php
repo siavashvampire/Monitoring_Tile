@@ -193,7 +193,7 @@ return [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label'        => 'varchar(65) COLLATE utf8_persian_ci',
                 'weight_loss'    => "INT(11) NOT NULL ",
-                'unit'     => "INT(11) NOT NULL",
+                'weight_unit'     => "INT(11) NOT NULL",
                 'description'          => "varchar(65) COLLATE utf8_persian_ci",
                 'standard'  => "tinyint(1) NOT NULL",
                 'amount'           => "INT(11) COLLATE utf8_persian_ci NOT NULL",
@@ -214,8 +214,19 @@ return [
                 'id'
             ],
             'REFERENCES' => [
-                'user' =>  [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'customer' => [ 'table' => 'customer' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+            ]
+        ],
+        'weight_unit' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
             ]
         ],
 
@@ -230,6 +241,8 @@ return [
         "INSERT IGNORE INTO `{prefix}customer_settlementType` (`id`, `label`) VALUES (2, 'غیر نقدی ');",
         "INSERT IGNORE INTO `{prefix}customer_Carrier` (`id`, `label`) VALUES (1, 'خریدار');",
         "INSERT IGNORE INTO `{prefix}customer_Carrier` (`id`, `label`) VALUES (2, 'فروشنده');",
+        "INSERT IGNORE INTO `{prefix}weight_unit` (`id`, `label`) VALUES (1, 'تن');",
+        "INSERT IGNORE INTO `{prefix}weight_unit` (`id`, `label`) VALUES (2, 'کیلوگرم');",
         "CREATE FUNCTION IF NOT EXISTS `gdate`(`jy` smallint, `jm` smallint, `jd` smallint) RETURNS datetime
     READS SQL DATA
     DETERMINISTIC

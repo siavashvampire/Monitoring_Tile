@@ -10,7 +10,7 @@ class products extends model implements modelInterFace {
 	private $id ;
     private $label;
     private $weight_loss;
-	private $unit ;
+	private $weight_unit ;
 	private $description ;
 	private $standard ;
 	private $amount ;
@@ -27,44 +27,44 @@ class products extends model implements modelInterFace {
 
 
 	public function setFromArray($result) {
-		$this->id                    = $result['id'] ;
-		$this->label                 = $result['label'] ;
-		$this->weight_loss           = $result['weight_loss'] ;
-		$this->unit                  = $result['unit'] ;
-		$this->description           = $result['description'] ;
-		$this->standard              = $result['standard'] ;
-		$this->amount                = $result['amount'] ;
-		$this->mass                  = $result['mass'] ;
-		$this->massInReceipt         = $result['massInReceipt'] ;
-		$this->unit_price_sale       = $result['unit_price_sale'] ;
-		$this->previous_price_sale   = $result['previous_price_sale'] ;
-		$this->Time_Send_sale        = $result['Time_Send_sale'] ;
-		$this->previous_Time_Send_sale        = $result['previous_Time_Send_sale'] ;
-		$this->unit_price_buy        = $result['unit_price_buy'] ;
-		$this->previous_price_buy        = $result['previous_price_buy'] ;
-		$this->Time_Send_buy        = $result['Time_Send_buy'] ;
-		$this->previous_Time_Send_buy        = $result['previous_Time_Send_buy'] ;
+		$this->id                           = $result['id'] ;
+		$this->label                        = $result['label'] ;
+		$this->weight_loss                  = $result['weight_loss'] ;
+		$this->weight_unit                  = $result['weight_unit'] ;
+		$this->description                  = $result['description'] ;
+		$this->standard                     = $result['standard'] ;
+		$this->amount                       = $result['amount'] ;
+		$this->mass                         = $result['mass'] ;
+		$this->massInReceipt                = $result['massInReceipt'] ;
+		$this->unit_price_sale              = $result['unit_price_sale'] ;
+		$this->previous_price_sale          = $result['previous_price_sale'] ;
+		$this->Time_Send_sale               = $result['Time_Send_sale'] ;
+		$this->previous_Time_Send_sale      = $result['previous_Time_Send_sale'] ;
+		$this->unit_price_buy               = $result['unit_price_buy'] ;
+		$this->previous_price_buy           = $result['previous_price_buy'] ;
+		$this->Time_Send_buy                = $result['Time_Send_buy'] ;
+		$this->previous_Time_Send_buy       = $result['previous_Time_Send_buy'] ;
 
 	}
 
 	public function returnAsArray( ) {
-		$array['id']                = $this->id ;
-		$array['label']             = $this->label ;
-		$array['weight_loss']       = $this->weight_loss ;
-		$array['unit']              = $this->unit ;
-		$array['description']       = $this->description ;
-		$array['standard']          = $this->standard ;
-		$array['amount']            = $this->amount ;
-		$array['mass']              = $this->mass ;
-		$array['massInReceipt']     = $this->massInReceipt ;
-		$array['unit_price_sale']   = $this->unit_price_sale ;
-		$array['previous_price_sale']   = $this->previous_price_sale ;
-		$array['Time_Send_sale']   = $this->Time_Send_sale ;
-		$array['previous_Time_Send_sale']   = $this->previous_Time_Send_sale ;
-		$array['unit_price_buy']   = $this->unit_price_buy ;
-		$array['previous_price_buy']   = $this->previous_price_buy ;
-		$array['Time_Send_buy']   = $this->Time_Send_buy ;
-		$array['previous_Time_Send_buy']   = $this->previous_Time_Send_buy ;
+		$array['id']                     = $this->id ;
+		$array['label']                  = $this->label ;
+		$array['weight_loss']            = $this->weight_loss ;
+		$array['weight_unit']            = $this->weight_unit ;
+		$array['description']            = $this->description ;
+		$array['standard']               = $this->standard ;
+		$array['amount']                 = $this->amount ;
+		$array['mass']                   = $this->mass ;
+		$array['massInReceipt']          = $this->massInReceipt ;
+		$array['unit_price_sale']        = $this->unit_price_sale ;
+		$array['previous_price_sale']    = $this->previous_price_sale ;
+		$array['Time_Send_sale']         = $this->Time_Send_sale ;
+		$array['previous_Time_Send_sale']= $this->previous_Time_Send_sale ;
+		$array['unit_price_buy']         = $this->unit_price_buy ;
+		$array['previous_price_buy']     = $this->previous_price_buy ;
+		$array['Time_Send_buy']          = $this->Time_Send_buy ;
+		$array['previous_Time_Send_buy'] = $this->previous_Time_Send_buy ;
 
 		return $array ;
 	}
@@ -152,18 +152,20 @@ class products extends model implements modelInterFace {
     /**
      * @return mixed
      */
-    public function getUnit()
+    public function getWeightUnit()
     {
-        return $this->unit;
+        return $this->weight_unit;
     }
 
     /**
-     * @param mixed $unit
+     * @param mixed $weight_unit
      */
-    public function setUnit($unit): void
+    public function setWeightUnit($weight_unit): void
     {
-        $this->unit = $unit;
+        $this->weight_unit = $weight_unit;
     }
+
+
 
     /**
      * @return mixed
@@ -375,9 +377,9 @@ class products extends model implements modelInterFace {
 
 
     public function getItemCount($value = array(),$variable = array()) {
-        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'payments item', 'COUNT(item.id) as co' )) [0]['co'];
+        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product item', 'COUNT(item.id) as co' )) [0]['co'];
     }
     public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
-	    return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'payments item' , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+	    return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product item' , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
 	}
 }

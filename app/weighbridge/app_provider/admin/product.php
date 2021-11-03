@@ -4,10 +4,7 @@ namespace App\weighbridge\app_provider\admin;
 
 use App\core\controller\httpErrorHandler;
 use App\user\app_provider\api\checkAccess;
-use App\weighbridge\app_provider\api\customer;
-use App\weighbridge\app_provider\api\operation_type;
-use App\weighbridge\app_provider\api\payment_method;
-use App\weighbridge\model\payments;
+use App\weighbridge\app_provider\api\weight_unit;
 use App\weighbridge\model\products;
 use controller;
 use paymentCms\component\JDate;
@@ -25,7 +22,7 @@ class product extends controller
         /** @var products $model */
         $model = parent::model('products');
 
-        $get = request::post('label,weight_loss,unit,description,standard,amount,mass,massInReceipt,unit_price_sale,previous_price_sale,Time_Send_sale,previous_Time_Send_sale,unit_price_buy,previous_price_buy,Time_Send_buy,previous_Time_Send_buy');
+        $get = request::post('label,weight_loss,weight_unit,description,standard,amount,mass,massInReceipt,unit_price_sale,previous_price_sale,Time_Send_sale,previous_Time_Send_sale,unit_price_buy,previous_price_buy,Time_Send_buy,previous_Time_Send_buy');
         if ($id != null) {
             $model = parent::model('products', $id);
 
@@ -37,6 +34,11 @@ class product extends controller
 
         $user = user::getUserLogin(false);
         $this->mold->set('model2', $model);
+        $this->mold->set('weight_unit', weight_unit::index()["result"]);
+
+
+
+
         if (request::ispost()) {
 
             $rules = [
@@ -54,7 +56,7 @@ class product extends controller
             $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
             $model->setLabel($get['label']);
             $model->setWeightLoss($get['weight_loss']);
-            $model->setUnit($get['unit']);
+            $model->setWeightUnit($get['weight_unit']);
             $model->setDescription($get['description']);
             $model->setStandard($get['standard']);
             $model->setAmount($get['amount']);
@@ -101,9 +103,9 @@ class product extends controller
         $this->mold->view('product.mold.html');
         $this->mold->set('activeMenu', 'product');
         if ($id == null)
-            $this->mold->setPageTitle(rlang('insert') . ' ' . rlang('payment'));
+            $this->mold->setPageTitle(rlang('insert') . ' ' . rlang('product'));
         else
-            $this->mold->setPageTitle(rlang('edit') . ' ' . rlang('payment'));
+            $this->mold->setPageTitle(rlang('edit') . ' ' . rlang('product'));
     }
 
     public function List()
@@ -135,8 +137,8 @@ class product extends controller
         }
 
         $sortWith = [['column' => 'id', 'type' => 'asc']];
-        /** @var payments $model */
-        $model = parent::model('payments');
+        /** @var products $model */
+        $model = parent::model('products');
         $numberOfAll = $model->getItemCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $search = $model->getItems($value, $variable, $sortWith, $pagination);
@@ -147,8 +149,8 @@ class product extends controller
 
         $this->mold->path('default', 'weighbridge');
         $this->mold->view('paymentList.mold.html');
-        $this->mold->setPageTitle(rlang('payment'));
-        $this->mold->set('activeMenu', 'payment');
+        $this->mold->setPageTitle(rlang('product'));
+        $this->mold->set('activeMenu', 'product');
     }
 
 

@@ -5,7 +5,6 @@ namespace App\weighbridge\app_provider\admin;
 use App\core\controller\httpErrorHandler;
 use App\user\app_provider\api\checkAccess;
 use App\weighbridge\app_provider\api\customer;
-use App\weighbridge\app_provider\api\customer_api;
 use App\weighbridge\app_provider\api\operation_type;
 use App\weighbridge\app_provider\api\payment_method;
 use App\weighbridge\model\payments;
@@ -41,6 +40,7 @@ class payment extends controller
         $this->mold->set('customers', customer::index()["result"]);
         $this->mold->set('operation_type', operation_type::index()["result"]);
         $this->mold->set('payment_method', payment_method::index()["result"]);
+
         if (request::ispost()) {
 
             $rules = [

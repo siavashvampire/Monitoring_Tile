@@ -27,26 +27,22 @@
                                     <label class="col-md-3 col-form-label">{_ "date"} </label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getJTimeSend()}{/if}">
+                                            <input type="date" autocomplete="off" required name="Time_Send" class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($model)}{/$model->getJTimeSend()}{/if}">
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="col-md-3">
                                     <label class="col-md-3 col-form-label">{_ "time"}</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="date" autocomplete="off" required name="Time_Send_justT" data-onlyTime="1"  class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($requestService)}{$requestService->getTimeSend()|jDate:"H&#58;i"}{/if}">
+                                            <input type="date" autocomplete="off" required name="Time_Send_justT" data-onlyTime="1"  class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($model)}{$model->getTimeSend()|jDate:"H&#58;i"}{/if}">
                                         </div>
                                     </div>
-
                                 </div>
-
                                 <div class="col-md-3">
                                     <label class="col-md-9 col-form-label">{_ "user"} : {$user.fname} {$user.lname} </label>
                                 </div>
                             </div>
-
                             <div class="row">
                                 <div class="col-md-6">
                                     <label class="col-md-3 col-form-label">{_ "name"} {_ "customer"} <span class="text-danger">*</span> </label>

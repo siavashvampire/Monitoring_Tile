@@ -22,7 +22,12 @@
                            <div style="border: 1px solid darkcyan;">
                             <div class="row">
                                 <div class="col-md-6">
-                                    <label class="col-md-6 col-form-label">{_ "code"} {_ "product"} : {$model.id}</label>
+                                    <label class="col-md-3 col-form-label">{_ "code"} {_ "product"} :</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default text-right">
+                                            <input type="number" min="0" max="100" autocomplete="off" name="id" required class="form-control text-center" value="{if isset($Mold.post.id)}{$Mold.post.id}{elseif isset($model)}{$model->getId()}{/if}">
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="col-md-3 col-form-label">{_ "name"} {_ "product"}: <span class="text-danger">*</span></label>
@@ -207,6 +212,6 @@
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
-    {_ "backTo"} {_ "list"} {_ "payment"}
+    {_ "backTo"} {_ "list"} {_ "product"}
 </a>
 {/map}

@@ -33,9 +33,8 @@ class product extends controller
         }
 
         $user = user::getUserLogin(false);
-        $this->mold->set('model2', $model);
+        $this->mold->set('model', $model);
         $this->mold->set('weight_unit', weight_unit::index()["result"]);
-//        show($model);
 
 
 
@@ -52,25 +51,29 @@ class product extends controller
                 Response::jsonMessage($valid->errorsIn(), false);
                 return false;
             }
-            $shamsi = explode('/', $get['Time_Send']);
+
+            $shamsi = explode('/', $get['Time_Send_sale']);
             $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
+
             $model->setLabel($get['label']);
             $model->setWeightLoss($get['weight_loss']);
             $model->setWeightUnit($get['weight_unit']);
             $model->setDescription($get['description']);
             $model->setStandard($get['standard']);
+
             $model->setAmount($get['amount']);
             $model->setMass($get['mass']);
             $model->setMassInReceipt($get['massInReceipt']);
             $model->setUnitPriceSale($get['unit_price_sale']);
             $model->setPreviousPriceSale($get['previous_price_sale']);
-            $model->setTimeSendSale(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
-            $model->setPreviousTimeSendSale(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
+
+            $model->setTimeSendSale(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_sale'])))));
+
+            $model->setPreviousTimeSendSale(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['previous_Time_Send_sale'])))));
             $model->setUnitPriceBuy($get['unit_price_buy']);
             $model->setPreviousPriceBuy($get['previous_price_buy']);
-            $model->setTimeSendBuy(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
-            $model->setPreviousTimeSendBuy(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
-
+            $model->setTimeSendBuy(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_buy'])))));
+            $model->setPreviousTimeSendBuy(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['previous_Time_Send_buy'])))));
 
             $Dis = 'کالا با نام ';
             if ($id == null) {
@@ -141,11 +144,8 @@ class product extends controller
         $numberOfAll = $model->getItemCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $search = $model->getItems($value, $variable, $sortWith, $pagination);
-
         $this->mold->set('items', $search);
 
-        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'product', 'index', 'weighbridge')["status"];
-        $this->mold->set('editAccess', $editAccess);
 
         $this->mold->path('default', 'weighbridge');
         $this->mold->view('productList.mold.html');

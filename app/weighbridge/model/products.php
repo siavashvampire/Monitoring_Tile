@@ -377,9 +377,9 @@ class products extends model implements modelInterFace {
 
 
     public function getItemCount($value = array(),$variable = array()) {
-        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product item', 'COUNT(item.id) as co' )) [0]['co'];
+        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'products item', 'COUNT(item.id) as co' )) [0]['co'];
     }
     public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
-	    return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product item' , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+	    return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'products item' , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
 	}
 }

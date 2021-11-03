@@ -229,6 +229,32 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'contract' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'Time_Send' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'Time_Start' => "datetime NOT NULL",
+                'Time_End' => "datetime NOT NULL",
+                'description'          => "varchar(65) COLLATE utf8_persian_ci",
+                'customer'    => "INT(11) NOT NULL ",
+                'taskmaster'           => "varchar(65) COLLATE utf8_persian_ci",
+                'project_name'    => "varchar(65) COLLATE utf8_persian_ci",
+                'contractor'    => "varchar(65) COLLATE utf8_persian_ci",
+                'concreting_location'          => "varchar(65) COLLATE utf8_persian_ci",
+                'consulting'          => "varchar(65) COLLATE utf8_persian_ci",
+                'discharge_place'        => 'varchar(65) COLLATE utf8_persian_ci',
+                'control_system'        => 'varchar(65) COLLATE utf8_persian_ci',
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'customer' => [ 'table' => 'customer' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+
+            ]
+        ],
 
     ],
     'sqlInstall' => [

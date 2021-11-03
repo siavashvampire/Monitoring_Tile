@@ -64,9 +64,6 @@
                                         <th>{_ "code"} {_ "product"} </th>
                                         <th>{_ "name"} {_ "product"} </th>
                                         <th>{_ "price"} </th>
-                                        {if $$editAccess == 'true'}
-                                            <th class="text-center" style="width: 25px;"></th>
-                                        {/if}
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -76,7 +73,7 @@
                                             <td>{$item.label}</td>
                                             <td>{$item.unit_price_sale}</td>
                                                 <td class="text-center"><a class="btn btn-link text-info" href="{url admin}product/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
-                                            {/if}
+
                                         </tr>
                                     {foreachelse}
                                         <tr>

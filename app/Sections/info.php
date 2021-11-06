@@ -6,7 +6,6 @@ return [
         'version' => '1.0.0.0',
         'author' => 'Siavash Sepahi',
         'support' => '09379206248',
-        'PLCNeed' => false,
     ],
     'configuration' => [
     ],
@@ -26,7 +25,7 @@ return [
         ],
     ],
     'sqlInstall' => [
-        "INSERT INTO `{prefix}sections` (`id`, `label`) VALUES
+        "INSERT IGNORE INTO `{prefix}sections` (`id`, `label`) VALUES
 (null , 'برق'),
 (null, 'IT'),
 (null, 'توزین خاک'),

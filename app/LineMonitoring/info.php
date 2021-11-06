@@ -34,21 +34,6 @@ return [
 		],
 	],
 	'db' => [
-		'tile_kind' => [
-			'fields' => [
-				'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
-				'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-				'tile_width' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-				'tile_length' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-			],
-			'KEY' => [
-			],
-			'PRIMARY KEY' => [
-				'id'
-			],
-			'REFERENCES' => [
-			]
-		],
         'phases' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',

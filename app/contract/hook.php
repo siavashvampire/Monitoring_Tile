@@ -97,14 +97,6 @@ class hook extends pluginController
 //            $this->mold->view('newVote.admin.hook.mold.html');
 //            $this->mold->path($getPath['folder'], $getPath['app']);
 //        }
-
-        $search = model::searching( array()  ,  null  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
-        $this->mold->set('sensorsChart' , $search);
-        $getPath = $this->mold->getPath();
-        $this->mold->path('default', 'contract');
-//        $this->mold->view('chart.admin.hook.mold.html');
-        $this->mold->path($getPath['folder'], $getPath['app']);
-
     }
 
     public function _doBeforeLoginWithPhase()

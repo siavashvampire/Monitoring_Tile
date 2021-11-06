@@ -41,12 +41,12 @@ class product extends controller {
 		}
         
 		/* @var product_kind $model */
-		$model = parent::model('tile_kind');
+		$model = parent::model('product_kind');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , null, 'COUNT(id) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
 		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , null, '*'  , ['column' => 'label' , 'type' =>'asc'] , [$pagination['start'] , $pagination['limit'] ] );
-		$this->mold->path('default', 'LineMonitoring');
-		$this->mold->view('tileList.mold.html');
+		$this->mold->path('default', 'product');
+		$this->mold->view('productList.mold.html');
 		$this->mold->setPageTitle('لیست کاشی ها');
 		$this->mold->set('activeMenu' , 'tile');
 		$this->mold->set('tiles' , $search);
@@ -68,13 +68,13 @@ class product extends controller {
 		}
 		/* @var product_kind $model */
 		if ( $get['id'] != '' ) {
-			$model = parent::model('tile_kind', $get['id']);
+			$model = parent::model('product_kind', $get['id']);
 			if ( $model->getId() != $get['id']) {
 				Response::jsonMessage('کاشی مد نظر یافت نشد!',false);
 				return false;
 			}
 		} else
-			$model = parent::model('tile_kind');
+			$model = parent::model('product_kind');
 
 		$model->setTileLength($get['tile_length']);
 		$model->setLabel($get['label']);
@@ -95,7 +95,7 @@ class product extends controller {
 		$sensor = parent::model('sensors');
 		$sensor->setUnreadForPlc($model->getId());
 
-		cache::clear('is_sensor_update' , 'LineMonitoring');
+//		cache::clear('is_sensor_update' , 'LineMonitoring');
 		Response::jsonMessage('تغییرات انجام شد.',true);
 		return false;
 	}

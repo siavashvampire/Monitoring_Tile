@@ -24,7 +24,7 @@ class hook extends pluginController {
     {
         //		show($vars2);
         //		show($this->mold->get('fillOutFieldServiceFormCssClassAllDiv'));
-        /* @var specialties $model */
+        /* @var sections $model */
         $model = $this->model(['Sections', 'sections']);
         $searchFathers = $model->search('1', ' ?  ', null, '*', ['column' => 'label', 'type' => 'asc']);
         $options = '';

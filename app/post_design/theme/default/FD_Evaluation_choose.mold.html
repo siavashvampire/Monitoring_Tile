@@ -1,0 +1,96 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "insert"} {_ "action_name"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post">
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "action_name"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select id="type_select" class="selectpicker selectpickerNotRefresh" name="type_id" required data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "action_name"}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "individual"}</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select id="person_select" class="selectpicker selectpickerNotRefresh" name="Agent[]" multiple data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام فرد">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "action_name"}</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{map footerjs}
+<script>
+    let urlapi = '{url api}' ;
+    let AgentGroup = {$AgentGroup} ;
+    function getUsers(group_id){
+        $.ajax({
+            url: urlapi+'user/getUsersByGroupId/'+group_id,
+            type: 'post',
+            dataType: 'json',
+            data: {
+            } ,
+            success: function (result) {
+                let s = $('#person_select');
+                s.html("")
+                if(result !== true) {
+                    result.forEach(function (_ref) {
+                        var selected = "";
+                        // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                        s.append('<option value="' + _ref['userId'] + '" ' + selected + ' >' + _ref['fname'] + '  ' + _ref['lname'] + '</option>');
+                    });
+                    s.selectpicker('refresh');
+                }else{
+                    s.append('<option value="' + 0 + '" ' + ' >' + 'کاربری ثبت نشده' + '</option>');
+                }
+            }
+        });
+        $.ajax({
+            url: urlapi+'post/getEvaluationTypeByEvaluatedGroup/'+group_id,
+            type: 'post',
+            dataType: 'json',
+            data: {
+            } ,
+            success: function (result) {
+                let s = $('#type_select');
+                s.html("")
+                if(result !== true) {
+                    result.forEach(function (_ref) {
+                        var selected = "";
+                        // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                        s.append('<option value="' + _ref['id'] + '" ' + selected + ' >' + _ref['Name'] + '</option>');
+                    });
+                    s.selectpicker('refresh');
+                }else{
+                    s.append('<option value="' + 0 + '" ' + ' >' + 'فرمی ثبت نشده' + '</option>');
+                }
+            }
+        });
+    }
+    getUsers(AgentGroup)
+</script>
+{/map}

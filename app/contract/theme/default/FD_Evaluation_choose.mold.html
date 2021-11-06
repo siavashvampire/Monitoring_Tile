@@ -21,7 +21,7 @@
                                     </div>
                                 </div>
                                 </div>
-                            <div class="row" style="border: 1px solid darkcyan;">
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
                                 <div class="col-md-6">
                                     <label class="col-md-3 col-form-label">{_ "testedGroup"}<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
@@ -81,12 +81,16 @@
             success: function (result) {
                 let s = $('#person_select');
                 s.html("")
-                result.forEach(function (_ref) {
-                    var selected = "";
-                    // if (_ref['label'] ===  defaultValue) selected = "selected" ;
-                    s.append('<option value="'+_ref['userId']+'" '+selected+' >'+_ref['fname'] +'  '+ _ref['lname']+'</option>');
-                });
-                s.selectpicker('refresh');
+                if(result !== true) {
+                    result.forEach(function (_ref) {
+                        var selected = "";
+                        // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                        s.append('<option value="'+_ref['userId']+'" '+selected+' >'+_ref['fname'] +'  '+ _ref['lname']+'</option>');
+                    });
+                    s.selectpicker('refresh');
+                }else{
+                    s.append('<option value="' + 0 + '" ' + ' >' + 'کاربری ثبت نشده' + '</option>');
+                }
             }
         });
         $.ajax({
@@ -98,12 +102,16 @@
             success: function (result) {
                 let s = $('#type_select');
                 s.html("")
-                result.forEach(function (_ref) {
-                    var selected = "";
-                    // if (_ref['label'] ===  defaultValue) selected = "selected" ;
-                    s.append('<option value="'+_ref['id']+'" '+selected+' >'+_ref['Name'] +'</option>');
-                });
-                s.selectpicker('refresh');
+                if(result !== true) {
+                    result.forEach(function (_ref) {
+                        var selected = "";
+                        // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                        s.append('<option value="'+_ref['id']+'" '+selected+' >'+_ref['Name'] +'</option>');
+                    });
+                    s.selectpicker('refresh');
+                }else{
+                    s.append('<option value="' + 0 + '" ' + ' >' + 'فرمی ثبت نشده' + '</option>');
+                }
             }
         });
     }

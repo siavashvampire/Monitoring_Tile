@@ -49,7 +49,6 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'virtualSensor', 'تنظیمات سنسورهای مجازی', app::getBaseAppLink('virtualSensor/List', 'admin'), 'fa fa-usb', '', 'admin/virtualSensor/index/LineMonitoring');
         $this->menu->addChild('configurationLine', 'storageSensor', 'تنظیمات سنسورهای دخیره ساز', app::getBaseAppLink('storageSensor/List', 'admin'), 'fa fa-usb', '', 'admin/storageSensor/index/LineMonitoring');
         $this->menu->addChild('configurationLine', 'CamSwitch', 'تنظیمات کلیدها', app::getBaseAppLink('CamSwitch', 'admin'), 'fa fa-usb', '', 'admin/CamSwitch/index/LineMonitoring');
-        $this->menu->addChild('configurationLine', 'tile', 'لیست کاشی‌ها', app::getBaseAppLink('tile', 'admin'), 'fa fa-delicious', '', 'admin/tile/index/LineMonitoring');
 
         $this->menu->after('configurationLine', 'configurationManufactor', 'تنظیمات کارخانه', "#", 'fa fa-building-o ', '', null, 'admin/off_sensor_reasons/lists/LineMonitoring');
 
@@ -186,15 +185,7 @@ class hook extends pluginController
             $this->mold->view('sensorReason.admin.hook.mold.html');
             $this->mold->path($getPath['folder'], $getPath['app']);
         }
-
-//        $search = model::searching( array()  ,  null  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
-//        $this->mold->set('sensorsChart' , $search);
-//        $getPath = $this->mold->getPath();
-//        $this->mold->path('default', 'LineMonitoring');
-//        $this->mold->view('chart.admin.hook.mold.html');
-//        $this->mold->path($getPath['folder'], $getPath['app']);
-
-    }
+            }
 
     public function _should_update()
     {

@@ -1,0 +1,56 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon" >
+                            <i class="fa fa-check-square-o fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "Poll"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-right text-bold">
+                                    {_ "filling_Action_Related_To_user"}
+                                <a href="{url 'admin'}users/profile/{$EvaluatedPerson.userId}" target="_blank"> {$EvaluatedPerson.fname} {$EvaluatedPerson.lname} </a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <form class="form-horizontal" method="post"  onsubmit="return confirm('آیا از ثبت نظر خود اطمینان دارید؟');" >
+
+                            <hr>
+                            <div class="row">
+                            {set "fillOutFieldServiceFormCssClassAllDiv","col-md-4"}
+                            {set "fillOutFieldServiceFormCssClassLabelDiv","col-md-3 col-form-label text-left"}
+                            {set "fillOutFieldServiceFormCssClassInputDiv","col-md-9 form-group has-default text-right"}
+                            {call fillOutFieldServiceForm}
+                            </div>
+
+                            <hr>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> {_ "insert"} {_ "Poll"}</button>
+                               </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map footerjs}
+<script>
+    var adminUrl = "{url 'admin'}";
+    function changeVote(element) {
+        var valueAcc = $(element).find(":selected").val();
+        window.location.href =adminUrl + 'contractAction/fill/' + valueAcc;
+    }
+</script>
+{/map}

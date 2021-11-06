@@ -1,18 +1,17 @@
 <?php
-namespace App\LineMonitoring\app_provider\admin;
+namespace App\product\app_provider\admin;
 
 use app\LineMonitoring\model\sensors;
-use app\LineMonitoring\model\tile_kind;
+use app\product\model\product_kind;
 use controller;
 use paymentCms\component\cache;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class tile extends controller {
+class product extends controller {
 	public function index(){
 		$get = request::post('page=1,perEachPage=25,name,width,length' ,null);
 		$rules = [
@@ -41,7 +40,7 @@ class tile extends controller {
 
 		}
         
-		/* @var tile_kind $model */
+		/* @var product_kind $model */
 		$model = parent::model('tile_kind');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , null, 'COUNT(id) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
@@ -54,7 +53,7 @@ class tile extends controller {
 	}
 
 	public function update(){
-		$get = request::post('id,label,tile_width,tile_length' ,null);
+		$get = request::post('id,label,tile_width,tile_length');
 		$rules = [
 			"label" => ["required", 'نام کاشی'],
 			"tile_width" => ["required|floatInt|match:>0", 'طول کاشی'],
@@ -67,7 +66,7 @@ class tile extends controller {
 			Response::jsonMessage($valid->errorsIn(),false);
 			return false;
 		}
-		/* @var tile_kind $model */
+		/* @var product_kind $model */
 		if ( $get['id'] != '' ) {
 			$model = parent::model('tile_kind', $get['id']);
 			if ( $model->getId() != $get['id']) {

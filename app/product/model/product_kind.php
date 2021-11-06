@@ -1,18 +1,16 @@
 <?php
 
 
-namespace App\LineMonitoring\model;
+namespace App\product\model;
 
 
-use paymentCms\component\browser;
 use paymentCms\component\model;
-use paymentCms\component\security;
 use paymentCms\model\modelInterFace ;
 
-class tile_kind extends model implements modelInterFace {
+class product_kind extends model implements modelInterFace {
 
-	private $primaryKey = ['tile_id'];
-	private $primaryKeyShouldNotInsertOrUpdate = 'tile_id';
+	private $primaryKey = ['id'];
+	private $primaryKeyShouldNotInsertOrUpdate = 'id';
 	private $id ;
 	private $label ;
 	private $tile_width ;
@@ -109,6 +107,6 @@ class tile_kind extends model implements modelInterFace {
 
 
     public function getItems() {
-		return parent::search( array()  ,  null  , 'tile_kind', '*'  , ['column' => 'id' , 'type' =>'asc'] );
+		return parent::search( array()  ,  null  , 'product_kind', '*'  , ['column' => 'id' , 'type' =>'asc'] );
 	}
 }

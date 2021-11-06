@@ -1,0 +1,251 @@
+﻿<style>
+    th.headerZero {
+        padding: 0!important;
+    }
+    .noHover{
+        pointer-events: none;
+    }
+</style>
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "search"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" method="post" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "action_name"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="typeName[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "action_name"}">
+                                                    {foreach from=$typeNames key=key value=access_item }
+                                                    <option value="{$access_item.id}" {if isset($Mold.post.typeName) and in_array($access_item.id, $Mold.post.typeName) }selected{/if}>{$access_item.Name}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "status"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="finished[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "status"}">
+                                                    <option value="1" {if isset($Mold.post.finished) and in_array(1, $Mold.post.finished)}selected{/if}>{_ "Completed"}</option>
+                                                    <option value="0" {if isset($Mold.post.finished) and in_array(0, $Mold.post.finished)}selected{/if}>{_ "NotCompleted"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "deadLine"} {_ "timing"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="confirmEnd[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "deadLine"}">
+                                                    <option value="0" {if isset($Mold.post.confirmEnd) and in_array(0, $Mold.post.confirmEnd)}selected{/if}>{_ "closed"}</option>
+                                                    <option value="1" {if isset($Mold.post.confirmEnd) and in_array(1, $Mold.post.confirmEnd)}selected{/if}>{_ "NotClosed"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "az"} {_ "date"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatePicker-from text-center" {if isset($Mold.post.startTime) and $Mold.post.startTime != ""}value="{$Mold.post.startTime|jDate:"j F, Y"}"{/if}>
+                                                <input type="hidden" name="startTime"   class="form-control persianJustDatePicker-from-alt text-center" {if isset($Mold.post.startTime) and $Mold.post.startTime != ""}value="{$Mold.post.startTime}"{/if}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "ta"} {_ "date"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatePicker-to text-center" {if isset($Mold.post.endTime) and $Mold.post.endTime != ""}value="{$Mold.post.endTime|jDate:"j F, Y"}"{/if}>
+                                                <input type="hidden" name="endTime"   class="form-control persianJustDatePicker-to-alt text-center" {if isset($Mold.post.endTime)  and $Mold.post.endTime != ""}value="{$Mold.post.endTime}"{/if}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "orderBy"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "orderBy"}">
+                                                    <option value="confirmDate*desc" {if isset($Mold.post.sortWith) and in_array("confirmDate*desc", $Mold.post.sortWith) }selected{/if}> {_ "deadLine"} {_ "Complete"} | {_ "descending"}</option>
+                                                    <option value="confirmDate*asc" {if isset($Mold.post.sortWith) and in_array("confirmDate*asc", $Mold.post.sortWith) }selected{/if}> {_ "deadLine"} {_ "Complete"} | {_ "ascending"}</option>
+                                                    <option value="type*desc" {if isset($Mold.post.sortWith) and in_array("type*desc", $Mold.post.sortWith) }selected{/if}>   {_ "action_name"} {_ "name"}| {_ "descending"}</option>
+                                                    <option value="type*asc" {if isset($Mold.post.sortWith) and in_array("type*asc", $Mold.post.sortWith) }selected{/if}>  {_ "action_name"} {_ "name"} | {_ "ascending"}</option>
+                                                    <option value="lname*desc" {if isset($Mold.post.sortWith) and in_array("lname*desc", $Mold.post.sortWith) }selected{/if}> {_ "lastName"} | {_ "descending"}</option>
+                                                    <option value="lname*asc" {if isset($Mold.post.sortWith) and in_array("lname*asc", $Mold.post.sortWith) }selected{/if}> {_ "lastName"} | {_ "ascending"}</option>
+                                                    <option value="groupName*desc" {if isset($Mold.post.sortWith) and in_array("groupName*desc", $Mold.post.sortWith) }selected{/if}>{_ "position"} | {_ "descending"}</option>
+                                                    <option value="groupName*asc" {if isset($Mold.post.sortWith) and in_array("groupName*asc", $Mold.post.sortWith) }selected{/if}>{_ "position"} | {_ "ascending"}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" data-toggle="collapse" data-target="#searchUsers" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "action_name"}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-right" id="tableExport">
+                                <thead>
+                                <tr style="border-bottom: 2.5px solid;border-top: 2.5px solid;border-color: darkcyan;">
+                                    <th style="width: 18%">{_ "name"} {_ "action_name"}</th>
+                                    <th style="width: 18%">{_ "group"}</th>
+                                    <th style="width: 18%">{_ "name"} {_ "individual"}</th>
+                                    <th style="width: 18%">{_ "deadLine"} {_ "Complete"}</th>
+                                    <th style="width: 18%;"></th>
+                                    {if $canChange == 1}
+                                        <th style="width: 15%;"></th>
+                                    {/if}
+                                    <th style="width: 10%;"></th>
+                                </tr>
+                                </thead>
+
+                                <tbody id="bodyBudget" style="border-collapse:collapse">
+                                {foreach from=$eval key=index value=Vote}
+                                    <tr>
+                                        <td colspan="4">
+                                            <table class="table text-{$text_align}" style="margin: unset!important;">
+                                                <thead style="border: 1.5px solid;border-bottom-style : hidden!important;">
+                                                    <tr>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="border: 2px solid!important;color:  darkcyan;">
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.typeName}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.groupName}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.fname} {$Vote.lname}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.createDate}</span></td>
+                                                </tr>
+                                                {foreach from=$allFields key=key2 value=fields}
+                                                    {if ($key2 == $index) }
+                                                        {foreach from=$fields key=key value=field}
+                                                            {if ( $key % 4 ) == 0 }<tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">{/if}
+                                                                {if $field.type == "checkbox" }
+                                                                    <td colspan="1" class="noHover">
+                                                                        {$field.title} :
+                                                                        {if isset($field.value) }
+                                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                                        {else}
+                                                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                                                        {/if}
+                                                                    </td>
+                                                                {else}
+                                                                    <td colspan="1" class="noHover">
+                                                                        {$field.title} :
+                                                                        {if isset($field.value) }
+                                                                        {$field.value}
+                                                                        {else}
+                                                                        ---
+                                                                        {/if}
+                                                                    </td>
+                                                                {/if}
+                                                            {if ( $key % 4 ) == 3 }</tr>{/if}
+
+                                                        {/foreach}
+                                                        {if ( $key % 4 ) == 2 }<td colspan="1" class="noHover"></td>{/if}
+                                                        {if ( $key % 4 ) == 1 }<td colspan="2" class="noHover"></td>{/if}
+                                                        {if ( $key % 4 ) == 0 }<td colspan="3" class="noHover"></td>{/if}
+                                                    {/if}
+                                                {/foreach}
+
+
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+                                        <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i><br>{$Vote.fname} {$Vote.lname}{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
+                                        {if $Vote.finished == 1}
+                                        <td><button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye"></i></button></td>
+                                        {/if}
+                                        {if $Vote.id != ""}
+                                            <td class="text-center"><a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a> </td>
+                                        {/if}
+
+                                    </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="6">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <a class="btn btn-info"  href="{url admin}evaluation">
+                              <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                              </span>
+            {_ "add"} {_ "action_name"} {_ "new"}
+        </a>
+    {/if}
+{/map}
+
+{map footerjs}
+<script>
+    function OpenDegree(obj) {
+        let picClass = obj.children[0];
+        let closestTr = obj.closest('tr');
+        let label = closestTr.getElementsByClassName('showHidden')
+        if (label[0].style.display == ""){
+            picClass.classList.remove('fa-eye-slash');
+            picClass.classList.add('fa-eye');
+            for (let i = 0; i < label.length; i++)
+                label[i].style.display = "none";
+        }
+        else{
+            picClass.classList.remove('fa-eye');
+            picClass.classList.add('fa-eye-slash');
+            for (let i = 0; i < label.length; i++)
+                label[i].style.display = "";
+        }
+    }
+</script>
+{/map}

@@ -2,7 +2,8 @@
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 return [
-    'TestManagerUserGroup'                              => 'گروه کاربری مدیر ارزیابی:',
+    'postManagerUserGroup'                              => 'گروه کاربری مدیر نامه ها:',
+    'postAgentUserGroup'                              => 'گروه کاربری دریافت کننده نامه ها:',
     'contracts'                                         => 'قرارداد ها',
     'contract'                                          => 'قرارداد',
     'contractsAndPollFields'                            => 'فیلد های قرارداد و نظر سنجی',
@@ -51,10 +52,10 @@ return [
     'notCompletedYet'                                   => 'همچنان تکمیل نشده است',
     'be'                                                => 'به',
     'testedGroup'                                       => 'گروه ارزیابی شونده',
-    'test'                                              => 'ارزیابی',
+    'action_name'                                       => 'طراحی',
     'deadLine'                                          => 'مهلت',
     'insert'                                            => 'ثبت',
-    'filling_Poll_Related_To_user'                      => 'شما در حال پر کردن ارزیابی در ارتباط با کاربر می باشید. ',
+    'filling_Action_Related_To_user'                    => 'شما در حال پر کردن نامه در ارتباط با کاربر می باشید. ',
     'confirmationAlarm'                                 => 'آیا از ثبت نظر خود اطمینان دارید؟ (نظر نهایی قابلیت ویرایش ندارد!) ',
     'group'                                             => 'گروه ',
     'type'                                              => 'نوع ',

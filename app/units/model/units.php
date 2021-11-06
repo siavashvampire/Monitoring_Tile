@@ -79,8 +79,8 @@ class units extends model implements modelInterFace {
     public function getCount($value = array(),$variable = array()) {
         return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'units', 'COUNT(id) as co' )) [0]['co'];
     }
-    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
-        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'units item', 'item.id ,item.label '  , ['column' => 'item.id' , 'type' =>'asc'] );
+    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.label' , 'type' =>'asc']) {
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'units item', 'item.id ,item.label '  , $sortWith );
     }
 
     public function getById($id){

@@ -24,10 +24,10 @@
                             <form class="form-horizontal" method="post" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "test"}</label>
+                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "action_name"}</label>
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
-                                                <select class="selectpicker selectpickerNotRefresh" multiple name="typeName[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "test"}">
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="typeName[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "action_name"}">
                                                     {foreach from=$typeNames key=key value=access_item }
                                                     <option value="{$access_item.id}" {if isset($Mold.post.typeName) and in_array($access_item.id, $Mold.post.typeName) }selected{/if}>{$access_item.Name}</option>
                                                     {/foreach}
@@ -86,8 +86,8 @@
                                                 <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "orderBy"}">
                                                     <option value="confirmDate*desc" {if isset($Mold.post.sortWith) and in_array("confirmDate*desc", $Mold.post.sortWith) }selected{/if}> {_ "deadLine"} {_ "Complete"} | {_ "descending"}</option>
                                                     <option value="confirmDate*asc" {if isset($Mold.post.sortWith) and in_array("confirmDate*asc", $Mold.post.sortWith) }selected{/if}> {_ "deadLine"} {_ "Complete"} | {_ "ascending"}</option>
-                                                    <option value="type*desc" {if isset($Mold.post.sortWith) and in_array("type*desc", $Mold.post.sortWith) }selected{/if}>   {_ "test"} {_ "name"}| {_ "descending"}</option>
-                                                    <option value="type*asc" {if isset($Mold.post.sortWith) and in_array("type*asc", $Mold.post.sortWith) }selected{/if}>  {_ "test"} {_ "name"} | {_ "ascending"}</option>
+                                                    <option value="type*desc" {if isset($Mold.post.sortWith) and in_array("type*desc", $Mold.post.sortWith) }selected{/if}>   {_ "action_name"} {_ "name"}| {_ "descending"}</option>
+                                                    <option value="type*asc" {if isset($Mold.post.sortWith) and in_array("type*asc", $Mold.post.sortWith) }selected{/if}>  {_ "action_name"} {_ "name"} | {_ "ascending"}</option>
                                                     <option value="lname*desc" {if isset($Mold.post.sortWith) and in_array("lname*desc", $Mold.post.sortWith) }selected{/if}> {_ "lastName"} | {_ "descending"}</option>
                                                     <option value="lname*asc" {if isset($Mold.post.sortWith) and in_array("lname*asc", $Mold.post.sortWith) }selected{/if}> {_ "lastName"} | {_ "ascending"}</option>
                                                     <option value="groupName*desc" {if isset($Mold.post.sortWith) and in_array("groupName*desc", $Mold.post.sortWith) }selected{/if}>{_ "position"} | {_ "descending"}</option>
@@ -116,14 +116,14 @@
                         <div class="card-icon">
                             <i class="fa fa-usb fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">{_ "test"}</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "action_name"}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table text-right" id="tableExport">
                                 <thead>
                                 <tr style="border-bottom: 2.5px solid;border-top: 2.5px solid;border-color: darkcyan;">
-                                    <th style="width: 18%">{_ "name"} {_ "test"}</th>
+                                    <th style="width: 18%">{_ "name"} {_ "action_name"}</th>
                                     <th style="width: 18%">{_ "group"}</th>
                                     <th style="width: 18%">{_ "name"} {_ "individual"}</th>
                                     <th style="width: 18%">{_ "deadLine"} {_ "Complete"}</th>
@@ -153,7 +153,7 @@
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.typeName}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.groupName}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.fname} {$Vote.lname}</span></td>
-                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.confirmDate}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.createDate}</span></td>
                                                 </tr>
                                                 {foreach from=$allFields key=key2 value=fields}
                                                     {if ($key2 == $index) }
@@ -192,16 +192,14 @@
                                             </table>
                                         </td>
 
-                                        <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i><br>{$Vote.evaluator_fname} {$Vote.evaluator_lname}{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
+                                        <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i><br>{$Vote.fname} {$Vote.lname}{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
                                         {if $Vote.finished == 1}
                                         <td><button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye"></i></button></td>
-                                        {else}
-                                            {if $Vote.id != ""}
-                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}evaluation/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a> </td>
-                                            {else}
-                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}evaluation/fill/{$Vote.semiId}/true"><i class="fa fa-pencil"></i></a> </td>
-                                            {/if}
                                         {/if}
+                                        {if $Vote.id != ""}
+                                            <td class="text-center"><a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a> </td>
+                                        {/if}
+
                                     </tr>
                                 {foreachelse}
                                 <tr>
@@ -225,7 +223,7 @@
                               <span class="btn-label">
                                 <i class="fa fa-plus"></i>
                               </span>
-            {_ "add"} {_ "test"} {_ "new"}
+            {_ "add"} {_ "action_name"} {_ "new"}
         </a>
     {/if}
 {/map}

@@ -2,6 +2,7 @@
 namespace App\units ;
 
 use app;
+use App\units\model\units;
 use pluginController;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -26,9 +27,11 @@ class hook extends pluginController {
 
     public function _fieldService_showToFillOut_units($vars2)
     {
+        /** @var units $model */
         $model = $this->model(['units', 'units']);
-        $searchFathers = $model->search('1', ' ?  ', null, '*', ['column' => 'label', 'type' => 'asc']);
+        $searchFathers = $model->getItems();
         $options = '';
+
         if (is_array($searchFathers))
             foreach ($searchFathers as $search) {
                 $selected = '';
@@ -54,11 +57,11 @@ class hook extends pluginController {
 </div>';
 
         return $html;
-
     }
 
     public function _fieldService_showValue_units($fieldInformation = null)
     {
+        /** @var units $model */
         $model = $this->model(['units', 'units'], $fieldInformation['value']);
         return $model->getLabel();
     }

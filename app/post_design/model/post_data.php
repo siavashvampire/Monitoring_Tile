@@ -11,11 +11,9 @@ class post_data extends model implements modelInterFace
     private $primaryKeyShouldNotInsertOrUpdate = 'id';
     private $id;
     private $type;
+    private $agent;
     private $createDate;
-    private $confirmDate;
     private $fillOutDate;
-    private $evaluated;
-    private $evaluator;
     private $creator;
     private $finished;
 
@@ -23,11 +21,9 @@ class post_data extends model implements modelInterFace
     {
         $this->id = $result['id'];
         $this->type = $result['type'];
+        $this->agent = $result['agent'];
         $this->createDate = $result['createDate'];
-        $this->confirmDate = $result['confirmDate'];
         $this->fillOutDate = $result['fillOutDate'];
-        $this->evaluated = $result['evaluated'];
-        $this->evaluator = $result['evaluator'];
         $this->creator = $result['creator'];
         $this->finished = $result['finished'];
     }
@@ -36,11 +32,9 @@ class post_data extends model implements modelInterFace
     {
         $array['id'] = $this->id;
         $array['type'] = $this->type;
+        $array['agent'] = $this->agent;
         $array['createDate'] = $this->createDate;
-        $array['confirmDate'] = $this->confirmDate;
         $array['fillOutDate'] = $this->fillOutDate;
-        $array['evaluated'] = $this->evaluated;
-        $array['evaluator'] = $this->evaluator;
         $array['creator'] = $this->creator;
         $array['finished'] = $this->finished;
         return $array;
@@ -73,7 +67,7 @@ class post_data extends model implements modelInterFace
     /**
      * @param mixed $id
      */
-    public function setId($id)
+    public function setId($id): void
     {
         $this->id = $id;
     }
@@ -89,9 +83,25 @@ class post_data extends model implements modelInterFace
     /**
      * @param mixed $type
      */
-    public function setType($type)
+    public function setType($type): void
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAgent()
+    {
+        return $this->agent;
+    }
+
+    /**
+     * @param mixed $agent
+     */
+    public function setAgent($agent): void
+    {
+        $this->agent = $agent;
     }
 
     /**
@@ -105,25 +115,9 @@ class post_data extends model implements modelInterFace
     /**
      * @param mixed $createDate
      */
-    public function setCreateDate($createDate)
+    public function setCreateDate($createDate): void
     {
         $this->createDate = $createDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfirmDate()
-    {
-        return $this->confirmDate;
-    }
-
-    /**
-     * @param mixed $confirmDate
-     */
-    public function setConfirmDate($confirmDate)
-    {
-        $this->confirmDate = $confirmDate;
     }
 
     /**
@@ -137,49 +131,9 @@ class post_data extends model implements modelInterFace
     /**
      * @param mixed $fillOutDate
      */
-    public function setFillOutDate($fillOutDate)
+    public function setFillOutDate($fillOutDate): void
     {
         $this->fillOutDate = $fillOutDate;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEvaluated()
-    {
-        return $this->evaluated;
-    }
-
-    /**
-     * @return array|bool|null
-     */
-    public function getEvaluatedPerson()
-    {
-        return parent::search([$this->evaluated], "userId = ?", 'user', '*', ['column' => 'userId', 'type' => 'asc']);
-    }
-
-    /**
-     * @param mixed $evaluated
-     */
-    public function setEvaluated($evaluated)
-    {
-        $this->evaluated = $evaluated;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEvaluator()
-    {
-        return $this->evaluator;
-    }
-
-    /**
-     * @param mixed $evaluator
-     */
-    public function setEvaluator($evaluator)
-    {
-        $this->evaluator = $evaluator;
     }
 
     /**
@@ -193,7 +147,7 @@ class post_data extends model implements modelInterFace
     /**
      * @param mixed $creator
      */
-    public function setCreator($creator)
+    public function setCreator($creator): void
     {
         $this->creator = $creator;
     }
@@ -209,43 +163,49 @@ class post_data extends model implements modelInterFace
     /**
      * @param mixed $finished
      */
-    public function setFinished($finished)
+    public function setFinished($finished): void
     {
         $this->finished = $finished;
+    }
+
+
+    /**
+     * @return array|bool|null
+     */
+    public function getEvaluatedPerson()
+    {
+        return parent::search([$this->agent], "userId = ?", 'user', '*', ['column' => 'userId', 'type' => 'asc']);
     }
 
     public function getEvaluationListWithoutExtra($userAdmin, $group_id, $value = array(), $variable = array())
     {
         $order = array();
-        $order[] = ['column' => 'post_data.confirmDate', 'type' => 'DESC'];
+        $order[] = ['column' => 'post_data.createDate', 'type' => 'DESC'];
         $order[] = ['column' => 'post_data.type', 'type' => 'asc'];
-        $order[] = ['column' => 'userEvaluated.lname', 'type' => 'asc'];
+        $order[] = ['column' => 'userAgent.lname', 'type' => 'asc'];
 
         $field = array();
-        $field[] = 'userEvaluated.fname';
-        $field[] = 'userEvaluated.lname';
-        $field[] = 'userEvaluator.fname as evaluator_fname';
-        $field[] = 'userEvaluator.lname as evaluator_lname';
+        $field[] = 'userAgent.fname';
+        $field[] = 'userAgent.lname';
         $field[] = 'type.evaluatedGroup as EvaluatedGroup';
         $field[] = 'type.evaluatorGroup';
-        $field[] = 'post_data.evaluator';
+        $field[] = 'post_data.agent';
         $field[] = 'user_groupEvaluated.name as groupName';
         $field[] = 'post_data.id';
-        $field[] = 'DATE_FORMAT(jdate(post_data.confirmDate), "%Y-%m-%d") AS confirmDate';
+        $field[] = 'DATE_FORMAT(jdate(post_data.createDate), "%Y-%m-%d") AS createDate';
         $field[] = 'post_data.finished';
         $field[] = 'post_data.type,type.Name as typeName';
 
-        model::join('user userEvaluated', 'post_data.evaluated =  userEvaluated.userId');
-        model::join('user userEvaluator', 'post_data.evaluator =  userEvaluator.userId');
+        model::join('user userAgent', 'post_data.agent =  userAgent.userId');
         model::join('user userCreator', 'post_data.creator =  userCreator.userId');
-        model::join('user_group user_groupEvaluated', 'user_groupEvaluated.user_groupId =  userEvaluated.user_group_id');
+        model::join('user_group user_groupEvaluated', 'user_groupEvaluated.user_groupId =  userAgent.user_group_id');
         model::join('post_type type', 'type.id =  post_data.type');
-        if ($userAdmin != $group_id) {
+        if ($userAdmin != $group_id and 0) {
             $value[] = $group_id;
             $variable[] = 'type.evaluatorGroup = ?';
         }
         $temp = parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), 'post_data post_data', implode(',', $field), $order);
-        if ($temp == true)
+        if ($temp === true)
             $temp = array();
         return ($temp);
     }
@@ -255,7 +215,7 @@ class post_data extends model implements modelInterFace
         $order = array();
         $order[] = ['column' => 'post_data.confirmDate', 'type' => 'DESC'];
         $order[] = ['column' => 'post_data.type', 'type' => 'asc'];
-        $order[] = ['column' => 'userEvaluated.lname', 'type' => 'asc'];
+        $order[] = ['column' => 'userAgent.lname', 'type' => 'asc'];
 
         $groupBy = array();
         $groupBy[] = 'post_data.type';
@@ -264,8 +224,8 @@ class post_data extends model implements modelInterFace
 
         $field = array();
         $field[] = 'MAX(IF(post_data.evaluator = ' . $user_id . ', 2, 1)) AS choose';
-        $field[] = 'userEvaluated.fname';
-        $field[] = 'userEvaluated.lname';
+        $field[] = 'userAgent.fname';
+        $field[] = 'userAgent.lname';
         $field[] = 'userEvaluator.fname as evaluator_fname';
         $field[] = 'userEvaluator.lname as evaluator_lname';
         $field[] = 'type.evaluatedGroup as EvaluatedGroup';
@@ -278,10 +238,10 @@ class post_data extends model implements modelInterFace
         $field[] = '0 as finished';
         $field[] = 'post_data.type,type.Name as typeName';
 
-        model::join('user userEvaluated', 'post_data.evaluated =  userEvaluated.userId');
+        model::join('user userAgent', 'post_data.evaluated =  userAgent.userId');
         model::join('user userEvaluator', 'post_data.evaluator =  userEvaluator.userId');
         model::join('user userCreator', 'post_data.creator =  userCreator.userId');
-        model::join('user_group user_groupEvaluated', 'user_groupEvaluated.user_groupId =  userEvaluated.user_group_id');
+        model::join('user_group user_groupEvaluated', 'user_groupEvaluated.user_groupId =  userAgent.user_group_id');
         model::join('post_type type', 'type.id =  post_data.type');
 
         $value[] = $group_id;
@@ -337,12 +297,6 @@ class post_data extends model implements modelInterFace
         array_multisort(...$sortColumn);
         $eval = end($sortColumn);
 
-        foreach ($eval as $index => $OneData) {
-            if ($OneData['finished'] == 1 and $finish == 0)
-                unset($eval[$index]);
-            if ($OneData['finished'] == 0 and $notFinish == 0)
-                unset($eval[$index]);
-        }
         if (count($eval) == 0)
             $eval = null;
         return $eval;

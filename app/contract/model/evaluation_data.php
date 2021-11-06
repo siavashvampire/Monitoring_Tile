@@ -245,7 +245,7 @@ class evaluation_data extends model implements modelInterFace
             $variable[] = 'type.evaluatorGroup = ?';
         }
         $temp = parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), 'evaluation_data evaluation_data', implode(',', $field), $order);
-        if ($temp == true)
+        if ($temp === true)
             $temp = array();
         return ($temp);
     }

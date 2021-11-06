@@ -43,27 +43,23 @@ return [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'type' => 'int(11) NOT NULL',
+                'agent' => "int(11) NOT NULL",
                 'createDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
-                'confirmDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'fillOutDate' => "datetime NULL DEFAULT NULL",
-                'evaluated' => "int(11) NOT NULL",
-                'evaluator' => "int(11) DEFAULT NULL",
                 'creator' => "int(11) NOT NULL",
                 'finished' => "TINYINT(1) NOT NULL DEFAULT 0",
             ],
             'KEY' => [
                 'type',
-                'evaluated',
                 'creator',
-                'evaluator',
+                'agent',
             ],
             'PRIMARY KEY' => [
                 'id'
             ],
             'REFERENCES' => [
-                'evaluated' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'agent' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'creator' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'evaluator' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'type' => ['table' => 'post_type', 'column' => 'id', 'on_delete' => 'CASCADE', 'on_update' => 'CASCADE'],
             ]
         ],
@@ -352,7 +348,5 @@ END ;",
 BEGIN
 	return (a - b * FLOOR(a / b));
 	END ;",
-
-
     ],
 ];

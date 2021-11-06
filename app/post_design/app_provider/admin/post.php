@@ -12,6 +12,7 @@ use App\user\app_provider\api\user;
 use App\user\model\user_group;
 use controller;
 use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -39,24 +40,21 @@ class post extends controller
         }
 
         if (request::isPost()) {
-            $get = request::post('confirm_time,group_id,evaluated,type_id');
-            $dateShamsi = explode('/', $get['confirm_time']);
-            $confirm_time = JDate::jalali_to_gregorian($dateShamsi[0], $dateShamsi[1], $dateShamsi[2], "-") . ' 23:59:59';
+            $get = request::post('confirm_time,group_id,Agent,type_id');
             $eval_data->setCreateDate(date('Y-m-d H:i:s'));
             $eval_data->setType($get['type_id']);
-            $eval_data->setConfirmDate($confirm_time);
             $eval_data->setCreator(user::getUserLogin(true));
             $eval_data->setFinished(false);
-            if ($get['evaluated'] == null) {
-                $get['evaluated'] = array();
-                $users = user::getUsersByGroupId($get['group_id'])["result"];
+            if ($get['Agent'] == null) {
+                $get['Agent'] = array();
+                $users = user::getUsersByGroupId((int)$this->setting('postAgent'))["result"];
                 foreach ($users as $user) {
-                    $get['evaluated'][] = $user["userId"];
+                    $get['Agent'][] = $user["userId"];
                 }
             }
             $okPos = true;
-            foreach ($get['evaluated'] as $evaluated) {
-                $eval_data->setEvaluated($evaluated);
+            foreach ($get['Agent'] as $evaluated) {
+                $eval_data->setAgent($evaluated);
                 if ($id != null) {
                     if (!$eval_data->upDateDataBase()) {
                         $okPos = false;
@@ -68,7 +66,7 @@ class post extends controller
                 }
             }
             if ($okPos) {
-                $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
+                $this->alert('success', '', 'نامه شما با موفقیت ثبت شد.');
             } else {
                 $this->alert('danger', '', 'لطفا مجددا تلاش کنید!');
             }
@@ -77,10 +75,11 @@ class post extends controller
         $_SERVER['JsonOff'] = true;
         $this->mold->set('user_group', user::getGroups()["result"]);
         unset($_SERVER['JsonOff']);
+        $this->mold->set('AgentGroup', (int)$this->setting('postAgent'));
         $this->mold->path('voteFillId', $id);
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation_choose.mold.html');
-        $this->mold->setPageTitle('ارزیابی');
+        $this->mold->setPageTitle('ثبت نامه');
         $this->mold->set('activeMenu', 'post_insert');
 
     }
@@ -88,6 +87,11 @@ class post extends controller
     public function list()
     {
         $get = request::post('page=1,perEachPage=25,typeName,finished,confirmEnd,startTime,endTime,sortWith', null);
+
+        /** @var post_data $post_data_model */
+        $post_data_model = $this->model(['post_design', 'post_data']);
+        /** @var post_type $post_type_model */
+        $post_type_model = $this->model(['post_design', 'post_type']);
 
         $user = user::getUserLogin();
         $value = array();
@@ -147,8 +151,8 @@ class post extends controller
             $variable[] = 'post_data.confirmDate >= ?';
         }
 
-        $eval = $this->model(['post_design', 'post_data'])->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, $get['finished']);
-        $type = $this->model(['post_design', 'post_type'])->getEvaluationTypeByUserGroupId($user["user_group_id"], (int)$this->setting('postAdmin'));
+        $eval = $post_data_model->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1]);
+        $type = $post_type_model->getEvaluationTypeByUserGroupId($user["user_group_id"], (int)$this->setting('postAdmin'));
 
         $allFields['result'] = [];
 
@@ -199,38 +203,30 @@ class post extends controller
         if (request::isPost()) {
             $get = request::post('name,receiver,numberDay,moreField,deleteField');
             $rules = [
-                "receiver" => ["required", 'گیرنده'],
-                "name" => ["required", 'نام ارزیابی'],
+                "name" => ["required", 'نام نامه'],
             ];
             $valid = validate::check($get, $rules);
             if ($valid->isFail()) {
                 $this->alert('danger', '', $valid->errorsIn());
             }
-            if (substr($get['receiver'], 0, 1) == 'U') {
-                $receiver = substr($get['receiver'], 1);
-                $UnitCheck = true;
-            } else {
-                $receiver = $get['receiver'];
-                $UnitCheck = false;
-            }
+
             $eval_type->setName($get['name']);
-            $eval_type->setEvaluatorGroup($receiver);
-            $eval_type->setCheckByUnit($UnitCheck);
-            $eval_type->setEvaluatedGroup($groupAccess);
-            $eval_type->setShowToReceiver($get['numberDay']);
+            $eval_type->setEvaluatorGroup((int)$this->setting('postAdmin'));
+            $eval_type->setCheckByUnit(false);
+            $eval_type->setEvaluatedGroup((int)$this->setting('postAgent'));
+            $eval_type->setShowToReceiver(1);
             if ($voteId != "") {
                 $eval_type->upDateDataBase();
             } else {
                 $eval_type->insertToDataBase();
             }
 
-
             $resultUpdateField = fieldService::updateFields($eval_type->getId(), 'post_type', $get['moreField'], $get['deleteField']);
             if (!$resultUpdateField['status']) {
                 $this->alert('warning', null, rlang('pleaseTryAGain') . '<br>' . $resultUpdateField['massage'], 'error');
             } else {
                 if ($voteId == null) {
-                    Response::redirect(App::getBaseAppLink('evaluation/evalFields/' . $groupAccess . '/' . $eval_type->getId(), 'admin'));
+                    Response::redirect(App::getBaseAppLink('post/evalFields/' . $groupAccess . '/' . $eval_type->getId(), 'admin'));
                     return true;
                 }
                 $this->alert('success', null, 'فیلد های نظرسنجی با موفقیت ویرایش شد');
@@ -239,7 +235,7 @@ class post extends controller
 
 
         $access = user::getGroups()["result"];
-        $eval = $model->search($groupAccess, ' evaluatedGroup = ?', 'post_type', 'name,id');
+        $eval = $model->search(null, null, 'post_type', 'name,id');
 
         $this->mold->set('access', $access);
         $this->mold->set('eval', $eval);
@@ -251,7 +247,7 @@ class post extends controller
         $this->mold->path('default', 'post_design');
         $this->mold->view('evaluation_typeEditor.mold.html');
         $this->mold->path('default');
-        $this->mold->setPageTitle('ارزیابی');
+        $this->mold->setPageTitle('فرم ساز');
         $this->mold->set('activeMenu', 'post');
         return null;
     }
@@ -273,10 +269,10 @@ class post extends controller
                 $eval_data->setFinished(false);
 
 
-            if (($eval_data->getEvaluated() != $userId and $eval_data->getFinished()) or ($eval_data->getId() != $id)) {
-                httpErrorHandler::E404();
-                return null;
-            }
+//            if (($eval_data->getEvaluated() != $userId and $eval_data->getFinished()) or ($eval_data->getId() != $id)) {
+//                httpErrorHandler::E404();
+//                return null;
+//            }
             if ($semi)
                 $eval_data->setId(null);
 
@@ -290,7 +286,7 @@ class post extends controller
 
             if ($semi) {
                 $eval_data->setFillOutDate(date('Y-m-d H:i:s'));
-                $eval_data->setEvaluator(user::getUserLogin(true));
+//                $eval_data->setEvaluator(user::getUserLogin(true));
                 $eval_data->setFinished(false);
                 $resultFirst = $eval_data->insertToDataBase();
             } else
@@ -301,18 +297,18 @@ class post extends controller
                 if ($fieldUpdate["status"] == false) {
                     $this->alert('danger', '', $fieldUpdate["massage"]);
                     if ($semi) {
-                        Response::redirect(app::getBaseAppLink('evaluation/fill/' . $eval_data->getId() . "/false/" . $fieldUpdate["massage"], 'admin'));
+                        Response::redirect(app::getBaseAppLink('post/fill/' . $eval_data->getId() . "/false/" . $fieldUpdate["massage"], 'admin'));
                         return null;
                     }
                 } else {
                     $eval_data->setFillOutDate(date('Y-m-d H:i:s'));
-                    $eval_data->setEvaluator(user::getUserLogin(true));
+//                    $eval_data->setEvaluator(user::getUserLogin(true));
                     $eval_data->setFinished(true);
 
                     $result = $eval_data->upDateDataBase();
 
                     if ($result) {
-                        Response::redirect(app::getBaseAppLink('evaluation/list', 'admin'));
+                        Response::redirect(app::getBaseAppLink('post/list', 'admin'));
                         return null;
                         $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
                     } else {

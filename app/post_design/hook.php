@@ -23,15 +23,15 @@ class hook extends pluginController
         $user = user::getUserLogin();
         $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
 
-        if ($contractsVote !== true and count($contractsVote) > 0) {
-            $this->mold->set('firstFillOutId', $contractsVote[0]['fillOutId']);
-            $this->mold->set('firstFillOutIdCount', count($contractsVote));
-
-            $getPath = $this->mold->getPath();
-            $this->mold->path('default', 'post_design');
-            $this->mold->view('newVote.admin.hook.mold.html');
-            $this->mold->path($getPath['folder'], $getPath['app']);
-        }
+//        if ($contractsVote !== true and count($contractsVote) > 0) {
+//            $this->mold->set('firstFillOutId', $contractsVote[0]['fillOutId']);
+//            $this->mold->set('firstFillOutIdCount', count($contractsVote));
+//
+//            $getPath = $this->mold->getPath();
+//            $this->mold->path('default', 'post_design');
+//            $this->mold->view('newVote.admin.hook.mold.html');
+//            $this->mold->path($getPath['folder'], $getPath['app']);
+//        }
     }
 
     public function _settingFooter()

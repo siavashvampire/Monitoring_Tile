@@ -16,6 +16,7 @@
                                 <tr>
                                     <th>کد {$item_label}</th>
                                     <th>نام {$item_label}</th>
+                                    <th>نام {_ "agent"}</th>
                                     <th style="width: 25px;"></th>
                                 </tr>
                                 </thead>
@@ -24,6 +25,7 @@
                                 <tr>
                                     <td>{$unit.id}</td>
                                     <td>{$unit.label}</td>
+                                    <td>{$unit.agentUser}</td>
                                     <td><button class="btn btn-link text-info" onclick="openUnitEditor('{$unit.id}','{$unit.label}','{$unit.agent}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}

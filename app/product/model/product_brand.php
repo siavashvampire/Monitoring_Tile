@@ -101,7 +101,8 @@ class product_brand extends model implements modelInterFace {
         return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product_brand', 'COUNT(id) as co' )) [0]['co'];
     }
     public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.label' , 'type' =>'asc']) {
-        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product_brand item', 'item.id ,item.label '  , $sortWith );
+        model::join('user agentUser', 'item.agent = agentUser.userId');
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product_brand item', 'item.id ,item.label,concat(agentUser.fname," ",agentUser.lname) as agentUser '  , $sortWith );
     }
 
     public function getByUsersId($id){

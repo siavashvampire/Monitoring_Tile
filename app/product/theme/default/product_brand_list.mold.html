@@ -66,7 +66,7 @@
                         <label class="col-md-3 col-form-label">{_ "name"} {_ "agent"} <span class="text-danger">*</span> </label>
                         <div class="col-md-9 text-right">
                             <div class="form-group has-default">
-                                <select class="selectpicker" required name="agent" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
+                                <select class="selectpicker" required name="agent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
                                     {foreach from=$agents key=key value=item }
                                     <option value="{$item.id}">{$item.fname} {$item.lname}</option>
                                     {/foreach}

@@ -96,17 +96,18 @@
 
 {map footerjs}
 <script>
-var urlc = '{url current}' ;
-var Tile_Names = $('#tile_kindParentDiv').html();
+    let urlc = '{url current}' ;
+let Tile_Names = $('#tile_kindParentDiv').html();
+let item_label = "{$item_label}";
 function openUnitEditor(id,name){
     if ( id === "" ){
-        $("#exampleModalLabel").html("اضافه کردن {$item_label} جدید");
+        $("#exampleModalLabel").html("اضافه کردن "+item_label+" جدید");
         $("#name").val("");
         $("#unitId").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
 //        show()
-        $("#exampleModalLabel").html("ویرایش {$item_label}");
+        $("#exampleModalLabel").html("ویرایش " + item_label);
         $("#name").val(name);
         $("#unitId").val(id);
         $('.selectPickerShouldRefresh').selectpicker('refresh');

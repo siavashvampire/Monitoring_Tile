@@ -256,10 +256,8 @@ class post extends controller
     {
         $semi = $semi == "true";
 
-        $userId = user::getUserLogin(true);
         if ($dangerText != "")
             $this->alert('danger', '', $dangerText);
-
 
         if ($id != null) {
             /* @var post_data $eval_data */
@@ -321,6 +319,19 @@ class post extends controller
 
         $fields = fieldService::showFilledOutFormWithAllFields($eval_data->getType(), 'post_type', $eval_data->getId(), 'post_data', true, $this->mold);
 
+        $user = $eval_data->getEvaluatedPerson()[0];
+        $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
+        $brand = false;
+        if (is_array($fields['result'])) {
+            foreach ($fields['result'] as $index => $fields) {
+                if ($fields['type'] == 'text') {
+                    $brand = $fields['value'];
+                }
+                if ($brand) break;
+            }
+        }
+
+        $this->mold->set('brand', $brand);
         $this->mold->set('EvaluatedPerson', $eval_data->getEvaluatedPerson()[0]);
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation.mold.html');

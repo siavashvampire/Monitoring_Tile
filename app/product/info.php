@@ -38,6 +38,19 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_punch' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
     ],
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}product_kind` (`id`, `label`,`tile_width`,`tile_length`) VALUES
@@ -47,10 +60,15 @@ return [
         (4 , '60-120' , 60 , 120),
         (5 , '80-80' , 80 , 80);",
         "INSERT IGNORE INTO `{prefix}product_glaze` (`id`, `label`) VALUES
-        (1 , 'Mat'),
-        (2 , 'مات'),
-        (3 , 'پولیش'),
-        (4 , 'مات شوگر(مطابق نمونه ارسالی از طرف نماینده)'),
-        (5 , 'مات و شوگر(سیلندر)');",
+        (1 , 'پولیش'),
+        (2 , 'شوگر'),
+        (3 , 'براق'),
+        (4 , 'مات hard'),
+        (5 , 'مات soft'),
+        (6 , 'پولیش طرح تیره');",
+        "INSERT IGNORE INTO `{prefix}product_punch` (`id`, `label`) VALUES
+        (1 , 'تخت'),
+        (2 , 'کونیک'),
+        (3 , 'آرشام');",
     ],
 ];

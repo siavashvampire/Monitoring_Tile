@@ -193,9 +193,11 @@
                                         </td>
 
                                         <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i><br>{$Vote.fname} {$Vote.lname}{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
+                                        <td>
                                         {if $Vote.finished == 1}
-                                        <td><button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye"></i></button></td>
+                                        <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye"></i></button>
                                         {/if}
+                                        </td>
                                         {if $Vote.id != ""}
                                             <td class="text-center"><a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a> </td>
                                         {/if}

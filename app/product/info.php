@@ -51,6 +51,20 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_brand' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'agent' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
     ],
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}product_kind` (`id`, `label`,`tile_width`,`tile_length`) VALUES

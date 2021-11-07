@@ -1,0 +1,130 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">لیست لعاب ها</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th>کد لعاب</th>
+                                    <th>نام لعاب</th>
+                                    <th style="width: 25px;"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$product_glaze key=key value=unit}
+                                <tr>
+                                    <td>{$unit.id}</td>
+                                    <td>{$unit.label}</td>
+                                    <td><button class="btn btn-link text-info" onclick="openUnitEditor('{$unit.id}','{$unit.label}')"><i class="fa fa-pencil"></i></button> </td>
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    تغییرات با موفقیت انجام شد.
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="sensors" class="col-form-label float-right">نام لعاب:</label>
+                        <input type="text" class="form-control" id="name" value="">
+                        <input type="hidden" class="form-control" id="unitId" value="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendUnit();" >ارسال</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+<button class="btn btn-info"  onclick="openUnitEditor('','')">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    اضافه کردن لعاب جدید
+</button>
+{/map}
+
+{map footerjs}
+<script>
+var urlc = '{url current}' ;
+var Tile_Names = $('#tile_kindParentDiv').html();
+function openUnitEditor(id,name){
+    if ( id === "" ){
+        $("#exampleModalLabel").html("اضافه کردن لعاب جدید");
+        $("#name").val("");
+        $("#unitId").val("");
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    } else {
+//        show()
+        $("#exampleModalLabel").html("ویرایش لعاب");
+        $("#name").val(name);
+        $("#unitId").val(id);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    }
+    $('.bmd-label-static').removeClass('bmd-label-static');
+    $('#sendDataButton').show();
+    $('#dataSendAlert').hide();
+    $('#exampleModal').modal('show');
+}
+function sendUnit(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'name': $('#name').val(),
+            'unitId': $('#unitId').val(),
+        } ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html("تغییرات با موفقیت انجام شد.").show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
+            }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
+</script>
+{/map}

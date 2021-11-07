@@ -24,7 +24,7 @@
                                 <tr>
                                     <td>{$unit.id}</td>
                                     <td>{$unit.label}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openUnitEditor('{$unit.id}','{$unit.label}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td><button class="btn btn-link text-info" onclick="openUnitEditor('{$unit.id}','{$unit.label}','{$unit.agent}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -62,16 +62,14 @@
                         <input type="text" class="form-control" id="name" value="">
                         <input type="hidden" class="form-control" id="unitId" value="">
                     </div>
-                    <div class="col-md-12">
-                        <label class="col-md-4 col-form-label">{_ "name"} {_ "agent"} <span class="text-danger">*</span> </label>
+                    <div class="col-md-12 form-group" id="agentDiv">
+                        <label class="col-md-4 col-form-label" for="agent">{_ "name"} {_ "agent"} <span class="text-danger">*</span> </label>
                         <div class="col-md-8 text-right">
-                            <div class="form-group has-default">
-                                <select class="selectpicker" required name="agent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
-                                    {foreach from=$agents key=key value=item }
-                                    <option value="{$item.id}">{$item.fname} {$item.lname}</option>
-                                    {/foreach}
-                                </select>
-                            </div>
+                            <select class="selectpicker" required id="agent" name="agent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
+                                {foreach from=$agents key=key value=item }
+                                    <option value="{$item.userId}">{$item.fname} {$item.lname}</option>
+                                {/foreach}
+                            </select>
                         </div>
                     </div>
                 </form>
@@ -86,7 +84,7 @@
 
 
 {map navBarButton}
-<button class="btn btn-info"  onclick="openUnitEditor('','')">
+<button class="btn btn-info"  onclick="openUnitEditor('','','')">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
@@ -97,19 +95,25 @@
 {map footerjs}
 <script>
     let urlc = '{url current}' ;
-let Tile_Names = $('#tile_kindParentDiv').html();
-let item_label = "{$item_label}";
-function openUnitEditor(id,name){
+    let Tile_Names = $('#tile_kindParentDiv').html();
+    let item_label = "{$item_label}";
+    let agents2 = $('#agentDiv').html();
+
+function openUnitEditor(id,name,user){
     if ( id === "" ){
         $("#exampleModalLabel").html("اضافه کردن "+item_label+" جدید");
         $("#name").val("");
         $("#unitId").val("");
+        // $("#agentDiv").html(agents2);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
-//        show()
         $("#exampleModalLabel").html("ویرایش " + item_label);
         $("#name").val(name);
         $("#unitId").val(id);
+        // $("#agentDiv").html(agents2).find('.selectpicker option')
+        //     .removeAttr('selected')
+        //     .filter('[value=\''+user+'\']')
+        //     .attr('selected', true);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     }
     $('.bmd-label-static').removeClass('bmd-label-static');
@@ -125,6 +129,7 @@ function sendUnit(){
         data: {
             'name': $('#name').val(),
             'unitId': $('#unitId').val(),
+            'agent': $('#agent').val(),
         } ,
         success: function (result) {
             if (result['status']) {

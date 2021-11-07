@@ -174,7 +174,7 @@ class post extends controller
 
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation_list.mold.html');
-        $this->mold->setPageTitle('ارزیابی');
+        $this->mold->setPageTitle('واحد فروش');
     }
 
     public function newType()

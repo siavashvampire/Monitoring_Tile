@@ -55,9 +55,10 @@ class product_brand extends controller {
 			Response::jsonMessage($valid->errorsIn(),false);
 			return false;
 		}
-        
+
+        /** @var \App\product\model\product_brand $model */
 		if ( $get['unitId'] != '' ) {
-			$model = parent::model('units', $get['unitId']);
+            $model = parent::model('product_brand', $get['unitId']);
 			if ( $model->getId() != $get['unitId']) {
 				Response::jsonMessage('واحد مد نظر یافت نشد!',false);
 				return false;
@@ -70,7 +71,7 @@ class product_brand extends controller {
             $Dis = $Dis . ' تغییر پیدا کرد';
             $model->upDateDataBase();
 		} else{
-			$model = parent::model('units');
+			$model = parent::model('product_brand');
             $model->setlabel($get['name']);
             $Dis = 'واحد  ';
             $Dis = $Dis . $model->getlabel();

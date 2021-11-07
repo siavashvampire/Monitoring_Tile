@@ -45,7 +45,7 @@ class post extends controller
             $eval_data->setCreateDate(date('Y-m-d H:i:s'));
             $eval_data->setType($get['type_id']);
             $eval_data->setCreator(user::getUserLogin(true));
-            $eval_data->setFinished(false);
+            $eval_data->setFinished(0);
             $eval_data->setPhase($get['phase']);
             $eval_data->setBrand($get['brand']);
             if ($get['Agent'] == null) {
@@ -56,18 +56,23 @@ class post extends controller
                 }
             }
             $okPos = true;
-            foreach ($get['Agent'] as $evaluated) {
-                $eval_data->setAgent($evaluated);
-                if ($id != null) {
-                    if (!$eval_data->upDateDataBase()) {
-                        $okPos = false;
-                    }
-                } else {
-                    if (!$eval_data->insertToDataBase()) {
-                        $okPos = false;
-                    }
-                }
+            $eval_data->setAgent($get['Agent']);
+            if (!$eval_data->insertToDataBase()) {
+                $okPos = false;
             }
+//            foreach ($get['Agent'] as $evaluated) {
+//
+//                $eval_data->setAgent($evaluated);
+//                if ($id != null) {
+//                    if (!$eval_data->upDateDataBase()) {
+//                        $okPos = false;
+//                    }
+//                } else {
+//                    if (!$eval_data->insertToDataBase()) {
+//                        $okPos = false;
+//                    }
+//                }
+//            }
             if ($okPos) {
                 $this->alert('success', '', 'نامه شما با موفقیت ثبت شد.');
             } else {
@@ -77,7 +82,7 @@ class post extends controller
         }
         $_SERVER['JsonOff'] = true;
         $this->mold->set('user_group', user::getGroups()["result"]);
-        $this->mold->set('phases' , phases::all()["result"]);
+        $this->mold->set('phases', phases::all()["result"]);
         unset($_SERVER['JsonOff']);
         $this->mold->set('AgentGroup', (int)$this->setting('postAgent'));
         $this->mold->path('voteFillId', $id);

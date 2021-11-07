@@ -45,6 +45,7 @@ return [
                 'type' => 'int(11) NOT NULL',
                 'agent' => "int(11) NOT NULL",
                 'phase' => "int(11) NOT NULL",
+                'brand' => "int(11) NOT NULL",
                 'createDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'fillOutDate' => "datetime NULL DEFAULT NULL",
                 'creator' => "int(11) NOT NULL",
@@ -55,6 +56,7 @@ return [
                 'creator',
                 'agent',
                 'phase',
+                'brand',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -64,6 +66,7 @@ return [
                 'creator' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'type' => ['table' => 'post_type', 'column' => 'id', 'on_delete' => 'CASCADE', 'on_update' => 'CASCADE'],
                 'phase' => ['table' => 'phases', 'column' => 'id', 'on_delete' => 'CASCADE', 'on_update' => 'CASCADE'],
+                'brand' => ['table' => 'product_brand', 'column' => 'id', 'on_delete' => 'CASCADE', 'on_update' => 'CASCADE'],
             ]
         ],
     ],

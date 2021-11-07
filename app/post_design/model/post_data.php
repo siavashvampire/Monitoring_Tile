@@ -16,6 +16,8 @@ class post_data extends model implements modelInterFace
     private $fillOutDate;
     private $creator;
     private $finished;
+    private $phase;
+    private $brand;
 
     public function setFromArray($result)
     {
@@ -26,6 +28,8 @@ class post_data extends model implements modelInterFace
         $this->fillOutDate = $result['fillOutDate'];
         $this->creator = $result['creator'];
         $this->finished = $result['finished'];
+        $this->phase = $result['phase'];
+        $this->brand = $result['brand'];
     }
 
     public function returnAsArray(): array
@@ -37,6 +41,8 @@ class post_data extends model implements modelInterFace
         $array['fillOutDate'] = $this->fillOutDate;
         $array['creator'] = $this->creator;
         $array['finished'] = $this->finished;
+        $array['phase'] = $this->phase;
+        $array['brand'] = $this->brand;
         return $array;
     }
 
@@ -168,10 +174,44 @@ class post_data extends model implements modelInterFace
         $this->finished = $finished;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPhase()
+    {
+        return $this->phase;
+    }
+
+    /**
+     * @param mixed $phase
+     */
+    public function setPhase($phase): void
+    {
+        $this->phase = $phase;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * @param mixed $brand
+     */
+    public function setBrand($brand): void
+    {
+        $this->brand = $brand;
+    }
+
+
 
     /**
      * @return array|bool|null
      */
+
     public function getEvaluatedPerson()
     {
         return parent::search([$this->agent], "userId = ?", 'user', '*', ['column' => 'userId', 'type' => 'asc']);

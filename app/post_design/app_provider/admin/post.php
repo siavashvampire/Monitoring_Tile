@@ -41,11 +41,13 @@ class post extends controller
         }
 
         if (request::isPost()) {
-            $get = request::post('confirm_time,group_id,Agent,type_id');
+            $get = request::post('confirm_time,group_id,Agent,type_id,brand,phase');
             $eval_data->setCreateDate(date('Y-m-d H:i:s'));
             $eval_data->setType($get['type_id']);
             $eval_data->setCreator(user::getUserLogin(true));
             $eval_data->setFinished(false);
+            $eval_data->setPhase($get['phase']);
+            $eval_data->setBrand($get['brand']);
             if ($get['Agent'] == null) {
                 $get['Agent'] = array();
                 $users = user::getUsersByGroupId((int)$this->setting('postAgent'))["result"];

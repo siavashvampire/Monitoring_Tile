@@ -30,6 +30,7 @@ class product_brand extends controller {
 
 		}
 
+        /** @var \App\product\model\product_brand $model */
 		$model = parent::model('product_brand');
         $numberOfAll = $model->getCount($value, $variable);
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
@@ -44,7 +45,7 @@ class product_brand extends controller {
 	}
 
 	public function update(){
-		$get = request::post('unitId,name' ,null);
+		$get = request::post('unitId,name,agent' ,null);
 		$rules = [
 			"name" => ["required", 'نام واحد'],
 		];
@@ -67,12 +68,14 @@ class product_brand extends controller {
             $Dis = $Dis . $model->getlabel();
             $Dis = $Dis . ' به واحد  ';
             $model->setlabel($get['name']);
+            $model->setAgent($get['agent']);
             $Dis = $Dis . $model->getlabel();
             $Dis = $Dis . ' تغییر پیدا کرد';
             $model->upDateDataBase();
 		} else{
 			$model = parent::model('product_brand');
             $model->setlabel($get['name']);
+            $model->setAgent($get['agent']);
             $Dis = 'واحد  ';
             $Dis = $Dis . $model->getlabel();
             $Dis = $Dis . ' ثبت شد';

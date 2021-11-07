@@ -335,6 +335,6 @@ class post extends controller
         $this->mold->set('EvaluatedPerson', $eval_data->getEvaluatedPerson()[0]);
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation.mold.html');
-        $this->mold->setPageTitle('ارزیابی');
+        $this->mold->setPageTitle('واحد فروش');
     }
 }

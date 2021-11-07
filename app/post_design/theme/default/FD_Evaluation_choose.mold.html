@@ -16,16 +16,39 @@
                                     <label class="col-md-3 col-form-label">{_ "name"} {_ "form"}<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default ">
-                                            <select id="type_select" class="selectpicker selectpickerNotRefresh" name="type_id" required data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام فرم">
+                                            <select id="type_select" class="selectpicker selectpickerNotRefresh" name="type_id" required data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "form"}">
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "agent"}</label>
+                                    <label class="col-md-3 col-form-label">{_ "phase"}<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default ">
-                                            <select id="person_select" class="selectpicker selectpickerNotRefresh" name="Agent[]" multiple data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام نماینده">
+                                            <select class="selectpicker selectpickerNotRefresh" required name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "phase"}">
+                                                {foreach from=$phases key=key value=phase }
+                                                <option value="{$phase.id}">{$phase.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="border: 1px solid darkcyan;">
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "agent"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select id="person_select" class="selectpicker selectpickerNotRefresh" required onchange="getBrand();" name="Agent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "agent"}">
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "brand"}<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default ">
+                                            <select id="brand_select" class="selectpicker selectpickerNotRefresh" required name="brand" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "name"} {_ "brand"}">
                                             </select>
                                         </div>
                                     </div>
@@ -87,6 +110,29 @@
                     s.selectpicker('refresh');
                 }else{
                     s.append('<option value="' + 0 + '" ' + ' >' + 'فرمی ثبت نشده' + '</option>');
+                }
+            }
+        });
+    }
+    function getBrand(userId){
+        $.ajax({
+            url: urlapi+'brand/getByUsersId/'+userId,
+            type: 'post',
+            dataType: 'json',
+            data: {
+            } ,
+            success: function (result) {
+                let s = $('#brand_select');
+                s.html("")
+                if(result !== true) {
+                    result.forEach(function (_ref) {
+                        var selected = "";
+                        // if (_ref['label'] ===  defaultValue) selected = "selected" ;
+                        s.append('<option value="' + _ref['id'] + '" ' + selected + ' >' + _ref['label'] + '</option>');
+                    });
+                    s.selectpicker('refresh');
+                }else{
+                    s.append('<option value="' + 0 + '" ' + ' >' + 'برندی ثبت نشده' + '</option>');
                 }
             }
         });

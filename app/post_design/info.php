@@ -44,6 +44,7 @@ return [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'type' => 'int(11) NOT NULL',
                 'agent' => "int(11) NOT NULL",
+                'phase' => "int(11) NOT NULL",
                 'createDate' => "datetime NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'fillOutDate' => "datetime NULL DEFAULT NULL",
                 'creator' => "int(11) NOT NULL",
@@ -53,6 +54,7 @@ return [
                 'type',
                 'creator',
                 'agent',
+                'phase',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -61,6 +63,7 @@ return [
                 'agent' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'creator' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'type' => ['table' => 'post_type', 'column' => 'id', 'on_delete' => 'CASCADE', 'on_update' => 'CASCADE'],
+                'phase' => ['table' => 'phases', 'column' => 'id', 'on_delete' => 'CASCADE', 'on_update' => 'CASCADE'],
             ]
         ],
     ],

@@ -5,6 +5,7 @@ namespace App\post_design\app_provider\admin;
 use App;
 use App\core\controller\fieldService;
 use App\core\controller\httpErrorHandler;
+use App\LineMonitoring\app_provider\api\phases;
 use app\post_design\model\post_type;
 use app\post_design\model\post_data;
 use App\user\app_provider\api\checkAccess;
@@ -74,6 +75,7 @@ class post extends controller
         }
         $_SERVER['JsonOff'] = true;
         $this->mold->set('user_group', user::getGroups()["result"]);
+        $this->mold->set('phases' , phases::all()["result"]);
         unset($_SERVER['JsonOff']);
         $this->mold->set('AgentGroup', (int)$this->setting('postAgent'));
         $this->mold->path('voteFillId', $id);
@@ -81,6 +83,7 @@ class post extends controller
         $this->mold->view('FD_Evaluation_choose.mold.html');
         $this->mold->setPageTitle('ثبت نامه');
         $this->mold->set('activeMenu', 'post_insert');
+
 
     }
 

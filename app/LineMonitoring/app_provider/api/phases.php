@@ -20,7 +20,10 @@ class phases extends innerController
             $value[] = '-4';
             $variable[] = 'item.id <> ?';
         }
-        return self::json(parent::model(['LineMonitoring', 'phases'])->getItems($value, $variable));
+
+        /** @var \App\LineMonitoring\model\phases $phase_model */
+        $phase_model = parent::model(['LineMonitoring', 'phases']);
+        return self::json($phase_model->getItems($value, $variable));
     }
 
     public static function all($ids = null): array
@@ -32,7 +35,9 @@ class phases extends innerController
             $variable[] = ' item.id IN ( ' . substr(str_repeat('? ,', count($ids)), 0, -1) . ')';
         }
 
-        return self::json(parent::model(['LineMonitoring', 'phases'])->getItems($value, $variable));
+        /** @var \App\LineMonitoring\model\phases $phase_model */
+        $phase_model = parent::model(['LineMonitoring', 'phases']);
+        return self::json($phase_model->getItems($value, $variable));
     }
 
     public function getById($ids): array

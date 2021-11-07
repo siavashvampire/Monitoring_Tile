@@ -104,11 +104,11 @@ class product_brand extends model implements modelInterFace {
         return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product_brand item', 'item.id ,item.label '  , $sortWith );
     }
 
-    public function getById($id){
+    public function getByUsersId($id){
         $value = array();
         $value[] = $id;
         $variable = array();
-        $variable[] = 'item.id = ?';
+        $variable[] = 'item.agent = ?';
         return parent::search(  $value  ,  implode(' and ' , $variable)  , 'product_brand item', 'item.id ,item.label' );
     }
 }

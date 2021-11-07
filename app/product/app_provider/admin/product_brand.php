@@ -1,6 +1,7 @@
 <?php
-namespace App\units\app_provider\admin;
+namespace App\product\app_provider\admin;
 
+use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -28,16 +29,18 @@ class product_brand extends controller {
 			}
 
 		}
-        
-		$model = parent::model('products_brand');
+
+		$model = parent::model('product_brand');
         $numberOfAll = $model->getCount($value, $variable);
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
         $search = $model->getItems($value, $variable, ['column' => 'id' , 'type' =>'asc'], $pagination);
-		$this->mold->path('default', 'units');
-		$this->mold->view('UnitsList.mold.html');
-		$this->mold->setPageTitle('لیست واحد ها');
-		$this->mold->set('activeMenu' , 'units');
+		$this->mold->path('default', 'product');
+		$this->mold->view('product_brand_list.mold.html');
+		$this->mold->setPageTitle('لیست برند ها');
+		$this->mold->set('activeMenu' , 'product_brand');
 		$this->mold->set('units' , $search);
+		$this->mold->set('item_label' , 'برند');
+		$this->mold->set('customers' , user::getUsersByGroupId((int)$this->setting('postAgent'))["result"]);
 	}
 
 	public function update(){

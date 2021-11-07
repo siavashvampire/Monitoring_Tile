@@ -7,15 +7,15 @@
                         <div class="card-icon">
                             <i class="fa fa-usb fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">لیست واحد ها</h4>
+                        <h4 class="card-title float-{$float} m-3">لیست {$item_label} ها</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th>کد واحد</th>
-                                    <th>نام واحد</th>
+                                    <th>کد {$item_label}</th>
+                                    <th>نام {$item_label}</th>
                                     <th style="width: 25px;"></th>
                                 </tr>
                                 </thead>
@@ -58,9 +58,21 @@
                 </div>
                 <form>
                     <div class="form-group">
-                        <label for="sensors" class="col-form-label float-right">نام واحد:</label>
+                        <label for="name" class="col-form-label float-right">نام {$item_label}:</label>
                         <input type="text" class="form-control" id="name" value="">
                         <input type="hidden" class="form-control" id="unitId" value="">
+                    </div>
+                    <div class="col-md-12">
+                        <label class="col-md-3 col-form-label">{_ "name"} {_ "agent"} <span class="text-danger">*</span> </label>
+                        <div class="col-md-9 text-right">
+                            <div class="form-group has-default">
+                                <select class="selectpicker" required name="customer" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
+                                    {foreach from=$customers key=key value=item }
+                                    <option value="{$item.id}">{$item.fname} {$item.lname}</option>
+                                    {/foreach}
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -78,7 +90,7 @@
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
-    اضافه کردن واحد جدید
+    اضافه کردن {$item_label} جدید
 </button>
 {/map}
 
@@ -88,13 +100,13 @@ var urlc = '{url current}' ;
 var Tile_Names = $('#tile_kindParentDiv').html();
 function openUnitEditor(id,name){
     if ( id === "" ){
-        $("#exampleModalLabel").html("اضافه کردن واحد جدید");
+        $("#exampleModalLabel").html("اضافه کردن {$item_label} جدید");
         $("#name").val("");
         $("#unitId").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
 //        show()
-        $("#exampleModalLabel").html("ویرایش واحد");
+        $("#exampleModalLabel").html("ویرایش {$item_label}");
         $("#name").val(name);
         $("#unitId").val(id);
         $('.selectPickerShouldRefresh').selectpicker('refresh');

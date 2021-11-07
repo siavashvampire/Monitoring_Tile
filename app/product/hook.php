@@ -13,6 +13,7 @@ class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
         $this->menu->addChild('configurationLine', 'tile', 'لیست کاشی‌ها', app::getBaseAppLink('product', 'admin'), 'fa fa-delicious', '', 'admin/product/index/product');
         $this->menu->addChild('configurationLine', 'product_glaze', 'لیست لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-delicious', '', 'admin/product_glaze/index/product');
+        $this->menu->addChild('configurationLine', 'product_brand', 'لیست برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2)

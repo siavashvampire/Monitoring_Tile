@@ -25,7 +25,7 @@ class hook extends pluginController {
         ];
     }
 
-    public function _fieldService_showToFillOut_productKind($vars2)
+    public function _fieldService_showToFillOut_productSize($vars2)
     {
         /* @var product_size $model */
         $model = $this->model(['product', 'product_size']);
@@ -56,7 +56,7 @@ class hook extends pluginController {
         return $html;
     }
 
-    public function _fieldService_showValue_productKind($fieldInformation = null)
+    public function _fieldService_showValue_productSize($fieldInformation = null)
     {
         /** @var product_size $model */
         $model = $this->model(['product', 'product_size'], $fieldInformation['value']);

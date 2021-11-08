@@ -167,7 +167,7 @@
                 <button type="button" class="btn btn-warning float-left" data-dismiss="modal"
                         style="position: absolute;">{_ "close"}
                 </button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendTile();">
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();">
                     {_ "send"}
                 </button>
             </div>
@@ -215,7 +215,7 @@
         $('#exampleModal').modal('show');
     }
 
-    function sendTile() {
+    function sendItem() {
         $.ajax({
             url: urlc + '/update',
             type: 'post',

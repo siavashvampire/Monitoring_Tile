@@ -155,4 +155,8 @@ return [
 	'ERROR_VALID_NOT_EMPTY' => 'فیلد {1} نباید خالی باشد',
 	'ERROR_INVALID_FORMAT' => 'فرمت {1} نا معتبر می باشد.',
 	'changeSuccessfully' => 'تغییرات با موفقیت انجام شد.',
+    'cantFindSpecific' => 'مد نظر یافت نشد!',
+    'with' => 'با',
+    'changed' => 'تغییر پیدا کرد',
+    'inserted' => 'ثبت شد',
 ];

@@ -2,7 +2,6 @@
 
 namespace App\product\app_provider\admin;
 
-use app\LineMonitoring\model\sensors;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -59,7 +58,7 @@ class product_size extends controller
         $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'label', 'type' => 'asc'], [$pagination['start'], $pagination['limit']]);
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->html_file_path);
-        $this->mold->setPageTitle('لیست ' . $this->item_label);
+        $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
@@ -71,10 +70,10 @@ class product_size extends controller
         /* @var \App\product\model\product_size $model */
         $get = request::post('id,label,width,length,thickness');
         $rules = [
-            "label" => ["required", 'نام ' . $this->item_label],
-            "width" => ["required|floatInt|match:>0", 'طول ' . $this->item_label],
-            "length" => ["required|floatInt|match:>0", 'عرض ' . $this->item_label],
-            "thickness" => ["required|floatInt|match:>0", 'ضخامت ' . $this->item_label],
+            "label" => ["required", rlang('name') . " " . $this->item_label],
+            "length" => ["required|floatInt|match:>0", rlang('length') . " " . $this->item_label],
+            "width" => ["required|floatInt|match:>0", rlang('width') . " " . $this->item_label],
+            "thickness" => ["required|floatInt|match:>0", rlang('thickness') . " " . $this->item_label],
         ];
         $valid = validate::check($get, $rules);
         $this->mold->offAutoCompile();
@@ -87,30 +86,35 @@ class product_size extends controller
         if ($get['id'] != '') {
             $model = parent::model($this->model_name, $get['id']);
             if ($model->getId() != $get['id']) {
-                Response::jsonMessage($this->item_label . ' مد نظر یافت نشد!', false);
+                Response::jsonMessage($this->item_label . " " . rlang('cantFindSpecific'), false);
                 return false;
             }
         } else
             $model = parent::model($this->model_name);
 
-        $model->setLength($get['length']);
+
+        $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
+        $Dis .= $model->getLabel() . " ";
+
         $model->setLabel($get['label']);
+        $model->setLength($get['length']);
         $model->setWidth($get['width']);
         $model->setThickness($get['thickness']);
-        $Dis = $this->item_label;
-        $Dis .= ' با نام ';
-        $Dis = $Dis . $model->getLabel();
+
         if ($get['id'] != '') {
-            $Dis = $Dis . ' تغییر یافت';
-            $this->callHooks('addLog', [$Dis, $this->log_name]);
+
+            $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
+            $Dis .= $model->getlabel() . " ";
+            $Dis .= rlang('changed');
             $model->upDateDataBase();
         } else {
-            $Dis = $Dis . ' ثبت شد';
-            $this->callHooks('addLog', [$Dis, $this->log_name]);
+            $Dis .= $model->getLabel() . " ";
+            $Dis = $Dis . rlang('inserted');
             $model->insertToDataBase();
         }
 
-        Response::jsonMessage('تغییرات انجام شد.', true);
+        $this->callHooks('addLog', [$Dis, $this->log_name]);
+        Response::jsonMessage(rlang('changeSuccessfully'), true);
         return false;
     }
 }

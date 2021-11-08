@@ -2,6 +2,51 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer" data-toggle="collapse"
+                         data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon">
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "search"}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm"
+                                  onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="col-md-3 col-form-label" for="label_search">{_ "name"}
+                                            {$item_label}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="label" id="label_search" autocomplete="off"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse"
+                                                data-target="#searchUsers" aria-expanded="false"
+                                                aria-controls="searchUsers">{_ "close"}
+                                        </button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
                 <div class="card" id="listToGetFromServer">
                     <div class="card-header card-header-info card-header-icon">
                         <div class="card-icon">
@@ -11,7 +56,7 @@
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table text-{$text_align}" id="tebleExport">
+                            <table class="table text-{$text_align}" id="tableExport">
                                 <thead>
                                 <tr>
                                     <th>کد {$item_label}</th>
@@ -26,7 +71,7 @@
                                     <td>{$unit.id}</td>
                                     <td>{$unit.label}</td>
                                     <td>{$unit.agentUser}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openUnitEditor('{$unit.id}','{$unit.label}','{$unit.agent}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td><button class="btn btn-link text-info" onclick="openItemEditor('{$unit.id}','{$unit.label}','{$unit.agent}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -56,29 +101,27 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-success text-right" id="dataSendAlert">
-                    تغییرات با موفقیت انجام شد.
+                    {_ "changeSuccessfully"}
                 </div>
                 <form>
                     <div class="form-group">
                         <label for="name" class="col-form-label float-right">نام {$item_label}:</label>
                         <input type="text" class="form-control" id="name" value="">
-                        <input type="hidden" class="form-control" id="unitId" value="">
+                        <input type="hidden" class="form-control" id="id" value="">
                     </div>
                     <div class="col-md-12 form-group" id="agentDiv">
-                        <label class="col-md-4 col-form-label" for="agent">{_ "name"} {_ "agent"} <span class="text-danger">*</span> </label>
-                        <div class="col-md-8 text-right">
-                            <select class="selectpicker" required id="agent" name="agent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
-                                {foreach from=$agents key=key value=item }
-                                    <option value="{$item.userId}">{$item.fname} {$item.lname}</option>
-                                {/foreach}
-                            </select>
-                        </div>
+                        <label class="col-form-label float-right" for="agent">{_ "name"} {_ "agent"} <span class="text-danger">*</span> </label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="agent" name="agent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "agent"}">
+                            {foreach from=$agents key=key value=item }
+                                <option value="{$item.userId}">{$item.fname} {$item.lname}</option>
+                            {/foreach}
+                        </select>
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendUnit();" >ارسال</button>
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();" >{_ "send"}</button>
             </div>
         </div>
     </div>
@@ -86,61 +129,62 @@
 
 
 {map navBarButton}
-<button class="btn btn-info"  onclick="openUnitEditor('','','')">
+<button class="btn btn-info"  onclick="openItemEditor('','','')">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
-    اضافه کردن {$item_label} جدید
+    {_ "add"} {$item_label} {_ "new"}
 </button>
 {/map}
 
 {map footerjs}
 <script>
     let urlc = '{url current}' ;
-    let Tile_Names = $('#tile_kindParentDiv').html();
-    let item_label = "{$item_label}";
-    let agents2 = $('#agentDiv').html();
+    let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+    let edit_item = '{_ "Edit"} {$item_label}';
+    let changeSuccessfully = '{_ "changeSuccessfully"}';
+    let agent = $('#agentDiv').html();
 
-function openUnitEditor(id,name,user){
-    if ( id === "" ){
-        $("#exampleModalLabel").html("اضافه کردن "+item_label+" جدید");
-        $("#name").val("");
-        $("#unitId").val("");
-        // $("#agentDiv").html(agents2);
-        $('.selectPickerShouldRefresh').selectpicker('refresh');
-    } else {
-        $("#exampleModalLabel").html("ویرایش " + item_label);
-        $("#name").val(name);
-        $("#unitId").val(id);
-        // $("#agentDiv").html(agents2).find('.selectpicker option')
-        //     .removeAttr('selected')
-        //     .filter('[value=\''+user+'\']')
-        //     .attr('selected', true);
-        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    function openItemEditor(id, name, user){
+        $("#agentDiv").html();
+        if ( id === "" ){
+            $('#exampleModalLabel').html(add_new_item);
+            $("#name").val("");
+            $("#id").val("");
+            $("#agentDiv").html(agent);
+            $('.selectPickerShouldRefresh').selectpicker('refresh');
+        } else {
+            $('#exampleModalLabel').html(edit_item + " " + name);
+            $("#name").val(name);
+            $("#id").val(id);
+            $("#agentDiv").html(agent).find('.selectpicker option')
+                .removeAttr('selected')
+                .filter('[value=\''+user+'\']')
+                .attr('selected', true);
+            $('.selectPickerShouldRefresh').selectpicker('refresh');
+        }
+        $('.bmd-label-static').removeClass('bmd-label-static');
+        $('#sendDataButton').show();
+        $('#dataSendAlert').hide();
+        $('#exampleModal').modal('show');
     }
-    $('.bmd-label-static').removeClass('bmd-label-static');
-    $('#sendDataButton').show();
-    $('#dataSendAlert').hide();
-    $('#exampleModal').modal('show');
-}
-function sendUnit(){
+    function sendItem(){
     $.ajax({
         url: urlc+'/update',
         type: 'post',
         dataType: 'json',
         data: {
-            'name': $('#name').val(),
-            'unitId': $('#unitId').val(),
+            'label': $('#name').val(),
+            'id': $('#id').val(),
             'agent': $('#agent').val(),
         } ,
         success: function (result) {
             if (result['status']) {
-                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html("تغییرات با موفقیت انجام شد.").show();
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
                 $('#sendDataButton').hide();
                 load();
                 return false;
-            }
-            else {
+            } else {
                 $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
             }
         }

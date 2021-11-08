@@ -172,17 +172,18 @@
                                                                     <td colspan="1" class="noHover">
                                                                         {$field.title} :
                                                                         {if isset($field.value) }
-                                                                        {if $field.type == 'date' }{$field.value|jDate:"Y/n/j"}
-
-                                                                        {elseif substr($field.type,0,10) == 'fieldCall_'}
-                                                                        {setExplode name='tempExplodeHook' value=$field.type explode='_'}
-                                                                        {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
-                                                                        {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
-                                                                        {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
-
-
-                                                                        {else}
-                                                                        {$field.value}{/if}
+                                                                            {if $field.type == 'date' }
+                                                                                {$field.value|jDate:"Y/n/j"}
+                                                                            {elseif substr($field.type,0,10) == 'fieldCall_'}
+                                                                                {setExplode name='tempExplodeHook' value=$field.type explode='_'}
+                                                                                {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
+                                                                                {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
+                                                                                {if $tempExplodeHook2 != 'Function Error!'}
+                                                                                    {$tempExplodeHook2}
+                                                                                {/if}
+                                                                            {else}
+                                                                                {$field.value}
+                                                                            {/if}
                                                                         {else}
                                                                         ---
                                                                         {/if}

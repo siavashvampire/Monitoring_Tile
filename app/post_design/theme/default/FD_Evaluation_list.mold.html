@@ -195,12 +195,12 @@
                                         <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i>{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
                                         <td>
                                             {if $Vote.finished == 1}
-                                                <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;transform: translate(0%, 50%);" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                                <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                             {/if}
                                         </td>
                                         <td>
                                             {if $Vote.id != ""}
-                                                <a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}" style="transform: translate(0%, 50%);"><i class="fa fa-pencil"></i></a>
+                                                <a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a>
                                             {/if}
                                         </td>
 

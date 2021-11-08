@@ -12,24 +12,24 @@ class post_data extends model implements modelInterFace
     private $id;
     private $type;
     private $agent;
+    private $phase;
+    private $brand;
     private $createDate;
     private $fillOutDate;
     private $creator;
     private $finished;
-    private $phase;
-    private $brand;
 
     public function setFromArray($result)
     {
         $this->id = $result['id'];
         $this->type = $result['type'];
         $this->agent = $result['agent'];
+        $this->phase = $result['phase'];
+        $this->brand = $result['brand'];
         $this->createDate = $result['createDate'];
         $this->fillOutDate = $result['fillOutDate'];
         $this->creator = $result['creator'];
         $this->finished = $result['finished'];
-        $this->phase = $result['phase'];
-        $this->brand = $result['brand'];
     }
 
     public function returnAsArray(): array
@@ -37,12 +37,12 @@ class post_data extends model implements modelInterFace
         $array['id'] = $this->id;
         $array['type'] = $this->type;
         $array['agent'] = $this->agent;
+        $array['phase'] = $this->phase;
+        $array['brand'] = $this->brand;
         $array['createDate'] = $this->createDate;
         $array['fillOutDate'] = $this->fillOutDate;
         $array['creator'] = $this->creator;
         $array['finished'] = $this->finished;
-        $array['phase'] = $this->phase;
-        $array['brand'] = $this->brand;
         return $array;
     }
 
@@ -207,7 +207,6 @@ class post_data extends model implements modelInterFace
     }
 
 
-
     /**
      * @return array|bool|null
      */
@@ -230,6 +229,8 @@ class post_data extends model implements modelInterFace
         $field[] = 'type.evaluatedGroup as EvaluatedGroup';
         $field[] = 'type.evaluatorGroup';
         $field[] = 'post_data.agent';
+        $field[] = 'phase.label as phase';
+        $field[] = 'brand.label as brand';
         $field[] = 'user_groupEvaluated.name as groupName';
         $field[] = 'post_data.id';
         $field[] = 'DATE_FORMAT(jdate(post_data.createDate), "%Y-%m-%d") AS createDate';
@@ -240,6 +241,9 @@ class post_data extends model implements modelInterFace
         model::join('user userCreator', 'post_data.creator =  userCreator.userId');
         model::join('user_group user_groupEvaluated', 'user_groupEvaluated.user_groupId =  userAgent.user_group_id');
         model::join('post_type type', 'type.id =  post_data.type');
+        model::join('phases phase', 'phase.id =  post_data.phase');
+        model::join('product_brand brand', 'brand.id =  post_data.brand');
+
         if ($userAdmin != $group_id and 0) {
             $value[] = $group_id;
             $variable[] = 'type.evaluatorGroup = ?';
@@ -266,6 +270,8 @@ class post_data extends model implements modelInterFace
         $field[] = 'MAX(IF(post_data.evaluator = ' . $user_id . ', 2, 1)) AS choose';
         $field[] = 'userAgent.fname';
         $field[] = 'userAgent.lname';
+        $field[] = 'phase.label as phase';
+        $field[] = 'brand.label as brand';
         $field[] = 'userEvaluator.fname as evaluator_fname';
         $field[] = 'userEvaluator.lname as evaluator_lname';
         $field[] = 'type.evaluatedGroup as EvaluatedGroup';
@@ -283,6 +289,8 @@ class post_data extends model implements modelInterFace
         model::join('user userCreator', 'post_data.creator =  userCreator.userId');
         model::join('user_group user_groupEvaluated', 'user_groupEvaluated.user_groupId =  userAgent.user_group_id');
         model::join('post_type type', 'type.id =  post_data.type');
+        model::join('phases phase', 'phase.id =  post_data.phase');
+        model::join('product_brand brand', 'brand.id =  post_data.brand');
 
         $value[] = $group_id;
         $variable[] = 'type.evaluatorGroup = ?';

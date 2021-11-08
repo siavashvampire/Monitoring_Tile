@@ -123,9 +123,9 @@
                             <table class="table text-right" id="tableExport">
                                 <thead>
                                 <tr style="border-bottom: 2.5px solid;border-top: 2.5px solid;border-color: darkcyan;">
-                                    <th style="width: 18%">{_ "name"} {_ "form"}</th>
-                                    <th style="width: 18%">{_ "group"}</th>
                                     <th style="width: 18%">{_ "name"} {_ "agent"}</th>
+                                    <th style="width: 18%">{_ "brand"}</th>
+                                    <th style="width: 18%">{_ "phase"}</th>
                                     <th style="width: 18%">{_ "date"} {_ "insert"}</th>
                                     <th style="width: 18%;"></th>
                                     {if $canChange == 1}
@@ -150,9 +150,9 @@
                                                 </thead>
                                                 <tbody>
                                                 <tr style="border: 2px solid!important;color:  darkcyan;">
-                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.typeName}</span></td>
-                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.groupName}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.fname} {$Vote.lname}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.brand}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.phase}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.createDate}</span></td>
                                                 </tr>
                                                 {foreach from=$allFields key=key2 value=fields}
@@ -192,15 +192,17 @@
                                             </table>
                                         </td>
 
-                                        <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i><br>{$Vote.fname} {$Vote.lname}{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
+                                        <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i>{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
                                         <td>
-                                        {if $Vote.finished == 1}
-                                        <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye"></i></button>
-                                        {/if}
+                                            {if $Vote.finished == 1}
+                                                <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;transform: translate(0%, 50%);" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                            {/if}
                                         </td>
-                                        {if $Vote.id != ""}
-                                            <td class="text-center"><a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a> </td>
-                                        {/if}
+                                        <td>
+                                            {if $Vote.id != ""}
+                                                <a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}" style="transform: translate(0%, 50%);"><i class="fa fa-pencil"></i></a>
+                                            {/if}
+                                        </td>
 
                                     </tr>
                                 {foreachelse}

@@ -14,8 +14,9 @@ return [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-                'tile_width' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-                'tile_length' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'width' => "INT(11) NOT NULL DEFAULT '0'",
+                'length' => "INT(11) NOT NULL DEFAULT '0'",
+                'thickness' => "INT(11) NOT NULL DEFAULT '0'",
             ],
             'KEY' => [
             ],

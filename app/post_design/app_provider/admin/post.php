@@ -170,7 +170,6 @@ class post extends controller
             $allField = fieldService::showFilledOutForm($evalOne["type"], 'post_type', $evalOne["id"], 'post_data');
             $allFields['result'][] = $allField['result'];
         }
-
         $editAccess = checkAccess::index($user['user_group_id'], 'admin', 'post', 'index', 'post_design')["status"];
 
         $this->mold->set('editAccess', $editAccess);

@@ -4,7 +4,7 @@ namespace App\post_design;
 
 use app;
 use App\core\controller\fieldService;
-use App\product\model\product_kind;
+use App\product\model\product_size;
 use App\user\app_provider\api\user;
 use paymentCms\component\cache;
 use paymentCms\component\model;

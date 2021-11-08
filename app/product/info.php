@@ -10,7 +10,7 @@ return [
     'configuration' => [
     ],
     'db' => [
-        'product_kind' => [
+        'product_size' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
@@ -67,7 +67,7 @@ return [
         ],
     ],
     'sqlInstall' => [
-        "INSERT IGNORE INTO `{prefix}product_kind` (`id`, `label`,`tile_width`,`tile_length`) VALUES
+        "INSERT IGNORE INTO `{prefix}product_size` (`id`, `label`,`tile_width`,`tile_length`) VALUES
         (1 , '30-90' , 30 , 90),
         (2 , '80-120' , 80 , 120),
         (3 , '60-60' , 60 , 60),

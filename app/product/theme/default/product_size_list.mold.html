@@ -3,46 +3,69 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
-                        <div class="card-icon" >
+                    <div class="card-header card-header-info card-header-icon pointer" data-toggle="collapse"
+                         data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon">
                             <i class="material-icons">search</i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">جستجو</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "search"}</h4>
                     </div>
                     <div class="collapse" id="searchUsers">
                         <div class="card-body">
                             {set loadDivID,"#listToGetFromServer"}
                             {set loadDivIDInHtml,"listToGetFromServer"}
-                            <form class="form-horizontal" id="listToGetFromServerForm" onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                            <form class="form-horizontal" id="listToGetFromServerForm"
+                                  onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label class="col-md-3 col-form-label" for="label_search">{_ "name"}
+                                            {$item_label}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" name="label" id="label_search" autocomplete="off"
+                                                       class="form-control">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">نام کاشی</label>
+                                        <label class="col-md-3 col-form-label" for="width_search">{_ "length"} - {_
+                                            "length_unit_label"}</label>
                                         <div class="col-md-9">
-                                           <div class="form-group has-default">
-                                               <input type="text" name="name" autocomplete="off" class="form-control">
-                                           </div>
+                                            <div class="form-group has-default">
+                                                <input type="number" min="0" name="width" id="width_search"
+                                                       autocomplete="off" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">طول - cm</label>
+                                        <label class="col-md-3 col-form-label" for="length_search">{_ "width"} - {_
+                                            "length_unit_label"}</label>
                                         <div class="col-md-9">
-                                           <div class="form-group has-default">
-                                               <input type="text" name="width" autocomplete="off" class="form-control">
-                                           </div>
+                                            <div class="form-group has-default">
+                                                <input type="number" min="0" name="length" id="length_search"
+                                                       autocomplete="off" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">عرض - cm</label>
+                                        <label class="col-md-3 col-form-label" for="thickness_search">{_ "thickness"} -
+                                            {_ "length_unit_label"}</label>
                                         <div class="col-md-9">
-                                           <div class="form-group has-default">
-                                               <input type="text" name="length" autocomplete="off" class="form-control">
-                                           </div>
+                                            <div class="form-group has-default">
+                                                <input type="number" min="0" name="thickness" id="thickness_search"
+                                                       autocomplete="off" class="form-control">
+                                            </div>
                                         </div>
                                     </div>
-                                   <div class="col-md-12">
-                                       <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
-                                       <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
-                                   </div>
+                                    <div class="col-md-12">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse"
+                                                data-target="#searchUsers" aria-expanded="false"
+                                                aria-controls="searchUsers">{_ "close"}
+                                        </button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
                                 </div>
                             </form>
                         </div>
@@ -59,26 +82,32 @@
                         <div class="card-icon">
                             <i class="fa fa-delicious fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">لیست کاشی ها</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table text-{$text_align}" id="tebleExport">
+                            <table class="table text-{$text_align}" id="tableExport">
                                 <thead>
                                 <tr>
-                                    <th style="width: 32%">نام کاشی</th>
-                                    <th style="width: 32%">طول</th>
-                                    <th style="width: 32%">عرض</th>
+                                    <th style="width: 24%">{_ "name"} {$item_label}</th>
+                                    <th style="width: 24%">{_ "length"}</th>
+                                    <th style="width: 24%">{_ "width"}</th>
+                                    <th style="width: 24%">{_ "thickness"}</th>
                                     <th style="width: 4%"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {foreach from=$tiles key=key value=tile}
+                                {foreach from=$items key=key value=item}
                                 <tr>
-                                    <td >{$tile.label}</td>
-                                    <td >{$tile.tile_width}cm</td>
-                                    <td >{$tile.tile_length}cm</td>
-                                    <td ><button class="btn btn-link text-info" onclick="openTileEditor('{$tile.id}','{$tile.label}','{$tile.tile_length}','{$tile.tile_width}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td>{$item.label}</td>
+                                    <td>{$item.width}{_ "length_unit_label"}</td>
+                                    <td>{$item.length}{_ "length_unit_label"}</td>
+                                    <td>{$item.thickness}{_ "length_unit_label"}</td>
+                                    <td>
+                                        <button class="btn btn-link text-info"
+                                                onclick="openItemEditor('{$item.id}','{$item.label}','{$item.length}','{$item.width}','{$item.thickness}')">
+                                            <i class="fa fa-pencil"></i></button>
+                                    </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -97,7 +126,8 @@
 </div>
 
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -108,27 +138,38 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-success text-right" id="dataSendAlert">
-                    تغییرات با موفقیت انجام شد.
+                    {_ "changeSuccessfully"}
                 </div>
                 <form>
                     <div class="form-group">
-                        <label for="label" class="col-form-label float-right">نام کاشی:</label>
+                        <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="label" value="">
                         <input type="hidden" class="form-control" id="id" value="">
                     </div>
                     <div class="form-group">
-                        <label for="tile_width" class="col-form-label float-right">طول - cm:</label>
-                        <input class="form-control" id="tile_width" value="">
+                        <label for="width_send" class="col-form-label float-right">{_ "length"} - {_
+                            "length_unit_label"}:</label>
+                        <input type="number" min="0" class="form-control" id="width_send" value="0">
                     </div>
                     <div class="form-group">
-                        <label for="tile_length" class="col-form-label float-right">عرض - cm:</label>
-                        <input class="form-control" id="tile_length" value="">
+                        <label for="length_send" class="col-form-label float-right">{_ "width"} - {_
+                            "length_unit_label"}:</label>
+                        <input type="number" min="0" class="form-control" id="length_send" value="0">
+                    </div>
+                    <div class="form-group">
+                        <label for="thickness_send" class="col-form-label float-right">{_ "thickness"} - {_
+                            "length_unit_label"}:</label>
+                        <input type="number" min="0" class="form-control" id="thickness_send" value="0">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendTile();" >ارسال</button>
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal"
+                        style="position: absolute;">{_ "close"}
+                </button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendTile();">
+                    {_ "send"}
+                </button>
             </div>
         </div>
     </div>
@@ -136,60 +177,67 @@
 
 
 {map navBarButton}
-<button class="btn btn-info"  onclick="openTileEditor('','','','')">
+<button class="btn btn-info" onclick="openItemEditor('','','','','')">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
-    اضافه کردن کاشی جدید
+    {_ "add"} {$item_label} {_ "new"}
 </button>
 {/map}
 
 {map footerjs}
 <script>
-var urlc = '{url current}' ;
-var div = '{$loadDivID}' ;
-function openTileEditor(id,name,lenght,width){
-    if ( id === "" ){
-        $("#exampleModalLabel").html("اضافه کردن کاشی جدید");
-        $("#label").val("");
-        $("#id").val("");
-        $("#tile_length").val("");
-        $("#tile_width").val("");
-    } else {
-        $("#exampleModalLabel").html("ویرایش نوع کاشی");
-        $("#label").val(name);
-        $("#id").val(id);
-        $("#tile_length").val(lenght);
-        $("#tile_width").val(width);
-    }
-    $('.bmd-label-static').removeClass('bmd-label-static');
-    $('#sendDataButton').show();
-    $('#dataSendAlert').hide();
-    $('#exampleModal').modal('show');
-}
-function sendTile(){
-    $.ajax({
-        url: urlc+'/update',
-        type: 'post',
-        dataType: 'json',
-        data: {
-            'label': $('#label').val(),
-            'id': $('#id').val(),
-            'tile_length': $('#tile_length').val(),
-            'tile_width': $('#tile_width').val()
-        } ,
-        success: function (result) {
-            if (result['status']) {
-                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html("تغییرات با موفقیت انجام شد.").show();
-                $('#sendDataButton').hide();
-                load();
-                return false;
-            }
-            else {
-                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
-            }
+    let urlc = '{url current}';
+    let div = '{$loadDivID}';
+    let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+    let edit_item = '{_ "Edit"} {$item_label}';
+    let changeSuccessfully = '{_ "changeSuccessfully"}';
+
+    function openItemEditor(id, name, length, width, thickness) {
+        if (id === "") {
+            $('#exampleModalLabel').html(add_new_item);
+            $('#label').val("");
+            $('#id').val("");
+            $('#length_send').val("");
+            $('#width_send').val("");
+            $('#thickness_send').val("");
+        } else {
+            $('#exampleModalLabel').html(edit_item + " " + name);
+            $('#label').val(name);
+            $('#id').val(id);
+            $('#length_send').val(length);
+            $('#width_send').val(width);
+            $('#thickness_send').val(thickness);
         }
-    });
-}
+        $('.bmd-label-static').removeClass('bmd-label-static');
+        $('#sendDataButton').show();
+        $('#dataSendAlert').hide();
+        $('#exampleModal').modal('show');
+    }
+
+    function sendTile() {
+        $.ajax({
+            url: urlc + '/update',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'label': $('#label').val(),
+                'id': $('#id').val(),
+                'length': $('#length_send').val(),
+                'width': $('#width_send').val(),
+                'thickness': $('#thickness_send').val(),
+            },
+            success: function (result) {
+                if (result['status']) {
+                    $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
+                    $('#sendDataButton').hide();
+                    load();
+                    return false;
+                } else {
+                    $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+                }
+            }
+        });
+    }
 </script>
 {/map}

@@ -5,73 +5,53 @@ namespace App\product\model;
 
 
 use paymentCms\component\model;
-use paymentCms\model\modelInterFace ;
+use paymentCms\model\modelInterFace;
 
-class product_kind extends model implements modelInterFace {
+class product_size extends model implements modelInterFace
+{
 
-	private $primaryKey = ['id'];
-	private $primaryKeyShouldNotInsertOrUpdate = 'id';
-	private $id ;
-	private $label ;
-	private $tile_width ;
-	private $tile_length ;
+    private $primaryKey = ['id'];
+    private $primaryKeyShouldNotInsertOrUpdate = 'id';
+    private $id;
+    private $label;
+    private $width;
+    private $length;
+    private $thickness;
 
-	public function setFromArray($result) {
-		$this->id = $result['id'] ;
-		$this->label = $result['label'] ;
-		$this->tile_width = $result['tile_width'] ;
-		$this->tile_length = $result['tile_length'] ;
-	}
+    public function setFromArray($result)
+    {
+        $this->id = $result['id'];
+        $this->label = $result['label'];
+        $this->width = $result['width'];
+        $this->length = $result['length'];
+        $this->thickness = $result['thickness'];
+    }
 
-	public function returnAsArray( ) {
-		$array['id'] = $this->id ;
-		$array['label'] = $this->label ;
-		$array['tile_width'] = $this->tile_width ;
-		$array['tile_length'] = $this->tile_length ;
-		return $array ;
-	}
+    public function returnAsArray()
+    {
+        $array['id'] = $this->id;
+        $array['label'] = $this->label;
+        $array['width'] = $this->width;
+        $array['length'] = $this->length;
+        $array['thickness'] = $this->thickness;
+        return $array;
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getPrimaryKey() {
-		return $this->primaryKey;
-	}
+    /**
+     * @return array
+     */
+    public function getPrimaryKey()
+    {
+        return $this->primaryKey;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getPrimaryKeyShouldNotInsertOrUpdate() {
-		return $this->primaryKeyShouldNotInsertOrUpdate;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getTileLength() {
-		return $this->tile_length;
-	}
-
-	/**
-	 * @param mixed $tile_length
-	 */
-	public function setTileLength($tile_length) {
-		$this->tile_length = $tile_length;
-	}
-
-	/**
-	 * @return mixed
-	 */
-	public function getTileWidth() {
-		return $this->tile_width;
-	}
-
-	/**
-	 * @param mixed $tile_width
-	 */
-	public function setTileWidth($tile_width) {
-		$this->tile_width = $tile_width;
-	}
+    /**
+     * @return string
+     */
+    public function getPrimaryKeyShouldNotInsertOrUpdate()
+    {
+        return $this->primaryKeyShouldNotInsertOrUpdate;
+    }
 
     /**
      * @return mixed
@@ -105,8 +85,57 @@ class product_kind extends model implements modelInterFace {
         $this->label = $label;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getWidth()
+    {
+        return $this->width;
+    }
 
-    public function getItems() {
-		return parent::search( array()  ,  null  , 'product_kind', '*'  , ['column' => 'id' , 'type' =>'asc'] );
-	}
+    /**
+     * @param mixed $width
+     */
+    public function setWidth($width): void
+    {
+        $this->width = $width;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLength()
+    {
+        return $this->length;
+    }
+
+    /**
+     * @param mixed $length
+     */
+    public function setLength($length): void
+    {
+        $this->length = $length;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThickness()
+    {
+        return $this->thickness;
+    }
+
+    /**
+     * @param mixed $thickness
+     */
+    public function setThickness($thickness): void
+    {
+        $this->thickness = $thickness;
+    }
+
+
+    public function getItems()
+    {
+        return parent::search(array(), null, 'product_size', '*', ['column' => 'id', 'type' => 'asc']);
+    }
 }

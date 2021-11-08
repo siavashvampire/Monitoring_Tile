@@ -3,7 +3,7 @@ namespace App\product ;
 
 use app;
 use App\product\model\product_glaze;
-use App\product\model\product_kind;
+use App\product\model\product_size;
 use App\product\model\product_punch;
 use pluginController;
 
@@ -11,7 +11,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
-        $this->menu->addChild('configurationLine', 'tile', 'لیست کاشی‌ها', app::getBaseAppLink('product', 'admin'), 'fa fa-delicious', '', 'admin/product/index/product');
+        $this->menu->addChild('configurationLine', 'product_size', 'لیست سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-delicious', '', 'admin/product_size/index/product');
         $this->menu->addChild('configurationLine', 'product_glaze', 'لیست لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-delicious', '', 'admin/product_glaze/index/product');
         $this->menu->addChild('configurationLine', 'product_brand', 'لیست برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
     }
@@ -27,8 +27,8 @@ class hook extends pluginController {
 
     public function _fieldService_showToFillOut_productKind($vars2)
     {
-        /* @var product_kind $model */
-        $model = $this->model(['product', 'product_kind']);
+        /* @var product_size $model */
+        $model = $this->model(['product', 'product_size']);
         $searchFathers = $model->getItems();
         $options = '';
         if (is_array($searchFathers))
@@ -58,8 +58,8 @@ class hook extends pluginController {
 
     public function _fieldService_showValue_productKind($fieldInformation = null)
     {
-        /** @var product_kind $model */
-        $model = $this->model(['product', 'product_kind'], $fieldInformation['value']);
+        /** @var product_size $model */
+        $model = $this->model(['product', 'product_size'], $fieldInformation['value']);
         return $model->getLabel();
     }
 

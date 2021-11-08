@@ -179,8 +179,6 @@
                                                                         {math format="'fieldService_showValue_'.x" set="tempValue" x=$tempExplodeHook.2 }
                                                                         {callHook app=$tempExplodeHook.1 name=$tempValue field=$field set='tempExplodeHook2'}
                                                                         {if $tempExplodeHook2 != 'Function Error!'}{$tempExplodeHook2}{/if}
-
-
                                                                         {else}
                                                                         {$field.value}{/if}
                                                                         {else}

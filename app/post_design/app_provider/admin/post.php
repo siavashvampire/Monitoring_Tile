@@ -12,8 +12,6 @@ use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use App\user\model\user_group;
 use controller;
-use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -275,11 +273,6 @@ class post extends controller
             if ($semi)
                 $eval_data->setFinished(false);
 
-
-//            if (($eval_data->getEvaluated() != $userId and $eval_data->getFinished()) or ($eval_data->getId() != $id)) {
-//                httpErrorHandler::E404();
-//                return null;
-//            }
             if ($semi)
                 $eval_data->setId(null);
 
@@ -293,7 +286,6 @@ class post extends controller
 
             if ($semi) {
                 $eval_data->setFillOutDate(date('Y-m-d H:i:s'));
-//                $eval_data->setEvaluator(user::getUserLogin(true));
                 $eval_data->setFinished(false);
                 $resultFirst = $eval_data->insertToDataBase();
             } else
@@ -309,7 +301,6 @@ class post extends controller
                     }
                 } else {
                     $eval_data->setFillOutDate(date('Y-m-d H:i:s'));
-//                    $eval_data->setEvaluator(user::getUserLogin(true));
                     $eval_data->setFinished(true);
 
                     $result = $eval_data->upDateDataBase();
@@ -317,7 +308,7 @@ class post extends controller
                     if ($result) {
                         Response::redirect(app::getBaseAppLink('post/list', 'admin'));
                         return null;
-                        $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
+//                        $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
                     } else {
                         $this->alert('danger', '', 'لطفا مجددا تلاش کنید!');
                         return null;

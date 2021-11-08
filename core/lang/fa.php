@@ -154,4 +154,5 @@ return [
 	'ERROR_VALID_INT' => '{1} باید فقط شامل اعداد صحیح باشد',
 	'ERROR_VALID_NOT_EMPTY' => 'فیلد {1} نباید خالی باشد',
 	'ERROR_INVALID_FORMAT' => 'فرمت {1} نا معتبر می باشد.',
+	'changeSuccessfully' => 'تغییرات با موفقیت انجام شد.',
 ];

@@ -2,7 +2,7 @@
 namespace App\product\app_provider\admin;
 
 use app\LineMonitoring\model\sensors;
-use app\product\model\product_kind;
+use app\product\model\product_size;
 use controller;
 use paymentCms\component\cache;
 use paymentCms\component\request;
@@ -40,8 +40,8 @@ class product extends controller {
 
 		}
         
-		/* @var product_kind $model */
-		$model = parent::model('product_kind');
+		/* @var product_size $model */
+		$model = parent::model('product_size');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , null, 'COUNT(id) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
 		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , null, '*'  , ['column' => 'label' , 'type' =>'asc'] , [$pagination['start'] , $pagination['limit'] ] );
@@ -58,6 +58,7 @@ class product extends controller {
 			"label" => ["required", 'نام کاشی'],
 			"tile_width" => ["required|floatInt|match:>0", 'طول کاشی'],
 			"tile_length" => ["required|floatInt|match:>0", 'عرض کاشی'],
+			"tile_length" => ["required|floatInt|match:>0", 'ضخامت کاشی'],
 		];
 		$valid = validate::check($get, $rules);
 		$this->mold->offAutoCompile();
@@ -66,15 +67,15 @@ class product extends controller {
 			Response::jsonMessage($valid->errorsIn(),false);
 			return false;
 		}
-		/* @var product_kind $model */
+		/* @var product_size $model */
 		if ( $get['id'] != '' ) {
-			$model = parent::model('product_kind', $get['id']);
+			$model = parent::model('product_size', $get['id']);
 			if ( $model->getId() != $get['id']) {
 				Response::jsonMessage('کاشی مد نظر یافت نشد!',false);
 				return false;
 			}
 		} else
-			$model = parent::model('product_kind');
+			$model = parent::model('product_size');
 
 		$model->setTileLength($get['tile_length']);
 		$model->setLabel($get['label']);

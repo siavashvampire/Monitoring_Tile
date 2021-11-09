@@ -109,6 +109,9 @@
         </div>
     </div>
     <div class="container-fluid">
+        <div class="alert alert-success text-right" id="dataSendAlert">
+            {_ "changeSuccessfully"}
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card" id="listToGetFromServer">
@@ -127,10 +130,15 @@
                                     <th style="width: 18%">{_ "brand"}</th>
                                     <th style="width: 18%">{_ "phase"}</th>
                                     <th style="width: 18%">{_ "date"} {_ "insert"}</th>
-                                    <th style="width: 18%;"></th>
-                                    {if $canChange == 1}
-                                        <th style="width: 15%;"></th>
+
+                                    {if $canChange == 'true'}
+                                        <th style="width: 9%;"></th>
                                     {/if}
+
+                                    {if $canChangeFinished == 'true'}
+                                    <th style="width: 9%;"></th>
+                                    {/if}
+
                                     <th style="width: 10%;"></th>
                                 </tr>
                                 </thead>
@@ -203,17 +211,25 @@
                                             </table>
                                         </td>
 
-                                        <td>{if $Vote.finished == 1} <i class="fa fa-check" aria-hidden="true"></i>{else}<i class="fa fa-times" aria-hidden="true"></i> {/if}</td>
+                                        {if $canChangeFinished == 'true'}
+                                            <td>
+                                                <button onclick="changeFinished({$Vote.id},'{$Vote.fname} {$Vote.lname}',{$Vote.finished})" type="button" style="color: darkcyan!important;" class="btn btn-link text-info">
+                                                    <i {if $Vote.finished == 1} class="fa fa-check-square-o" {else} class="fa fa-minus-square-o" {/if} aria-hidden="true"></i>
+                                                </button>
+                                            </td>
+                                        {/if}
+
                                         <td>
-                                            {if $Vote.finished == 1}
-                                                <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
-                                            {/if}
+                                            <button onclick="OpenDegree(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
                                         </td>
-                                        <td>
-                                            {if $Vote.id != ""}
-                                                <a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a>
-                                            {/if}
-                                        </td>
+
+                                        {if $canChange == 'true'}
+                                            <td>
+                                                {if $Vote.id != ""}
+                                                    <a class="btn btn-link text-info" href="{url admin}post/fill/{$Vote.id}"><i class="fa fa-pencil"></i></a>
+                                                {/if}
+                                            </td>
+                                        {/if}
 
                                     </tr>
                                 {foreachelse}
@@ -224,6 +240,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        {view "[url patch]pagination.mold.html"}
                     </div>
                 </div>
             </div>
@@ -245,6 +262,8 @@
 
 {map footerjs}
 <script>
+    let urlapi = '{url api}' ;
+
     function OpenDegree(obj) {
         let picClass = obj.children[0];
         let closestTr = obj.closest('tr');
@@ -262,5 +281,36 @@
                 label[i].style.display = "";
         }
     }
+    function changeFinished(id,name,finished) {
+        confirm_text = 'آیا از تغییر وضعیت فرم ';
+        confirm_text += name;
+        confirm_text += ' به ';
+        if (finished)
+            confirm_text += 'ناتمام';
+        else
+            confirm_text += 'تمام';
+        confirm_text += ' اطمینان دارید؟';
+        if(confirm(confirm_text))
+        {
+            $.ajax({
+                url: urlapi+'post/changeFinish',
+                type: 'post',
+                dataType: 'json',
+                data: {
+                    'id': id,
+                } ,
+                success: function (result) {
+                    if (result['status']) {
+                        $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(result['message']).show();
+                        load();
+                        return false;
+                    } else {
+                        $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+                    }
+                },
+            });
+        }
+    }
+    $('#dataSendAlert').hide();
 </script>
 {/map}

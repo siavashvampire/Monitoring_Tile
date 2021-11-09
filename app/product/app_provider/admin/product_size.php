@@ -68,6 +68,7 @@ class product_size extends controller
     public function update(): bool
     {
         /* @var \App\product\model\product_size $model */
+
         $get = request::post('id,label,width,length,thickness');
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],

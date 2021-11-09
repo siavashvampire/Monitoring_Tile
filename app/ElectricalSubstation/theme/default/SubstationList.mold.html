@@ -75,10 +75,10 @@
                                         <tr>
                                             <td class="text-center">{$item.label}</td>
                                             {if $viewAccess == 'true'}
-                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}Substation/Data/{$item.id}"><i class="fa fa-eye"></i></a> </td>
+                                                <td><a class="btn btn-link text-info" href="{url admin}Substation/Data/{$item.id}"><i class="fa fa-eye"></i></a> </td>
                                             {/if}
                                             {if $editAccess == 'true'}
-                                                <td class="text-center"><a class="btn btn-link text-info" href="{url admin}Substation/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
+                                                <td><a class="btn btn-link text-info" href="{url admin}Substation/{$item.id}"><i class="fa fa-pencil"></i></a> </td>
                                             {/if}
                                         </tr>
                                     {foreachelse}

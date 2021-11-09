@@ -12,6 +12,7 @@ use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use App\user\model\user_group;
 use controller;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -20,13 +21,20 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class post extends controller
 {
+    private $item_label = "نامه";
+    private $model_name = 'post_data';
+    private $type_model_name = 'post_type';
+    private $app_name = 'post_design';
+    private $active_menu = 'post_insert';
+    private $html_file_path = 'FD_Evaluation_choose.mold.html';
+
     public function index($id = null)
     {
+        /* @var post_data $eval_data */
         $userId = user::getUserLogin(true);
 
         if ($id != null) {
-            /* @var post_data $eval_data */
-            $eval_data = $this->model(['post_design', 'post_data'], $id);
+            $eval_data = $this->model([$this->app_name, $this->model_name], $id);
 
             if ($eval_data->getId() != $userId or $eval_data->getId() != $id) {
                 httpErrorHandler::E404();
@@ -34,8 +42,7 @@ class post extends controller
             }
         } else {
 
-            /* @var post_data $eval_data */
-            $eval_data = $this->model(['post_design', 'post_data']);
+            $eval_data = $this->model([$this->app_name, $this->model_name]);
         }
 
         if (request::isPost()) {
@@ -84,22 +91,20 @@ class post extends controller
         unset($_SERVER['JsonOff']);
         $this->mold->set('AgentGroup', (int)$this->setting('postAgent'));
         $this->mold->path('voteFillId', $id);
-        $this->mold->path('default', 'post_design');
-        $this->mold->view('FD_Evaluation_choose.mold.html');
-        $this->mold->setPageTitle('ثبت نامه');
-        $this->mold->set('activeMenu', 'post_insert');
-
-
+        $this->mold->path('default', $this->app_name);
+        $this->mold->view($this->html_file_path);
+        $this->mold->setPageTitle(rlang('insert') . " " . $this->item_label);
+        $this->mold->set('activeMenu', $this->active_menu);
     }
 
     public function list()
     {
-        $get = request::post('page=1,perEachPage=25,typeName,finished,confirmEnd,startTime,endTime,sortWith');
-
         /** @var post_data $post_data_model */
-        $post_data_model = $this->model(['post_design', 'post_data']);
+        $post_data_model = $this->model([$this->app_name, $this->model_name]);
         /** @var post_type $post_type_model */
-        $post_type_model = $this->model(['post_design', 'post_type']);
+        $post_type_model = $this->model([$this->app_name, $this->type_model_name]);
+
+        $get = request::post('page=1,perEachPage=25,typeName,finished,confirmEnd,startTime,endTime,sortWith');
 
         $user = user::getUserLogin();
         $value = array();
@@ -171,6 +176,11 @@ class post extends controller
         $editAccess = checkAccess::index($user['user_group_id'], 'admin', 'post', 'index', 'post_design')["status"];
 
         $this->mold->set('editAccess', $editAccess);
+        $this->mold->set('canChange', true);
+        if ($user["userId"] == (int)$this->setting('postAdmin'))
+            $this->mold->set('canChangeFinished', true);
+        else
+            $this->mold->set('canChangeFinished', false);
         $this->mold->set('typeNames', $type);
         $this->mold->set('eval', $eval);
         $this->mold->set('allFields', $allFields['result']);
@@ -301,7 +311,7 @@ class post extends controller
                     }
                 } else {
                     $eval_data->setFillOutDate(date('Y-m-d H:i:s'));
-                    $eval_data->setFinished(true);
+                    $eval_data->setFinished(false);
 
                     $result = $eval_data->upDateDataBase();
 
@@ -325,4 +335,6 @@ class post extends controller
         $this->mold->setPageTitle('واحد فروش');
         return false;
     }
+
+
 }

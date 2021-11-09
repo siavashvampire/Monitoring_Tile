@@ -47,6 +47,9 @@ class hook extends pluginController
         }
         $this->mold->set('listGroups', $fieldsOf);
 
+        $adminUserList = user::getUsersByGroupId((int)$this->setting('postAdmin' , 'post_design' , true))["result"];
+        $this->mold->set('adminUserList', $adminUserList);
+
         $this->mold->view('configuration.system.mold.html');
         $this->mold->path($getPath['folder'], $getPath['app']);
         $this->mold->set('dirStartUP', payment_path . 'startup');

@@ -17,6 +17,21 @@
 </div>
 
 <div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_postAdminPerson"> {_ "postManagerUserGroup"}<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" data-live-search="true" id="field_postAdminPerson" name="setting[postAdminPerson]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+            {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$adminUserList key=keyValue value=valueOne}
+            <option value="{$valueOne.userId}" {if isset($valueThisOne.postAdminPerson)}{if $valueThisOne.postAdminPerson == $valueOne.userId }selected{/if}{elseif isset($Mold.post.setting.postAdminPerson)}{if $Mold.post.setting.postAdminPerson == $valueOne.userId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.userId}selected{/if}>{$valueOne.fname} {$valueOne.lname}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
+
+<div class="col-md-12 mb-3">
     <label class="col-md-4 col-form-label" for="field_postAgent"> {_ "postAgentUserGroup"}<span class="text-danger">*</span> </label>
     <div class="col-md-8">
         <select class="selectpicker" id="field_postAgent" name="setting[postAgent]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">

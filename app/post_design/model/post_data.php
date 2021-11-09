@@ -217,6 +217,15 @@ class post_data extends model implements modelInterFace
         return parent::search([$this->agent], "userId = ?", 'user', '*', ['column' => 'userId', 'type' => 'asc'])[0];
     }
 
+    /**
+     * @return array|bool|null
+     */
+
+    public function getEvaluatedPersonName()
+    {
+        return parent::search([$this->agent], "userId = ?", 'user user', 'CONCAT(user.fname , " " , user.lname ) as name', ['column' => 'userId', 'type' => 'asc'])[0]['name'];
+    }
+
 
     public function getBrandLabel()
     {

@@ -20,7 +20,6 @@ class requestService_export extends controller
 {
     public function index()
     {
-
         $variable = array();
 
         /** @var requestservice $model */
@@ -58,7 +57,7 @@ class requestService_export extends controller
             }
             unset($_SERVER['JsonOff']);
 
-            if($get['section'] === "0" or $get['giver_section'] === "0"){
+            if ($get['section'] === "0" or $get['giver_section'] === "0") {
                 $user = user::getUserLogin(false);
 
                 $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
@@ -74,18 +73,20 @@ class requestService_export extends controller
                         if ($section and $phase) break;
                     }
                 }
-                if($get['section'] === "0")
-                    $get['section'] = [$section];
+                if ($section) {
+                    if ($get['section'] === "0")
+                        $get['section'] = [$section];
 
-                if($get['giver_section'] === "0")
-                    $get['giver_section'] = [$section];
+                    if ($get['giver_section'] === "0")
+                        $get['giver_section'] = [$section];
+                }
 
             }
+
             if (is_array($get['phase']) and count($get['phase']) > 0) {
                 $variable[] = ' rs.phase IN( ' . implode(' , ', $get['phase']) . ' ) ';
                 $value = array_merge($value, $get['phase']);
             }
-
             if (is_array($get['section']) and count($get['section']) > 0) {
                 $variable[] = ' rs.section IN( ' . implode(' , ', $get['section']) . ' ) ';
 //                $value = array_merge($value, $get['section']);

@@ -205,5 +205,82 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-2"></div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12">گزارش ماهانه بخش درخواست کننده</h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="section" type="hidden" value="0">
+                                <input name="Day"    type="hidden" value="0">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon text-center">
+                        <h5 class="card-title text-center m-12"> گزارش ماهانه بخش انجام دهنده </h5>
+                    </div>
+                    <div class="card-body">
+                        <form class="form-horizontal" method="post" >
+                            <div class="row" style = "display: none">
+                                <input name="giver_section" type="hidden" value="0">
+                                <input name="Day"    type="hidden" value="0">
+                                <select class="selectpicker selectpickerNotRefresh" required name="showField[]" multiple  data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نمایش فیلد های">
+                                    <option value="data.phase"  selected></option>
+                                    <option value="data.unit" selected ></option>
+                                    <option value="CONCAT(data.tile_width, '×', data.tile_length)" ></option>
+                                    <option value="data.label" ></option>
+                                    <option value="data.counterAll" selected ></option>
+                                    <option value="data.m1" selected></option>
+                                    <option value="data.m2" selected></option>
+                                    <option value="data.m3" selected></option>
+                                    <option value="data.m4" selected></option>
+                                    <option value="data.m5" selected></option>
+                                    <option value="data.p1" selected></option>
+                                    <option value="data.p2" selected></option>
+                                    <option value="data.p3" selected></option>
+                                    <option value="data.p4" selected></option>
+                                    <option value="data.p5" selected></option>
+                                </select>
+                            </div>
+                            <div class="row text-center">
+                                <div class="col-md-12">
+                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> دانلود</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

@@ -164,6 +164,11 @@ class post extends controller
             $variable[] = 'post_data.confirmDate >= ?';
         }
 
+        if ($user["userId"] != (int)$this->setting('postAdmin')) {
+            $variable[] = 'post_data.finished = ?';
+            $value[] = 1;
+        }
+
         $eval = $post_data_model->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1]);
         $type = $post_type_model->getEvaluationTypeByUserGroupId($user["user_group_id"], (int)$this->setting('postAdmin'));
 

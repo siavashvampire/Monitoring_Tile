@@ -68,6 +68,35 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row" style="border: 1px solid darkcyan;border-bottom-style: hidden">
+                            <div class="col-md-4">
+                                <label class="col-md-3 col-form-label">ساعت شروع<span class="text-danger">*</span></label>
+                                <div class="col-md-9">
+                                    <div class="form-group has-default">
+                                        <input type="text" autocomplete="off" value="{if isset($requestService)}{$requestService->getTimeStart()|jDate:"Y/n/jساعتH&#58;i"}{/if}" class="form-control persianDatepicker-from">
+                                        <input type="hidden" name="Time_Start" value="{if isset($requestService)}{$requestService->getTimeStart()}{/if}" required class="form-control persianDatepicker-from-alt">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="col-md-3 col-form-label">ساعت اتمام<span class="text-danger">*</span></label>
+                                <div class="col-md-9">
+                                    <div class="form-group has-default">
+                                        <input type="text" autocomplete="off" value="{if isset($requestService)}{$requestService->getTimeEnd()|jDate:"Y/n/jساعتH&#58;i"}{/if}" class="form-control persianDatepicker-to">
+                                        <input type="hidden" name="Time_End" value="{if isset($requestService)}{$requestService->getTimeEnd()}{/if}" required class="form-control persianDatepicker-to-alt">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label class="col-md-3 col-form-label">نفر کارکرد<span class="text-danger">*</span> </label>
+                                <div class="col-md-9">
+                                    <div class="form-group has-default">
+                                        <input type="number" min="1" autocomplete="off" required name="HumanNumber" class="form-control" value="{if isset($Mold.post.HumanNumber)}{$Mold.post.HumanNumber}{elseif isset($requestService)}{$requestService->getHumanNumber()}{else}1{/if}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                             <div class="row" style="border: 1px solid darkcyan;">
                                 <div class="col-md-12">
                                     <label class="col-md-3 col-form-label">شرح خرابی و عملیات مورد نظر</label>
@@ -77,7 +106,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div> 
+                            </div>
                             <div class="row">
                                <div class="col-md-12">
                                    <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> ثبت درخواست</button>

@@ -188,7 +188,6 @@ $(document).ready(function() {
         }
     });
 
-
     $(".persianTimePicker").persianDatepicker({
         persianDigit: false ,
         initialValue: false,

@@ -173,8 +173,8 @@
                                     <label class="col-md-3 col-form-label">ساعت اتمام<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="text" autocomplete="off" value="{if isset($requestService)}{$requestService->getTimeEnd()|jDate:"Y/n/jساعتH&#58;i"}{/if}" class="form-control persianDatepicker-from">
-                                            <input type="hidden" name="Time_End" value="{if isset($requestService)}{$requestService->getTimeEnd()}{/if}" required class="form-control persianDatepicker-from-alt">
+                                            <input type="text" autocomplete="off" value="{if isset($requestService)}{$requestService->getTimeEnd()|jDate:"Y/n/jساعتH&#58;i"}{/if}" class="form-control persianDatepicker-to">
+                                            <input type="hidden" name="Time_End" value="{if isset($requestService)}{$requestService->getTimeEnd()}{/if}" required class="form-control persianDatepicker-to-alt">
                                         </div>
                                     </div>
                                 </div>

@@ -3,11 +3,7 @@
 namespace App\post_design;
 
 use app;
-use App\core\controller\fieldService;
-use App\product\model\product_size;
 use App\user\app_provider\api\user;
-use paymentCms\component\cache;
-use paymentCms\component\model;
 use pluginController;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -20,8 +16,8 @@ class hook extends pluginController
         $this->menu->addChild('postTab', 'post', 'فرم ساز', app::getBaseAppLink('post/newType', 'admin'), 'fa fa-id-badge', '', 'admin/post/newType/post_design');
         $this->menu->addChild('postTab', 'post_list', 'لیست نامه ها', app::getBaseAppLink('post/list', 'admin'), 'fa fa-list-ol', '', 'admin/post/list/post_design');
         $this->menu->addChild('postTab', 'post_insert', 'ثبت نامه جدید', app::getBaseAppLink('post', 'admin'), 'fa fa-check-square-o', '', 'admin/post/index/post_design');
-        $user = user::getUserLogin();
-        $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
+//        $user = user::getUserLogin();
+//        $contractsVote = model::searching([$user['userId']], ' userId	= ? and fillOutDate is null', 'contracts_vote', '*');
 
 //        if ($contractsVote !== true and count($contractsVote) > 0) {
 //            $this->mold->set('firstFillOutId', $contractsVote[0]['fillOutId']);
@@ -47,7 +43,7 @@ class hook extends pluginController
         }
         $this->mold->set('listGroups', $fieldsOf);
 
-        $adminUserList = user::getUsersByGroupId((int)$this->setting('postAdmin' , 'post_design' , true))["result"];
+        $adminUserList = user::getUsersByGroupId((int)$this->setting('postAdmin', 'post_design', true))["result"];
         $this->mold->set('adminUserList', $adminUserList);
 
         $this->mold->view('configuration.system.mold.html');

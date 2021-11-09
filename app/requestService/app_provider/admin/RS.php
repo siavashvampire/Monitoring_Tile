@@ -339,7 +339,6 @@ class RS extends controller
 
     public function adminService($requestId = null)
     {
-
         /** @var requestService $requestService */
         $user = user::getUserLogin(false);
         $RequestAdmin = $this->setting('RequestAdmin');
@@ -373,8 +372,6 @@ class RS extends controller
                 /** @var requestService $requestService */
                 $requestService = parent::model('requestService');
 
-            $get = request::post('requestCode,Time_Send,Time_Send_justT,Time_Start,Time_End,System_Name,phase,ServiceSection,Line,Cost,Workersection,offTime,System_Status,WorkTitle,BugInfluence,Latency,LatencyTime,DoneworkDes,Donework,failureDes,failure,Sender_note,HumanNumber,PartName,PartQuantity', null);
-
             $this->mold->set('phases', phases::all()["result"]);
             $this->mold->set('Workersections', sections::index() ["result"]);
             $this->mold->set('BugInfluences', request_service::buginfluence() ["result"]);
@@ -388,6 +385,8 @@ class RS extends controller
             $this->mold->set('Parts', request_service::consumable_Parts() ["result"]);
 
             if (request::ispost()) {
+                $get = request::post('requestCode,Time_Send,Time_Send_justT,Time_Start,Time_End,System_Name,phase,ServiceSection,Line,Cost,Workersection,offTime,System_Status,WorkTitle,BugInfluence,Latency,LatencyTime,DoneworkDes,Donework,failureDes,failure,Sender_note,HumanNumber,PartName,PartQuantity');
+
                 $shamsi = explode('/', $get['Time_Send']);
                 $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
                 $get['Time_Start'] = $get['Time_Start'] / 1000;
@@ -475,7 +474,7 @@ class RS extends controller
             } else
                 $requestService = parent::model('requestService');
 
-            $get = request::post('Time_Send,Time_Send_justT,ServiceSection,Workersection,workerPerson,Sender_note', null);
+            $get = request::post('Time_Send,Time_Send_justT,Time_Start,Time_End,HumanNumber,ServiceSection,Workersection,workerPerson,Sender_note', null);
 
             $this->mold->set('Users', user::index()["result"]);
             $this->mold->set('phases', phases::index()["result"]);
@@ -494,13 +493,15 @@ class RS extends controller
             if (request::ispost()) {
                 $shamsi = explode('/', $get['Time_Send']);
                 $miladi = JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '/');
+                $get['Time_Start'] = $get['Time_Start'] / 1000;
+                $get['Time_End'] = $get['Time_End'] / 1000;
 
 
                 $requestService->setRequestCode(0);
                 $requestService->setTimeSend(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
                 $requestService->setJTimeSend(JDate::jdate('Y-m-d', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_justT'])))));
-                $requestService->setTimeStart(date('Y-m-d H:i:s'));
-                $requestService->setTimeEnd(date('Y-m-d H:i:s'));
+                $requestService->setTimeStart(date('Y-m-d H:i:s', $get['Time_Start']));
+                $requestService->setTimeEnd(date('Y-m-d H:i:s', $get['Time_End']));
                 $requestService->setSystemName("");
                 $requestService->setPhase(-4);
                 $requestService->setLine(1);
@@ -520,7 +521,7 @@ class RS extends controller
                 $requestService->setUnitPersonId($get['workerPerson']);
                 $requestService->setWorkerPersonId(user::getUserLogin(true));
                 $requestService->setSenderNote($get['Sender_note']);
-                $requestService->setHumanNumber(1);
+                $requestService->setHumanNumber($get['HumanNumber']);
                 $requestService->setConsumableParts(',,');
                 $requestService->setConsumablePartsQty(',,');
                 $section = sections::getSectionModelById($requestService->getSection());

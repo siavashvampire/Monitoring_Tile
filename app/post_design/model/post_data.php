@@ -2,6 +2,7 @@
 
 namespace App\post_design\model;
 
+use App\product\app_provider\api\product_brand;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace;
 
@@ -213,7 +214,13 @@ class post_data extends model implements modelInterFace
 
     public function getEvaluatedPerson()
     {
-        return parent::search([$this->agent], "userId = ?", 'user', '*', ['column' => 'userId', 'type' => 'asc']);
+        return parent::search([$this->agent], "userId = ?", 'user', '*', ['column' => 'userId', 'type' => 'asc'])[0];
+    }
+
+
+    public function getBrandLabel()
+    {
+        return product_brand::getById($this->getBrand())["result"];
     }
 
     public function getEvaluationListWithoutExtra($userAdmin, $group_id, $value = array(), $variable = array())

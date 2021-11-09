@@ -94,7 +94,7 @@ class post extends controller
 
     public function list()
     {
-        $get = request::post('page=1,perEachPage=25,typeName,finished,confirmEnd,startTime,endTime,sortWith', null);
+        $get = request::post('page=1,perEachPage=25,typeName,finished,confirmEnd,startTime,endTime,sortWith');
 
         /** @var post_data $post_data_model */
         $post_data_model = $this->model(['post_design', 'post_data']);
@@ -186,7 +186,7 @@ class post extends controller
         $this->evalFields();
     }
 
-    public function evalFields($groupAccess = null, $voteId = null)
+    public function evalFields($groupAccess = null, $voteId = null): bool
     {
         if ($groupAccess == null)
             $groupAccess = user::getUserLogin()["user_group_id"];
@@ -256,10 +256,10 @@ class post extends controller
         $this->mold->path('default');
         $this->mold->setPageTitle('فرم ساز');
         $this->mold->set('activeMenu', 'post');
-        return null;
+        return false;
     }
 
-    public function fill($id, $semi = "false", $dangerText = "")
+    public function fill($id, $semi = "false", $dangerText = ""): bool
     {
         $semi = $semi == "true";
 
@@ -279,7 +279,7 @@ class post extends controller
 
         } else {
             httpErrorHandler::E404();
-            return null;
+            return false;
         }
         if (request::isPost()) {
             $get = request::post('customField');
@@ -297,7 +297,7 @@ class post extends controller
                     $this->alert('danger', '', $fieldUpdate["massage"]);
                     if ($semi) {
                         Response::redirect(app::getBaseAppLink('post/fill/' . $eval_data->getId() . "/false/" . $fieldUpdate["massage"], 'admin'));
-                        return null;
+                        return false;
                     }
                 } else {
                     $eval_data->setFillOutDate(date('Y-m-d H:i:s'));
@@ -307,34 +307,22 @@ class post extends controller
 
                     if ($result) {
                         Response::redirect(app::getBaseAppLink('post/list', 'admin'));
-                        return null;
-//                        $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
+                        //                        $this->alert('success', '', 'نظر شما با موفقیت ثبت شد.');
                     } else {
                         $this->alert('danger', '', 'لطفا مجددا تلاش کنید!');
-                        return null;
                     }
+                    return false;
                 }
             }
         }
 
-        $fields = fieldService::showFilledOutFormWithAllFields($eval_data->getType(), 'post_type', $eval_data->getId(), 'post_data', true, $this->mold);
+        fieldService::showFilledOutFormWithAllFields($eval_data->getType(), 'post_type', $eval_data->getId(), 'post_data', true, $this->mold);
 
-        $user = $eval_data->getEvaluatedPerson()[0];
-        $fields = fieldService::showFilledOutFormWithAllFields($user['user_group_id'], 'user_register', $user['userId'], 'user_register', true);
-        $brand = false;
-        if (is_array($fields['result'])) {
-            foreach ($fields['result'] as $index => $fields) {
-                if ($fields['type'] == 'text') {
-                    $brand = $fields['value'];
-                }
-                if ($brand) break;
-            }
-        }
-
-        $this->mold->set('brand', $brand);
-        $this->mold->set('EvaluatedPerson', $eval_data->getEvaluatedPerson()[0]);
+        $this->mold->set('brand', $eval_data->getBrandLabel());
+        $this->mold->set('EvaluatedPerson', $eval_data->getEvaluatedPerson());
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation.mold.html');
         $this->mold->setPageTitle('واحد فروش');
+        return false;
     }
 }

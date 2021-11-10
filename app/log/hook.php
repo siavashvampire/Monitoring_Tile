@@ -19,8 +19,8 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 class hook extends pluginController {
 
 	public function _adminHeaderNavbar($vars2){
-		$this->menu->addChild('Reports' ,'logs', rlang('logs' ) , app::getBaseAppLink('logs','admin') , 'fa fa-history' );
-	}
+		$this->menu->addChild('Reports' ,'logs', rlang('logs' ) , app::getBaseAppLink('logs','admin') , 'fa fa-history' ,'','admin/logs/index/log');
+    }
 
 	public function _controllerStartToRun(){
 		/* @var log $log */

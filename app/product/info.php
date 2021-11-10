@@ -68,12 +68,12 @@ return [
         ],
     ],
     'sqlInstall' => [
-        "INSERT IGNORE INTO `{prefix}product_size` (`id`, `label`,`tile_width`,`tile_length`) VALUES
-        (1 , '30-90' , 30 , 90),
-        (2 , '80-120' , 80 , 120),
-        (3 , '60-60' , 60 , 60),
-        (4 , '60-120' , 60 , 120),
-        (5 , '80-80' , 80 , 80);",
+        "INSERT IGNORE INTO `{prefix}product_size` (`id`, `label`,`width`,`length`,`thickness`) VALUES
+        (1 , '30-90' , 30 , 90 ,0),
+        (2 , '80-120' , 80 , 120 ,0),
+        (3 , '60-60' , 60 , 60 ,0),
+        (4 , '60-120' , 60 , 120 ,0),
+        (5 , '80-80' , 80 , 80 ,0);",
         "INSERT IGNORE INTO `{prefix}product_glaze` (`id`, `label`) VALUES
         (1 , 'پولیش'),
         (2 , 'شوگر'),

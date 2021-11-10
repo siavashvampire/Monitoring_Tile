@@ -3,7 +3,6 @@
 namespace App\weighbridge\app_provider\admin;
 
 use App\core\controller\httpErrorHandler;
-use App\user\app_provider\api\checkAccess;
 use App\weighbridge\app_provider\api\weight_unit;
 use App\weighbridge\model\products;
 use controller;
@@ -20,7 +19,6 @@ class product extends controller
     public function index($id = null)
     {
         /** @var products $model */
-        $model = parent::model('products');
 
         $get = request::post('label,weight_loss,weight_unit,description,standard,amount,mass,massInReceipt,unit_price_sale,previous_price_sale,Time_Send_sale,previous_Time_Send_sale,unit_price_buy,previous_price_buy,Time_Send_buy,previous_Time_Send_buy');
         if ($id != null) {
@@ -30,12 +28,12 @@ class product extends controller
                 httpErrorHandler::E404();
                 return false;
             }
-        }
+        } else
+            $model = parent::model('products');
 
         $user = user::getUserLogin(false);
         $this->mold->set('model', $model);
         $this->mold->set('weight_unit', weight_unit::index()["result"]);
-
 
 
         if (request::ispost()) {
@@ -60,15 +58,12 @@ class product extends controller
             $model->setWeightUnit($get['weight_unit']);
             $model->setDescription($get['description']);
             $model->setStandard($get['standard']);
-
             $model->setAmount($get['amount']);
             $model->setMass($get['mass']);
             $model->setMassInReceipt($get['massInReceipt']);
             $model->setUnitPriceSale($get['unit_price_sale']);
             $model->setPreviousPriceSale($get['previous_price_sale']);
-
             $model->setTimeSendSale(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['Time_Send_sale'])))));
-
             $model->setPreviousTimeSendSale(date('Y-m-d H:i:s', strtotime(date('Y-m-d ', strtotime($miladi)) . date('H:i:00', strtotime($get['previous_Time_Send_sale'])))));
             $model->setUnitPriceBuy($get['unit_price_buy']);
             $model->setPreviousPriceBuy($get['previous_price_buy']);
@@ -88,7 +83,7 @@ class product extends controller
                     Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
                     return false;
                 }
-            } else{
+            } else {
                 if ($model->upDateDataBase()) {
                     $Dis = $Dis . ' تغییر یافت';
                     $this->callHooks('addLog', [$Dis, 'product']);
@@ -151,7 +146,6 @@ class product extends controller
         $this->mold->view('productList.mold.html');
         $this->mold->setPageTitle(rlang('product'));
         $this->mold->set('activeMenu', 'product');
-
     }
 
 

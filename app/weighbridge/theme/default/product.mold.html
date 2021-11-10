@@ -19,71 +19,66 @@
                     </div>
                     <div class="card-body">
                         <form class="form-horizontal" method="post" id="newSubstation" onsubmit="return ajaxThisForm('#newSubstation' ,'#resultOfThisForm' , true , true , 'reloadTableData');">
-                           <div style="border: 1px solid darkcyan;">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "code"} {_ "product"} :</label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default text-right">
-                                            <input type="number" min="0" max="100" autocomplete="off" name="id" required class="form-control text-center" value="{if isset($Mold.post.id)}{$Mold.post.id}{elseif isset($model)}{$model->getId()}{/if}">
+                            <div style="border: 1px solid darkcyan;">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "product"}: <span class="text-danger">*</span></label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default ">
+                                                <input type="text" autocomplete="off" required name="label" class="form-control" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getLabel()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "code"} {_ "product"} : {if isset($Mold.post.id)} {$Mold.post.id} {elseif isset($model) and $model->getId() != ""} {$model->getId()} {else} --- {/if}</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-3 col-form-label">{_ "weight_loss"}: <span class="text-danger">*</span> </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default text-right">
+                                                <input type="number" min="0" max="100" autocomplete="off" name="weight_loss" required class="form-control text-center" value="{if isset($Mold.post.weight_loss)}{$Mold.post.weight_loss}{elseif isset($model)}{$model->getWeightLoss()}{/if}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="col-md-2 col-form-label">{_ "weight_unit"} </label>
+                                        <div class="col-md-10 ">
+                                            <div class="form-group has-default text-right">
+                                                <select class="selectpicker text-center "  name="weight_unit" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد وزن">
+                                                    {foreach from=$weight_unit key=key value=item }
+                                                    <option value="{$item.id}"  {if isset($Mold.post.weight_unit)}{if $item.id == $Mold.post.weight_unit }selected{/if}{elseif isset($model) and  $item.id == $model->getWeightUnit() }selected{/if}>{$item.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "name"} {_ "product"}: <span class="text-danger">*</span></label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default ">
-                                            <input type="text" autocomplete="off" required name="label" class="form-control" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getLabel()}{/if}">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <label class="col-md-1 col-form-label">{_ "description"}:</label>
+                                        <div class="col-md-11">
+                                            <div class="form-group has-default">
+                                                <textarea rows="1" autocomplete="off"  name="description" class="form-control text-center">{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}</textarea>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="col-md-3 col-form-label">{_ "weight_loss"}: <span class="text-danger">*</span> </label>
-                                    <div class="col-md-9">
-                                        <div class="form-group has-default text-right">
-                                            <input type="number" min="0" max="100" autocomplete="off" name="weight_loss" required class="form-control text-center" value="{if isset($Mold.post.weight_loss)}{$Mold.post.weight_loss}{elseif isset($model)}{$model->getWeightLoss()}{/if}">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label class="col-md-5 col-form-label text-right">{_ "mass"} :</label>
+                                        <div class="col-md-7">
+                                            <div class="form-group has-default ">
+                                                <input type="text" autocomplete="off" required name="mass" class="form-control" value="{if isset($Mold.post.mass)}{$Mold.post.mass}{elseif isset($model)}{$model->getMass()}{/if}">
+                                            </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-6">
                                 </div>
-                                <div class="col-md-6">
-                                    <label class="col-md-2 col-form-label">{_ "weight_unit"} </label>
-                                    <div class="col-md-10 ">
-                                        <div class="form-group has-default text-right">
-                                            <select class="selectpicker "  name="weight_unit" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد وزن">
-                                                {foreach from=$weight_unit key=key value=item }
-                                                <option value="{$item.id}"  {if isset($Mold.post.weight_unit)}{if $item.id == $Mold.post.weight_unit }selected{/if}{elseif isset($model) and  $item.id == $model->getWeightUnit() }selected{/if}>{$item.label}</option>
-                                                {/foreach}
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <label class="col-md-1 col-form-label">{_ "description"}:</label>
-                                    <div class="col-md-11">
-                                        <div class="form-group has-default">
-                                            <textarea rows="1" autocomplete="off"  name="description" class="form-control text-center">{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}</textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <label class="col-md-5 col-form-label text-right">{_ "mass"} :</label>
-                                    <div class="col-md-7">
-                                        <div class="form-group has-default ">
-                                            <input type="text" autocomplete="off" required name="mass" class="form-control" value="{if isset($Mold.post.mass)}{$Mold.post.mass}{elseif isset($model)}{$model->getMass()}{/if}">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                            </div>
-                          </div>
-                            <div class="row" style="height: 10px"></div>
-                            <div class="row">
+                              </div>
+                                <div class="row" style="height: 10px"></div>
+                                <div class="row">
                                 <div class="col-md-6 ">
                                     <div class="form-check text-right">
                                         <label class="form-check-label">

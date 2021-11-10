@@ -114,6 +114,7 @@ return [
 	'orderBy' => 'مرتب سازی بر اساس',
 	'insert' => 'ثبت',
 	'backTo' => 'برگشت به',
+    'content' => 'محتوا',
 
 	/*
 	 * Validation Class

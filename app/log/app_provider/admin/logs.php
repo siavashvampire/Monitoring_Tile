@@ -38,8 +38,6 @@ class logs extends controller {
 		$this->lists();
 	}
 	private function lists() {
-        $logField = $this->callHooks('logField');
-	    show($logField);
 		$get = request::post('page=1,perEachPage=25,content,userId,StartTime,EndTime,ip,viewPage' ,null);
 		$rules = [
 			"page" => ["required|match:>0", rlang('page')],
@@ -80,8 +78,10 @@ class logs extends controller {
             $value[] = date('Y-m-d H:i:s' , $get['EndTime'] / 1000 ) ;
             $variable[] = ' (activity_time BETWEEN ? AND ?) ';
         }
-        
-		$model = parent::model('log');
+        $logField = $this->callHooks('logField');
+//show($logField);
+        $this->mold->set('logField' , $logField);
+        $model = parent::model('log');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'log log', 'COUNT(logId) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
         model::join('user user', 'user.userId = log.userId');
@@ -91,7 +91,7 @@ class logs extends controller {
 		$this->mold->setPageTitle(rlang('logs'));
 		$this->mold->set('activeMenu' , 'logs');
 		$this->mold->set('logs' , $search);
-        $this->mold->set('Users'           , parent::model('user')->getUsers());
+        $this->mold->set('Users', parent::model('user')->getUsers());
 	}
 	public function insert(){
 		if ( request::isPost() ) {

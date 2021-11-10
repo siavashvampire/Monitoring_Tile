@@ -65,6 +65,6 @@ class hook extends pluginController {
 
     public function _logField(): array
     {
-        return ["value" => "Sections" , "label" => "تغییرات بخش ها"];
+        return [["value" => "Sections" , "label" => "تغییرات بخش ها"]];
     }
 }

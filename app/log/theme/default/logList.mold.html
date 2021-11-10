@@ -21,10 +21,16 @@
                                            <div class="form-group has-default">
                                                <select class="selectpicker selectpickerNotRefresh" name="content" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="گزارش">
                                                     <option value=""  selected>همه</option>
+                                                   {foreach from=$logField key=key value=array123 }
+                                                     {foreach from=$array123 key=key value=item }
+                                                         <option value="{$item.value}">{$item.label}</option>
+                                                     {/foreach}
+                                                   {/foreach}
                                                 </select>
                                            </div>
                                        </div>
-                                   </div><div class="col-md-4">
+                                   </div>
+                                   <div class="col-md-4">
                                        <label class="col-md-3 col-form-label">{_ "ip"}</label>
                                        <div class="col-md-9">
                                            <div class="form-group has-default">

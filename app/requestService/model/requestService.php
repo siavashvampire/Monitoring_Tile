@@ -584,7 +584,7 @@ class requestService extends model implements modelInterFace
         $value[] = '%' . $section . '%';
         $variable[] = 'item.section Like ?';
 
-        return self::getItems($value,$variable,$sortWith,$pagination);
+        return self::getItems($value, $variable, $sortWith, $pagination);
     }
 
     public function getItemsByWorkerSection($section, $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
@@ -594,7 +594,7 @@ class requestService extends model implements modelInterFace
         $value[] = '%' . $section . '%';
         $variable[] = 'item.WorkerSection Like ?';
 
-        return self::getItems($value,$variable,$sortWith,$pagination);
+        return self::getItems($value, $variable, $sortWith, $pagination);
     }
 
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.Time_Send', 'type' => 'desc'], $pagination = [0, 25])
@@ -614,6 +614,70 @@ class requestService extends model implements modelInterFace
         $field[] = 'item.Time_Send';
         $field[] = 'GROUP_CONCAT(DISTINCT BugInfluence.label separator ",")  as BugInfluence';
         $fields = implode(' , ', $field);
-        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination,'item.requestId');
+        return parent::search($value, (count($variable) == 0) ? null : implode(' and ', $variable), $tableName, $fields, $sortWith, $pagination, 'item.requestId');
+    }
+
+    public function getDayExport($value, $variable)
+    {
+        $header = [
+            'تاریخ درخواست',
+            'شماره درخواست',
+            'ساعت درخواست',
+            'واحد درخواست کننده',
+            'فاز',
+            'نام دستگاه/تجهیز',
+            'حالت تعمیرات',
+            'مدت توقف',
+            'واحد مجری',
+            'ساعت شروع',
+            'ساعت اتمام',
+            'زمان کارکرد(دقیقه)',
+            'شرح خرابی و عملیات انجام شده',
+            'نفر کارکرد',
+            'نفر ساعت',
+        ];
+        $requestservice_worktitles = parent::search(null, ' 1 ', 'requestservice_worktitle');
+        if (is_array($requestservice_worktitles)) {
+            for ($i = 0; $i < count($requestservice_worktitles); $i++) {
+                $header[] = $requestservice_worktitles[$i]['label'];
+            }
+        }
+
+        model::join('sections units', 'units.id = rs.section ');
+        model::join('sections unitsWorker', 'unitsWorker.id = rs.WorkerSection ');
+        model::join('requestservice_system_status system_status', 'system_status.id = rs.System_Status ');
+        model::join('phases phase', 'phase.id = rs.phase');
+
+        $search = parent::search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'requestservice' . ' rs', 'rs.JTime_Send ,rs.requestCode ,DATE_FORMAT(rs.Time_Send,\'%H:%i:%s\') as Time_Send_jt ,units.label as senderUnitName  ,phase.label as phase ,rs.System_Name ,system_status.label as systemStatus ,rs.offTime , unitsWorker.label as workerUnitName , DATE_FORMAT(rs.Time_Start,\'%H:%i:%s\') as Time_start_jt , DATE_FORMAT(rs.Time_End,\'%H:%i:%s\') as Time_end_jt , TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime ,rs.Sender_note ,rs.HumanNumber , rs.HumanNumber * TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime2 , rs.WorkTitle as WorkTitle');
+        if (is_array($search) and count($search) > 0) {
+            header('Content-Encoding: UTF-8');
+            header('Content-type: text/csv; charset=UTF-8');
+            header("Content-Disposition: attachment; filename=" . 'Export Log (' . date('Y-M-d H:i:s') . ').csv');
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            header('Content-Transfer-Encoding: binary');
+
+
+
+            $fp = fopen('php://output', 'w');
+            fputcsv($fp, $header);
+            for ($i = 0; $i < count($search); $i++) {
+                $WorkTitle = $search[$i]['WorkTitle'];
+                unset($search[$i]['WorkTitle']);
+                if (is_array($requestservice_worktitles)) {
+                    for ($i2 = 0; $i2 < count($requestservice_worktitles); $i2++) {
+                        if (strpos($WorkTitle, strval($requestservice_worktitles[$i2]['id']))) {
+                            $search[$i][] = "1";
+                        } else
+                            $search[$i][] = "";
+                    }
+                }
+                fputcsv($fp, $search[$i]);
+            }
+            fclose($fp);
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -28,7 +28,7 @@ class requestService_export extends controller
         $value = [];
         if (request::isPost()) {
             $get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift');
-
+            $get = null;
             $_SERVER['JsonOff'] = true;
             if ($get['StartTime'] != null) {
                 $shamsi = explode('/', $get['StartTime']);
@@ -135,44 +135,13 @@ class requestService_export extends controller
                 }
             }
 
-            model::join('sections units', 'units.id = rs.section ');
-            model::join('sections unitsWorker', 'unitsWorker.id = rs.WorkerSection ');
-            model::join('requestservice_system_status system_status', 'system_status.id = rs.System_Status ');
-            model::join('phases phase', 'phase.id = rs.phase');
 
-            $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'requestservice' . ' rs', 'rs.JTime_Send ,rs.requestCode ,DATE_FORMAT(rs.Time_Send,\'%H:%i:%s\') as Time_Send_jt ,units.label as senderUnitName  ,phase.label as phase ,rs.System_Name ,system_status.label as systemStatus ,rs.offTime , unitsWorker.label as workerUnitName , DATE_FORMAT(rs.Time_Start,\'%H:%i:%s\') as Time_start_jt , DATE_FORMAT(rs.Time_End,\'%H:%i:%s\') as Time_end_jt , TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime ,rs.Sender_note ,rs.HumanNumber , rs.HumanNumber * TIMESTAMPDIFF(MINUTE,rs.Time_Start,rs.Time_End) as workTime2 , rs.WorkTitle as WorkTitle');
-            if (is_array($search) and count($search) > 0) {
-                header('Content-Encoding: UTF-8');
-                header('Content-type: text/csv; charset=UTF-8');
-                header("Content-Disposition: attachment; filename=" . 'Export Log (' . date('Y-M-d H:i:s') . ').csv');
-                header("Pragma: no-cache");
-                header("Expires: 0");
-                header('Content-Transfer-Encoding: binary');
+            $this->mold->offAutoCompile();
+            $GLOBALS['timeStart'] = '';
+            echo "\xEF\xBB\xBF";
 
-                $this->mold->offAutoCompile();
-                $GLOBALS['timeStart'] = '';
-                echo "\xEF\xBB\xBF";
+            $model->getDayExport($value,$variable);
 
-                $fp = fopen('php://output', 'w');
-                fputcsv($fp, $header);
-                for ($i = 0; $i < count($search); $i++) {
-                    $WorkTitle = $search[$i]['WorkTitle'];
-                    unset($search[$i]['WorkTitle']);
-                    if (is_array($requestservice_worktitles)) {
-                        for ($i2 = 0; $i2 < count($requestservice_worktitles); $i2++) {
-                            if (strpos($WorkTitle, strval($requestservice_worktitles[$i2]['id']))) {
-                                $search[$i][] = "1";
-                            } else
-                                $search[$i][] = "";
-                        }
-                    }
-                    fputcsv($fp, $search[$i]);
-                }
-                fclose($fp);
-                return true;
-            } else {
-                $this->alert('danger', '', 'نتیجه ای یافت نشد !');
-            }
         }
 
 
@@ -184,4 +153,5 @@ class requestService_export extends controller
         $this->mold->set('sections', sections::index() ["result"]);
         $this->mold->set('phases', phases::index()["result"]);
     }
+
 }

@@ -115,9 +115,10 @@
         });
     }
     function getBrand(){
+        console.log("asd")
         let userId = $('#person_select').val()
         $.ajax({
-            url: urlapi+'brand/getByUsersId/'+userId,
+            url: urlapi+'product_brand/getByUsersId/'+userId,
             type: 'post',
             dataType: 'json',
             data: {

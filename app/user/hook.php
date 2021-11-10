@@ -168,4 +168,9 @@ class hook extends pluginController
         $permission = model::searching(null, null, 'user_group_permission as user_group_permission', 'user_group_permission.user_groupId,accessPage,loginRequired');
         return cache::save($permission, 'userPermissions', PHP_INT_MAX, 'user');
     }
+    public function _logField(): array
+    {
+        return [["value" => "login user" , "label" => "ورود کاربران"],["value" => "logout user" , "label" => "خروج کاربران"]];
+    }
+
 }

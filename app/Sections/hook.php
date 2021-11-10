@@ -63,4 +63,8 @@ class hook extends pluginController {
         return $model->getLabel();
     }
 
+    public function _logField(): array
+    {
+        return ["value" => "Sections" , "label" => "تغییرات بخش ها"];
+    }
 }

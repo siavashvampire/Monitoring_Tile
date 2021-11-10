@@ -66,4 +66,9 @@ class hook extends pluginController {
         return $model->getLabel();
     }
 
+    public function _logField(): array
+    {
+        return [["value" => "Units" , "label" => "تغییرات واحدها"]];
+    }
+
 }

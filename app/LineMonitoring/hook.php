@@ -212,4 +212,9 @@ class hook extends pluginController
         return ["label" => "LineMonitoring"];
     }
 
+    public function _logField(): array
+    {
+        return [["value" => "off_sensor_reasons" , "label" => "تغییرات علت توقفات"],["value" => "updateReason" , "label" => "تغییرات علت توقفات خط"],["value" => "Sensor" , "label" => "تغییرات سنسورها"],["value" => "Switch" , "label" => "تغییرات کلیدها"],["value" => "phase" , "label" => "تغییرات فاز ها"],["value" => "Tile" , "label" => "تغییرات کاشی ها"]];
+    }
+
 }

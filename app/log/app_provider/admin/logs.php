@@ -38,6 +38,8 @@ class logs extends controller {
 		$this->lists();
 	}
 	private function lists() {
+        $logField = $this->callHooks('logField');
+	    show($logField);
 		$get = request::post('page=1,perEachPage=25,content,userId,StartTime,EndTime,ip,viewPage' ,null);
 		$rules = [
 			"page" => ["required|match:>0", rlang('page')],

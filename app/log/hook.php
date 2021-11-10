@@ -54,5 +54,10 @@ class hook extends pluginController {
 		$log->setActivityTime();
 		$log->insertToDataBase();
 	}
+    public function _logField(): array
+    {
+        return [["value" => "view_webSite_page" , "label" => "نمایش صفحاتی که بازدید شده"]];
+    }
+
 
 }

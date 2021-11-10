@@ -47,4 +47,10 @@ class hook extends pluginController
         $this->mold->view('configuration.system.mold.html');
         $this->mold->path($getPath['folder'], $getPath['app']);
     }
+
+    public function _logField(): array
+    {
+        return [["value" => "RequestService" , "label" => "درخواست خدمات"]];
+    }
+
 }

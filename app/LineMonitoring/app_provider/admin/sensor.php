@@ -8,7 +8,6 @@ use app\LineMonitoring\model\sensors;
 use App\units\app_provider\api\units;
 use controller;
 use paymentCms\component\cache;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -74,10 +73,12 @@ class sensor extends controller
 //        $numberOfAll = \App\LineMonitoring\app_provider\api\sensor::index($value,$variable);
         /* @var sensors $model */
         $model = parent::model('sensors');
+
         $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
         $search = $model->getItems($value, $variable, $sortWith, $pagination);
+
         $this->mold->path('default', 'LineMonitoring');
         $this->mold->view('sensorList.mold.html');
         $this->mold->setPageTitle('لیست سنسور ها');

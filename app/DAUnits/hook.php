@@ -9,9 +9,8 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
-        $this->menu->after('users' ,'DAUnits', rlang('DAUnits') , app::getBaseAppLink('DAUnits','admin') , 'fa fa-history' ,'',null,'admin/DAUnits/index/DAUnits');
-        $this->menu->after('DAUnits' ,'DAUnitsList', rlang('DAUnitsList') , app::getBaseAppLink('DAUnits/List','admin') , 'fa fa-history' ,'',null,'admin/DAUnits/index/DAUnits');
-	}
+        $this->menu->addChild('configurationLine' ,'DAUnitsList', rlang('DAUnits') , app::getBaseAppLink('DAUnits/List','admin') , 'fa fa-history' ,'','admin/DAUnits/index/DAUnits');
+    }
     public function _should_update()
     {
         $should_update = array();

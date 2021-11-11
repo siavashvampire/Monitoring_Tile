@@ -18,7 +18,7 @@ class hook extends pluginController
 {
     public function _adminHeaderNavbar($vars2)
     {
-        $this->menu->after('users', 'Substation', rlang('Substations'), app::getBaseAppLink('Substation/List', 'admin'), 'fa fa-history', '', null, 'admin/Substation/index/ElectricalSubstation');
+        $this->menu->addChild('configurationLine', 'Substation', rlang('Substations'), app::getBaseAppLink('Substation/List', 'admin'), 'fa fa-history', '', 'admin/Substation/index/ElectricalSubstation');
     }
 
     public function _should_update()
@@ -26,7 +26,6 @@ class hook extends pluginController
         $should_update = array();
 
         $data = cache::get('isSubstation', null, 'ElectricalSubstation');
-
         if ($data !== 'yes')
             $should_update[] = "Substation";
 

@@ -4,16 +4,14 @@ namespace App\LineMonitoring;
 
 use app;
 use App\core\controller\fieldService;
-use App\LineMonitoring\model\data;
 use App\LineMonitoring\model\phases;
 use App\user\app_provider\api\user;
-use App\vakilnet\model\specialties;
 use paymentCms\component\cache;
 use paymentCms\component\file;
 use paymentCms\component\model;
 use pluginController;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class hook extends pluginController
 {
@@ -44,14 +42,12 @@ class hook extends pluginController
 
         $this->menu->after('alllogs', 'configurationLine', 'تنظیمات خط تولید', "#", 'fa fa-cogs', '', null, 'admin/sensor/index/LineMonitoring');
 
-
         $this->menu->addChild('configurationLine', 'sensors', 'تنظیمات سنسورها', app::getBaseAppLink('sensor', 'admin'), 'fa fa-usb', '', 'admin/sensor/index/LineMonitoring');
         $this->menu->addChild('configurationLine', 'virtualSensor', 'تنظیمات سنسورهای مجازی', app::getBaseAppLink('virtualSensor/List', 'admin'), 'fa fa-usb', '', 'admin/virtualSensor/index/LineMonitoring');
         $this->menu->addChild('configurationLine', 'storageSensor', 'تنظیمات سنسورهای دخیره ساز', app::getBaseAppLink('storageSensor/List', 'admin'), 'fa fa-usb', '', 'admin/storageSensor/index/LineMonitoring');
         $this->menu->addChild('configurationLine', 'CamSwitch', 'تنظیمات کلیدها', app::getBaseAppLink('CamSwitch', 'admin'), 'fa fa-usb', '', 'admin/CamSwitch/index/LineMonitoring');
 
         $this->menu->after('configurationLine', 'configurationManufactor', 'تنظیمات کارخانه', "#", 'fa fa-building-o ', '', null, 'admin/off_sensor_reasons/lists/LineMonitoring');
-
 
         $this->menu->addChild('configurationManufactor', 'phases', rlang('PhaseAndBudgetDefinition'), app::getBaseAppLink('phases/List', 'admin'), 'fa fa-calendar', '', 'admin/phases/lists /LineMonitoring');
 

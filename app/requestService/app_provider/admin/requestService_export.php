@@ -27,8 +27,7 @@ class requestService_export extends controller
 
         $value = [];
         if (request::isPost()) {
-            $get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift');
-            $get = null;
+            $get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift,month,getPDF');
             $_SERVER['JsonOff'] = true;
             if ($get['StartTime'] != null) {
                 $shamsi = explode('/', $get['StartTime']);
@@ -49,12 +48,12 @@ class requestService_export extends controller
                 $get['EndTime'] = $shiftData["result"]["endTime"];
             }
             if ($get['Day'] != null) {
-
                 $DayData = Day::index($get['Day']);
 
                 $get['StartTime'] = $DayData["result"]["dayStart"];
                 $get['EndTime'] = $DayData["result"]["dayEnd"];
             }
+
             unset($_SERVER['JsonOff']);
 
             if ($get['section'] === "0" or $get['giver_section'] === "0") {
@@ -111,39 +110,46 @@ class requestService_export extends controller
                 $value[] = $get['EndTime'];
             }
 
-            $header = [
-                'تاریخ درخواست',
-                'شماره درخواست',
-                'ساعت درخواست',
-                'واحد درخواست کننده',
-                'فاز',
-                'نام دستگاه/تجهیز',
-                'حالت تعمیرات',
-                'مدت توقف',
-                'واحد مجری',
-                'ساعت شروع',
-                'ساعت اتمام',
-                'زمان کارکرد(دقیقه)',
-                'شرح خرابی و عملیات انجام شده',
-                'نفر کارکرد',
-                'نفر ساعت',
-            ];
-            $requestservice_worktitles = $model->search(null, ' 1 ', 'requestservice_worktitle');
-            if (is_array($requestservice_worktitles)) {
-                for ($i = 0; $i < count($requestservice_worktitles); $i++) {
-                    $header[] = $requestservice_worktitles[$i]['label'];
-                }
-            }
-
-
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
-            echo "\xEF\xBB\xBF";
 
-            $model->getDayExport($value,$variable);
+            if ($get['Day'] != null or $get['Shift'] != null)
+                $model->getDayExport($value, $variable);
 
+            if ($get['month'] != null) {
+                $header = [
+                    'ردیف',
+                    'بخش',
+                    'فاز',
+                    'درصد',
+                ];
+
+                if ($get['getPDF']) {
+                    $search = $model->getMonthExportData($variable);
+                    for ($i = 0; $i < count($search); $i++) {
+                        $search[$i] =  array_merge([$i + 1], $search[$i]);
+                    }
+                    $this->mold->path('default', 'requestService');
+                    $views = $this->mold->getViews();
+                    $this->mold->unshow($views);
+                    $this->mold->view('exportPdf.mold.html');
+                    $this->mold->set('headersTable', $header);
+                    $this->mold->set('headersTableWidth', [25,25,25,25]);
+//                    $this->mold->set('unitLabel', sections::index([$get['section']])["result"][0]["label"]);
+                    $this->mold->set('unitLabel', sections::index([10])["result"][0]["label"]);
+                    $this->mold->set('nowTime', JDate::jdate('Y/m/d'));
+                    $this->mold->set('datasTable', $search);
+                    $this->mold->setPageTitle('گزارش گیری خدمات');
+                    $this->mold->unshow('footer.mold.html');
+                    $htmlpersian = $this->mold->render();
+                    show($htmlpersian);
+                    $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => date('Y-M-d H-i'), 'landscape' => true]);
+                } else {
+                    echo "\xEF\xBB\xBF";
+                    $model->getMonthExportCSV($value, $variable, $header);
+                }
+            }
         }
-
 
         $this->mold->path('default', 'requestService');
         $this->mold->view('RSExport.mold.html');

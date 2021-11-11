@@ -131,7 +131,6 @@ class export extends controller {
 					$this->mold->set('datasTable' , $search);
 					$this->mold->unshow('footer.mold.html');
 					$htmlpersian = $this->mold->render();
-//                    show($htmlpersian);
 					$this->callHooks('makePDF',['htmlpersian'=>$htmlpersian,'nameOfFile'=>date('Y-M-d H-i') , 'landscape' => true]);
 				} else{
 					header('Content-Encoding: UTF-8');

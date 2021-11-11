@@ -4,6 +4,7 @@
 namespace App\requestService\model;
 
 
+use App\requestService\app_provider\api\request_service;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace;
 
@@ -636,7 +637,8 @@ class requestService extends model implements modelInterFace
             'نفر کارکرد',
             'نفر ساعت',
         ];
-        $requestservice_worktitles = parent::search(null, ' 1 ', 'requestservice_worktitle');
+
+        $requestservice_worktitles = request_service::worktitle() ["result"];
         if (is_array($requestservice_worktitles)) {
             for ($i = 0; $i < count($requestservice_worktitles); $i++) {
                 $header[] = $requestservice_worktitles[$i]['label'];
@@ -656,7 +658,6 @@ class requestService extends model implements modelInterFace
             header("Pragma: no-cache");
             header("Expires: 0");
             header('Content-Transfer-Encoding: binary');
-
 
 
             $fp = fopen('php://output', 'w');
@@ -679,5 +680,41 @@ class requestService extends model implements modelInterFace
         } else {
             return false;
         }
+    }
+
+    public function getMonthExportCSV($value, $variable, $header)
+    {
+        $search = self::getMonthExportData($variable);
+
+        if (is_array($search) and count($search) > 0) {
+            header('Content-Encoding: UTF-8');
+            header('Content-type: text/csv; charset=UTF-8');
+            header("Content-Disposition: attachment; filename=" . 'Export Log (' . date('Y-M-d H:i:s') . ').csv');
+            header("Pragma: no-cache");
+            header("Expires: 0");
+            header('Content-Transfer-Encoding: binary');
+
+
+            $fp = fopen('php://output', 'w');
+            fputcsv($fp, $header);
+            for ($i = 0; $i < count($search); $i++) {
+                fputcsv($fp, array_merge([$i + 1], $search[$i]));
+            }
+            fclose($fp);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+
+    public function getMonthExportData($variable)
+    {
+        $db = (model::db());
+        $perfix = $db::$prefix;
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table1 SELECT SUM(TIMESTAMPDIFF(MINUTE,`Time_Start`,`Time_End`)) as time_diff_all FROM per_requestservice;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table2 SELECT (SELECT time_diff_all FROM ' . $perfix . 'request_temp_table1) as time_diff_all ,SUM(TIMESTAMPDIFF(MINUTE,data.`Time_Start`,data.`Time_End`) * data.`HumanNumber`) as time_diff,data.phase,data.section FROM per_requestservice data WHERE 1 GROUP by data.section,data.phase;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table3 SELECT sections.label as section,phases.label as phase, ROUND(data.time_diff / data.time_diff_all * 100 , 2 ) as percent from ' . $perfix . 'request_temp_table2 data LEFT JOIN ' . $perfix . 'phases phases on phases.id = data.phase LEFT JOIN ' . $perfix . 'sections sections on sections.id = data.section;');
+        return parent::search(null, null, 'request_temp_table3', '*', ['column' => 'percent', 'type' => 'DESC']);
     }
 }

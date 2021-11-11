@@ -118,9 +118,9 @@ class menu {
 	}
 
 	public function addChild($fatherKey , $key , $title,$link = '#',$icon = null,$target = '',$accessSpace=null){
-
 	    if ( ! isset(self::$menuFatherKeys[$fatherKey]))
 			return ;
+
 		$fatherKeyOfFather = self::$menuFatherKeys[$fatherKey] ;
         $fatherKeyObject = $this->generateChildName ($fatherKey) ;
 

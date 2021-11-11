@@ -7,6 +7,7 @@ use App\ElectricalSubstation\model\substation_Device;
 use App\ElectricalSubstation\model\substation_deviceType;
 use App\user\app_provider\api\checkAccess;
 use controller;
+use paymentCms\component\cache;
 use paymentCms\component\request;
 use App\user\app_provider\api\user;
 use paymentCms\component\validate;
@@ -191,6 +192,7 @@ class Substation extends controller
                     }
                 }
 
+                cache::clear('isSubstation' , 'ElectricalSubstation');
                 Response::jsonMessage("ثبت پست با موفقیت انجام شد", true);
                 return false;
             }

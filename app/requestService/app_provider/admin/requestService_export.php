@@ -142,7 +142,7 @@ class requestService_export extends controller
                     $this->mold->setPageTitle('گزارش گیری خدمات');
                     $this->mold->unshow('footer.mold.html');
                     $htmlpersian = $this->mold->render();
-                    show($htmlpersian);
+//                    show($htmlpersian);
                     $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => date('Y-M-d H-i'), 'landscape' => true]);
                 } else {
                     echo "\xEF\xBB\xBF";

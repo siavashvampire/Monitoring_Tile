@@ -6,6 +6,7 @@ namespace plugin\pdfmaker;
 
 use plugin\pdfmaker\lib\TCPDF;
 use pluginController;
+use TCPDF_FONTS;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
@@ -54,10 +55,10 @@ class hook extends pluginController
         // set some language-dependent strings (optional)
         $pdf->setLanguageArray($lg);
 
-        // ---------------------------------------------------------
-
+//    $fontname = TCPDF_FONTS::addTTFfont('C:\Users\vampire\Desktop\test\BNazanin.ttf', 'TrueTypeUnicode', '', 32);
+//        $pdf->SetFont($fontname, '', 12);
         // set font
-        $pdf->SetFont('dejavusans', '', 12);
+        $pdf->SetFont('bnazanin', '', 12);
 
         // add a page
         $pdf->AddPage(($landscape) ? 'L' : 'P', $type);

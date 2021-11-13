@@ -488,6 +488,30 @@ class database {
 		}
 		throw new Exception(sprintf('Unprepared Query Failed, ERRNO: %u (%s)', $this->mysqli()->errno, $this->mysqli()->error), $this->mysqli()->errno);
 	}
+
+	public function queryUnpreparedWithWhere($query,$searchVariable)
+	{
+		// Execute query
+		$stmt = $this->mysqli()->prepare($query);
+        $typeDet = "";
+        foreach ($searchVariable as $value) {
+            $typeDet .= $this->_determineType($value);
+        }
+
+        $bind_param_where = array_merge([$typeDet] ,$searchVariable);
+        call_user_func_array(array($stmt, 'bind_param'), $this->refValues($bind_param_where));
+//        $stmt->bind_param($typeDet, $searchVariable[0],$searchVariable[1]);
+        $stmt->execute();
+		// Failed?
+		if ($stmt !== false)
+			return $stmt;
+		if ($this->mysqli()->errno === 2006 && $this->autoReconnect === true && $this->autoReconnectCount === 0) {
+			$this->connect($this->defConnectionName);
+			$this->autoReconnectCount++;
+			return $this->queryUnpreparedWithWhere($query,$searchVariable);
+		}
+		throw new Exception(sprintf('Unprepared Query Failed, ERRNO: %u (%s)', $this->mysqli()->errno, $this->mysqli()->error), $this->mysqli()->errno);
+	}
 	/**
 	 * Execute raw SQL query.
 	 *

@@ -5,7 +5,7 @@ use App\LineMonitoring\app_provider\api\phases;
 use App\LineMonitoring\app_provider\api\sensor;
 use App\LineMonitoring\app_provider\api\tiles;
 use App\LineMonitoring\model\data_merge;
-use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\totalDate;
 use App\shiftWork\app_provider\api\shift;
 use app\LineMonitoring\model\data;
 use app\LineMonitoring\model\data_archive;
@@ -259,7 +259,7 @@ class sensorlog extends controller {
         if ($user['user_group_id'] == 1) {
             $value = array( );
             $variable = array( );
-            $DayData = Day::index(0)['result'];
+            $DayData = totalDate::Day(0)['result'];
             $value[] = $DayData['dayStart'];
             $value[] = $DayData['dayEnd'];
             $value[] = -1;

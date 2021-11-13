@@ -11,7 +11,7 @@ use App\LineMonitoring\model\sensor_active_log;
 use App\LineMonitoring\model\sensor_active_log_archive;
 use App\LineMonitoring\model\sensor_active_log_merge;
 use App\LineMonitoring\model\Switch_active_log;
-use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\totalDate;
 use App\shiftWork\app_provider\api\shift;
 use paymentCms\component\cache;
 use paymentCms\component\JDate;
@@ -75,7 +75,7 @@ class cronjob extends innerController
     public static function updateDay()
     {
         $_SERVER['JsonOff'] = true;
-        $DayData = Day::index();
+        $DayData = totalDate::Day();
         unset($_SERVER['JsonOff']);
 
         if ($DayData['status'] and $DayData['result']['dayStart'] != null and $DayData['result']['dayEnd'] != null) {
@@ -94,8 +94,8 @@ class cronjob extends innerController
     public static function mergeData()
     {
         $_SERVER['JsonOff'] = true;
-        $startTime = Day::index(3)['result']['dayStart'];
-        $endTime = Day::index(0)['result']['dayEnd'];
+        $startTime = totalDate::Day(3)['result']['dayStart'];
+        $endTime = totalDate::Day(0)['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
 
         /** @var data_merge $data_merge */
@@ -134,8 +134,8 @@ class cronjob extends innerController
 
         for ($i = 0; $i <= 200; $i++) {
             $_SERVER['JsonOff'] = true;
-            $startTime = Day::index($i * 3 + 5)['result']['dayStart'];
-            $endTime = Day::index($i * 3)['result']['dayEnd'];
+            $startTime = totalDate::Day($i * 3 + 5)['result']['dayStart'];
+            $endTime = totalDate::Day($i * 3)['result']['dayEnd'];
             unset($_SERVER['JsonOff']);
 
             $data_merge->mergeDB($startTime, $endTime);

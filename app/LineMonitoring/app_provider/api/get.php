@@ -6,7 +6,7 @@ use App\api\controller\innerController;
 use app\LineMonitoring\model\data;
 use App\LineMonitoring\model\phases_budget;
 use app\LineMonitoring\model\sensors;
-use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\totalDate;
 use App\shiftWork\app_provider\api\shift;
 use paymentCms\component\cache;
 use paymentCms\component\JDate;
@@ -493,7 +493,7 @@ class get extends innerController
         else
             $isSet = true;
         $_SERVER['JsonOff'] = true;
-        $DayData = Day::index(1)['result'];
+        $DayData = totalDate::Day(1)['result'];
         $DayStart = $DayData['dayStart'];
         $DayEnd = $DayData['dayEnd'];
         $variable[] = ' (arch1.Start_time BETWEEN "' . $DayStart . '" AND "' . $DayEnd . '") ';

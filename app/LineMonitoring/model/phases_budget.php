@@ -1,7 +1,7 @@
 <?php
 namespace App\LineMonitoring\model;
 
-use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\totalDate;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace ;
 
@@ -321,7 +321,7 @@ class phases_budget extends model implements modelInterFace {
         if ( $Time == null )  $Time = time();
         
         $_SERVER['JsonOff'] = true;
-        $Time = date('Y-m-d' , strtotime(Day::index(0,$Time)['result']["dayStart"]));
+        $Time = date('Y-m-d' , strtotime(totalDate::Day(0,$Time)['result']["dayStart"]));
         unset($_SERVER['JsonOff']);
         
         $value = array();

@@ -4,7 +4,7 @@ namespace App\LineMonitoring\app_provider\api;
 
 use App\api\controller\innerController;
 use App\LineMonitoring\model\data_merge;
-use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\totalDate;
 use DateTime;
 use paymentCms\component\cache;
 use paymentCms\component\JDate;
@@ -122,8 +122,8 @@ class chart extends innerController
         $minDate = JDate::jalali_to_gregorian($dateShamsi[0], $dateShamsi[1], $dateShamsi[2], "-") . ' 12:59:59';
         $dateShamsi = explode('/', $maxDate);
         $maxDate = JDate::jalali_to_gregorian($dateShamsi[0], $dateShamsi[1], $dateShamsi[2], "-") . ' 12:59:59';
-        $dayStart = Day::index(0, strtotime($minDate));
-        $dayEnd = Day::index(0, strtotime($maxDate));
+        $dayStart = totalDate::Day(0, strtotime($minDate));
+        $dayEnd = totalDate::Day(0, strtotime($maxDate));
         unset($_SERVER['JsonOff']);
 
         return ['data' => $result, 'jtime' => JDate::jdate("l - H:i:s"), "dayStart" => $dayStart['result']['dayStart'], "dayEnd" => $dayEnd['result']['dayEnd'], "jdayStart" => $dayStart['result']['jdayStart'], "jdayEnd" => $dayEnd['result']['jdayEnd']];
@@ -140,10 +140,10 @@ class chart extends innerController
         $dateEnd = date_format(date_add(new DateTime($dateFirst), date_interval_create_from_date_string($safety . ' days')), 'Y-m-d H:i:s');
 
         $_SERVER['JsonOff'] = true;
-        $dayStart = Day::index(0, strtotime($dateStart))['result']['dayStart'];
-        $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
-        $dayFirst[] = Day::index(0, strtotime($dateFirst))['result']['dayStart'];
-        $dayFirst[] = Day::index(0, strtotime($dateFirst))['result']['dayEnd'];
+        $dayStart = totalDate::Day(0, strtotime($dateStart))['result']['dayStart'];
+        $dayEnd = totalDate::Day(0, strtotime($dateEnd))['result']['dayEnd'];
+        $dayFirst[] = totalDate::Day(0, strtotime($dateFirst))['result']['dayStart'];
+        $dayFirst[] = totalDate::Day(0, strtotime($dateFirst))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
         if ($BudgetFlag or $BudgetPishFlag) {
             $Budgets = phases::Budget($dayStart);
@@ -219,6 +219,9 @@ class chart extends innerController
 
     private static function GetDaySeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
     {
+        /** @var data_merge $model_data_merge */
+        $model_data_merge = parent::model('data_merge');
+
         $series = null;
         $safety = 5;
 
@@ -230,8 +233,8 @@ class chart extends innerController
         $dateEnd = date_format(date_add(new DateTime($dateFirst), date_interval_create_from_date_string(1 . ' month ' . $safety . ' days')), 'Y-m-d');
 
         $_SERVER['JsonOff'] = true;
-        $dayStart = Day::index(0, strtotime($dateStart))['result']['dayStart'];
-        $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
+        $dayStart = totalDate::Day(0, strtotime($dateStart))['result']['dayStart'];
+        $dayEnd = totalDate::Day(0, strtotime($dateEnd))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
 
         if ($BudgetFlag or $BudgetPishFlag) {
@@ -239,7 +242,7 @@ class chart extends innerController
         }
 
         $sensorText = '(' . implode(',', $sensors) . ')';
-        $search = parent::model('data_merge')->getDayData($sensorText, $dateShamsi, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
+        $search = $model_data_merge->getDayData($sensorText, $dateShamsi, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
 
 
         if (is_array($search)) {
@@ -286,6 +289,9 @@ class chart extends innerController
 
     private static function GetMonthSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
     {
+        /** @var data_merge $model_data_merge */
+        $model_data_merge = parent::model('data_merge');
+
         $series = null;
         $safety = 3;
         $dateShamsi = explode('/', $date);
@@ -296,15 +302,16 @@ class chart extends innerController
         $dateEnd = date_format(date_add(new DateTime($dateFirst), date_interval_create_from_date_string(12 . ' month ' . $safety . ' days')), 'Y-m-d');
 
         $_SERVER['JsonOff'] = true;
-        $dayStart = Day::index(0, strtotime($dateStart))['result']['dayStart'];
-        $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
+        $dayStart = totalDate::Day(0, strtotime($dateStart))['result']['dayStart'];
+        $dayEnd = totalDate::Day(0, strtotime($dateEnd))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
 
         if ($BudgetFlag or $BudgetPishFlag) {
             $Budgets = phases::Budget($dayStart) * 30;
         }
+
         $sensorText = '(' . implode(',', $sensors) . ')';
-        $search = parent::model('data_merge')->getMonthData($sensorText, $dateShamsi, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
+        $search = $model_data_merge->getMonthData($sensorText, $dateShamsi, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
 //        $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_merge data', 'SUM(data.counter) as counter, sensors.sensors , data.Sensor_id as id , jmonth(data.Start_time) as Day', [['column' => 'data.Start_time', 'type' => 'asc']], null, 'jyear(`Start_time`), jmonth(`Start_time`) , data.Sensor_id');
 
         if (is_array($search)) {
@@ -341,6 +348,9 @@ class chart extends innerController
 
     private static function GetYearSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0)
     {
+        /** @var data_merge $model_data_merge */
+        $model_data_merge = parent::model('data_merge');
+
         $dateShamsi = explode('/', $date);
         $dateStart = JDate::jalali_to_gregorian($dateShamsi[0], 1, 1, "-") . ' 12:59:59';
         $dateEnd = JDate::jalali_to_gregorian($dateShamsi[0], 12, 29, "-") . ' 12:59:59';
@@ -348,8 +358,8 @@ class chart extends innerController
         $date = implode('/', [$dateShamsi[0]]);
 
         $_SERVER['JsonOff'] = true;
-        $dayStart = Day::index(0, strtotime($dateStart))['result']['dayStart'];
-        $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
+        $dayStart = totalDate::Day(0, strtotime($dateStart))['result']['dayStart'];
+        $dayEnd = totalDate::Day(0, strtotime($dateEnd))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
         if ($BudgetFlag or $BudgetPishFlag) {
             $Budgets = phases::Budget($dayStart) * 365;
@@ -359,9 +369,8 @@ class chart extends innerController
             $variable[] = ' data.Sensor_id IN ( ' . substr(str_repeat('? ,', count($sensors)), 0, -1) . ')  ';
         }
 
-        $model = parent::model('data_merge');
         model::join('sensors sensors', 'data.Sensor_id = sensors.id');
-        $search = $model->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_merge data', 'SUM(data.counter) as counter, sensors.label , data.Sensor_id as id , jyear(data.Start_time) as Day', [['column' => 'data.Start_time', 'type' => 'asc']], null, 'jyear(`Start_time`) , data.Sensor_id');
+        $search = $model_data_merge->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_merge data', 'SUM(data.counter) as counter, sensors.label , data.Sensor_id as id , jyear(data.Start_time) as Day', [['column' => 'data.Start_time', 'type' => 'asc']], null, 'jyear(`Start_time`) , data.Sensor_id');
         $movAvgFlag = false;
         if (is_array($search)) {
             $series = self::extractData($search, $BudgetPishFlag, $Budgets, $BudgetFlag, $movAvgFlag, $date, $labels);
@@ -416,8 +425,8 @@ class chart extends innerController
         $date = implode('/', [$dateShamsi[0], $dateShamsi[1]]);
 
         $_SERVER['JsonOff'] = true;
-        $dayStart = Day::index(0, strtotime($dateStart))['result']['dayStart'];
-        $dayEnd = Day::index(0, strtotime($dateEnd))['result']['dayEnd'];
+        $dayStart = totalDate::Day(0, strtotime($dateStart))['result']['dayStart'];
+        $dayEnd = totalDate::Day(0, strtotime($dateEnd))['result']['dayEnd'];
         unset($_SERVER['JsonOff']);
         if ($BudgetFlag or $BudgetPishFlag) {
             $Budgets = phases::Budget($dayStart);

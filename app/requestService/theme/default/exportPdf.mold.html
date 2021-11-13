@@ -1,15 +1,24 @@
 <h1 class="card-title m-12" style="text-align: center">کارخانه کاشی و سرامیک حافظ</h1>
-<div class="row">
-    <div class="col-md-12"style="text-align: center">
-        <label style="font-size: 24px">واحد {$unitLabel}</label>
-        <label style="font-size: 24px">تاریخ گزارش : {$nowTime}</label>
-    </div>
+
+<div class="col-md-12" style="text-align: center">
+    <label style="font-size: 24px">واحد {$unitLabel}</label>
 </div>
-<div class="row">
-    <div class="col-md-12"style="text-align: center;border: 1px solid #ddd;">
-        <label style="font-size: 24px">از تاریخ {$nowTime} الی {$nowTime}</label>
-    </div>
+<div class="col-md-12" style="text-align: center">
+    <label style="font-size: 24px">تاریخ گزارش : {$nowTime}</label>
 </div>
+
+<div class="col-md-12" style="text-align: center;border: 1px solid #ddd;font-size: 28px">
+    <label style="font-size: 24px">از تاریخ {$startTime} الی {$endTime}</label>
+</div>
+
+<div class="col-md-12" style="text-align: center;border: 1px solid #ddd;font-size: 24px;overflow: hidden;">
+    <label style="font-size: 24px;">نفر ساعت کل: {$time_diff_all}ساعت</label>
+</div>
+
+<div class="col-md-12" style="text-align: center;border: 1px solid #ddd;font-size: 24px;overflow: hidden;">
+    <label style="font-size: 24px;">تعداد کل خدمات :{$count_all}</label>
+</div>
+
 <table style="border-collapse: collapse;width: 100%;">
     <thead>
         <tr>
@@ -24,11 +33,11 @@
     </thead>
     <tbody>
         {foreach from=$datasTable key=key1 value=dataTable }
-        <tr>
-            {foreach from=$dataTable key=key2 value=data }
-                <td style="border: 1px solid #ddd;padding: 8px;text-align: center;">{$data}</td>
-            {/foreach}
-        </tr>
+            <tr>
+                {foreach from=$dataTable key=key2 value=data }
+                    <td style="border: 1px solid #ddd;padding: 8px;text-align: center;">{$data}</td>
+                {/foreach}
+            </tr>
         {/foreach}
     </tbody>
 </table>

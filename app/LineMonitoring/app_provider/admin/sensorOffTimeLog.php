@@ -5,7 +5,7 @@ namespace App\LineMonitoring\app_provider\admin;
 use App\core\controller\fieldService;
 use App\LineMonitoring\app_provider\api\phases;
 use App\LineMonitoring\model\sensor_active_log;
-use App\shiftWork\app_provider\api\Day;
+use App\shiftWork\app_provider\api\totalDate;
 use App\LineMonitoring\model\sensor_active_log_archive;
 use App\units\app_provider\api\units;
 use App\user\app_provider\api\user;
@@ -113,13 +113,13 @@ class sensorOffTimeLog extends controller
         } elseif ($get['howShow'] == 'count') {
             $search = $this->countTab($value, $variable, $sortWith, $get['page'], $get['perEachPage']);
         } elseif ($get['howShow'] == 'yesterday') {
-            $DayData = Day::index(1)['result'];
+            $DayData = totalDate::Day(1)['result'];
             $value[] = $DayData['dayStart'];
             $value[] = $DayData['dayEnd'];
             $variable[] = ' (data.Start_time BETWEEN ? AND ?)';
             $search = $this->getActive($value, $variable, $sortWith, $get['page'], $get['perEachPage']);
         } elseif ($get['howShow'] == 'today') {
-            $DayData = Day::index(0)['result'];
+            $DayData = totalDate::Day(0)['result'];
             $value[] = $DayData['dayStart'];
             $value[] = $DayData['dayEnd'];
             $variable[] = '(data.Start_time BETWEEN ? AND ?)';
@@ -266,13 +266,13 @@ class sensorOffTimeLog extends controller
         } elseif ($get['howShow'] == 'count') {
             $search = $this->countTab($value, $variable, $sortWith, $get['page'], $get['perEachPage']);
         } elseif ($get['howShow'] == 'yesterday') {
-            $DayData = Day::index(1)['result'];
+            $DayData = totalDate::Day(1)['result'];
             $value[] = $DayData['dayStart'];
             $value[] = $DayData['dayEnd'];
             $variable[] = ' (data.Start_time BETWEEN ? AND ?)';
             $search = $this->getActive($value, $variable, $sortWith, $get['page'], $get['perEachPage']);
         } elseif ($get['howShow'] == 'today') {
-            $DayData = Day::index(0)['result'];
+            $DayData = totalDate::Day(0)['result'];
             $value[] = $DayData['dayStart'];
             $value[] = $DayData['dayEnd'];
             $variable[] = '(data.Start_time BETWEEN ? AND ?)';

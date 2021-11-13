@@ -27,7 +27,7 @@ class requestService_export extends controller
 
         $value = [];
         if (request::isPost()) {
-            $get = request::post('section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift,month,getPDF');
+            $get = request::post('showField,section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift,month,getPDF');
             $_SERVER['JsonOff'] = true;
             if ($get['StartTime'] != null) {
                 $shamsi = explode('/', $get['StartTime']);
@@ -120,16 +120,21 @@ class requestService_export extends controller
                 $model->getDayExport($value, $variable);
 
             if ($get['month'] != null) {
-                $header = [
-                    'ردیف',
-                    'بخش درخواست کننده',
-                    'بخش انجام دهنده',
-                    'فاز',
-                    'درصد',
-                ];
+                $header = [];
+                $header[] = 'ردیف';
+                for ($i = 0; $i < count($get['showField']); $i++) {
+                    if ($get['showField'][$i] == "section")
+                        $header[] = 'بخش درخواست کننده';
+                    elseif ($get['showField'][$i] == "workerSections")
+                        $header[] = 'بخش انجام دهنده';
+                    elseif ($get['showField'][$i] == "phase")
+                        $header[] = 'فاز';
+                    elseif ($get['showField'][$i] == "percent")
+                        $header[] = 'درصد';
+                }
 
                 if ($get['getPDF']) {
-                    $data = $model->getMonthExportData($value, $variable);
+                    $data = $model->getMonthExportData($value, $variable, $get['showField']);
                     $search = $data['data'];
                     $time_diff_all = $data['time_diff_all'];
                     $count_all = $data['count_all'];
@@ -141,17 +146,24 @@ class requestService_export extends controller
                     $this->mold->unshow($views);
                     $this->mold->view('exportPdf.mold.html');
                     $this->mold->set('headersTable', $header);
-                    $this->mold->set('headersTableWidth', [20, 20, 20, 20, 20]);
-                    $file_name = "گزارش ";
+                    $this->mold->set('headersTableWidth', [25, 25, 25, 25]);
+
+                    $file_name = "بخش ";
+
                     if ($get['section']) {
                         $unitlabel = sections::index($get['section'])["result"][0]["label"];
-                        $file_name .= "درخواست دهنده واحد " . $unitlabel ;
+                        $file_name .= $unitlabel;
+                        $file_name .= " - ";
+                        $file_name .= "گزارش ماهانه درخواست دهنده";
                     } else {
                         $unitlabel = sections::index($get['giver_section'])["result"][0]["label"];
-                        $file_name .= "انجام دهنده واحد " . $unitlabel ;
+                        $file_name .= $unitlabel;
+                        $file_name .= " - ";
+                        $file_name .= "گزارش ماهانه انجام دهنده";
                     }
 
-                    $file_name .= " ";
+                    $file_name .= " - ";
+                    $file_name .= JDate::jdate('F Y');
 
                     $this->mold->set('unitLabel', $unitlabel);
                     $this->mold->set('nowTime', JDate::jdate('Y/m/d'));
@@ -164,10 +176,10 @@ class requestService_export extends controller
                     $this->mold->unshow('footer.mold.html');
                     $htmlpersian = $this->mold->render();
 //                    show($htmlpersian);
-                    $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name . JDate::jdate('F Y'), 'landscape' => true]);
+                    $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
                 } else {
                     echo "\xEF\xBB\xBF";
-                    $model->getMonthExportCSV($value, $variable, $header);
+                    $model->getMonthExportCSV($value, $variable, $header, $get['showField']);
                 }
             }
         }

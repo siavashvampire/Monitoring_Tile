@@ -682,9 +682,9 @@ class requestService extends model implements modelInterFace
         }
     }
 
-    public function getMonthExportCSV($value, $variable, $header)
+    public function getMonthExportCSV($value, $variable, $header,$showField = '*')
     {
-        $search = self::getMonthExportData($variable)['data'];
+        $search = self::getMonthExportData($value,$variable,$showField)['data'];
 
         if (is_array($search) and count($search) > 0) {
             header('Content-Encoding: UTF-8');
@@ -693,7 +693,6 @@ class requestService extends model implements modelInterFace
             header("Pragma: no-cache");
             header("Expires: 0");
             header('Content-Transfer-Encoding: binary');
-
 
             $fp = fopen('php://output', 'w');
             fputcsv($fp, $header);
@@ -708,16 +707,17 @@ class requestService extends model implements modelInterFace
     }
 
 
-    public function getMonthExportData($value, $variable)
+    public function getMonthExportData($value, $variable, $showField = '*')
     {
+        $showField = implode(' , ', $showField);
         $db = (model::db());
         $perfix = $db::$prefix;
         model::queryUnpreparedWithWhere('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table0 SELECT * FROM ' . $perfix . 'requestservice rs', $value, $variable);
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table1 SELECT SUM(TIMESTAMPDIFF(MINUTE,`Time_Start`,`Time_End`) * `HumanNumber`) as time_diff_all FROM ' . $perfix . 'request_temp_table0;');
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table2 SELECT (SELECT time_diff_all FROM ' . $perfix . 'request_temp_table1) as time_diff_all ,SUM(TIMESTAMPDIFF(MINUTE,data.`Time_Start`,data.`Time_End`) * data.`HumanNumber`) as time_diff,data.phase,data.section,data.WorkerSection FROM ' . $perfix . 'request_temp_table0 data WHERE 1 GROUP by data.section,data.WorkerSection,data.phase;');
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table3 SELECT sections.label as section,workerSections.label as workerSections,phases.label as phase, ROUND(data.time_diff / data.time_diff_all * 100 , 2 ) as percent from ' . $perfix . 'request_temp_table2 data LEFT JOIN ' . $perfix . 'phases phases on phases.id = data.phase LEFT JOIN ' . $perfix . 'sections sections on sections.id = data.section LEFT JOIN ' . $perfix . 'sections workerSections on workerSections.id = data.WorkerSection;');
-        $data = parent::search(null, null, 'request_temp_table3', '*', ['column' => 'percent', 'type' => 'DESC']);
-        $time_diff_all = parent::search(null, null, 'request_temp_table1', '*')[0]["time_diff_all"];
+        $data = parent::search(null, null, 'request_temp_table3', $showField, ['column' => 'percent', 'type' => 'DESC']);
+        $time_diff_all = parent::search(null, null, 'request_temp_table1')[0]["time_diff_all"];
         $count_all = parent::search(null, null, 'request_temp_table0 item', 'COUNT(item.requestId) as co') [0]['co'];
         return ['data' => $data, 'time_diff_all' => $time_diff_all, 'count_all' => $count_all];
     }

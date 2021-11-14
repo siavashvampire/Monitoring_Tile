@@ -71,7 +71,10 @@ class product_punch extends model implements modelInterFace {
     }
 
 
-    public function getItems() {
-		return parent::search( array()  ,  null  , 'product_punch', '*'  , ['column' => 'id' , 'type' =>'asc'] );
-	}
+    public function getCount($value = array(),$variable = array()) {
+        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product_punch item', 'COUNT(id) as co' )) [0]['co'];
+    }
+    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product_punch item'  , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+    }
 }

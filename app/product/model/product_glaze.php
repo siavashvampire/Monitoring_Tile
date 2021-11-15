@@ -70,10 +70,9 @@ class product_glaze extends model implements modelInterFace {
         $this->label = $label;
     }
     public function getCount($value = array(),$variable = array()) {
-        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product_glaze', 'COUNT(id) as co' )) [0]['co'];
+        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product_glaze item', 'COUNT(id) as co' )) [0]['co'];
     }
-
-    public function getItems() {
-		return parent::search( array()  ,  null  , 'product_glaze', '*'  , ['column' => 'id' , 'type' =>'asc'] );
-	}
+    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product_glaze item'  , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+    }
 }

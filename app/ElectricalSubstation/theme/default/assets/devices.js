@@ -15,6 +15,8 @@ class Schneider_PM2100 {
         this.label1 = this.parent.getElementsByClassName('showLabel1')[0];
         this.label2 = this.parent.getElementsByClassName('showLabel2')[0];
         this.label3 = this.parent.getElementsByClassName('showLabel3')[0];
+        this.TimeLabel = this.parent.getElementsByClassName('TimeLabel')[0];
+        this.updateTimeLabel = this.parent.getElementsByClassName('updateTimeLabel')[0];
         this.type = "Schneider_PM2100";
         this.type_Id = 1;
         this.tableName = "elecsub_data";
@@ -94,6 +96,8 @@ class Schneider_PM2100 {
         let label1 = this.label1;
         let label2 = this.label2;
         let label3 = this.label3;
+        let TimeLabel = this.TimeLabel;
+        let updateTimeLabel = this.updateTimeLabel;
         let field = this.getField();
         let tableName = this.tableName;
         let unit_id = this.unit_id;
@@ -112,6 +116,8 @@ class Schneider_PM2100 {
                 label1.innerHTML = result[0];
                 label2.innerHTML = result[1];
                 label3.innerHTML = result[2];
+                TimeLabel.innerHTML       = 'last data time :' + result[3];
+                updateTimeLabel.innerHTML = 'update time :' + result[4];
             }
         });
 
@@ -310,7 +316,7 @@ function   Schneider_PM2100_HTML (){
     '                                    <i class="fa fa-caret-right labelTemp label1 label4  section2" aria-hidden="true"\n' +
     '                                       style="transform: translate(-1900%,1110%);position: absolute; font-size: 30px; color : #000000;"></i>\n' +
     '                                </div>\n' +
-    '                                <div class="col-md-6">\n' +
+    '                                <div class="col-md-6" style="transform: translate(0%,0%);">\n' +
     '                                    <div class="row" style="height: 125px">\n' +
     '                                        <div class="col-md-12 text-center">\n' +
     '                                            <label class="col-form-label text-center showLabel1"\n' +
@@ -404,7 +410,15 @@ function   Schneider_PM2100_HTML (){
     '                                       style="transform: translate(470%,1250%);position: absolute; font-size: 30px; color : #000000;"></i>\n' +
     '\n' +
     '                                </div>\n' +
-    '                            </div>');
+    '                                <div class="col-md-12 text-center" style="transform: translate(0%,-20%);">\n' +
+    '                                    <label class="col-form-label text-center TimeLabel"\n' +
+    '                                           style=" font-size: 20px; color : #0000ff;"></label>\n' +
+    '                                </div>\n' +
+    '                                <div class="col-md-12 text-center" style="transform: translate(0%,-20%);">\n' +
+    '                                    <label class="col-form-label text-center updateTimeLabel"\n' +
+    '                                           style=" font-size: 20px; color : #0000ff;"></label>\n' +
+    '                                </div>\n' +
+    '                            </div>')
 
 }
 function   type_chooser(deviceType,id, substation_id, unitId, themeUrl,urlApi){

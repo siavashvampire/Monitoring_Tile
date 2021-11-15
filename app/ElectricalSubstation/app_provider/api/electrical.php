@@ -6,12 +6,11 @@ use App\api\controller\innerController;
 use app\ElectricalSubstation\model\elecsub_data_temp;
 use app\ElectricalSubstation\model\Substation;
 use App\ElectricalSubstation\model\substation_Device;
-use paymentCms\component\cache;
 use paymentCms\component\JDate;
 use paymentCms\component\model;
 use paymentCms\component\request;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class electrical extends innerController
 {
@@ -146,13 +145,7 @@ class electrical extends innerController
             }
         }
 
-        $data = 'no';
-
-        if ($data !== 'yes') {
-            return self::jsonError(null, 205);
-        }
-
-        return self::jsonError(null, 204);
+        return self::json("insert done");
     }
 
     private static function insertLog($_data): array

@@ -2,9 +2,8 @@
 
 namespace App\ElectricalSubstation\model;
 
-use paymentCms\component\browser;
+use paymentCms\component\JDate;
 use paymentCms\component\model;
-use paymentCms\component\security;
 use paymentCms\model\modelInterFace;
 
 class elecsub_data extends model implements modelInterFace
@@ -1745,18 +1744,28 @@ class elecsub_data extends model implements modelInterFace
         $perfix = $db::$prefix;
         model::queryUnprepared('UPDATE ' . $perfix . 'data SET Tile_Kind="' . $Tile_Kind . '",phase="' . $phase . '",unitId="' . $unitId . '",tileDegree="' . $tileDegree . '" WHERE Shift_id = -1 AND Shift_group_id = 0 AND Sensor_id = "' . $SensorID . '";');
     }
-    public function getData($value,$variable,$field): array
+
+    public function getData($field, $value = array(), $variable = array()): array
     {
-        $value[] = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', 'Max(Start_time) as maxTime' )[0]['maxTime'];
+        $value[] = $this->getUnitId();
+        $variable[] = 'unitId = ?';
+
+        $value[] = $this->getSubstationId();
+        $variable[] = 'substation_id = ?';
+
+        $time = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', 'Max(Start_time) as maxTime')[0]['maxTime'];
+        $value[] = $time;
         $variable[] = "Start_time = ?";
 
         $data = array();
-        for ($i=0; $i < count($field) ; $i++) {
+        for ($i = 0; $i < count($field); $i++) {
             if ($field[$i] != null)
-           $data[] = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', $field[$i].',Max(Start_time)'  )[0][$field[$i]];
+                $data[] = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', $field[$i])[0][$field[$i]];
             else
                 $data[] = "";
         }
+        $data[] = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', 'concat(DATE_FORMAT(JStart_time, "%Y.%m.%d")," ",DATE_FORMAT(Start_time, "%H:%i")) as time')[0]['time'];
+        $data[] = JDate::jdate("Y.m.d H:i");
         return $data;
     }
 }

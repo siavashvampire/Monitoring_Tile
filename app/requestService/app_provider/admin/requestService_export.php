@@ -138,9 +138,11 @@ class requestService_export extends controller
                     $search = $data['data'];
                     $time_diff_all = $data['time_diff_all'];
                     $count_all = $data['count_all'];
+
                     for ($i = 0; $i < count($search); $i++) {
                         $search[$i] = array_merge([$i + 1], $search[$i]);
                     }
+
                     $this->mold->path('default', 'requestService');
                     $views = $this->mold->getViews();
                     $this->mold->unshow($views);

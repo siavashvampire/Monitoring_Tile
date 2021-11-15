@@ -41,15 +41,15 @@
     let temp = '';
 
     {foreach from=$devices key=key and value=device}
-    if (x == 0 )
-        temp += '<div class="row">'
+        if (x == 0 )
+            temp += '<div class="row">'
 
-    temp += getHtml({$device.deviceType},{$key})
-    if (x != 0 )
-        temp += '</div><br>'
-    x += 1
-    if (x == 2 )
-        x = 0
+        temp += getHtml({$device.deviceType},{$key})
+        if (x != 0 )
+            temp += '</div><br>'
+        x += 1
+        if (x == 2 )
+            x = 0
 
     {/foreach}
     if (x != 0 )

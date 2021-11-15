@@ -19,7 +19,7 @@ class multi_call extends innerController {
                    if (class_exists($className) and method_exists($className, $_dataSTD['method'])) {
                        $class = new $className();
                        $_REQUEST = $_POST = $_dataSTD['data'];
-                       $response[$index] = call_user_func_array([$class, $_dataSTD['method']], (array)$_dataSTD['params']);
+                       $response[$index] = call_user_func_array([$class, $_dataSTD['method']], (array)$_dataSTD['data']);
                        $lastIndex = $index ;
                    } else {
                        unset($_SERVER['JsonOffMultiCall'],$_SERVER['JsonOff']);

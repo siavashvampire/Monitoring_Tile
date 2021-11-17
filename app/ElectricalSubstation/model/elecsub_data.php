@@ -1765,7 +1765,7 @@ class elecsub_data extends model implements modelInterFace
                 $data[] = "";
         }
         $data[] = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', 'concat(DATE_FORMAT(JStart_time, "%Y.%m.%d")," ",DATE_FORMAT(Start_time, "%H:%i")) as time')[0]['time'];
-        $data[] = JDate::jdate("Y.m.d H:i");
+        $data[] = JDate::jdate("Y.m.d H:i:s");
         return $data;
     }
 }

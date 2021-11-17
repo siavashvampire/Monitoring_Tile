@@ -197,7 +197,10 @@
                                                                     </td>
                                                                 {/if}
                                                             {if ( $key % 4 ) == 3 }</tr>{/if}
-
+                                                        {foreachelse}
+                                                            <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                                <td colspan="4">فیلدی برای این فرم در نظر گرفته نشده</td>
+                                                            </tr>
                                                         {/foreach}
                                                         {if ( $key % 4 ) == 2 }<td colspan="1" class="noHover"></td>{/if}
                                                         {if ( $key % 4 ) == 1 }<td colspan="2" class="noHover"></td>{/if}
@@ -267,18 +270,32 @@
         let picClass = obj.children[0];
         let closestTr = obj.closest('tr');
         let label = closestTr.getElementsByClassName('showHidden')
-        if (label[0].style.display == ""){
-            picClass.classList.remove('fa-eye-slash');
-            picClass.classList.add('fa-eye');
-            for (let i = 0; i < label.length; i++)
-                label[i].style.display = "none";
-        }
-        else{
+        if (picClass.classList.contains('fa-eye')){
             picClass.classList.remove('fa-eye');
             picClass.classList.add('fa-eye-slash');
-            for (let i = 0; i < label.length; i++)
-                label[i].style.display = "";
+            if (label.length !== 0)
+                for (let i = 0; i < label.length; i++)
+                    label[i].style.display = "";
         }
+        else{
+            picClass.classList.remove('fa-eye-slash');
+            picClass.classList.add('fa-eye');
+            if (label.length !== 0)
+                for (let i = 0; i < label.length; i++)
+                    label[i].style.display = "none";
+        }
+        // if (label[0].style.display == ""){
+        //     picClass.classList.remove('fa-eye-slash');
+        //     picClass.classList.add('fa-eye');
+        //     for (let i = 0; i < label.length; i++)
+        //         label[i].style.display = "none";
+        // }
+        // else{
+        //     picClass.classList.remove('fa-eye');
+        //     picClass.classList.add('fa-eye-slash');
+        //     for (let i = 0; i < label.length; i++)
+        //         label[i].style.display = "";
+        // }
     }
     function changeFinished(id,name,finished) {
         confirm_text = 'آیا از تغییر وضعیت فرم ';

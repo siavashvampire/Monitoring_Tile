@@ -120,7 +120,6 @@ class Schneider_PM2100 {
                 updateTimeLabel.innerHTML = 'update time :' + result[4];
             }
         });
-
     }
 
     getField() {
@@ -439,6 +438,6 @@ function getHtml(deviceType, id) {
             tempHtml = '';
 
     }
-    let patt = /%id/g;
-    return tempHtml.replace(patt, id);
+    let regExp = /%id/g;
+    return tempHtml.replace(regExp, id);
 }

@@ -60,6 +60,14 @@
         device_class[{$key}] = type_chooser({$device.deviceType},{$key}, substation_id, {$device.unitId}, themeUrl,urlApi)
     {/foreach}
 
+    function search2() {
+        for (let i = 0; i < device_class.length; i++)
+            device_class[i].setData();
+
+        return false ;
+    }
+    window.setInterval(function(){search2()},10000);
+
 </script>
 {/map}
 {map navBarButton}

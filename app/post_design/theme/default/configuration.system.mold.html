@@ -17,9 +17,9 @@
 </div>
 
 <div class="col-md-12 mb-3">
-    <label class="col-md-4 col-form-label" for="field_postAdminPerson"> {_ "postManagerUserGroup"}<span class="text-danger">*</span> </label>
+    <label class="col-md-4 col-form-label" for="field_postAdminPerson"> {_ "postManagerUserGroup"} </label>
     <div class="col-md-8">
-        <select class="selectpicker" data-live-search="true" id="field_postAdminPerson" name="setting[postAdminPerson]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+        <select class="selectpicker" data-live-search="true" id="field_postAdminPerson" name="setting[postAdminPerson]" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
             {if isset($values.[$nameApp])}
             {set value=$values.[$nameApp] name="valueThisOne"}
             {/if}

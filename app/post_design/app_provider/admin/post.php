@@ -182,7 +182,7 @@ class post extends controller
 
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('canChange', true);
-        if ($user["userId"] == (int)$this->setting('postAdminPerson'))
+        if ($user["userId"] == (int)$this->setting('postAdminPerson') or $user["userId"] == (int)$this->setting('postAdminPerson2'))
             $this->mold->set('canChangeFinished', true);
         else
             $this->mold->set('canChangeFinished', false);

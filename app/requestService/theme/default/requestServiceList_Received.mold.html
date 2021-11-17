@@ -19,8 +19,7 @@
                                         <label class="col-md-3 col-form-label">واحد</label>
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
-                                                <select class="selectpicker selectpickerNotRefresh" name="id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
-                                                    <option value="" selected >همه</option>
+                                                <select class="selectpicker selectpickerNotRefresh" multiple name="section[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="وضعیت سنسور">
                                                     {foreach from=$sections key=key value=section }
                                                     <option value="{$section.id}"  >{$section.label}</option>
                                                     {/foreach}

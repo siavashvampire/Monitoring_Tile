@@ -12,7 +12,7 @@
                     <div class="collapse" id="searchUsers">
                         <div class="card-body">
                             <form class="form-horizontal" method="post">
-                                <div class="row" >
+                                <div class="row">
                                     <div class="col-md-8">
                                         <label class="col-md-3 col-form-label">   بخش درخواست کننده :</label>
                                         <div class="col-md-6">
@@ -47,6 +47,17 @@
                                                     {foreach from=$sections key=key value=section }
                                                     <option value="{$section.id}"  >{$section.label}  - {$section.id}</option>
                                                     {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">  نوع گزارش:</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="formType" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع گزارش">
+                                                    <option value="monthly" selected>ماهانه</option>
+                                                    <option value="daily"  >روزانه</option>
                                                 </select>
                                             </div>
                                         </div>

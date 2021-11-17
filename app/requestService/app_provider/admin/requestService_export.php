@@ -27,17 +27,23 @@ class requestService_export extends controller
 
         $value = [];
         if (request::isPost()) {
-            $get = request::post('showField,section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift,month,getPDF');
+            $get = request::post('showField,formType,section,phase,giver_section,send_phase,StartTime,EndTime,line,Day,Shift,month,getPDF');
             $_SERVER['JsonOff'] = true;
             if ($get['StartTime'] != null) {
                 $shamsi = explode('/', $get['StartTime']);
                 $DayData = totalDate::Day(0, strtotime(JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '-') . ' 12:00:00'))["result"];
+
+                $startTimeForview = $get['StartTime'];
                 $get['StartTime'] = $DayData["dayStart"];
+
             }
             if ($get['EndTime'] != null) {
                 $shamsi = explode('/', $get['EndTime']);
                 $DayData = totalDate::Day(0, strtotime(JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '-') . ' 12:00:00'))["result"];
+
+                $endTimeForview = $get['EndTime'];
                 $get['EndTime'] = $DayData["dayEnd"];
+
             }
 
 
@@ -58,6 +64,16 @@ class requestService_export extends controller
 
                 $get['StartTime'] = $monthData["monthStart"];
                 $get['EndTime'] = $monthData["monthEnd"];
+
+                $startTimeForview = $monthData['justDateStart'];
+                $endTimeForview = $monthData['justDateEnd'];
+            }
+
+            if ($get['formType'] != null) {
+                if ($get['formType'] == 'monthly') {
+                    $get['month'] = "0";
+                    $get['getPDF'] = "1";
+                }
             }
 
             unset($_SERVER['JsonOff']);
@@ -91,11 +107,11 @@ class requestService_export extends controller
             }
             if (is_array($get['section']) and count($get['section']) > 0) {
                 $variable[] = ' rs.section IN( ' . implode(' , ', $get['section']) . ' ) ';
-//                $value = array_merge($value, $get['section']);
+                $get['showField'] = ["workerSections","phase","percent"];
             }
             if (is_array($get['giver_section']) and count($get['giver_section']) > 0) {
                 $variable[] = ' rs.WorkerSection IN( ' . implode(' , ', $get['giver_section']) . ' ) ';
-//                $value = array_merge($value, $get['giver_section']);
+                $get['showField'] = ["section","phase","percent"];
             }
             if (is_array($get['line']) and count($get['line']) > 0) {
                 $variable[] = ' rs.Line IN( ' . implode(' , ', $get['line']) . ' ) ';
@@ -132,7 +148,6 @@ class requestService_export extends controller
                     elseif ($get['showField'][$i] == "percent")
                         $header[] = 'درصد';
                 }
-
                 if ($get['getPDF']) {
                     $data = $model->getMonthExportData($value, $variable, $get['showField']);
                     $search = $data['data'];
@@ -169,8 +184,8 @@ class requestService_export extends controller
 
                     $this->mold->set('unitLabel', $unitlabel);
                     $this->mold->set('nowTime', JDate::jdate('Y/m/d'));
-                    $this->mold->set('startTime', $monthData['justDateStart']);
-                    $this->mold->set('endTime', $monthData['justDateEnd']);
+                    $this->mold->set('startTime', $startTimeForview);
+                    $this->mold->set('endTime', $endTimeForview);
                     $this->mold->set('time_diff_all', $time_diff_all);
                     $this->mold->set('count_all', $count_all);
                     $this->mold->set('datasTable', $search);
@@ -185,7 +200,6 @@ class requestService_export extends controller
                 }
             }
         }
-
         $this->mold->path('default', 'requestService');
         $this->mold->view('RSExport.mold.html');
         $this->mold->setPageTitle('گزارش گیری خدمات');

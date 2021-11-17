@@ -588,10 +588,8 @@ class requestService extends model implements modelInterFace
         return self::getItems($value, $variable, $sortWith, $pagination);
     }
 
-    public function getItemsByWorkerSection($section, $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
+    public function getItemsByWorkerSection($section,$value= array(),$variable= array(), $sortWith = ['column' => 'Time_Send', 'type' => 'desc'], $pagination = [0, 25])
     {
-        $value = array();
-        $variable = array();
         $value[] = '%' . $section . '%';
         $variable[] = 'item.WorkerSection Like ?';
 

@@ -128,7 +128,7 @@ class RS extends controller
     {
         $RequestAdmin = $this->setting('RequestAdmin');
         $this->mold->set('RequestAdmin', $RequestAdmin);
-        $get = request::post('page=1,perEachPage=25,StartTime,EndTime,phase,sortWith', null);
+        $get = request::post('page=1,perEachPage=25,giver_section,StartTime,EndTime,phase,sortWith');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -176,19 +176,17 @@ class RS extends controller
         }
 
         if (request::isPost()) {
-            $get = request::post('page=1,perEachPage=25,StartTime,EndTime,phase,sortWith', null);
-
             if (is_array($get['phase']) and count($get['phase']) > 0) {
                 $variable[] = ' rs.phase IN( ' . implode(' , ', $get['phase']) . ' ) ';
-                $value = array_merge($value, $get['phase']);
+//                $value = array_merge($value, $get['phase']);
             }
             if (is_array($get['section']) and count($get['section']) > 0) {
                 $variable[] = ' rs.section IN( ' . implode(' , ', $get['section']) . ' ) ';
-                $value = array_merge($value, $get['section']);
+//                $value = array_merge($value, $get['section']);
             }
             if (is_array($get['giver_section']) and count($get['giver_section']) > 0) {
                 $variable[] = ' rs.WorkerSection IN( ' . implode(' , ', $get['giver_section']) . ' ) ';
-                $value = array_merge($value, $get['giver_section']);
+//                $value = array_merge($value, $get['giver_section']);
             }
             if (is_array($get['line']) and count($get['line']) > 0) {
                 $variable[] = ' rs.Line IN( ' . implode(' , ', $get['line']) . ' ) ';
@@ -224,7 +222,7 @@ class RS extends controller
     {
         $RequestAdmin = $this->setting('RequestAdmin');
         $this->mold->set('RequestAdmin', $RequestAdmin);
-        $get = request::post('page=1,perEachPage=25,StartTime,EndTime,phase,sortWith', null);
+        $get = request::post('page=1,perEachPage=25,section,StartTime,EndTime,phase,sortWith', null);
 
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -255,13 +253,18 @@ class RS extends controller
                 if ($section and $phase) break;
             }
         }
-
+        if (request::ispost()) {
+            if (is_array($get['section']) and count($get['section']) > 0) {
+                $variable[] = ' item.section IN( ' . implode(' , ', $get['section']) . ' ) ';
+//                $value = array_merge($value, $get['section']);
+            }
+        }
         if ($section) {
             $value[] = '%' . $section . '%';
             $variable[] = 'item.WorkerSection Like ?';
             $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-            $requestServices = $requestService->getItemsByWorkerSection($section, $sortWith, [$pagination['start'] , $pagination['limit'] ]);
+            $requestServices = $requestService->getItemsByWorkerSection($section,$value, $variable, $sortWith, [$pagination['start'] , $pagination['limit'] ]);
         } elseif ($user['user_group_id'] == $RequestAdmin or $user['user_group_id'] == 1) {
             $numberOfAll = $requestService->getCount($value, $variable);
             $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);

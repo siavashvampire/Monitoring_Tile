@@ -715,7 +715,7 @@ class requestService extends model implements modelInterFace
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table2 SELECT (SELECT time_diff_all FROM ' . $perfix . 'request_temp_table1) as time_diff_all ,SUM(TIMESTAMPDIFF(MINUTE,data.`Time_Start`,data.`Time_End`) * data.`HumanNumber`) as time_diff,data.phase,data.section,data.WorkerSection FROM ' . $perfix . 'request_temp_table0 data WHERE 1 GROUP by data.section,data.WorkerSection,data.phase;');
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $perfix . 'request_temp_table3 SELECT sections.label as section,workerSections.label as workerSections,phases.label as phase, ROUND(data.time_diff / data.time_diff_all * 100 , 2 ) as percent from ' . $perfix . 'request_temp_table2 data LEFT JOIN ' . $perfix . 'phases phases on phases.id = data.phase LEFT JOIN ' . $perfix . 'sections sections on sections.id = data.section LEFT JOIN ' . $perfix . 'sections workerSections on workerSections.id = data.WorkerSection;');
         $data = parent::search(null, null, 'request_temp_table3', $showField, ['column' => 'percent', 'type' => 'DESC']);
-        $time_diff_all = parent::search(null, null, 'request_temp_table1')[0]["time_diff_all"];
+        $time_diff_all = round(parent::search(null, null, 'request_temp_table1')[0]["time_diff_all"]/60,2);
         $count_all = parent::search(null, null, 'request_temp_table0 item', 'COUNT(item.requestId) as co') [0]['co'];
         return ['data' => $data, 'time_diff_all' => $time_diff_all, 'count_all' => $count_all];
     }

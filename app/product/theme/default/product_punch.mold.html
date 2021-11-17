@@ -78,7 +78,7 @@
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
-    اضافه کردن لعاب جدید
+    اضافه کردن {_ "item_label"} جدید
 </button>
 {/map}
 
@@ -86,15 +86,16 @@
 <script>
 var urlc = '{url current}' ;
 var Tile_Names = $('#tile_kindParentDiv').html();
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
 function openUnitEditor(id,name){
     if ( id === "" ){
-        $("#exampleModalLabel").html("اضافه کردن پانچ جدید");
+        $("#exampleModalLabel").html(add_new_item);
         $("#name").val("");
         $("#unitId").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
-//        show()
-        $("#exampleModalLabel").html("ویرایش پانچ");
+        $("#exampleModalLabel").html(edit_item + " " + name);
         $("#name").val(name);
         $("#unitId").val(id);
         $('.selectPickerShouldRefresh').selectpicker('refresh');

@@ -3,6 +3,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 return [
     'postManagerUserGroup'                              => 'گروه کاربری مدیر نامه ها:',
+    'postManagerUser'                              => 'کاربر مدیر نامه ها:',
     'postAgentUserGroup'                              => 'گروه کاربری دریافت کننده نامه ها:',
     'contracts'                                         => 'قرارداد ها',
     'contract'                                          => 'قرارداد',

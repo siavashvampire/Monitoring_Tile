@@ -12,7 +12,7 @@ class contacts_update extends innerController
         /** @var \App\contacts\model\phone $model */
         $model = parent::model(['contacts', 'phone']);
 
-        cache::save('yes', 'is_contract_update', 2592000, 'contacts');
+        cache::save('yes', 'is_contacts_update', 2592000, 'contacts');
         return self::json($model->getSmsItems());
     }
 
@@ -21,7 +21,7 @@ class contacts_update extends innerController
         /** @var \App\contacts\model\phone $model */
         $model = parent::model(['contacts', 'phone']);
 
-        cache::save('yes', 'is_contract_update', 2592000, 'contacts');
+        cache::save('yes', 'is_contacts_update', 2592000, 'contacts');
         return self::json($model->getBaleItems());
     }
 }

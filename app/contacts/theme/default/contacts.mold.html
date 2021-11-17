@@ -70,7 +70,7 @@
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh" required multiple name="unit[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "unit"}">
                                                 {foreach from=$units key=key value=unit }
-                                                <option value="{$unit.id}" {if isset($model) and in_array($unit.id, $model->getUnits())}selected{/if} >{$unit.label}</option>
+                                                <option value="{$unit.id}" {if isset($model) and in_array($unit.id, $model->getUnits())}selected{/if} >{$unit.id} - {$unit.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>

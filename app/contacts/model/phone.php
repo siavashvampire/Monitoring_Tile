@@ -213,16 +213,16 @@ class phone extends model implements modelInterFace {
         return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'phone', 'COUNT(id) as co' )) [0]['co'];
     }
 
-    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"99999"]) {
         parent::join('Phone_type type' , 'item.type = type.id');
         return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'phone item' , 'item.*,type.label as type'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
     }
-    public function getSmsItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+    public function getSmsItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"99999"]) {
         $value[]='2';
         $variable[]='item.type = ?';
         return self::getItems($value,$variable,$sortWith,$pagination);
     }
-    public function getBaleItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
+    public function getBaleItems($value = array(),$variable = array() , $sortWith = ['column' => 'item.id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"99999"]) {
         $value[]='1';
         $variable[]='item.type = ?';
         return self::getItems($value,$variable,$sortWith,$pagination);

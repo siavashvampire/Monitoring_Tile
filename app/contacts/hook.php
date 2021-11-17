@@ -9,14 +9,13 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
-        $this->menu->after('users' ,'contacts', rlang('contacts') , app::getBaseAppLink('contacts','admin') , 'fa fa-history' ,'',null,'admin/contacts/index/contacts');
-        $this->menu->after('contacts' ,'contactsList', rlang('contactsList') , app::getBaseAppLink('contacts/List','admin') , 'fa fa-history' ,'',null,'admin/contacts/index/contacts');
+        $this->menu->after('users' ,'contactsList', rlang('contacts') , app::getBaseAppLink('contacts/List','admin') , 'fa fa-history' ,'',null,'admin/contacts/index/contacts');
     }
     public function _should_update()
     {
         $should_update = array();
 
-        $data = cache::get('is_contract_update', null, 'contacts');
+        $data = cache::get('is_contacts_update', null, 'contacts');
 
         if ($data !== 'yes')
             $should_update[] = "phone_update";

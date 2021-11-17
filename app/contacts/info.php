@@ -28,7 +28,7 @@ return [
             'fields' => [
                 'id' => "INT(11) NOT NULL AUTO_INCREMENT",
                 'name' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-                'phone' => "INT(11) NOT NULL ",
+                'phone' => "varchar(255) COLLATE utf8_persian_ci DEFAULT NULL",
                 'send_allow' => "TINYINT(1) NOT NULL DEFAULT 1",
                 'access' => "TINYINT(1) NOT NULL DEFAULT 0",
                 'units' => "varchar(65) COLLATE utf8_persian_ci NOT NULL DEFAULT 0",

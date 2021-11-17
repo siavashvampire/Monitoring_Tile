@@ -164,6 +164,7 @@
                                                 </tr>
                                                 {foreach from=$allFields key=key2 value=fields}
                                                     {if ($key2 == $index) }
+                                                        {set None,"0"}
                                                         {foreach from=$fields key=key value=field}
                                                             {if ( $key % 4 ) == 0 }<tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">{/if}
                                                                 {if $field.type == "checkbox" }
@@ -198,17 +199,18 @@
                                                                 {/if}
                                                             {if ( $key % 4 ) == 3 }</tr>{/if}
                                                         {foreachelse}
+                                                            {set None,"1"}
                                                             <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
                                                                 <td colspan="4">فیلدی برای این فرم در نظر گرفته نشده</td>
                                                             </tr>
                                                         {/foreach}
-                                                        {if ( $key % 4 ) == 2 }<td colspan="1" class="noHover"></td>{/if}
-                                                        {if ( $key % 4 ) == 1 }<td colspan="2" class="noHover"></td>{/if}
-                                                        {if ( $key % 4 ) == 0 }<td colspan="3" class="noHover"></td>{/if}
+                                                        {if $None == 0 }
+                                                            {if ( $key % 4 ) == 2 }<td colspan="1" class="noHover"></td>{/if}
+                                                            {if ( $key % 4 ) == 1 }<td colspan="2" class="noHover"></td>{/if}
+                                                            {if ( $key % 4 ) == 0 }<td colspan="3" class="noHover"></td>{/if}
+                                                        {/if}
                                                     {/if}
                                                 {/foreach}
-
-
                                                 </tbody>
                                             </table>
                                         </td>

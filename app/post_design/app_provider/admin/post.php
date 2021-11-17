@@ -168,8 +168,11 @@ class post extends controller
             $variable[] = 'post_data.finished = ?';
             $value[] = 0;
         }
+        $numberOfAll = $post_data_model->getEvaluationListCount($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1]);
+        $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
+        $pagination = [$pagination['start'],$pagination['limit']];
 
-        $eval = $post_data_model->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1]);
+        $eval = $post_data_model->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1],$pagination);
         $type = $post_type_model->getEvaluationTypeByUserGroupId($user["user_group_id"], (int)$this->setting('postAdmin'));
 
         $allFields['result'] = [];

@@ -325,7 +325,7 @@ class post_data extends model implements modelInterFace
         return $tempData;
     }
 
-    public function getEvaluationList($user_id, $group_id, $userAdmin, $sort, $sortRest, $value = array(), $variable = array(), $finished = array())
+    public function getEvaluationList($user_id, $group_id, $userAdmin, $sort, $sortRest, $value = array(), $variable = array(), $finished = array(),$pagination)
     {
         $finish = 0;
         $notFinish = 0;
@@ -363,6 +363,46 @@ class post_data extends model implements modelInterFace
 
         if (count($eval) == 0)
             $eval = null;
+
+        $eval = array_slice($eval,$pagination[0],$pagination[1]);
         return $eval;
+    }
+    public function getEvaluationListCount($user_id, $group_id, $userAdmin, $sort, $sortRest, $value = array(), $variable = array(), $finished = array())
+    {
+        $finish = 0;
+        $notFinish = 0;
+        if ($finished != "") {
+            foreach ($finished as $item) {
+                if ($item == 1)
+                    $finish = 1;
+                if ($item == 0)
+                    $notFinish = 1;
+            }
+        } else {
+            $finish = 1;
+            $notFinish = 1;
+        }
+        if ($user_id == null)
+            return array();
+        $eval = self::getEvaluationListWithoutExtra($userAdmin, $group_id, $value, $variable);
+
+        if ($notFinish != 0)
+            $evalExtra = self::getExtraEvaluationList($user_id, $group_id, $value, $variable);
+        else
+            $evalExtra = array();
+
+        $eval = (array_merge($eval, $evalExtra));
+
+        $sortColumn = array();
+        foreach ($sort as $index => $OneData) {
+            $sortColumn[] = array_column($eval, $OneData);
+            $sortColumn[] = $sortRest[$index];
+        }
+        $sortColumn[] = $eval;
+
+        array_multisort(...$sortColumn);
+        $eval = end($sortColumn);
+
+        return count($eval);
     }
 }

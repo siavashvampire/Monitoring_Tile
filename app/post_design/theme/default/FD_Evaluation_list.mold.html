@@ -36,30 +36,6 @@
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">{_ "status"}</label>
-                                        <div class="col-md-9">
-                                            <div class="form-group has-default">
-                                                <select class="selectpicker selectpickerNotRefresh" multiple name="finished[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "status"}">
-                                                    <option value="1" {if isset($Mold.post.finished) and in_array(1, $Mold.post.finished)}selected{/if}>{_ "Completed"}</option>
-                                                    <option value="0" {if isset($Mold.post.finished) and in_array(0, $Mold.post.finished)}selected{/if}>{_ "NotCompleted"}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">{_ "deadLine"} {_ "timing"}</label>
-                                        <div class="col-md-9">
-                                            <div class="form-group has-default">
-                                                <select class="selectpicker selectpickerNotRefresh" multiple name="confirmEnd[]" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "deadLine"}">
-                                                    <option value="0" {if isset($Mold.post.confirmEnd) and in_array(0, $Mold.post.confirmEnd)}selected{/if}>{_ "closed"}</option>
-                                                    <option value="1" {if isset($Mold.post.confirmEnd) and in_array(1, $Mold.post.confirmEnd)}selected{/if}>{_ "NotClosed"}</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-4">
                                         <label class="col-md-3 col-form-label">{_ "az"} {_ "date"}</label>
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
@@ -84,14 +60,12 @@
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
                                                 <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "orderBy"}">
-                                                    <option value="confirmDate*desc" {if isset($Mold.post.sortWith) and in_array("confirmDate*desc", $Mold.post.sortWith) }selected{/if}> {_ "deadLine"} {_ "Complete"} | {_ "descending"}</option>
-                                                    <option value="confirmDate*asc" {if isset($Mold.post.sortWith) and in_array("confirmDate*asc", $Mold.post.sortWith) }selected{/if}> {_ "deadLine"} {_ "Complete"} | {_ "ascending"}</option>
+                                                    <option value="createDate*desc" {if isset($Mold.post.sortWith) and in_array("createDate*desc", $Mold.post.sortWith) }selected{/if}>{_ "date"} {_ "create"} | {_ "descending"}</option>
+                                                    <option value="createDate*asc" {if isset($Mold.post.sortWith) and in_array("createDate*asc", $Mold.post.sortWith) }selected{/if}>{_ "date"} {_ "create"} | {_ "ascending"}</option>
                                                     <option value="type*desc" {if isset($Mold.post.sortWith) and in_array("type*desc", $Mold.post.sortWith) }selected{/if}>   {_ "action_name"} {_ "name"}| {_ "descending"}</option>
                                                     <option value="type*asc" {if isset($Mold.post.sortWith) and in_array("type*asc", $Mold.post.sortWith) }selected{/if}>  {_ "action_name"} {_ "name"} | {_ "ascending"}</option>
                                                     <option value="lname*desc" {if isset($Mold.post.sortWith) and in_array("lname*desc", $Mold.post.sortWith) }selected{/if}> {_ "lastName"} | {_ "descending"}</option>
                                                     <option value="lname*asc" {if isset($Mold.post.sortWith) and in_array("lname*asc", $Mold.post.sortWith) }selected{/if}> {_ "lastName"} | {_ "ascending"}</option>
-                                                    <option value="groupName*desc" {if isset($Mold.post.sortWith) and in_array("groupName*desc", $Mold.post.sortWith) }selected{/if}>{_ "position"} | {_ "descending"}</option>
-                                                    <option value="groupName*asc" {if isset($Mold.post.sortWith) and in_array("groupName*asc", $Mold.post.sortWith) }selected{/if}>{_ "position"} | {_ "ascending"}</option>
                                                 </select>
                                             </div>
                                         </div>

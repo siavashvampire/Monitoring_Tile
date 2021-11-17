@@ -1,5 +1,6 @@
 <?php
-namespace App\product ;
+
+namespace App\product;
 
 use app;
 use App\product\model\product_glaze;
@@ -7,17 +8,19 @@ use App\product\model\product_size;
 use App\product\model\product_punch;
 use pluginController;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class hook extends pluginController {
-	public function _adminHeaderNavbar($vars2){
+class hook extends pluginController
+{
+    public function _adminHeaderNavbar($vars2)
+    {
         $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-delicious', '', 'admin/product_size/index/product');
         $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-delicious', '', 'admin/product_glaze/index/product');
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
         $this->menu->addChild('configurationLine', 'product_punch', 'پانچ ‌ها', app::getBaseAppLink('product_punch', 'admin'), 'fa fa-delicious', '', 'admin/product_punch/index/product');
     }
 
-    public function _fieldService_listOfTypes($vars2)
+    public function _fieldService_listOfTypes($vars2): array
     {
         return [
             ['type' => 'productKind', 'name' => 'نوع کاشی'],
@@ -144,6 +147,9 @@ class hook extends pluginController {
 
     public function _logField(): array
     {
-        return [["value" => "product_size" , "label" => "تغییرات سایز ها"],["value" => "product_punch" , "label" => "تغییرات پانچ ها"],["value" => "product_glaze" , "label" => "تغییرات لعاب ها"],["value" => "product_brand" , "label" => "تغییرات برند ها"]];
+        return [["value" => "product_size", "label" => "تغییرات سایز ها"],
+            ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
+            ["value" => "product_glaze", "label" => "تغییرات لعاب ها"],
+            ["value" => "product_brand", "label" => "تغییرات برند ها"]];
     }
 }

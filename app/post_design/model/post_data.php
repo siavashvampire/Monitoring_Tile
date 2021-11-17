@@ -369,17 +369,13 @@ class post_data extends model implements modelInterFace
     }
     public function getEvaluationListCount($user_id, $group_id, $userAdmin, $sort, $sortRest, $value = array(), $variable = array(), $finished = array())
     {
-        $finish = 0;
         $notFinish = 0;
         if ($finished != "") {
             foreach ($finished as $item) {
-                if ($item == 1)
-                    $finish = 1;
                 if ($item == 0)
                     $notFinish = 1;
             }
         } else {
-            $finish = 1;
             $notFinish = 1;
         }
         if ($user_id == null)

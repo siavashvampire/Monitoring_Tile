@@ -123,13 +123,11 @@ class post extends controller
                     $sortRest[] = SORT_ASC;
             }
         } else {
-            $sortWith[] = 'confirmDate';
+            $sortWith[] = 'createDate';
             $sortWith[] = 'type';
             $sortWith[] = 'lname';
             $sortWith[] = 'fname';
-            $sortWith[] = 'groupName';
-            $sortRest[] = SORT_ASC;
-            $sortRest[] = SORT_ASC;
+            $sortRest[] = SORT_DESC;
             $sortRest[] = SORT_ASC;
             $sortRest[] = SORT_ASC;
             $sortRest[] = SORT_ASC;
@@ -149,31 +147,35 @@ class post extends controller
             foreach ($get['confirmEnd'] as $item) {
                 $value[] = date('Y-m-d 23:59:59');
                 if ($item == 1)
-                    $temp[] = 'post_data.confirmDate >= ?';
+                    $temp[] = 'post_data.createDate >= ?';
                 else
-                    $temp[] = 'post_data.confirmDate < ?';
+                    $temp[] = 'post_data.createDate < ?';
             }
             $variable[] = '(' . implode(' or ', $temp) . ')';
         }
         if ($get['endTime'] != null) {
             $value[] = date('Y-m-d 23:59:59', $get['endTime'] / 1000);
-            $variable[] = 'post_data.confirmDate <= ?';
+            $variable[] = 'post_data.createDate <= ?';
         }
         if ($get['startTime'] != null) {
             $value[] = date('Y-m-d 00:00:00', $get['startTime'] / 1000);
-            $variable[] = 'post_data.confirmDate >= ?';
+            $variable[] = 'post_data.createDate >= ?';
         }
-
-        if ($user["userId"] != (int)$this->setting('postAdminPerson')) {
+        if ($user["userId"] != (int)$this->setting('postAdminPerson') and $user["userId"] != (int)$this->setting('postAdminPerson2')) {
             $variable[] = 'post_data.finished = ?';
             $value[] = 0;
         }
+
         $numberOfAll = $post_data_model->getEvaluationListCount($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1]);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $pagination = [$pagination['start'],$pagination['limit']];
+        $pagination = [$pagination['start'], $pagination['limit']];
 
-        $eval = $post_data_model->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1],$pagination);
+        $eval = $post_data_model->getEvaluationList($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1], $pagination);
         $type = $post_type_model->getEvaluationTypeByUserGroupId($user["user_group_id"], (int)$this->setting('postAdmin'));
+
+        $variable[] = 'post_data.finished = ?';
+        $value[] = 0;
+        $numberOfAll = $post_data_model->getEvaluationListCount($user["userId"], $user["user_group_id"], (int)$this->setting('postAdmin'), $sortWith, $sortRest, $value, $variable, [1]);
 
         $allFields['result'] = [];
 
@@ -196,7 +198,7 @@ class post extends controller
 
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation_list.mold.html');
-        $this->mold->setPageTitle('واحد فروش');
+        $this->mold->setPageTitle('واحد فروش' . '(' . $numberOfAll . ')');
     }
 
     public function newType()

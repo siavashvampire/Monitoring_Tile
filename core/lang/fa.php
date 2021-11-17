@@ -100,7 +100,7 @@ return [
 	'cancel' => 'برگشت خورده',
 	'to' => 'به',
 	'creator' => 'سازنده',
-	'creat' => 'ساخت',
+	'create' => 'ساخت',
 	'canceled' => 'لغو شده',
 	'refused' => 'رد شده',
 	'failed' => 'ناموفق',

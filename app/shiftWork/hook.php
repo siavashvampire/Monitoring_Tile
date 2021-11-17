@@ -10,7 +10,8 @@ class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
         $this->menu->after('users', 'shiftWork', 'شیفت‌های کاری', app::getBaseAppLink('shiftWork', 'admin'), 'fa fa-calendar', '',  null,'admin/shiftWork/index/shiftWork');
     }
-    public function _logField(){
+    public function _logField(): array
+    {
 	    return [["value" => "Shifts" , "label" => "تغییرات شیفت ها"]];
     }
 }

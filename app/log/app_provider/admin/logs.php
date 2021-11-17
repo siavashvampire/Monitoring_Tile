@@ -79,7 +79,6 @@ class logs extends controller {
             $variable[] = ' (activity_time BETWEEN ? AND ?) ';
         }
         $logField = $this->callHooks('logField');
-//show($logField);
         $this->mold->set('logField' , $logField);
         $model = parent::model('log');
 		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'log log', 'COUNT(logId) as co' )) [0]['co'];

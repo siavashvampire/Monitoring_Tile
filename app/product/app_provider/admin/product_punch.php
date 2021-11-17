@@ -11,6 +11,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 class product_punch extends controller {
     private $item_label = "پانچ";
     private $model_name = 'product_punch';
+    private $log_name = 'product_punch';
     private $app_name = 'product';
     private $active_menu = 'product_punch';
     private $html_file_path = 'product_punch.mold.html';
@@ -83,7 +84,7 @@ class product_punch extends controller {
             $model->insertToDataBase();
         }
 
-		$this->callHooks('addLog', [$Dis , $this->model_name]);
+		$this->callHooks('addLog', [$Dis , $this->log_name]);
 		Response::jsonMessage('تغییرات انجام شد.',true);
 		return false;
 	}

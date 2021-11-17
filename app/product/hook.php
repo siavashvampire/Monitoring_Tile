@@ -142,4 +142,8 @@ class hook extends pluginController {
         return $model->getLabel();
     }
 
+    public function _logField(): array
+    {
+        return [["value" => "product_size" , "label" => "تغییرات سایز ها"],["value" => "product_punch" , "label" => "تغییرات پانچ ها"],["value" => "product_glaze" , "label" => "تغییرات لعاب ها"],["value" => "product_brand" , "label" => "تغییرات برند ها"]];
+    }
 }

@@ -107,11 +107,11 @@ class requestService_export extends controller
             }
             if (is_array($get['section']) and count($get['section']) > 0) {
                 $variable[] = ' rs.section IN( ' . implode(' , ', $get['section']) . ' ) ';
-                $get['showField'] = ["workerSections","phase","percent"];
+                $get['showField'] = ["workerSections", "phase", "percent", "time_diff", "count"];
             }
             if (is_array($get['giver_section']) and count($get['giver_section']) > 0) {
                 $variable[] = ' rs.WorkerSection IN( ' . implode(' , ', $get['giver_section']) . ' ) ';
-                $get['showField'] = ["section","phase","percent"];
+                $get['showField'] = ["section", "phase", "percent", "time_diff", "count"];
             }
             if (is_array($get['line']) and count($get['line']) > 0) {
                 $variable[] = ' rs.Line IN( ' . implode(' , ', $get['line']) . ' ) ';
@@ -146,7 +146,11 @@ class requestService_export extends controller
                     elseif ($get['showField'][$i] == "phase")
                         $header[] = 'فاز';
                     elseif ($get['showField'][$i] == "percent")
-                        $header[] = 'درصد';
+                        $header[] = 'درصد(بر حسب نفر ساعت)';
+                    elseif ($get['showField'][$i] == "time_diff")
+                        $header[] = 'نفرساعت خدمات';
+                    elseif ($get['showField'][$i] == "count")
+                        $header[] = 'تعداد خدمات';
                 }
                 if ($get['getPDF']) {
                     $data = $model->getMonthExportData($value, $variable, $get['showField']);
@@ -163,7 +167,7 @@ class requestService_export extends controller
                     $this->mold->unshow($views);
                     $this->mold->view('exportPdf.mold.html');
                     $this->mold->set('headersTable', $header);
-                    $this->mold->set('headersTableWidth', [25, 25, 25, 25]);
+                    $this->mold->set('headersTableWidth', [16.666, 16.666, 16.666, 16.666, 16.666, 16.667]);
 
                     $file_name = "بخش ";
 

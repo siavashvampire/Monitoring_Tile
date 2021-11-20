@@ -141,7 +141,7 @@ class electrical extends innerController
         } else {
             $result = self::insertLog($_POST);
             if (!$result[0]) {
-                return self::jsonError(['indexOfProblem' => 0, 'error' => $result[1]]);
+                return self::jsonError(['error' => $result[1]]);
             }
         }
 

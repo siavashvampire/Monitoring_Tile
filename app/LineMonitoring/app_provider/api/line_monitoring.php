@@ -22,10 +22,6 @@ class line_monitoring extends innerController
 {
     public static function newLog()
     {
-        $port = parent::setting('wsPort', 'LineMonitoring', true);
-        $ipsInString = parent::setting('WsIP', 'LineMonitoring', true);
-        $ips = preg_split('/\r\n|[\r\n]/', $ipsInString);
-        require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'web_socket' . DIRECTORY_SEPARATOR . 'clientSocket.php';
         $DataArray = json_decode($_POST['DataArray']);
         if (isset($DataArray)) {
             foreach ($DataArray as $index => $_dataSTD) {
@@ -37,30 +33,22 @@ class line_monitoring extends innerController
                     "Motor_Speed" => $_dataSTD->Motor_Speed,
                     "start_time" => $_dataSTD->start_time,
                 ];
-                $result = self::insertLog($_data, $ips, $port);
+                $result = self::insertLog($_data);
                 if (!$result[0]) {
                     return self::jsonError(['indexOfProblem' => $index, 'error' => $result[1]]);
                 }
             }
         } else {
-            $result = self::insertLog($_POST, $ips, $port);
+            $result = self::insertLog($_POST);
             if (!$result[0]) {
-                return self::jsonError(['indexOfProblem' => 0, 'error' => $result[1]]);
+                return self::jsonError(['error' => $result[1]]);
             }
         }
 
-
-        $data = cache::get('is_sensor_update', null, 'LineMonitoring');
-        $dataSwitch = cache::get('is_switch_update', null, 'LineMonitoring');
-        if ($data !== 'yes' or $dataSwitch !== 'yes') {
-//            return self::jsonError(null, 205);
-            return self::jsonError(null, 204);
-        }
-
-        return self::jsonError(null, 204);
+        return self::json("insert done");
     }
 
-    private static function insertLog($_data, $ips, $port)
+    private static function insertLog($_data)
     {
         $data = request::getFromArray($_data, 'Sensor_id,AbsTime,counter,Tile_Kind,Motor_Speed,start_time');
         /* @var sensors $sensor */
@@ -110,31 +98,6 @@ class line_monitoring extends innerController
         if (!$log->insertToDataBase()) {
             return [false, model::getLastQuery()];
         }
-
-
-        for ($i = 0; $i < count($ips); $i++) {
-            $ip = trim($ips[$i]);
-            $ip = str_replace(['https://', 'http://', '/', 'https:', 'http:'], '', $ip);
-            if ($ip != '' and $port != '') {
-                $ws = new clientSocket(array('host' => $ip, 'port' => $port, 'path' => ''));
-                $ws->send(json_encode([
-                    'sensor_id' => $sensor->getId(),
-                    'label' => $sensor->getLabel(),
-                    'tile_id' => $log->getTileKind(),
-                    'shift_id' => $log->getShiftId(),
-                    'counter' => $log->getCounter(),
-                    'absTime' => $log->getAbsTime(),
-                    'motorSpeed' => $log->getMotorSpeed(),
-                    'phase' => $sensor->getPhase(),
-                    'unitId' => $sensor->getUnit(),
-                    'tileDegree' => $sensor->getTileDegree(),
-                ]));
-                $ws->send('disconnect');
-                $ws->close();
-            }
-        }
-
-
         return [true];
     }
 

@@ -12,4 +12,8 @@ class update extends innerController
     {
         return self::json(parent::callHooks('should_update'));
     }
+    public static function need_update(): bool
+    {
+        return True;
+    }
 }

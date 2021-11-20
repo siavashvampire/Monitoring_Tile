@@ -85,7 +85,7 @@ class get extends innerController
         else
             $isSet = true;
         $_SERVER['JsonOff'] = true;
-        $shiftData = self::shift()['result'];
+        $shiftData = shift::index()['result'];
         if ($isSet)
             unset($_SERVER['JsonOff']);
 
@@ -98,7 +98,7 @@ class get extends innerController
         $sortWith = [['column' => 'sensors.showSort', 'type' => 'asc']];
         model::join('sensors sensors', 'data.Sensor_id = sensors.id');
         model::join('tile_kind tile_kind', 'data.Tile_Kind = tile_kind.id');
-        $Counter = $model->search(( array )$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data data', 'SUM(data.counter) as counter,sensors.id, sensors.label,tile_kind.label as tile_label , sensors.phase', $sortWith, null, 'data.Sensor_id , data.Tile_Kind');
+        $Counter = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data data', 'SUM(data.counter) as counter,sensors.id, sensors.label,tile_kind.label as tile_label , sensors.phase', $sortWith, null, 'data.Sensor_id , data.Tile_Kind');
 
         $Sensors = sensor::index($value2, $variable2)["result"];
         $sensorHasCount = (array)array_column($Counter, 'Sensor_id');

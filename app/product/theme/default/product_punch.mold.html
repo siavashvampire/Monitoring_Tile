@@ -20,11 +20,11 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {foreach from=$items key=key value=unit}
+                                {foreach from=$items key=key value=item}
                                 <tr>
-                                    <td>{$unit.id}</td>
-                                    <td>{$unit.label}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openUnitEditor('{$unit.id}','{$unit.label}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td>{$item.id}</td>
+                                    <td>{$item.label}</td>
+                                    <td><button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -60,13 +60,13 @@
                     <div class="form-group">
                         <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="name" value="">
-                        <input type="hidden" class="form-control" id="unitId" value="">
+                        <input type="hidden" class="form-control" id="id" value="">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendUnit();window.location.reload()" >{_ "send"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()" >{_ "send"}</button>
             </div>
         </div>
     </div>
@@ -74,7 +74,7 @@
 
 
 {map navBarButton}
-<button class="btn btn-info"  onclick="openUnitEditor('','')">
+<button class="btn btn-info"  onclick="openItemEditor('','')">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
@@ -84,48 +84,49 @@
 
 {map footerjs}
 <script>
-var urlc = '{url current}' ;
-var Tile_Names = $('#tile_kindParentDiv').html();
-let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
-let edit_item = '{_ "Edit"} {$item_label}';
-function openUnitEditor(id,name){
-    if ( id === "" ){
-        $("#exampleModalLabel").html(add_new_item);
-        $("#name").val("");
-        $("#unitId").val("");
-        $('.selectPickerShouldRefresh').selectpicker('refresh');
-    } else {
-        $("#exampleModalLabel").html(edit_item + " " + name);
-        $("#name").val(name);
-        $("#unitId").val(id);
-        $('.selectPickerShouldRefresh').selectpicker('refresh');
-    }
-    $('.bmd-label-static').removeClass('bmd-label-static');
-    $('#sendDataButton').show();
-    $('#dataSendAlert').hide();
-    $('#exampleModal').modal('show');
-}
-function sendUnit(){
-    $.ajax({
-        url: urlc+'/update',
-        type: 'post',
-        dataType: 'json',
-        data: {
-            'name': $('#name').val(),
-            'id': $('#unitId').val(),
-        } ,
-        success: function (result) {
-            if (result['status']) {
-                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
-                $('#sendDataButton').hide();
-                load();
-                return false;
-            }
-            else {
-                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
-            }
+    let urlc = '{url current}' ;
+    let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+    let edit_item = '{_ "Edit"} {$item_label}';
+    let changeSuccessfully = '{_ "changeSuccessfully"}';
+
+    function openItemEditor(id,name){
+        if ( id === "" ){
+            $("#exampleModalLabel").html(add_new_item);
+            $("#name").val("");
+            $("#id").val("");
+            $('.selectPickerShouldRefresh').selectpicker('refresh');
+        } else {
+            $("#exampleModalLabel").html(edit_item + " " + name);
+            $("#name").val(name);
+            $("#id").val(id);
+            $('.selectPickerShouldRefresh').selectpicker('refresh');
         }
-    });
-}
+        $('.bmd-label-static').removeClass('bmd-label-static');
+        $('#sendDataButton').show();
+        $('#dataSendAlert').hide();
+        $('#exampleModal').modal('show');
+    }
+    function sendItem(){
+        $.ajax({
+            url: urlc+'/update',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                'label': $('#name').val(),
+                'id': $('#id').val(),
+            } ,
+            success: function (result) {
+                if (result['status']) {
+                    $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
+                    $('#sendDataButton').hide();
+                    load();
+                    return false;
+                }
+                else {
+                    $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+                }
+            }
+        });
+    }
 </script>
 {/map}

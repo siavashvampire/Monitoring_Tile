@@ -66,12 +66,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {foreach from=$units key=key value=unit}
+                                {foreach from=$units key=key value=item}
                                 <tr>
-                                    <td>{$unit.id}</td>
-                                    <td>{$unit.label}</td>
-                                    <td>{$unit.agentUser}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openItemEditor('{$unit.id}','{$unit.label}','{$unit.agent}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td>{$item.id}</td>
+                                    <td>{$item.label}</td>
+                                    <td>{$item.agentUser}</td>
+                                    <td><button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.agent}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>

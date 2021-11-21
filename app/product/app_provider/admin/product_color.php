@@ -84,7 +84,6 @@ class product_color extends controller
 
 
         if ($get['id'] != '') {
-
             $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getlabel() . " ";
             $Dis .= rlang('changed');

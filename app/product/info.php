@@ -52,6 +52,19 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_color' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product_brand' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -85,5 +98,9 @@ return [
         (1 , 'تخت'),
         (2 , 'کونیک'),
         (3 , 'آرشام');",
+        "INSERT IGNORE INTO `{prefix}product_color` (`id`, `label`) VALUES
+        (1 , 'کرم'),
+        (2 , 'قهوه ای'),
+        (3 , 'آبی');",
     ],
 ];

@@ -7,5 +7,4 @@ return [
     'thickness'                                     => 'ضخامت',
     'length_unit_label'                             => 'mm',
     'product_punch'                                 => 'لیست پانچ ها',
-    'item_label'                                    => 'پانچ',
 ];

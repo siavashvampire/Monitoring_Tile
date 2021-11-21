@@ -52,16 +52,16 @@
                         <div class="card-icon">
                             <i class="fa fa-usb fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">لیست {$item_label} ها</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label} </h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table text-{$text_align}" id="tableExport">
                                 <thead>
                                 <tr>
-                                    <th>کد {$item_label}</th>
-                                    <th>نام {$item_label}</th>
-                                    <th>نام {_ "agent"}</th>
+                                    <th>{_ "code"} {$item_label}</th>
+                                    <th>{_ "name"} {$item_label}</th>
+                                    <th>{_ "name"} {_ "agent"}</th>
                                     <th style="width: 25px;"></th>
                                 </tr>
                                 </thead>
@@ -105,7 +105,7 @@
                 </div>
                 <form>
                     <div class="form-group">
-                        <label for="name" class="col-form-label float-right">نام {$item_label}:</label>
+                        <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="name" value="">
                         <input type="hidden" class="form-control" id="id" value="">
                     </div>

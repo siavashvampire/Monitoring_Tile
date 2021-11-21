@@ -18,6 +18,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-delicious', '', 'admin/product_glaze/index/product');
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
         $this->menu->addChild('configurationLine', 'product_punch', 'پانچ ‌ها', app::getBaseAppLink('product_punch', 'admin'), 'fa fa-delicious', '', 'admin/product_punch/index/product');
+        $this->menu->addChild('configurationLine', 'product_color', 'رنگ ‌ها', app::getBaseAppLink('product_color', 'admin'), 'fa fa-delicious', '', 'admin/product_color/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array

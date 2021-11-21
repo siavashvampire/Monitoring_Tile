@@ -112,7 +112,7 @@ function sendUnit(){
         dataType: 'json',
         data: {
             'name': $('#name').val(),
-            'unitId': $('#unitId').val(),
+            'id': $('#unitId').val(),
         } ,
         success: function (result) {
             if (result['status']) {

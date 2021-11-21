@@ -16,7 +16,7 @@ class product_brand extends controller
     private $model_name = 'product_brand';
     private $app_name = 'product';
     private $active_menu = 'product_brand';
-    private $html_file_path = 'product_brand_list.mold.html';
+    private $html_file_path = 'product_brand.mold.html';
 
     public function index(): bool
     {

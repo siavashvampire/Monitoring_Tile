@@ -10,53 +10,6 @@ return [
     'configuration' => [
     ],
     'db' => [
-        'product' => [
-            'fields' => [
-                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
-                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-                'kind' => "INT(11) NOT NULL",
-                'size' => "INT(11) NOT NULL",
-                'phase' => "INT(11) NOT NULL",
-                'color' => "INT(11) NOT NULL",
-                'glaze' => "INT(11) NOT NULL",
-                'punch' => "INT(11) NOT NULL",
-                'degree' => "INT(11) NOT NULL",
-                'weight' => "INT(11) NOT NULL",
-                'pallet' => "INT(11) NOT NULL",
-                'technique' => "INT(11) NOT NULL",
-                'effect' => "INT(11) NOT NULL",
-                'decor' => "INT(11) NOT NULL",
-            ],
-            'KEY' => [
-                'kind',
-                'size',
-                'phase',
-                'color',
-                'glaze',
-                'punch',
-                'degree',
-                'pallet',
-                'technique',
-                'effect',
-                'decor',
-            ],
-            'PRIMARY KEY' => [
-                'id'
-            ],
-            'REFERENCES' => [
-                'kind' => [ 'table' => 'product_kind' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'size' => [ 'table' => 'product_size' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'color' => [ 'table' => 'product_color' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'glaze' => [ 'table' => 'product_glaze' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'punch' => [ 'table' => 'product_punch' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'degree' => [ 'table' => 'product_degree' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'pallet' => [ 'table' => 'product_pallet' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'technique' => [ 'table' => 'product_technique' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'effect' => [ 'table' => 'product_effect' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'decor' => [ 'table' => 'product_decor' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-                'phase' => [ 'table' => 'phases' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-            ]
-        ],
         'product_size' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -176,6 +129,79 @@ return [
                 'id'
             ],
             'REFERENCES' => [
+            ]
+        ],
+        'product_degree' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_pallet' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'kind' => "INT(11) NOT NULL",
+                'size' => "INT(11) NOT NULL",
+                'phase' => "INT(11) NOT NULL",
+                'color' => "INT(11) NOT NULL",
+                'glaze' => "INT(11) NOT NULL",
+                'punch' => "INT(11) NOT NULL",
+                'degree' => "INT(11) NOT NULL",
+                'weight' => "INT(11) NOT NULL",
+                'pallet' => "INT(11) NOT NULL",
+                'technique' => "INT(11) NOT NULL",
+                'effect' => "INT(11) NOT NULL",
+                'decor' => "INT(11) NOT NULL",
+            ],
+            'KEY' => [
+                'kind',
+                'size',
+                'phase',
+                'color',
+                'glaze',
+                'punch',
+                'degree',
+                'pallet',
+                'technique',
+                'effect',
+                'decor',
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'kind' => [ 'table' => 'product_kind' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'size' => [ 'table' => 'product_size' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'color' => [ 'table' => 'product_color' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'glaze' => [ 'table' => 'product_glaze' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'punch' => [ 'table' => 'product_punch' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'degree' => [ 'table' => 'product_degree' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'pallet' => [ 'table' => 'product_pallet' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'technique' => [ 'table' => 'product_technique' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'effect' => [ 'table' => 'product_effect' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'decor' => [ 'table' => 'product_decor' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
+                'phase' => [ 'table' => 'phases' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
             ]
         ],
     ],

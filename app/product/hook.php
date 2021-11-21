@@ -14,6 +14,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class hook extends pluginController
 {
+    private $appName = 'product';
     public function _adminHeaderNavbar($vars2)
     {
         $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-delicious', '', 'admin/product_size/index/product');
@@ -21,6 +22,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
         $this->menu->addChild('configurationLine', 'product_punch', 'پانچ ‌ها', app::getBaseAppLink('product_punch', 'admin'), 'fa fa-delicious', '', 'admin/product_punch/index/product');
         $this->menu->addChild('configurationLine', 'product_color', 'رنگ ‌ها', app::getBaseAppLink('product_color', 'admin'), 'fa fa-delicious', '', 'admin/product_color/index/product');
+        $this->menu->addChild('configurationLine', 'product_kind', 'نوع محصول ها', app::getBaseAppLink('product_kind', 'admin'), 'fa fa-delicious', '', 'admin/product_kind/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array
@@ -36,8 +38,10 @@ class hook extends pluginController
 
     public function _fieldService_showToFillOut_productSize($vars2)
     {
+        $modelName = 'product_size';
+
         /* @var product_size $model */
-        $model = $this->model(['product', 'product_size']);
+        $model = $this->model([$this->appName, $modelName]);
         $searchFathers = $model->getItems();
         $options = '';
         if (is_array($searchFathers))
@@ -67,15 +71,19 @@ class hook extends pluginController
 
     public function _fieldService_showValue_productSize($fieldInformation = null)
     {
+        $modelName = 'product_size';
+
         /** @var product_size $model */
-        $model = $this->model(['product', 'product_size'], $fieldInformation['value']);
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
         return $model->getLabel();
     }
 
     public function _fieldService_showToFillOut_productGlaze($vars2)
     {
+        $modelName = 'product_glaze';
+
         /* @var product_glaze $model */
-        $model = $this->model(['product', 'product_glaze']);
+        $model = $this->model([$this->appName, $modelName]);
         $searchFathers = $model->getItems();
 
         $options = '';
@@ -106,15 +114,19 @@ class hook extends pluginController
 
     public function _fieldService_showValue_productGlaze($fieldInformation = null)
     {
+        $modelName = 'product_glaze';
+
         /** @var product_glaze $model */
-        $model = $this->model(['product', 'product_glaze'], $fieldInformation['value']);
+        $model = $this->model([$this->appName,$modelName], $fieldInformation['value']);
         return $model->getLabel();
     }
 
     public function _fieldService_showToFillOut_productPunch($vars2)
     {
+        $modelName = 'product_punch';
+
         /* @var product_punch $model */
-        $model = $this->model(['product', 'product_punch']);
+        $model = $this->model([$this->appName, $modelName]);
         $searchFathers = $model->getItems();
 
         $options = '';
@@ -145,15 +157,18 @@ class hook extends pluginController
 
     public function _fieldService_showValue_productPunch($fieldInformation = null)
     {
+        $modelName = 'product_punch';
+
         /** @var product_punch $model */
-        $model = $this->model(['product', 'product_punch'], $fieldInformation['value']);
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
         return $model->getLabel();
     }
 
     public function _fieldService_showToFillOut_productBrand($vars2)
     {
+        $modelName = 'product_brand';
         /* @var product_brand $model */
-        $model = $this->model(['product', 'product_brand']);
+        $model = $this->model([$this->appName, $modelName]);
         $searchFathers = $model->getItems();
 
         $options = '';
@@ -184,15 +199,17 @@ class hook extends pluginController
 
     public function _fieldService_showValue_productBrand($fieldInformation = null)
     {
+        $modelName = 'product_brand';
         /** @var product_brand $model */
-        $model = $this->model(['product', 'product_brand'], $fieldInformation['value']);
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
         return $model->getLabel();
     }
 
     public function _fieldService_showToFillOut_pproductColor($vars2)
     {
+        $modelName = 'product_color';
         /* @var product_color $model */
-        $model = $this->model(['product', 'product_color']);
+        $model = $this->model([$this->appName, $modelName]);
         $searchFathers = $model->getItems();
 
         $options = '';
@@ -223,8 +240,9 @@ class hook extends pluginController
 
     public function _fieldService_showValue_productColor($fieldInformation = null)
     {
+        $modelName = 'product_color';
         /** @var product_color $model */
-        $model = $this->model(['product', 'product_color'], $fieldInformation['value']);
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
         return $model->getLabel();
     }
 

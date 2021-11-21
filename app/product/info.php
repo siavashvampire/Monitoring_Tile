@@ -79,6 +79,58 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_kind' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_technique' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_effect' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_decor' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
     ],
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}product_size` (`id`, `label`,`width`,`length`,`thickness`) VALUES
@@ -102,5 +154,9 @@ return [
         (1 , 'کرم'),
         (2 , 'قهوه ای'),
         (3 , 'آبی');",
+        "INSERT IGNORE INTO `{prefix}product_kind` (`id`, `label`) VALUES
+        (1 , 'دیوار'),
+        (2 , 'پرسلان گرید a'),
+        (3 , 'پرسلان گرید b دیجیتال');",
     ],
 ];

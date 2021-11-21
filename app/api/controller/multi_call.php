@@ -28,7 +28,6 @@ class multi_call extends innerController
 
                 } else
                     $response[$index] = ["result" => false, "message" => "class " . $_dataSTD['class'] . " or method " . $_dataSTD['method'] . " not set"];
-
             }
             if (update::need_update()["result"])
                 $need_update = true;

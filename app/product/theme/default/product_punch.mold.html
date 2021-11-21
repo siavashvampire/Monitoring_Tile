@@ -84,49 +84,49 @@
 
 {map footerjs}
 <script>
-    let urlc = '{url current}' ;
-    let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
-    let edit_item = '{_ "Edit"} {$item_label}';
-    let changeSuccessfully = '{_ "changeSuccessfully"}';
+let urlc = '{url current}' ;
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
+let changeSuccessfully = '{_ "changeSuccessfully"}';
 
-    function openItemEditor(id,name){
-        if ( id === "" ){
-            $("#exampleModalLabel").html(add_new_item);
-            $("#name").val("");
-            $("#id").val("");
-            $('.selectPickerShouldRefresh').selectpicker('refresh');
-        } else {
-            $("#exampleModalLabel").html(edit_item + " " + name);
-            $("#name").val(name);
-            $("#id").val(id);
-            $('.selectPickerShouldRefresh').selectpicker('refresh');
-        }
-        $('.bmd-label-static').removeClass('bmd-label-static');
-        $('#sendDataButton').show();
-        $('#dataSendAlert').hide();
-        $('#exampleModal').modal('show');
+function openItemEditor(id,name){
+    if ( id === "" ){
+        $("#exampleModalLabel").html(add_new_item);
+        $("#name").val("");
+        $("#id").val("");
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    } else {
+        $("#exampleModalLabel").html(edit_item + " " + name);
+        $("#name").val(name);
+        $("#id").val(id);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
     }
-    function sendItem(){
-        $.ajax({
-            url: urlc+'/update',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                'label': $('#name').val(),
-                'id': $('#id').val(),
-            } ,
-            success: function (result) {
-                if (result['status']) {
-                    $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
-                    $('#sendDataButton').hide();
-                    load();
-                    return false;
-                }
-                else {
-                    $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
-                }
+    $('.bmd-label-static').removeClass('bmd-label-static');
+    $('#sendDataButton').show();
+    $('#dataSendAlert').hide();
+    $('#exampleModal').modal('show');
+}
+function sendItem(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'label': $('#name').val(),
+            'id': $('#id').val(),
+        } ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
             }
-        });
-    }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
 </script>
 {/map}

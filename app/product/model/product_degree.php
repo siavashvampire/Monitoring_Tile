@@ -7,8 +7,8 @@ namespace App\product\model;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace ;
 
-class product_decor extends model implements modelInterFace {
-    private $tableName = 'product_decor';
+class product_degree extends model implements modelInterFace {
+    private $tableName = 'product_degree';
 
 
     private $primaryKey = ['id'];

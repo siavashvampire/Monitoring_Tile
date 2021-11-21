@@ -9,18 +9,18 @@ use paymentCms\component\validate;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class product_punch extends controller
+class product_glaze extends controller
 {
-    private $item_label = "پانچ";
-    private $model_name = 'product_punch';
-    private $log_name = 'product_punch';
+    private $item_label = "لعاب";
+    private $model_name = 'product_glaze';
+    private $log_name = 'product_glaze';
     private $app_name = 'product';
-    private $active_menu = 'product_punch';
-    private $html_file_path = 'product_punch.mold.html';
+    private $active_menu = 'product_glaze';
+    private $html_file_path = 'product_glaze.mold.html';
 
     public function index(): bool
     {
-        /* @var \App\product\model\product_punch $model */
+        /* @var \App\product\model\product_glaze $model */
         $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -54,7 +54,7 @@ class product_punch extends controller
 
     public function update(): bool
     {
-        /* @var \App\product\model\product_punch $model */
+        /* @var \App\product\model\product_glaze $model */
         $get = request::post('id,label');
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],

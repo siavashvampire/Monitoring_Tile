@@ -40,9 +40,10 @@ class product_punch extends controller
         }
 
         $model = parent::model($this->model_name);
-        $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), null, 'COUNT(id) as co')) [0]['co'];
+        $numberOfAll = $model->getCount($value, (count($variable) == 0) ? null : implode(' and ', $variable));
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'label', 'type' => 'asc'], [$pagination['start'], $pagination['limit']]);
+        $pagination = [$pagination['start'], $pagination['limit']];
+        $search = $model->getItems($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), ['column' => 'id', 'type' => 'asc'], $pagination);
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);

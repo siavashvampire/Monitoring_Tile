@@ -9,18 +9,18 @@ use paymentCms\component\validate;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class product_size extends controller
+class product_technique extends controller
 {
-    private $item_label = "سایز کاشی";
-    private $log_name = 'product_size';
-    private $model_name = 'product_size';
+    private $item_label = "تکنیک تولید";
+    private $model_name = 'product_technique';
+    private $log_name = 'product_technique';
     private $app_name = 'product';
-    private $active_menu = 'product_size';
-    private $html_file_path = 'product_size.mold.html';
+    private $active_menu = 'product_technique';
+    private $html_file_path = 'product_technique.mold.html';
 
     public function index(): bool
     {
-        /* @var \App\product\model\product_size $model */
+        /* @var \App\product\model\product_technique $model */
         $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -37,19 +37,6 @@ class product_size extends controller
                 $value[] = '%' . $get['name'] . '%';
                 $variable[] = 'item.label Like ? ';
             }
-            if ($get['width'] != null) {
-                $value[] = $get['width'];
-                $variable[] = 'item.width = ? ';
-            }
-            if ($get['length'] != null) {
-                $value[] = $get['length'];
-                $variable[] = 'item.length = ? ';
-            }
-            if ($get['thickness'] != null) {
-                $value[] = $get['thickness'];
-                $variable[] = 'item.thickness = ? ';
-            }
-
         }
 
         $model = parent::model($this->model_name);
@@ -68,13 +55,10 @@ class product_size extends controller
 
     public function update(): bool
     {
-        /* @var \App\product\model\product_size $model */
-        $get = request::post('id,label,width,length,thickness');
+        /* @var \App\product\model\product_technique $model */
+        $get = request::post('id,label');
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],
-            "length" => ["required|floatInt|match:>0", rlang('length') . " " . $this->item_label],
-            "width" => ["required|floatInt|match:>0", rlang('width') . " " . $this->item_label],
-            "thickness" => ["required|floatInt|match:>0", rlang('thickness') . " " . $this->item_label],
         ];
         $valid = validate::check($get, $rules);
         $this->mold->offAutoCompile();
@@ -98,9 +82,7 @@ class product_size extends controller
         $Dis .= $model->getLabel() . " ";
 
         $model->setLabel($get['label']);
-        $model->setLength($get['length']);
-        $model->setWidth($get['width']);
-        $model->setThickness($get['thickness']);
+
 
         if ($get['id'] != '') {
 

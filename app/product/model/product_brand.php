@@ -5,9 +5,10 @@ namespace App\product\model;
 
 
 use paymentCms\component\model;
-use paymentCms\model\modelInterFace ;
+use paymentCms\model\modelInterFace;
 
-class product_brand extends model implements modelInterFace {
+class product_brand extends model implements modelInterFace
+{
     private $tableName = 'product_brand';
 
 
@@ -103,17 +104,25 @@ class product_brand extends model implements modelInterFace {
     {
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
     }
+
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
+        $field = array();
+        $field[] = 'item.id';
+        $field[] = 'item.label';
+        $field[] = 'item.agent as agent';
+        $field[] = 'concat(agentUser.fname," ",agentUser.lname) as agentUser';
+        $field = implode(',', $field);
         model::join('user agentUser', 'item.agent = agentUser.userId');
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.id ,item.label,item.agent as agent,concat(agentUser.fname," ",agentUser.lname) as agentUser', $sortWith, $pagination);
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
     }
 
-    public function getByUsersId($id){
+    public function getByUsersId($id)
+    {
         $value = array();
         $value[] = $id;
         $variable = array();
         $variable[] = 'item.agent = ?';
-        return parent::search(  $value  ,  implode(' and ' , $variable)  , $this->tableName . ' item', 'item.id ,item.label' );
+        return parent::search($value, implode(' and ', $variable), $this->tableName . ' item', 'item.id ,item.label');
     }
 }

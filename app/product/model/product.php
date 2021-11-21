@@ -225,6 +225,86 @@ class product extends model implements modelInterFace
         $this->pallet = $pallet;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getKind()
+    {
+        return $this->kind;
+    }
+
+    /**
+     * @param mixed $kind
+     */
+    public function setKind($kind): void
+    {
+        $this->kind = $kind;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getColor()
+    {
+        return $this->color;
+    }
+
+    /**
+     * @param mixed $color
+     */
+    public function setColor($color): void
+    {
+        $this->color = $color;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTechnique()
+    {
+        return $this->technique;
+    }
+
+    /**
+     * @param mixed $technique
+     */
+    public function setTechnique($technique): void
+    {
+        $this->technique = $technique;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEffect()
+    {
+        return $this->effect;
+    }
+
+    /**
+     * @param mixed $effect
+     */
+    public function setEffect($effect): void
+    {
+        $this->effect = $effect;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDecor()
+    {
+        return $this->decor;
+    }
+
+    /**
+     * @param mixed $decor
+     */
+    public function setDecor($decor): void
+    {
+        $this->decor = $decor;
+    }
+
     public function getCount($value = array(), $variable = array())
     {
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];

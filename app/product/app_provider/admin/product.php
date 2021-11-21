@@ -14,6 +14,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 class product extends controller
 {
     private $item_label = "کاشی";
+    private $ChangeURL = "product";
     private $log_name = 'product';
     private $model_name = 'product';
     private $app_name = 'product';
@@ -53,6 +54,7 @@ class product extends controller
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
+        $this->mold->set('ChangeURL', $this->ChangeURL);
         return false;
     }
 
@@ -112,6 +114,7 @@ class product extends controller
 
         $this->mold->set('activeMenu' , $this->active_menu);
         $this->mold->set('item_label', $this->item_label);
+        $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
         return false;
     }
 }

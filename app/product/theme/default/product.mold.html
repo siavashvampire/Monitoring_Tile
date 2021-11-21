@@ -12,16 +12,29 @@
                     <div class="card-body">
                         <form class="form-horizontal" method="post">
                             <div class="row">
-                                <div class="col-md-6 float-right form-group">
-                                    <label for="sensors" class="col-form-label col-md-3 float-right">نام سنسور:<span class="text-danger">*</span></label>
+                                <div class="col-md-4 float-right form-group">
+                                    <label for="label" class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="text" class="form-control " required  id="sensors" name="sensors" value="{if isset($Mold.post.sensors)}{$Mold.post.sensors}{elseif isset($VSensor)}{$VSensor->getLabel()}{/if}">
+                                            <input type="text" class="form-control " required  id="label" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getLabel()}{/if}">
                                         </div>
                                     </div>
                                 </div>
-                                
-                                <div class="col-md-6 form-group">
+
+                                <div class="col-md-4 form-group">
+                                    <label for="tile_kind" class="col-form-label col-md-3 float-right">{_ "color"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="color" name="color" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "color"}:">
+                                                {foreach from=$colors key=key value=color }
+                                                <option value="{$color.id}" {if isset($Mold.post.color)}{if $color.id == $Mold.post.color }selected{/if}{elseif isset($model) and $color.id == $model->getColor()}selected{/if} >{$color.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 form-group">
                                     <label for="showSort" class="col-form-label col-md-3 float-right">شماره رده بندی:<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">

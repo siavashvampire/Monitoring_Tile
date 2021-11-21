@@ -6,5 +6,6 @@ return [
     'width'                                         => 'عرض',
     'thickness'                                     => 'ضخامت',
     'length_unit_label'                             => 'mm',
-    'product_punch'                                 => 'لیست پانچ ها',
+    'design'                                        => 'طرح',
+    'color'                                         => 'رنگ',
 ];

@@ -77,7 +77,7 @@ class product_punch extends model implements modelInterFace {
     {
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
     }
-    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'dasc'], $pagination = [0, 9999])
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
     }

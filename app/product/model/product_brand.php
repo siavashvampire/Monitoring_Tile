@@ -105,7 +105,8 @@ class product_brand extends model implements modelInterFace {
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+        model::join('user agentUser', 'item.agent = agentUser.userId');
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.id ,item.label,item.agent as agent,concat(agentUser.fname," ",agentUser.lname) as agentUser', $sortWith, $pagination);
     }
 
     public function getByUsersId($id){
@@ -113,6 +114,6 @@ class product_brand extends model implements modelInterFace {
         $value[] = $id;
         $variable = array();
         $variable[] = 'item.agent = ?';
-        return parent::search(  $value  ,  implode(' and ' , $variable)  , 'product_brand item', 'item.id ,item.label' );
+        return parent::search(  $value  ,  implode(' and ' , $variable)  , $this->tableName . ' item', 'item.id ,item.label' );
     }
 }

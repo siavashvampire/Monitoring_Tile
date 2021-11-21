@@ -2,6 +2,7 @@
 
 namespace App\product\app_provider\admin;
 
+use App\Sections\app_provider\admin\Sections;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
@@ -17,7 +18,7 @@ class product_brand extends controller
     private $model_name = 'product_brand';
     private $app_name = 'product';
     private $active_menu = 'product_brand';
-    private $html_file_path = 'product_brand_list.mold.html';
+    private $html_file_path = 'product_brand.mold.html';
 
     public function index(): bool
     {
@@ -50,7 +51,7 @@ class product_brand extends controller
         $this->mold->view($this->html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
-        $this->mold->set('units', $search);
+        $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('agents', user::getUsersByGroupId((int)$this->setting('postAgent', 'post_design'))["result"]);
         return false;

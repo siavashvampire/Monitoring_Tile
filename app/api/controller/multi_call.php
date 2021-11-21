@@ -3,6 +3,8 @@
 namespace App\api\controller;
 
 
+use App\core\app_provider\api\update;
+
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class multi_call extends innerController
@@ -28,8 +30,13 @@ class multi_call extends innerController
                     $response[$index] = ["result" => false, "message" => "class " . $_dataSTD['class'] . " or method " . $_dataSTD['method'] . " not set"];
 
             }
+            if (update::need_update()["result"])
+                $need_update = true;
+            else
+                $need_update = false;
+
             unset($_SERVER['JsonOffMultiCall'], $_SERVER['JsonOff']);
-            parent::json(["status" => true, "result" => $response]);
+            parent::json(["status" => true, "result" => $response, "need_update" => $need_update]);
         } else {
             unset($_SERVER['JsonOffMultiCall'], $_SERVER['JsonOff']);
             parent::jsonError(["status" => false, 'result' => "data not set"], 500);

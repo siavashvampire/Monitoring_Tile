@@ -2,6 +2,8 @@
 
 namespace App\product\app_provider\admin;
 
+use App;
+use App\core\controller\httpErrorHandler;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -15,7 +17,9 @@ class product extends controller
     private $log_name = 'product';
     private $model_name = 'product';
     private $app_name = 'product';
+    private $class_name = 'product';
     private $active_menu = 'product';
+    private $list_html_file_path = 'product_list.mold.html';
     private $html_file_path = 'product.mold.html';
 
     public function list(): bool
@@ -44,7 +48,7 @@ class product extends controller
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'label', 'type' => 'asc'], [$pagination['start'], $pagination['limit']]);
         $this->mold->path('default', $this->app_name);
-        $this->mold->view($this->html_file_path);
+        $this->mold->view($this->list_html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
@@ -52,54 +56,62 @@ class product extends controller
         return false;
     }
 
-    public function index(): bool
+    public function index($id = null): bool
     {
         /* @var \App\product\model\product $model */
-
-        $get = request::post('id,label');
-        $rules = [
-            "label" => ["required", rlang('name') . " " . $this->item_label],
-        ];
-        $valid = validate::check($get, $rules);
-        $this->mold->offAutoCompile();
-        $GLOBALS['timeStart'] = '';
-        if ($valid->isFail()) {
-            Response::jsonMessage($valid->errorsIn(), false);
-            return false;
-        }
-
-        if ($get['id'] != '') {
-            $model = parent::model($this->model_name, $get['id']);
-            if ($model->getId() != $get['id']) {
-                Response::jsonMessage($this->item_label . " " . rlang('cantFindSpecific'), false);
+        if ($id != null) {
+            $model = parent::model($this->model_name, $id);
+            if ($model->getId() != $id) {
+                httpErrorHandler::E404();
                 return false;
             }
+            $this->mold->set('model', $model);
         } else
             $model = parent::model($this->model_name);
 
+        if (request::ispost()) {
+            $get = request::post('label');
+            $rules = [
+                "label" => ["required", rlang('name') . " " . $this->item_label],
+            ];
+            $valid = validate::check($get, $rules);
+            $this->mold->offAutoCompile();
+            $GLOBALS['timeStart'] = '';
+            if ($valid->isFail()) {
+                Response::jsonMessage($valid->errorsIn(), false);
+                return false;
+            }
 
-        $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
-        $Dis .= $model->getLabel() . " ";
-
-        $model->setLabel($get['label']);
-        $model->setLength($get['length']);
-        $model->setWidth($get['width']);
-        $model->setThickness($get['thickness']);
-
-        if ($get['id'] != '') {
-
-            $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
-            $Dis .= $model->getlabel() . " ";
-            $Dis .= rlang('changed');
-            $model->upDateDataBase();
-        } else {
+            $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getLabel() . " ";
-            $Dis = $Dis . rlang('inserted');
-            $model->insertToDataBase();
+
+            $model->setLabel($get['label']);
+
+            if ($get['id'] != '') {
+
+                $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
+                $Dis .= $model->getlabel() . " ";
+                $Dis .= rlang('changed');
+                $model->upDateDataBase();
+            } else {
+                $Dis .= $model->getLabel() . " ";
+                $Dis = $Dis . rlang('inserted');
+                $model->insertToDataBase();
+            }
+
+            $this->callHooks('addLog', [$Dis, $this->log_name]);
+            Response::redirect(App::getBaseAppLink($this->class_name . '/list/','admin'));
         }
 
-        $this->callHooks('addLog', [$Dis, $this->log_name]);
-        Response::jsonMessage(rlang('changeSuccessfully'), true);
+        $this->mold->path('default', $this->app_name);
+        $this->mold->view($this->html_file_path);
+        if( $id == null)
+            $this->mold->setPageTitle(rlang('insert') . " " . $this->item_label);
+        elseif( $id != null)
+            $this->mold->setPageTitle(rlang('Edit') . " " . $this->item_label);
+
+        $this->mold->set('activeMenu' , $this->active_menu);
+        $this->mold->set('item_label', $this->item_label);
         return false;
     }
 }

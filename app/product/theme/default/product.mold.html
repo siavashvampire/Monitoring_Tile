@@ -2,167 +2,228 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
-                <div class="card" id="listToGetFromServer">
+                <div class="card">
                     <div class="card-header card-header-info card-header-icon">
-                        <div class="card-icon">
-                            <i class="fa fa-delicious fa-2x"></i>
+                        <div class="card-icon" >
+                            <i class="fa fa-file-excel-o fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
-                    </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "configuration"} {$item_label}</h4>
+                    </div>        
                     <div class="card-body">
-                        <div class="table-responsive">
-                            <table class="table text-{$text_align}" id="tableExport">
-                                <thead>
-                                <tr>
-                                    <th style="width: 24%">{_ "name"} {$item_label}</th>
-                                    <th style="width: 24%">{_ "length"}</th>
-                                    <th style="width: 24%">{_ "width"}</th>
-                                    <th style="width: 24%">{_ "thickness"}</th>
-                                    <th style="width: 4%"></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {foreach from=$items key=key value=item}
-                                <tr>
-                                    <td>{$item.label}</td>
-                                    <td>{$item.width}{_ "length_unit_label"}</td>
-                                    <td>{$item.length}{_ "length_unit_label"}</td>
-                                    <td>{$item.thickness}{_ "length_unit_label"}</td>
-                                    <td>
-                                        <button class="btn btn-link text-info"
-                                                onclick="openItemEditor('{$item.id}','{$item.label}','{$item.length}','{$item.width}','{$item.thickness}')">
-                                            <i class="fa fa-pencil"></i></button>
-                                    </td>
-                                </tr>
-                                {foreachelse}
-                                <tr>
-                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
-                                </tr>
-                                {/foreach}
-                                </tbody>
-                            </table>
-                        </div>
-                        {view "[url patch]pagination.mold.html"}
+                        <form class="form-horizontal" method="post">
+                            <div class="row">
+                                <div class="col-md-6 float-right form-group">
+                                    <label for="sensors" class="col-form-label col-md-3 float-right">نام سنسور:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="text" class="form-control " required  id="sensors" name="sensors" value="{if isset($Mold.post.sensors)}{$Mold.post.sensors}{elseif isset($VSensor)}{$VSensor->getLabel()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6 form-group">
+                                    <label for="showSort" class="col-form-label col-md-3 float-right">شماره رده بندی:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0" class="form-control" required id="showSort" name="showSort" value="{if isset($Mold.post.showSort)}{$Mold.post.showSort}{elseif isset($VSensor)}{$VSensor->getshowSort()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-12 text-center mt-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input autocomplete="off"  class="form-check-input" id="Export" name="Export" type="checkbox" {if isset($Mold.post.Export)}{if $Mold.post.Export == 1 }checked{/if}{else}{if isset($VSensor)}{if $VSensor->getExport()}checked{/if}{else}checked{/if}{/if} value="1">گزارش
+                                            <span class="form-check-sign">
+                                                <span class="check"></span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <hr>
+                            
+                            <div class="row">
+                                <div class="col-md-6  form-group" id="tile_kindParentDiv">
+                                    <label for="tile_kind" class="col-form-label col-md-3 float-right">نوع کاشی:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="tile_kind" name="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                                            {foreach from=$tiles key=key value=access_item }
+                                            <option value="{$access_item.id}" {if isset($Mold.post.tile_kind)}{if $access_item.id == $Mold.post.tile_kind }selected{/if}{elseif isset($VSensor) and $access_item.id == $VSensor->getId()}selected{/if} >{$access_item.label}</option>
+                                            {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="col-md-6 form-group"   id="tile_degreeParentDiv">
+                                <label for="tile_degree" class="col-form-label col-md-3 float-right">درجه کاشی:<span class="text-danger">*</span></label>
+                                <div class="col-md-9">
+                                    <div class="form-group has-default">
+                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="tile_degree" name="tile_degree" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                                    <option value="همه" {if isset($Mold.post.tile_degree)}{if "همه" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor)} {if "همه" == $VSensor->getTileDegree()}selected{/if}{else}selected{/if} >کلی</option>
+                                    <option value="درجه 1" {if isset($Mold.post.tile_degree)}{if "درجه 1" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه 1" == $VSensor->getTileDegree()}selected{/if} >درجه 1</option>
+                                    <option value="درجه 2" {if isset($Mold.post.tile_degree)}{if "درجه 2" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه 2" == $VSensor->getTileDegree()}selected{/if}  >درجه 2</option>
+                                    <option value="درجه 3" {if isset($Mold.post.tile_degree)}{if "درجه 3" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه 3" == $VSensor->getTileDegree()}selected{/if}  >درجه 3</option>
+                                    <option value="درجه U" {if isset($Mold.post.tile_degree)}{if "درجه U" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه U" == $VSensor->getTileDegree()}selected{/if}  >درجه U</option>
+                                    <option value="درجه W" {if isset($Mold.post.tile_degree)}{if "درجه W" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه W" == $VSensor->getTileDegree()}selected{/if}  >درجه W</option>
+                                </select>
+                                        </div>
+                                    </div>
+                            </div>
+
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-6 form-group"  id="fazDiv">
+                                <label for="faz" class="col-form-label col-md-3 float-right">فاز:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                    <div class="form-group has-default">
+                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="faz" name="faz" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
+                                    {foreach from=$phases key=key value=phase }
+                                            <option value="{$phase.id}" {if isset($Mold.post.faz)}{if $phase.id == $Mold.post.faz }selected{/if}{elseif isset($VSensor) and $phase.id == $VSensor->getPhase()}selected{/if} >{$phase.label}</option>
+                                    {/foreach}
+                                </select>
+                                    </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-6  form-group" id="unitDiv">
+                                <label for="unitId" class="col-form-label col-md-3 float-right">واحد:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                    <div class="form-group has-default">
+                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="unitId" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
+                                    {foreach from=$units key=key value=unit }
+                                        <option value="{$unit.id}"  {if isset($Mold.post.unitId)}{if $unit.id == $Mold.post.unitId }selected{/if}{elseif isset($VSensor) and $unit.unitId == $VSensor->getUnit()}selected{/if}>{$unit.label}</option>
+                                    {/foreach}
+                                </select>
+                                </div> 
+                                </div> 
+                                </div> 
+                            </div>
+                            
+                            <hr>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table text-right">
+                                        <thead>
+                                            <tr>
+                                                <th style="width: 50%">نام سنسور</th>
+                                                <th style="width: 10%">علامت</th>
+                                                <th style="width: 40%">
+                                                    <button type="button" class="btn btn-info" onclick="$('#bodySensor').append(oneRowSensor);refreshPageJs();">
+                                                        <i class="fa fa-plus-circle"></i>
+                                افزودن سنسور جدید                                        </button>
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="bodySensor" >
+                                            <tr style="display:none" id="bodySensorElemnt">
+                                                <td>
+                                                    <select class="selectpicker" name="SensorChosenId[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                    {foreach from=$Sensors key=key value=Sensor }
+                                                     <option value="{$Sensor.Sensor_id}" >{$Sensor.label}</option>
+                                                    {/foreach}
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <select class="selectpicker" name="SensorSign[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="علامت سنسور">
+                                                        <option value = "1" > +1 </option>
+                                                        <option value = "-1"> -1 </option>
+                                                    </select>
+                                                </td>
+                                                <td style="transform: translate(0%, 0%);" class="td-actions">
+                                                    <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                        <i class="fa fa-trash"></i>
+                                                        حذف                                        </button>
+                                                </td>
+                                            </tr>
+                                            {if isset($Mold.post.SensorChosenId )}
+                                                {foreach from=$Mold.post.SensorChosenId key=key and value=Sensor}
+                                                    <tr>
+                                                        <td>
+                                                            <select class="selectpicker" name="SensorChosenId[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                            {foreach from=$Sensors key=key2 value=Sensor2 }
+                                                                <option value="{$Sensor2.Sensor_id}" {if $Mold.post.SensorChosenId.[$key] == $Sensor2.Sensor_id } selected {/if}>{$Sensor2.label}</option>
+                                                            {/foreach}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="selectpicker" name="SensorSign[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="علامت سنسور">
+                                                                <option value = "1" {if $Mold.post.SensorSign.[$key] == "1" } selected {/if}> +1 </option>
+                                                                <option value = "-1"{if $Mold.post.SensorSign.[$key] == "-1"} selected {/if}> -1 </option>
+                                                            </select>
+                                                        </td>
+                                                        <td style="transform: translate(0%, 0%);" class="td-actions">
+                                                            <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                                <i class="fa fa-trash"></i>
+                                                                حذف                                        </button>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            {elseif isset($VSensor) }
+                                                {set 'numbersof' ,$VSensor ->getSensorSign()}
+                                                {set 'numbersofV',$VSensor ->getSensorChosenId()}
+                                                {foreach from=$VSensor->getSensorChosenId() key=key and value=Sensor}
+                                                    <tr>
+                                                        <td>
+                                                            <select class="selectpicker" name="SensorChosenId[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
+                                                            {foreach from=$Sensors key=key2 value=Sensor2 }
+                                                                <option value="{$Sensor2.Sensor_id}" {if $numbersofV.[$key] == $Sensor2.Sensor_id } selected {/if} >{$Sensor2.label}</option>
+                                                            {/foreach}
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <select class="selectpicker" name="SensorSign[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="علامت سنسور">
+                                                                <option value = "1" {if $numbersof.[$key] == "1" } selected {/if}> +1 </option>
+                                                                <option value = "-1"{if $numbersof.[$key] == "-1"} selected {/if}> -1 </option>
+                                                            </select>
+                                                        </td>
+                                                        <td style="transform: translate(0%, 0%);" class="td-actions">
+                                                            <button type="button" class="btn btn-danger p-2 ml-3" onclick="$(this).parent().parent().remove();">
+                                                                <i class="fa fa-trash"></i>
+                                                                حذف                                        </button>
+                                                        </td>
+                                                    </tr>
+                                                {/foreach}
+                                            {/if}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                               <div class="col-md-12">
+                                   <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i> ثبت سنسور دخیره ساز</button>
+                               </div>
+                            </div>
+                        </form>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-success text-right" id="dataSendAlert">
-                    {_ "changeSuccessfully"}
-                </div>
-                <form>
-                    <div class="form-group">
-                        <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
-                        <input type="text" class="form-control" id="label" value="">
-                        <input type="hidden" class="form-control" id="id" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="width_send" class="col-form-label float-right">{_ "length"} - {_
-                            "length_unit_label"}:</label>
-                        <input type="number" min="0" class="form-control" id="width_send" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="length_send" class="col-form-label float-right">{_ "width"} - {_
-                            "length_unit_label"}:</label>
-                        <input type="number" min="0" class="form-control" id="length_send" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="thickness_send" class="col-form-label float-right">{_ "thickness"} - {_
-                            "length_unit_label"}:</label>
-                        <input type="number" min="0" class="form-control" id="thickness_send" value="0">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning float-left" data-dismiss="modal"
-                        style="position: absolute;">{_ "close"}
-                </button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()">
-                    {_ "send"}
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-{map navBarButton}
-<button class="btn btn-info" onclick="openItemEditor('','','','','')">
-                      <span class="btn-label">
-                        <i class="fa fa-plus"></i>
-                      </span>
-    {_ "add"} {$item_label} {_ "new"}
-</button>
-{/map}
 
 {map footerjs}
 <script>
-    let urlc = '{url current}';
-    let div = '{$loadDivID}';
-    let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
-    let edit_item = '{_ "Edit"} {$item_label}';
-    let changeSuccessfully = '{_ "changeSuccessfully"}';
-
-    function openItemEditor(id, name, length, width, thickness) {
-        if (id === "") {
-            $('#exampleModalLabel').html(add_new_item);
-            $('#label').val("");
-            $('#id').val("");
-            $('#length_send').val("");
-            $('#width_send').val("");
-            $('#thickness_send').val("");
-        } else {
-            $('#exampleModalLabel').html(edit_item + " " + name);
-            $('#label').val(name);
-            $('#id').val(id);
-            $('#length_send').val(length);
-            $('#width_send').val(width);
-            $('#thickness_send').val(thickness);
-        }
-        $('.bmd-label-static').removeClass('bmd-label-static');
-        $('#sendDataButton').show();
-        $('#dataSendAlert').hide();
-        $('#exampleModal').modal('show');
-    }
-
-    function sendItem() {
-        $.ajax({
-            url: urlc + '/update',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                'label': $('#label').val(),
-                'id': $('#id').val(),
-                'length': $('#length_send').val(),
-                'width': $('#width_send').val(),
-                'thickness': $('#thickness_send').val(),
-            },
-            success: function (result) {
-                if (result['status']) {
-                    $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
-                    $('#sendDataButton').hide();
-                    load();
-                    return false;
-                } else {
-                    $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
-                }
-            }
-        });
-    }
+    var urlc = '{url current}' ;
+    var oneRowSensor ='<tr>'+ $('#bodySensorElemnt').html()+"</tr>";
+    $('#bodySensorElemnt').remove();
+    function  refreshPageJs() {
+    $('.selectpicker:not(.selectpickerNotRefresh)').selectpicker('refresh');
+}
 </script>
+{/map}
+{map navBarButton}
+<a class="btn btn-info"  href="{url admin}storageSensor/List">
+                      <span class="btn-label">
+                        <i class="fa fa-plus"></i>
+                      </span>
+    برگشت به لیست سنسورهای دخیره ساز
+</a>
 {/map}

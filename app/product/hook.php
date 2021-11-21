@@ -17,6 +17,7 @@ class hook extends pluginController
     private $appName = 'product';
     public function _adminHeaderNavbar($vars2)
     {
+        $this->menu->addChild('configurationLine', 'product', 'کاشی‌ها', app::getBaseAppLink('product/list', 'admin'), 'fa fa-delicious', '', 'admin/product/list/product');
         $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-delicious', '', 'admin/product_size/index/product');
         $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-delicious', '', 'admin/product_glaze/index/product');
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
@@ -248,7 +249,8 @@ class hook extends pluginController
 
     public function _logField(): array
     {
-        return [["value" => "product_size", "label" => "تغییرات سایز ها"],
+        return [["value" => "product", "label" => "تغییرات کاشی ها"],
+            ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
             ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
             ["value" => "product_glaze", "label" => "تغییرات لعاب ها"],
             ["value" => "product_brand", "label" => "تغییرات برند ها"],

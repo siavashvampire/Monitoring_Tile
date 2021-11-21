@@ -7,20 +7,20 @@
                         <div class="card-icon">
                             <i class="fa fa-usb fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">لیست لعاب ها</h4>
+                        <h4 class="card-title float-{$float} m-3"> {$item_label} {_ "list"}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th>کد لعاب</th>
-                                    <th>نام لعاب</th>
+                                    <th>{_ "code"} {$item_label}</th>
+                                    <th>{_ "name"} {$item_label}</th>
                                     <th style="width: 25px;"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {foreach from=$product_glaze key=key value=unit}
+                                {foreach from=$product_punch key=key value=unit}
                                 <tr>
                                     <td>{$unit.id}</td>
                                     <td>{$unit.label}</td>
@@ -54,19 +54,19 @@
             </div>
             <div class="modal-body">
                 <div class="alert alert-success text-right" id="dataSendAlert">
-                    تغییرات با موفقیت انجام شد.
+                    {_ "changeSuccessfully"}
                 </div>
                 <form>
                     <div class="form-group">
-                        <label for="sensors" class="col-form-label float-right">نام لعاب:</label>
+                        <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="name" value="">
                         <input type="hidden" class="form-control" id="unitId" value="">
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">بستن</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendUnit();window.location.reload()" >ارسال</button>
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendUnit();window.location.reload()" >{_ "send"}</button>
             </div>
         </div>
     </div>
@@ -78,7 +78,7 @@
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
-    اضافه کردن لعاب جدید
+    {_ "add"} {$item_label} {_ "new"}
 </button>
 {/map}
 
@@ -86,15 +86,16 @@
 <script>
 var urlc = '{url current}' ;
 var Tile_Names = $('#tile_kindParentDiv').html();
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
 function openUnitEditor(id,name){
     if ( id === "" ){
-        $("#exampleModalLabel").html("اضافه کردن لعاب جدید");
+        $("#exampleModalLabel").html(add_new_item);
         $("#name").val("");
         $("#unitId").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
-//        show()
-        $("#exampleModalLabel").html("ویرایش لعاب");
+        $("#exampleModalLabel").html(edit_item + " " + name);
         $("#name").val(name);
         $("#unitId").val(id);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
@@ -111,11 +112,11 @@ function sendUnit(){
         dataType: 'json',
         data: {
             'name': $('#name').val(),
-            'unitId': $('#unitId').val(),
+            'id': $('#unitId').val(),
         } ,
         success: function (result) {
             if (result['status']) {
-                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html("تغییرات با موفقیت انجام شد.").show();
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
                 $('#sendDataButton').hide();
                 load();
                 return false;

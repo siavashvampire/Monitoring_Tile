@@ -8,6 +8,7 @@ use paymentCms\component\model;
 use paymentCms\model\modelInterFace ;
 
 class product_glaze extends model implements modelInterFace {
+    private $tableName = 'product_glaze';
 
 	private $primaryKey = ['id'];
 	private $primaryKeyShouldNotInsertOrUpdate = 'id';
@@ -69,10 +70,12 @@ class product_glaze extends model implements modelInterFace {
     {
         $this->label = $label;
     }
-    public function getCount($value = array(),$variable = array()) {
-        return (parent::search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'product_glaze item', 'COUNT(id) as co' )) [0]['co'];
+    public function getCount($value = array(), $variable = array())
+    {
+        return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
     }
-    public function getItems($value = array(),$variable = array() , $sortWith = ['column' => 'id' , 'type' =>'asc'],$pagination = ['start' => 0 , 'limit' =>"25"]) {
-        return parent::search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'product_glaze item'  , 'item.*'  , $sortWith , [$pagination['start'] , $pagination['limit'] ] );
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
+    {
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
     }
 }

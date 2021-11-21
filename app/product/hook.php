@@ -3,6 +3,8 @@
 namespace App\product;
 
 use app;
+use App\product\model\product_brand;
+use App\product\model\product_color;
 use App\product\model\product_glaze;
 use App\product\model\product_size;
 use App\product\model\product_punch;
@@ -24,9 +26,11 @@ class hook extends pluginController
     public function _fieldService_listOfTypes($vars2): array
     {
         return [
-            ['type' => 'productKind', 'name' => 'نوع کاشی'],
+            ['type' => 'productSize', 'name' => 'سایز کاشی'],
             ['type' => 'productGlaze', 'name' => 'لعاب کاشی'],
             ['type' => 'productPunch', 'name' => 'پانچ کاشی'],
+            ['type' => 'productBrand', 'name' => 'برند کاشی'],
+            ['type' => 'productColor', 'name' => 'رنگ کاشی'],
         ];
     }
 
@@ -146,11 +150,90 @@ class hook extends pluginController
         return $model->getLabel();
     }
 
+    public function _fieldService_showToFillOut_productBrand($vars2)
+    {
+        /* @var product_brand $model */
+        $model = $this->model(['product', 'product_brand']);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productBrand($fieldInformation = null)
+    {
+        /** @var product_brand $model */
+        $model = $this->model(['product', 'product_brand'], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
+    public function _fieldService_showToFillOut_pproductColor($vars2)
+    {
+        /* @var product_color $model */
+        $model = $this->model(['product', 'product_color']);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productColor($fieldInformation = null)
+    {
+        /** @var product_color $model */
+        $model = $this->model(['product', 'product_color'], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
     public function _logField(): array
     {
         return [["value" => "product_size", "label" => "تغییرات سایز ها"],
             ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
             ["value" => "product_glaze", "label" => "تغییرات لعاب ها"],
-            ["value" => "product_brand", "label" => "تغییرات برند ها"]];
+            ["value" => "product_brand", "label" => "تغییرات برند ها"],
+            ["value" => "product_color", "label" => "تغییرات رنگ ها"]];
     }
 }

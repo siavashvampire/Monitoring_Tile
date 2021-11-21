@@ -2,7 +2,6 @@
 
 namespace App\product\app_provider\admin;
 
-use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -21,8 +20,8 @@ class product_brand extends controller
 
     public function index(): bool
     {
-        /** @var \App\product\model\product_brand $model */
-        $get = request::post('page=1,perEachPage=25,label');
+        /* @var \App\product\model\product_brand $model */
+        $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -35,37 +34,31 @@ class product_brand extends controller
             return false;
         } else {
             if ($get['label'] != null) {
-                $value[] = '%' . $get['label'] . '%';
-                $variable[] = ' item.label Like ? ';
+                $value[] = '%' . $get['name'] . '%';
+                $variable[] = 'item.label Like ? ';
             }
-
         }
 
         $model = parent::model($this->model_name);
-        $numberOfAll = $model->getCount($value, $variable);
+        $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), null, 'COUNT(id) as co')) [0]['co'];
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $pagination = [$pagination['start'], $pagination['limit']];
-        $search = $model->getItems($value, $variable, ['column' => 'id', 'type' => 'asc'], $pagination);
+        $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'label', 'type' => 'asc'], [$pagination['start'], $pagination['limit']]);
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
-        $this->mold->set('units', $search);
+        $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
-        $this->mold->set('agents', user::getUsersByGroupId((int)$this->setting('postAgent', 'post_design'))["result"]);
         return false;
     }
 
     public function update(): bool
     {
-        /** @var \App\product\model\product_brand $model */
-        $get = request::post('id,label,agent');
-
+        /* @var \App\product\model\product_brand $model */
+        $get = request::post('id,label');
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],
-            "agent" => ["required|floatInt|match:>0", rlang('name') . " " . rlang('agent')],
         ];
-
         $valid = validate::check($get, $rules);
         $this->mold->offAutoCompile();
         $GLOBALS['timeStart'] = '';
@@ -83,13 +76,15 @@ class product_brand extends controller
         } else
             $model = parent::model($this->model_name);
 
+
         $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
         $Dis .= $model->getLabel() . " ";
 
         $model->setLabel($get['label']);
-        $model->setAgent($get['agent']);
+
 
         if ($get['id'] != '') {
+
             $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getlabel() . " ";
             $Dis .= rlang('changed');

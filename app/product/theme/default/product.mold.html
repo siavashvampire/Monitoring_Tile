@@ -22,12 +22,12 @@
                                 </div>
 
                                 <div class="col-md-4 form-group">
-                                    <label for="tile_kind" class="col-form-label col-md-3 float-right">{_ "color"}:<span class="text-danger">*</span></label>
+                                    <label for="color" class="col-form-label col-md-3 float-right">{_ "color"}:<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="color" name="color" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "color"}:">
-                                                {foreach from=$colors key=key value=color }
-                                                <option value="{$color.id}" {if isset($Mold.post.color)}{if $color.id == $Mold.post.color }selected{/if}{elseif isset($model) and $color.id == $model->getColor()}selected{/if} >{$color.label}</option>
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="color" name="color" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "color"}">
+                                                {foreach from=$colors key=key value=item }
+                                                <option value="{$item.id}" {if isset($Mold.post.color)}{if $item.id == $Mold.post.color }selected{/if}{elseif isset($model) and $item.id == $model->getColor()}selected{/if} >{$item.label}</option>
                                                 {/foreach}
                                             </select>
                                         </div>
@@ -35,89 +35,86 @@
                                 </div>
 
                                 <div class="col-md-4 form-group">
-                                    <label for="showSort" class="col-form-label col-md-3 float-right">شماره رده بندی:<span class="text-danger">*</span></label>
+                                    <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0" class="form-control" required id="showSort" name="showSort" value="{if isset($Mold.post.showSort)}{$Mold.post.showSort}{elseif isset($VSensor)}{$VSensor->getshowSort()}{/if}">
+                                            <input type="number" min="1" class="form-control" required id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{/if}">
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+                            <hr>
                             <div class="row">
-                                <div class="col-md-12 text-center mt-2">
-                                    <div class="form-check">
-                                        <label class="form-check-label">
-                                            <input autocomplete="off"  class="form-check-input" id="Export" name="Export" type="checkbox" {if isset($Mold.post.Export)}{if $Mold.post.Export == 1 }checked{/if}{else}{if isset($VSensor)}{if $VSensor->getExport()}checked{/if}{else}checked{/if}{/if} value="1">گزارش
-                                            <span class="form-check-sign">
-                                                <span class="check"></span>
-                                            </span>
-                                        </label>
+                                <div class="col-md-4 form-group"  id="phaseDiv">
+                                    <label for="phase" class="col-form-label col-md-3 float-right">{_ "phase"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="phase" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "phase"}">
+                                                {foreach from=$phases key=key value=phase }
+                                                <option value="{$phase.id}" {if isset($Mold.post.faz)}{if $phase.id == $Mold.post.faz }selected{/if}{elseif isset($model) and $phase.id == $model->getPhase()}selected{/if} >{$phase.label}</option>
+                                                {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <label for="size" class="col-form-label col-md-3 float-right">{_ "size"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="size" name="size" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "size"}">
+                                            {foreach from=$sizes key=key value=item }
+                                                <option value="{$item.id}" {if isset($Mold.post.size)}{if $item.id == $Mold.post.size }selected{/if}{elseif isset($model) and $item.id == $model->getSize()}selected{/if} >{$item.label}</option>
+                                            {/foreach}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 form-group">
+                                    <label for="template" class="col-form-label col-md-3 float-right">{_ "template"}:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="template" name="template" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "template"}">
+                                            {foreach from=$templates key=key value=item }
+                                                <option value="{$item.id}" {if isset($Mold.post.template)}{if $item.id == $Mold.post.template }selected{/if}{elseif isset($model) and $item.id == $model->getTemplate()}selected{/if} >{$item.label}</option>
+                                            {/foreach}
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            
                             <hr>
-                            
                             <div class="row">
                                 <div class="col-md-6  form-group" id="tile_kindParentDiv">
                                     <label for="tile_kind" class="col-form-label col-md-3 float-right">نوع کاشی:<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="tile_kind" name="tile_kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
-                                            {foreach from=$tiles key=key value=access_item }
-                                            <option value="{$access_item.id}" {if isset($Mold.post.tile_kind)}{if $access_item.id == $Mold.post.tile_kind }selected{/if}{elseif isset($VSensor) and $access_item.id == $VSensor->getId()}selected{/if} >{$access_item.label}</option>
-                                            {/foreach}
+                                                {foreach from=$tiles key=key value=access_item }
+                                                <option value="{$access_item.id}" {if isset($Mold.post.tile_kind)}{if $access_item.id == $Mold.post.tile_kind }selected{/if}{elseif isset($model) and $access_item.id == $model->getId()}selected{/if} >{$access_item.label}</option>
+                                                {/foreach}
                                             </select>
                                         </div>
                                     </div>
-                                </div>                                
+                                </div>
                                 <div class="col-md-6 form-group"   id="tile_degreeParentDiv">
-                                <label for="tile_degree" class="col-form-label col-md-3 float-right">درجه کاشی:<span class="text-danger">*</span></label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="tile_degree" name="tile_degree" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
-                                    <option value="همه" {if isset($Mold.post.tile_degree)}{if "همه" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor)} {if "همه" == $VSensor->getTileDegree()}selected{/if}{else}selected{/if} >کلی</option>
-                                    <option value="درجه 1" {if isset($Mold.post.tile_degree)}{if "درجه 1" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه 1" == $VSensor->getTileDegree()}selected{/if} >درجه 1</option>
-                                    <option value="درجه 2" {if isset($Mold.post.tile_degree)}{if "درجه 2" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه 2" == $VSensor->getTileDegree()}selected{/if}  >درجه 2</option>
-                                    <option value="درجه 3" {if isset($Mold.post.tile_degree)}{if "درجه 3" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه 3" == $VSensor->getTileDegree()}selected{/if}  >درجه 3</option>
-                                    <option value="درجه U" {if isset($Mold.post.tile_degree)}{if "درجه U" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه U" == $VSensor->getTileDegree()}selected{/if}  >درجه U</option>
-                                    <option value="درجه W" {if isset($Mold.post.tile_degree)}{if "درجه W" == $Mold.post.tile_degree }selected{/if}{elseif isset($VSensor) and "درجه W" == $VSensor->getTileDegree()}selected{/if}  >درجه W</option>
-                                </select>
+                                    <label for="tile_degree" class="col-form-label col-md-3 float-right">درجه کاشی:<span class="text-danger">*</span></label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="tile_degree" name="tile_degree" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نوع کاشی">
+                                                <option value="همه" {if isset($Mold.post.tile_degree)}{if "همه" == $Mold.post.tile_degree }selected{/if}{elseif isset($model)} {if "همه" == $model->getTileDegree()}selected{/if}{else}selected{/if} >کلی</option>
+                                                <option value="درجه 1" {if isset($Mold.post.tile_degree)}{if "درجه 1" == $Mold.post.tile_degree }selected{/if}{elseif isset($model) and "درجه 1" == $model->getTileDegree()}selected{/if} >درجه 1</option>
+                                                <option value="درجه 2" {if isset($Mold.post.tile_degree)}{if "درجه 2" == $Mold.post.tile_degree }selected{/if}{elseif isset($model) and "درجه 2" == $model->getTileDegree()}selected{/if}  >درجه 2</option>
+                                                <option value="درجه 3" {if isset($Mold.post.tile_degree)}{if "درجه 3" == $Mold.post.tile_degree }selected{/if}{elseif isset($model) and "درجه 3" == $model->getTileDegree()}selected{/if}  >درجه 3</option>
+                                                <option value="درجه U" {if isset($Mold.post.tile_degree)}{if "درجه U" == $Mold.post.tile_degree }selected{/if}{elseif isset($model) and "درجه U" == $model->getTileDegree()}selected{/if}  >درجه U</option>
+                                                <option value="درجه W" {if isset($Mold.post.tile_degree)}{if "درجه W" == $Mold.post.tile_degree }selected{/if}{elseif isset($model) and "درجه W" == $model->getTileDegree()}selected{/if}  >درجه W</option>
+                                            </select>
                                         </div>
                                     </div>
-                            </div>
+                                </div>
 
                             </div>
-                            <hr>
-                            <div class="row">
-                                <div class="col-md-6 form-group"  id="fazDiv">
-                                <label for="faz" class="col-form-label col-md-3 float-right">فاز:<span class="text-danger">*</span></label>
-                                    <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="faz" name="faz" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="فاز">
-                                    {foreach from=$phases key=key value=phase }
-                                            <option value="{$phase.id}" {if isset($Mold.post.faz)}{if $phase.id == $Mold.post.faz }selected{/if}{elseif isset($VSensor) and $phase.id == $VSensor->getPhase()}selected{/if} >{$phase.label}</option>
-                                    {/foreach}
-                                </select>
-                                    </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="col-md-6  form-group" id="unitDiv">
-                                <label for="unitId" class="col-form-label col-md-3 float-right">واحد:<span class="text-danger">*</span></label>
-                                    <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="unitId" name="unitId" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="واحد">
-                                    {foreach from=$units key=key value=unit }
-                                        <option value="{$unit.id}"  {if isset($Mold.post.unitId)}{if $unit.id == $Mold.post.unitId }selected{/if}{elseif isset($VSensor) and $unit.unitId == $VSensor->getUnit()}selected{/if}>{$unit.label}</option>
-                                    {/foreach}
-                                </select>
-                                </div> 
-                                </div> 
-                                </div> 
-                            </div>
-                            
                             <hr>
                             <div class="row">
                                 <div class="col-md-12">
@@ -177,10 +174,10 @@
                                                         </td>
                                                     </tr>
                                                 {/foreach}
-                                            {elseif isset($VSensor) }
-                                                {set 'numbersof' ,$VSensor ->getSensorSign()}
-                                                {set 'numbersofV',$VSensor ->getSensorChosenId()}
-                                                {foreach from=$VSensor->getSensorChosenId() key=key and value=Sensor}
+                                            {elseif isset($model) }
+                                                {set 'numbersof' ,$model ->getSensorSign()}
+                                                {set 'numbersofV',$model ->getSensorChosenId()}
+                                                {foreach from=$model->getSensorChosenId() key=key and value=Sensor}
                                                     <tr>
                                                         <td>
                                                             <select class="selectpicker" name="SensorChosenId[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">

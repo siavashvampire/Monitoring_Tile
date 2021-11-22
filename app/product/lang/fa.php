@@ -8,4 +8,8 @@ return [
     'length_unit_label'                             => 'mm',
     'design'                                        => 'طرح',
     'color'                                         => 'رنگ',
+    'example'                                       => 'نمونه',
+    'experiment'                                    => 'آزمایش',
+    'size'                                          => 'سایز',
+    'template'                                      => 'قالب',
 ];

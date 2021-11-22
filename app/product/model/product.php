@@ -15,6 +15,7 @@ class product extends model implements modelInterFace
     private $primaryKeyShouldNotInsertOrUpdate = 'id';
     private $id;
     private $label;
+    private $example_code;
     private $kind;
     private $size;
     private $phase;
@@ -25,6 +26,7 @@ class product extends model implements modelInterFace
     private $weight;
     private $pallet;
     private $technique;
+    private $template;
     private $effect;
     private $decor;
 
@@ -32,6 +34,7 @@ class product extends model implements modelInterFace
     {
         $this->id = $result['id'];
         $this->label = $result['label'];
+        $this->example_code = $result['example_code'];
         $this->kind = $result['kind'];
         $this->size = $result['size'];
         $this->phase = $result['phase'];
@@ -42,6 +45,7 @@ class product extends model implements modelInterFace
         $this->weight = $result['weight'];
         $this->pallet = $result['pallet'];
         $this->technique = $result['technique'];
+        $this->template = $result['template'];
         $this->effect = $result['effect'];
         $this->decor = $result['decor'];
     }
@@ -50,6 +54,7 @@ class product extends model implements modelInterFace
     {
         $array['id'] = $this->id;
         $array['label'] = $this->label;
+        $array['example_code'] = $this->example_code;
         $array['kind'] = $this->kind;
         $array['size'] = $this->size;
         $array['phase'] = $this->phase;
@@ -60,6 +65,7 @@ class product extends model implements modelInterFace
         $array['weight'] = $this->weight;
         $array['pallet'] = $this->pallet;
         $array['technique'] = $this->technique;
+        $array['template'] = $this->template;
         $array['effect'] = $this->effect;
         $array['decor'] = $this->decor;
         return $array;
@@ -112,6 +118,23 @@ class product extends model implements modelInterFace
     {
         $this->label = $label;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getExampleCode()
+    {
+        return $this->example_code;
+    }
+
+    /**
+     * @param mixed $example_code
+     */
+    public function setExampleCode($example_code): void
+    {
+        $this->example_code = $example_code;
+    }
+
 
     /**
      * @return mixed
@@ -191,6 +214,22 @@ class product extends model implements modelInterFace
     public function setDegree($degree): void
     {
         $this->degree = $degree;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * @param mixed $template
+     */
+    public function setTemplate($template): void
+    {
+        $this->template = $template;
     }
 
     /**

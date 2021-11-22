@@ -4,6 +4,7 @@ namespace App\product\app_provider\admin;
 
 use App;
 use App\core\controller\httpErrorHandler;
+use App\LineMonitoring\app_provider\api\phases;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
@@ -119,6 +120,9 @@ class product extends controller
         $this->mold->set('activeMenu' , $this->active_menu);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
+        $this->mold->set('phases', phases::index()["result"]);
+        $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('templates', App\product\app_provider\api\product::size()["result"]);
         return false;
     }
 }

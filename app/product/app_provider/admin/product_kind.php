@@ -2,6 +2,8 @@
 
 namespace App\product\app_provider\admin;
 
+use App\user\app_provider\api\checkAccess;
+use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -13,6 +15,7 @@ class product_kind extends controller
 {
     private $item_label = "نوع محصول";
     private $model_name = 'product_kind';
+    private $controller_name = 'product_kind';
     private $log_name = 'product_kind';
     private $app_name = 'product';
     private $active_menu = 'product_kind';
@@ -50,6 +53,8 @@ class product_kind extends controller
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->controller_name, 'update', $this->app_name)["status"];
+        $this->mold->set('editAccess', $editAccess);
         return false;
     }
 

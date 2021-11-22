@@ -62,7 +62,9 @@
                                     <th>{_ "code"} {$item_label}</th>
                                     <th>{_ "name"} {$item_label}</th>
                                     <th>{_ "name"} {_ "agent"}</th>
-                                    <th style="width: 25px;"></th>
+                                    {if $editAccess == 'true'}
+                                        <th style="width: 25px;"></th>
+                                    {/if}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -71,7 +73,15 @@
                                     <td>{$item.id}</td>
                                     <td>{$item.label}</td>
                                     <td>{$item.agentUser}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.agent}')"><i class="fa fa-pencil"></i></button> </td>
+                                    {if $editAccess == 'true'}
+                                    <td>
+                                        <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}')">
+                                            <i class="fa fa-pencil">
+
+                                            </i>
+                                        </button>
+                                    </td>
+                                    {/if}
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -129,12 +139,14 @@
 
 
 {map navBarButton}
-<button class="btn btn-info"  onclick="openItemEditor('','','')">
-                      <span class="btn-label">
-                        <i class="fa fa-plus"></i>
-                      </span>
+{if $editAccess == 'true'}
+<button class="btn btn-info"  onclick="openItemEditor('','')">
+            <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
     {_ "add"} {$item_label} {_ "new"}
 </button>
+{/if}
 {/map}
 
 {map footerjs}

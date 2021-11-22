@@ -4,6 +4,8 @@ namespace App\product\app_provider\admin;
 
 use App;
 use App\core\controller\httpErrorHandler;
+use App\user\app_provider\api\checkAccess;
+use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
@@ -55,6 +57,8 @@ class product extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'index', $this->app_name)["status"];
+        $this->mold->set('editAccess', $editAccess);
         return false;
     }
 

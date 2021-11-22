@@ -3,6 +3,7 @@
 namespace App\product\app_provider\admin;
 
 use App\Sections\app_provider\admin\Sections;
+use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\request;
@@ -15,6 +16,7 @@ class product_brand extends controller
 {
     private $item_label = "برند";
     private $log_name = 'product_brand';
+    private $controller_name = 'product_brand';
     private $model_name = 'product_brand';
     private $app_name = 'product';
     private $active_menu = 'product_brand';
@@ -54,6 +56,8 @@ class product_brand extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('agents', user::getUsersByGroupId((int)$this->setting('postAgent', 'post_design'))["result"]);
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->controller_name, 'update', $this->app_name)["status"];
+        $this->mold->set('editAccess', $editAccess);
         return false;
     }
 

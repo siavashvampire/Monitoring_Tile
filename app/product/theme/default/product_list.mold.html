@@ -15,18 +15,22 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 24%">{_ "name"} {$item_label}</th>
+                                    {if $editAccess == 'true'}
                                     <th style="width: 4%"></th>
+                                    {/if}
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$items key=key value=item}
                                 <tr>
                                     <td>{$item.label}</td>
+                                    {if $editAccess == 'true'}
                                     <td>
                                         <button class="btn btn-link text-info"
                                                 onclick="openItemEditor('{$item.id}','{$item.label}','{$item.length}','{$item.width}','{$item.thickness}')">
                                             <i class="fa fa-pencil"></i></button>
                                     </td>
+                                    {/if}
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -44,64 +48,15 @@
     </div>
 </div>
 
-
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-     aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-success text-right" id="dataSendAlert">
-                    {_ "changeSuccessfully"}
-                </div>
-                <form>
-                    <div class="form-group">
-                        <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
-                        <input type="text" class="form-control" id="label" value="">
-                        <input type="hidden" class="form-control" id="id" value="">
-                    </div>
-                    <div class="form-group">
-                        <label for="width_send" class="col-form-label float-right">{_ "length"} - {_
-                            "length_unit_label"}:</label>
-                        <input type="number" min="0" class="form-control" id="width_send" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="length_send" class="col-form-label float-right">{_ "width"} - {_
-                            "length_unit_label"}:</label>
-                        <input type="number" min="0" class="form-control" id="length_send" value="0">
-                    </div>
-                    <div class="form-group">
-                        <label for="thickness_send" class="col-form-label float-right">{_ "thickness"} - {_
-                            "length_unit_label"}:</label>
-                        <input type="number" min="0" class="form-control" id="thickness_send" value="0">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-warning float-left" data-dismiss="modal"
-                        style="position: absolute;">{_ "close"}
-                </button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()">
-                    {_ "send"}
-                </button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
 {map navBarButton}
-<a class="btn btn-info"  href="{url admin}{$ChangeURL}">
-                      <span class="btn-label">
-                        <i class="fa fa-plus"></i>
-                      </span>
-    {_ "add"} {$item_label} {_ "new"}
-</a>
+    {if $editAccess == 'true'}
+        <a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+                              <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                              </span>
+            {_ "add"} {$item_label} {_ "new"}
+        </a>
+    {/if}
 {/map}
 
 {map footerjs}

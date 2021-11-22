@@ -93,7 +93,9 @@
                                     <th style="width: 24%">{_ "length"}</th>
                                     <th style="width: 24%">{_ "width"}</th>
                                     <th style="width: 24%">{_ "thickness"}</th>
+                                    {if $editAccess == 'true'}
                                     <th style="width: 4%"></th>
+                                    {/if}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -103,11 +105,13 @@
                                     <td>{$item.width}{_ "length_unit_label"}</td>
                                     <td>{$item.length}{_ "length_unit_label"}</td>
                                     <td>{$item.thickness}{_ "length_unit_label"}</td>
+                                    {if $editAccess == 'true'}
                                     <td>
                                         <button class="btn btn-link text-info"
                                                 onclick="openItemEditor('{$item.id}','{$item.label}','{$item.length}','{$item.width}','{$item.thickness}')">
                                             <i class="fa fa-pencil"></i></button>
                                     </td>
+                                    {/if}
                                 </tr>
                                 {foreachelse}
                                 <tr>
@@ -177,12 +181,14 @@
 
 
 {map navBarButton}
+{if $editAccess == 'true'}
 <button class="btn btn-info" onclick="openItemEditor('','','','','')">
                       <span class="btn-label">
                         <i class="fa fa-plus"></i>
                       </span>
     {_ "add"} {$item_label} {_ "new"}
 </button>
+{/if}
 {/map}
 
 {map footerjs}

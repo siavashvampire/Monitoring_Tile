@@ -242,6 +242,7 @@ class post_data extends model implements modelInterFace
         $field = array();
         $field[] = 'userAgent.fname';
         $field[] = 'userAgent.lname';
+        $field[] = 'concat(userCreator.fname," ",userCreator.lname) as CreatorUserName';
         $field[] = 'type.evaluatedGroup as EvaluatedGroup';
         $field[] = 'type.evaluatorGroup';
         $field[] = 'post_data.agent';

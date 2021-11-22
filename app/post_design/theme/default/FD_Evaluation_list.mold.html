@@ -134,7 +134,7 @@
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.fname} {$Vote.lname}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.brand}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.phase}</span></td>
-                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.createDate}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$Vote.createDate}<br>{$Vote.CreatorUserName}</span></td>
                                                 </tr>
                                                 {foreach from=$allFields key=key2 value=fields}
                                                     {if ($key2 == $index) }

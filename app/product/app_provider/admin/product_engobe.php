@@ -11,7 +11,7 @@ use paymentCms\component\validate;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class product_color extends controller
+class product_engobe extends controller
 {
     private $item_label = "انگوب";
     private $model_name = 'product_engobe';

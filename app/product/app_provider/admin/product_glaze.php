@@ -48,7 +48,6 @@ class product_glaze extends controller
             $value[] = $parent;
             $variable[] = 'item.parent = ? ';
             $this->mold->set('parentModel' ,parent::model($this->model_name,$parent));
-
         }else{
             $value[] = 1;
             $variable[] = '? ';

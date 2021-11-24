@@ -29,14 +29,17 @@ return [
         'product_glaze' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'parent' => 'INT(11) DEFAULT NULL ',
                 'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
             ],
             'KEY' => [
+                'parent'
             ],
             'PRIMARY KEY' => [
                 'id'
             ],
             'REFERENCES' => [
+                'parent' => ['table' => 'product_glaze', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
         'product_punch' => [
@@ -157,6 +160,97 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_glue' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_engobe' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_body' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_strap' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_carton' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'number_of_tiles' => "INT(11) NOT NULL",
+                'thickness' => "INT(11) NOT NULL",
+                'glue' => "INT(11) NOT NULL",
+                'glue_amount' => "INT(11) NOT NULL",
+                'shrink_plastic' => "INT(11) NOT NULL",
+                'carton_weight' => "INT(11) NOT NULL",
+                'carton_theme' => "INT(11) NOT NULL",
+                'carton_size' => "INT(11) NOT NULL",
+                'strap' => "INT(11) NOT NULL",
+                'strap_weight' => "INT(11) NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_template' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'bumper_glue' => "INT(11) NOT NULL",
+                'selfon' => "INT(11) NOT NULL",
+                'weight_after_chamfer' => "INT(11) NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -258,5 +352,10 @@ return [
         (3 , 'درجه 3'),
         (4 , 'درجه W'),
         (5 , 'درجه U');",
+        "INSERT IGNORE INTO `{prefix}product_glue` (`id`, `label`) VALUES
+        (1 , 'چسب حرارتی');",
+        "INSERT IGNORE INTO `{prefix}product_strap` (`id`, `label`) VALUES
+        (1 , 'تسمه کارتن'),
+        (2 , 'تسمه پالت');",
     ],
 ];

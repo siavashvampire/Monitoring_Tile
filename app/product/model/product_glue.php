@@ -7,24 +7,22 @@ namespace App\product\model;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace ;
 
-class product_glaze extends model implements modelInterFace {
-    private $tableName = 'product_glaze';
+class product_glue extends model implements modelInterFace {
+    private $tableName = 'product_glue';
 
-	private $primaryKey = ['id'];
+
+    private $primaryKey = ['id'];
 	private $primaryKeyShouldNotInsertOrUpdate = 'id';
 	private $id ;
 	private $label ;
-	private $parent;
 	public function setFromArray($result) {
 		$this->id = $result['id'] ;
 		$this->label = $result['label'] ;
-		$this->parent = $result['parent'] ;
 	}
 
 	public function returnAsArray( ) {
 		$array['id'] = $this->id ;
 		$array['label'] = $this->label ;
-		$array['parent'] = $this->parent ;
 		return $array ;
 	}
 
@@ -74,21 +72,6 @@ class product_glaze extends model implements modelInterFace {
         $this->label = $label;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getParent()
-    {
-        return $this->parent;
-    }
-
-    /**
-     * @param mixed $parent
-     */
-    public function setParent($parent): void
-    {
-        $this->parent = $parent;
-    }
 
     public function getCount($value = array(), $variable = array())
     {

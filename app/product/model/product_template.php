@@ -7,24 +7,31 @@ namespace App\product\model;
 use paymentCms\component\model;
 use paymentCms\model\modelInterFace ;
 
-class product_glaze extends model implements modelInterFace {
-    private $tableName = 'product_glaze';
+class product_template extends model implements modelInterFace {
+    private $tableName = 'product_template';
 
-	private $primaryKey = ['id'];
+
+    private $primaryKey = ['id'];
 	private $primaryKeyShouldNotInsertOrUpdate = 'id';
 	private $id ;
 	private $label ;
-	private $parent;
+	private $bumper_glue ;
+	private $selfon ;
+	private $weight_after_chamfer ;
 	public function setFromArray($result) {
 		$this->id = $result['id'] ;
 		$this->label = $result['label'] ;
-		$this->parent = $result['parent'] ;
+		$this->bumper_glue = $result['bumper_glue'] ;
+		$this->selfon = $result['selfon'] ;
+		$this->weight_after_chamfer = $result['weight_after_chamfer'] ;
 	}
 
 	public function returnAsArray( ) {
 		$array['id'] = $this->id ;
 		$array['label'] = $this->label ;
-		$array['parent'] = $this->parent ;
+		$array['bumper_glue'] = $this->bumper_glue ;
+		$array['selfon'] = $this->selfon ;
+		$array['weight_after_chamfer'] = $this->weight_after_chamfer ;
 		return $array ;
 	}
 
@@ -77,18 +84,51 @@ class product_glaze extends model implements modelInterFace {
     /**
      * @return mixed
      */
-    public function getParent()
+    public function getBumperGlue()
     {
-        return $this->parent;
+        return $this->bumper_glue;
     }
 
     /**
-     * @param mixed $parent
+     * @param mixed $bumper_glue
      */
-    public function setParent($parent): void
+    public function setBumperGlue($bumper_glue): void
     {
-        $this->parent = $parent;
+        $this->bumper_glue = $bumper_glue;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getSelfon()
+    {
+        return $this->selfon;
+    }
+
+    /**
+     * @param mixed $selfon
+     */
+    public function setSelfon($selfon): void
+    {
+        $this->selfon = $selfon;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWeightAfterChamfer()
+    {
+        return $this->weight_after_chamfer;
+    }
+
+    /**
+     * @param mixed $weight_after_chamfer
+     */
+    public function setWeightAfterChamfer($weight_after_chamfer): void
+    {
+        $this->weight_after_chamfer = $weight_after_chamfer;
+    }
+
 
     public function getCount($value = array(), $variable = array())
     {

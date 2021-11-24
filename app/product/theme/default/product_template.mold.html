@@ -7,12 +7,7 @@
                         <div class="card-icon">
                             <i class="fa fa-usb fa-2x"></i>
                         </div>
-                        {if  isset($parentModel)}
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {_ "code"} {$item_label} {$parentModel->getLabel()}</h4>
-                        {else}
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label} </h4>
-                        {/if}
-
+                        <h4 class="card-title float-{$float} m-3"> {$item_label} {_ "list"}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -21,11 +16,12 @@
                                 <tr>
                                     <th style="width: 10%;">{_ "code"} {$item_label}</th>
                                     <th>{_ "name"} {$item_label}</th>
+                                    <th>{_ "bumper_glue"}</th>
+                                    <th>{_ "selfon"}</th>
+                                    <th>{_ "weight_after_chamfer"}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 25px;"></th>
-                                        <th style="width: 25px;"></th>
                                     {/if}
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -33,14 +29,12 @@
                                     <tr>
                                         <td>{$item.id}</td>
                                         <td>{$item.label}</td>
+                                        <td>{$item.bumper_glue}</td>
+                                        <td>{$item.selfon}</td>
+                                        <td>{$item.weight_after_chamfer}</td>
                                         {if $editAccess == 'true'}
                                             <td>
-                                                {if isset($isParent)}
-                                                    <button type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" onclick="location.href='{url}{$child_url}/{$item.id}'"></i></button>
-                                                {/if}
-                                            </td>
-                                            <td>
-                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}')">
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.bumper_glue}','{$item.selfon}','{$item.weight_after_chamfer}')">
                                                     <i class="fa fa-pencil">
 
                                                     </i>
@@ -50,7 +44,7 @@
                                     </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="6">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>
@@ -79,10 +73,22 @@
                     {_ "changeSuccessfully"}
                 </div>
                 <form>
-                    <div class="form-group">
-                        <label for="name" class="col-form-label float-right">{if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{_ "name"} {$item_label}{/if} :</label>
-                        <input type="text" class="form-control" id="name" value="">
-                        <input type="hidden" class="form-control" id="id" value="">
+                    <input type="hidden" class="form-control" id="id" value="">
+                    <div class="col-md-6 form-group">
+                        <label for="name" class=" float-right">{_ "name"} {$item_label}:</label>
+                        <input type="text" class=" form-control "   id="name" name="label" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="bumper_glue" class="  float-right">{_ "bumper_glue"}:</label>
+                        <input type="number" min="0" class="form-control "   id="bumper_glue" name="bumper_glue" value="">
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="selfon" class="  float-right">{_ "selfon"}:</label>
+                        <input type="number" min="0" class="form-control "   id="selfon" name="selfon" value="">
+                    </div>
+                    <div class="col-md-8 form-group">
+                        <label for="weight_after_chamfer" class="  float-right">{_ "weight_after_chamfer"}:</label>
+                        <input type="number" min="0"  class="form-control "   id="weight_after_chamfer" name="weight_after_chamfer" value="">
                     </div>
                 </form>
             </div>
@@ -101,7 +107,7 @@
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>
-            {_ "add"} {if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{$item_label}{/if} {_ "new"}
+            {_ "add"} {$item_label} {_ "new"}
         </button>
     {/if}
 {/map}
@@ -109,21 +115,26 @@
 {map footerjs}
 <script>
 let urlc = '{url current}' ;
-
-let parent = '{if isset ($parentModel) }{$parentModel->getId()}{/if}' ;
-let add_new_item = '{_ "add"} {if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{$item_label}{/if} {_ "new"}';
-let edit_item = '{if !isset($isParent)}{_ "Edit"} {_ "code"} {$item_label} {$parentModel->getLabel()}{else}{_ "Edit"} {$item_label}{/if} ';
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
-function openItemEditor(id,name){
+
+function openItemEditor(id,name,bumper_glue,selfon,weight_after_chamfer){
     if ( id === "" ){
         $("#exampleModalLabel").html(add_new_item);
         $("#name").val("");
         $("#id").val("");
+        $("#bumper_glue").val("");
+        $("#selfon").val("");
+        $("#weight_after_chamfer").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
         $("#exampleModalLabel").html(edit_item + " " + name);
         $("#name").val(name);
         $("#id").val(id);
+        $("#bumper_glue").val(bumper_glue);
+        $("#selfon").val(selfon);
+        $("#weight_after_chamfer").val(weight_after_chamfer);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     }
     $('.bmd-label-static').removeClass('bmd-label-static');
@@ -131,7 +142,6 @@ function openItemEditor(id,name){
     $('#dataSendAlert').hide();
     $('#exampleModal').modal('show');
 }
-
 function sendItem(){
     $.ajax({
         url: urlc+'/update',
@@ -140,7 +150,9 @@ function sendItem(){
         data: {
             'label': $('#name').val(),
             'id': $('#id').val(),
-            'parent': parent,
+            'bumper_glue': $('#bumper_glue').val(),
+            'selfon': $('#selfon').val(),
+            'weight_after_chamfer': $('#weight_after_chamfer').val(),
         } ,
         success: function (result) {
             if (result['status']) {

@@ -7,12 +7,7 @@
                         <div class="card-icon">
                             <i class="fa fa-usb fa-2x"></i>
                         </div>
-                        {if  isset($parentModel)}
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {_ "code"} {$item_label} {$parentModel->getLabel()}</h4>
-                        {else}
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label} </h4>
-                        {/if}
-
+                        <h4 class="card-title float-{$float} m-3"> {$item_label} {_ "list"}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -23,9 +18,7 @@
                                     <th>{_ "name"} {$item_label}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 25px;"></th>
-                                        <th style="width: 25px;"></th>
                                     {/if}
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -34,11 +27,6 @@
                                         <td>{$item.id}</td>
                                         <td>{$item.label}</td>
                                         {if $editAccess == 'true'}
-                                            <td>
-                                                {if isset($isParent)}
-                                                    <button type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" onclick="location.href='{url}{$child_url}/{$item.id}'"></i></button>
-                                                {/if}
-                                            </td>
                                             <td>
                                                 <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}')">
                                                     <i class="fa fa-pencil">
@@ -80,7 +68,7 @@
                 </div>
                 <form>
                     <div class="form-group">
-                        <label for="name" class="col-form-label float-right">{if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{_ "name"} {$item_label}{/if} :</label>
+                        <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="name" value="">
                         <input type="hidden" class="form-control" id="id" value="">
                     </div>
@@ -101,7 +89,7 @@
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>
-            {_ "add"} {if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{$item_label}{/if} {_ "new"}
+            {_ "add"} {$item_label} {_ "new"}
         </button>
     {/if}
 {/map}
@@ -109,11 +97,10 @@
 {map footerjs}
 <script>
 let urlc = '{url current}' ;
-
-let parent = '{if isset ($parentModel) }{$parentModel->getId()}{/if}' ;
-let add_new_item = '{_ "add"} {if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{$item_label}{/if} {_ "new"}';
-let edit_item = '{if !isset($isParent)}{_ "Edit"} {_ "code"} {$item_label} {$parentModel->getLabel()}{else}{_ "Edit"} {$item_label}{/if} ';
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
+
 function openItemEditor(id,name){
     if ( id === "" ){
         $("#exampleModalLabel").html(add_new_item);
@@ -131,7 +118,6 @@ function openItemEditor(id,name){
     $('#dataSendAlert').hide();
     $('#exampleModal').modal('show');
 }
-
 function sendItem(){
     $.ajax({
         url: urlc+'/update',
@@ -140,7 +126,6 @@ function sendItem(){
         data: {
             'label': $('#name').val(),
             'id': $('#id').val(),
-            'parent': parent,
         } ,
         success: function (result) {
             if (result['status']) {

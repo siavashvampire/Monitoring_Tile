@@ -22,4 +22,7 @@ return [
     'weight'                                        => 'وزن',
     'body'                                          => 'بدنه',
     'engobe'                                        => 'انگوب',
+    'bumper_glue'                                   => 'میزان چسب بامپر',
+    'selfon'                                        => 'وزن سلفون',
+    'weight_after_chamfer'                          => 'وزن یک قالب محصول پس از چمفر',
 ];

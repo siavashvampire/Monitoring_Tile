@@ -16,6 +16,11 @@ class product extends innerController {
         $model = parent::model( ['product', 'product_color'] );
         return self::json( $model->getItems());
     }
+    public  static function body() {
+        /** @var \App\product\model\product_body $model */
+        $model = parent::model( ['product', 'product_body'] );
+        return self::json( $model->getItems());
+    }
     public  static function decor() {
         /** @var \App\product\model\product_decor $model */
         $model = parent::model( ['product', 'product_decor'] );
@@ -34,7 +39,30 @@ class product extends innerController {
     public  static function glaze() {
         /** @var \App\product\model\product_glaze $model */
         $model = parent::model( ['product', 'product_glaze'] );
-        return self::json( $model->getItems());
+
+        $value = array();
+        $variable = array();
+        $value[] = '1';
+        $variable[] = 'item.parent is Null';
+        return self::json( $model->getItems($value,$variable));
+    }
+    public  static function glazeByParent($parent) {
+        /** @var \App\product\model\product_glaze $model */
+        $model = parent::model( ['product', 'product_glaze'] );
+        $value = array();
+        $variable = array();
+        $value[] = $parent;
+        $variable[] = 'item.parent = ?';
+        return self::json( $model->getItems($value,$variable));
+    }
+    public  static function glazeGroupList($id) {
+        /** @var \App\product\model\product_glaze $model */
+        $model = parent::model( ['product', 'product_glaze'] ,$id);
+        $value = array();
+        $variable = array();
+        $value[] = $model->getParent();
+        $variable[] = 'item.parent = ?';
+        return self::json( $model->getItems($value,$variable));
     }
     public  static function kind() {
         /** @var \App\product\model\product_kind $model */
@@ -54,6 +82,11 @@ class product extends innerController {
     public  static function template() {
         /** @var \App\product\model\product_template $model */
         $model = parent::model( ['product', 'product_template'] );
+        return self::json( $model->getItems());
+    }
+    public  static function engobe() {
+        /** @var \App\product\model\product_engobe $model */
+        $model = parent::model( ['product', 'product_engobe'] );
         return self::json( $model->getItems());
     }
 }

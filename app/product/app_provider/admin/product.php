@@ -148,10 +148,9 @@ class product extends controller
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
-        $this->mold->set('templates', App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('templates', App\product\app_provider\api\product::template()["result"]);
         $this->mold->set('kinds', App\product\app_provider\api\product::kind()["result"]);
         $this->mold->set('techniques', App\product\app_provider\api\product::technique()["result"]);
-        $this->mold->set('glazes', App\product\app_provider\api\product::glaze()["result"]);
         $this->mold->set('glazeParents', App\product\app_provider\api\product::glaze()["result"]);
         $this->mold->set('effects', App\product\app_provider\api\product::effect()["result"]);
         $this->mold->set('decors', App\product\app_provider\api\product::decor()["result"]);

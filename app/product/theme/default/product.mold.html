@@ -116,7 +116,7 @@
                                     <label for="glazeParent" class="col-form-label col-md-3 float-right">{_ "glaze"}:<span class="text-danger">*</span></label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="glazeParent" name="glazeParent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
+                                            <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" onchange="getItem('product/glazeByParent/'+$(this).find(':selected').val(),'#glaze',0);" required id="glazeParent" name="glazeParent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
                                             {foreach from=$glazeParents key=key value=item }
                                                 <option value="{$item.id}" {if isset($Mold.post.glazeParent)}{if $item.id == $Mold.post.glazeParent }selected{/if}{elseif isset($model) and $item.id == $model->getParent()}selected{/if} >{$item.label}</option>
                                             {/foreach}
@@ -254,44 +254,36 @@
 {map footerjs}
 <script>
     let urlapi = '{url api}' ;
-    let body_select = 2
-    function getBody(){
+    let body_select = {if isset($model)}{$model->getBody()}{else}0{/if};
+    let engobe_select = {if isset($model)}{$model->getEngobe()}{else}0{/if};
+    let glaze_select = {if isset($model)}{$model->getGlaze()}{else}0{/if};
+    function getItem(url,select_name,selected_id){
         $.ajax({
-            url: urlapi+'product/technique',
+            url: urlapi+url,
             type: 'post',
             dataType: 'json',
             data: {
             } ,
             success: function (result) {
-                // let select = $('#body');
-                let select = document.getElementById('body');
+                let select = $(select_name);
 
-                select.innerHTML=""
+                select.html("");
                 if(result !== true) {
                     result.forEach(function (_ref) {
-                        let opt = document.createElement('option');
+                            var selected = "";
+                            if (_ref['id'] ===  selected_id) selected = "selected" ;
+                            select.append('<option value="'+_ref['id']+'" '+selected+' >'+_ref['label']+'</option>');
 
-                        opt.value = _ref['id'];
-                        opt.innerHTML = _ref['label'];
-                        opt.id = _ref['id'];
-
-                        if (_ref['id'] ===  body_select) {
-                            opt.selected = true;
-                        }
-
-                        select.appendChild(opt);
-
-                     });
-                    document.getElementById("2").selected = true;
-                    console.log(document.getElementById(body_select.toString()).selected)
-                    // console.log(select.innerHTML)
-                    // select.selectpicker('refresh');
+                        select.selectpicker('refresh');
+                    });
                 }else{
-                    // select.append('<option value="' + 0 + '" ' + ' >' + 'بدنه ثبت نشده' + '</option>');
+                    select.append('<option value="' + 0 + '" ' + ' >' + 'موردی ثبت نشده' + '</option>');
                 }
             }
         });
     }
-    getBody()
+    getItem('product/body','#body',body_select);
+    getItem('product/engobe','#engobe',engobe_select);
+    getItem('product/glazeGroupList/'+glaze_select,'#glaze',glaze_select);
 </script>
 {/map}

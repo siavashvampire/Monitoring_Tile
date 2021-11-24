@@ -51,4 +51,9 @@ class product extends innerController {
         $model = parent::model( ['product', 'product_technique'] );
         return self::json( $model->getItems());
     }
+    public  static function template() {
+        /** @var \App\product\model\product_template $model */
+        $model = parent::model( ['product', 'product_template'] );
+        return self::json( $model->getItems());
+    }
 }

@@ -16,11 +16,11 @@ class product extends model implements modelInterFace
     private $id;
     private $label;
     private $example_code;
+    private $production_design_code;
     private $kind;
     private $size;
     private $phase;
     private $color;
-    private $glaze;
     private $punch;
     private $degree;
     private $weight;
@@ -29,17 +29,23 @@ class product extends model implements modelInterFace
     private $template;
     private $effect;
     private $decor;
+    private $body;
+    private $body_weight;
+    private $engobe;
+    private $engobe_weight;
+    private $glaze;
+    private $glaze_weight;
 
     public function setFromArray($result)
     {
         $this->id = $result['id'];
         $this->label = $result['label'];
         $this->example_code = $result['example_code'];
+        $this->production_design_code = $result['production_design_code'];
         $this->kind = $result['kind'];
         $this->size = $result['size'];
         $this->phase = $result['phase'];
         $this->color = $result['color'];
-        $this->glaze = $result['glaze'];
         $this->punch = $result['punch'];
         $this->degree = $result['degree'];
         $this->weight = $result['weight'];
@@ -48,6 +54,12 @@ class product extends model implements modelInterFace
         $this->template = $result['template'];
         $this->effect = $result['effect'];
         $this->decor = $result['decor'];
+        $this->body = $result['body'];
+        $this->body_weight = $result['body_weight'];
+        $this->engobe = $result['engobe'];
+        $this->engobe_weight = $result['engobe_weight'];
+        $this->glaze = $result['glaze'];
+        $this->glaze_weight = $result['glaze_weight'];
     }
 
     public function returnAsArray()
@@ -55,11 +67,11 @@ class product extends model implements modelInterFace
         $array['id'] = $this->id;
         $array['label'] = $this->label;
         $array['example_code'] = $this->example_code;
+        $array['production_design_code'] = $this->production_design_code;
         $array['kind'] = $this->kind;
         $array['size'] = $this->size;
         $array['phase'] = $this->phase;
         $array['color'] = $this->color;
-        $array['glaze'] = $this->glaze;
         $array['punch'] = $this->punch;
         $array['degree'] = $this->degree;
         $array['weight'] = $this->weight;
@@ -68,6 +80,12 @@ class product extends model implements modelInterFace
         $array['template'] = $this->template;
         $array['effect'] = $this->effect;
         $array['decor'] = $this->decor;
+        $array['body'] = $this->body;
+        $array['body_weight'] = $this->body_weight;
+        $array['engobe'] = $this->engobe;
+        $array['engobe_weight'] = $this->engobe_weight;
+        $array['glaze'] = $this->glaze;
+        $array['glaze_weight'] = $this->engobe_weight;
         return $array;
     }
 
@@ -134,6 +152,23 @@ class product extends model implements modelInterFace
     {
         $this->example_code = $example_code;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getProductionDesignCode()
+    {
+        return $this->production_design_code;
+    }
+
+    /**
+     * @param mixed $production_design_code
+     */
+    public function setProductionDesignCode($production_design_code): void
+    {
+        $this->production_design_code = $production_design_code;
+    }
+
 
 
     /**
@@ -343,6 +378,87 @@ class product extends model implements modelInterFace
     {
         $this->decor = $decor;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getBody()
+    {
+        return $this->body;
+    }
+
+    /**
+     * @param mixed $body
+     */
+    public function setBody($body): void
+    {
+        $this->body = $body;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBodyWeight()
+    {
+        return $this->body_weight;
+    }
+
+    /**
+     * @param mixed $body_weight
+     */
+    public function setBodyWeight($body_weight): void
+    {
+        $this->body_weight = $body_weight;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEngobe()
+    {
+        return $this->engobe;
+    }
+
+    /**
+     * @param mixed $engobe
+     */
+    public function setEngobe($engobe): void
+    {
+        $this->engobe = $engobe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEngobeWeight()
+    {
+        return $this->engobe_weight;
+    }
+
+    /**
+     * @param mixed $engobe_weight
+     */
+    public function setEngobeWeight($engobe_weight): void
+    {
+        $this->engobe_weight = $engobe_weight;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getGlazeWeight()
+    {
+        return $this->glaze_weight;
+    }
+
+    /**
+     * @param mixed $glaze_weight
+     */
+    public function setGlazeWeight($glaze_weight): void
+    {
+        $this->glaze_weight = $glaze_weight;
+    }
+
 
     public function getCount($value = array(), $variable = array())
     {

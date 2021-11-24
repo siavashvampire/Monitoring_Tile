@@ -18,6 +18,7 @@ class product extends controller
 {
     private $item_label = "کاشی";
     private $ChangeURL = "product";
+    private $listChangeURL = "product/list";
     private $log_name = 'product';
     private $model_name = 'product';
     private $app_name = 'product';
@@ -28,7 +29,7 @@ class product extends controller
 
     public function list(): bool
     {
-        /* @var \App\product\model\product $model */
+        /* @var App\product\model\product $model */
         $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -58,14 +59,15 @@ class product extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
-        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'index', $this->app_name)["status"];
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
+            'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         return false;
     }
 
     public function index($id = null): bool
     {
-        /* @var \App\product\model\product $model */
+        /* @var App\product\model\product $model */
         if ($id != null) {
             $model = parent::model($this->model_name, $id);
             if ($model->getId() != $id) {
@@ -77,9 +79,11 @@ class product extends controller
             $model = parent::model($this->model_name);
 
         if (request::ispost()) {
-            $get = request::post('label');
+            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,glaze,effect,decor,production_design_code');
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
+                "production_design_code" => ["required|match:>0", rlang('code') . " ". rlang('example') . " ". rlang('experiment')],
+                "exampleCode" => ["required|match:>0", rlang('code') . " ". rlang('design') . " ". rlang('production')],
             ];
             $valid = validate::check($get, $rules);
             $this->mold->offAutoCompile();
@@ -93,9 +97,26 @@ class product extends controller
             $Dis .= $model->getLabel() . " ";
 
             $model->setLabel($get['label']);
+            $model->setColor($get['color']);
+            $model->setExampleCode($get['exampleCode']);
+            $model->setProductionDesignCode($get['production_design_code']);
+            $model->setPhase($get['phase']);
+            $model->setSize($get['size']);
+            $model->setTemplate($get['template']);
+            $model->setKind($get['kind']);
+            $model->setTechnique($get['technique']);
+            $model->setEffect($get['effect']);
+            $model->setDecor($get['decor']);
+            $model->setBody($get['body']);
+            $model->setBodyWeight($get['body_weight']);
+            $model->setBody($get['body']);
+            $model->setBodyWeight($get['body_weight']);
+            $model->setEngobe($get['engobe']);
+            $model->setEngobeWeight($get['engobe_weight']);
+            $model->setGlaze($get['glaze']);
+            $model->setGlazeWeight($get['glaze_weight']);
 
             if ($get['id'] != '') {
-
                 $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
                 $Dis .= $model->getlabel() . " ";
                 $Dis .= rlang('changed');
@@ -107,22 +128,34 @@ class product extends controller
             }
 
             $this->callHooks('addLog', [$Dis, $this->log_name]);
-            Response::redirect(App::getBaseAppLink($this->class_name . '/list/','admin'));
+            Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
         }
 
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->html_file_path);
-        if( $id == null)
+        if ($id == null)
             $this->mold->setPageTitle(rlang('insert') . " " . $this->item_label);
-        elseif( $id != null)
+        else
             $this->mold->setPageTitle(rlang('Edit') . " " . $this->item_label);
 
-        $this->mold->set('activeMenu' , $this->active_menu);
+        $this->mold->set('ChangeURL', $this->listChangeURL);
+        $this->mold->set('item_label', $this->item_label);
+        $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'list', $this->app_name)["status"];
+        $this->mold->set('editAccess', $editAccess);
+
+        $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
         $this->mold->set('templates', App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('kinds', App\product\app_provider\api\product::kind()["result"]);
+        $this->mold->set('techniques', App\product\app_provider\api\product::technique()["result"]);
+        $this->mold->set('glazes', App\product\app_provider\api\product::glaze()["result"]);
+        $this->mold->set('glazeParents', App\product\app_provider\api\product::glaze()["result"]);
+        $this->mold->set('effects', App\product\app_provider\api\product::effect()["result"]);
+        $this->mold->set('decors', App\product\app_provider\api\product::decor()["result"]);
+
         return false;
     }
 }

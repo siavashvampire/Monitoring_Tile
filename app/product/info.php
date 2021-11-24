@@ -157,6 +157,19 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_glue' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product_template' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -274,5 +287,7 @@ return [
         (3 , 'درجه 3'),
         (4 , 'درجه W'),
         (5 , 'درجه U');",
+        "INSERT IGNORE INTO `{prefix}product_glue` (`id`, `label`) VALUES
+        (1 , 'چسب حرارتی'),",
     ],
 ];

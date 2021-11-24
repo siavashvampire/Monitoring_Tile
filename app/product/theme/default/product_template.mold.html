@@ -16,6 +16,9 @@
                                 <tr>
                                     <th style="width: 10%;">{_ "code"} {$item_label}</th>
                                     <th>{_ "name"} {$item_label}</th>
+                                    <th>{_ "bumper_glue"}</th>
+                                    <th>{_ "selfon"}</th>
+                                    <th>{_ "weight_after_chamfer"}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 25px;"></th>
                                     {/if}
@@ -26,9 +29,12 @@
                                     <tr>
                                         <td>{$item.id}</td>
                                         <td>{$item.label}</td>
+                                        <td>{$item.bumper_glue}</td>
+                                        <td>{$item.selfon}</td>
+                                        <td>{$item.weight_after_chamfer}</td>
                                         {if $editAccess == 'true'}
                                             <td>
-                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}')">
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.bumper_glue}','{$item.selfon}','{$item.weight_after_chamfer}')">
                                                     <i class="fa fa-pencil">
 
                                                     </i>
@@ -67,9 +73,25 @@
                     {_ "changeSuccessfully"}
                 </div>
                 <form>
-                    <div class="form-group">
-                        <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
-                        <input type="text" class="form-control" id="name" value="">
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
+                            <input type="text" class="form-control" id="name" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="bumper_glue" class="col-form-label float-right">{_ "bumper_glue"} :</label>
+                            <input type="number" class="form-control" id="bumper_glue" value="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label for="selfon" class="col-form-label float-right">{_ "selfon"} :</label>
+                            <input type="text" class="form-control" id="selfon" value="">
+                        </div>
+                        <div class="form-group">
+                            <label for="weight_after_chamfer" class="col-form-label float-right">{_ "weight_after_chamfer"} :</label>
+                            <input type="text" class="form-control" id="weight_after_chamfer" value="">
+                        </div>
                     </div>
                 </form>
             </div>
@@ -100,16 +122,22 @@ let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
 let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
 
-function openItemEditor(id,name){
+function openItemEditor(id,name,bumper_glue,selfon,weight_after_chamfer){
     if ( id === "" ){
         $("#exampleModalLabel").html(add_new_item);
         $("#name").val("");
         $("#id").val("");
+        $("#bumper_glue").val("");
+        $("#selfon").val("");
+        $("#weight_after_chamfer").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
         $("#exampleModalLabel").html(edit_item + " " + name);
         $("#name").val(name);
         $("#id").val(id);
+        $("#bumper_glue").val(bumper_glue);
+        $("#selfon").val(selfon);
+        $("#weight_after_chamfer").val(weight_after_chamfer);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     }
     $('.bmd-label-static').removeClass('bmd-label-static');
@@ -125,6 +153,9 @@ function sendItem(){
         data: {
             'label': $('#name').val(),
             'id': $('#id').val(),
+            'bumper_glue': $('#bumper_glue').val(),
+            'selfon': $('#selfon').val(),
+            'weight_after_chamfer': $('#weight_after_chamfer').val(),
         } ,
         success: function (result) {
             if (result['status']) {

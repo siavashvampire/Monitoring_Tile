@@ -13,6 +13,7 @@ use App\product\model\product_kind;
 use App\product\model\product_size;
 use App\product\model\product_punch;
 use App\product\model\product_technique;
+use App\product\model\product_template;
 use pluginController;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -33,6 +34,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_effect', 'افکت ها', app::getBaseAppLink('product_effect', 'admin'), 'fa fa-delicious', '', 'admin/product_effect/index/product');
         $this->menu->addChild('configurationLine', 'product_decor', 'دکور ها', app::getBaseAppLink('product_decor', 'admin'), 'fa fa-delicious', '', 'admin/product_decor/index/product');
         $this->menu->addChild('configurationLine', 'product_degree', 'درجه ها', app::getBaseAppLink('product_degree', 'admin'), 'fa fa-delicious', '', 'admin/product_degree/index/product');
+        $this->menu->addChild('configurationLine', 'product_template', 'قالب ها', app::getBaseAppLink('product_template', 'admin'), 'fa fa-delicious', '', 'admin/product_template/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array
@@ -44,6 +46,7 @@ class hook extends pluginController
             ['type' => 'productBrand', 'name' => 'برند کاشی'],
             ['type' => 'productColor', 'name' => 'رنگ کاشی'],
             ['type' => 'productKind', 'name' => 'نوع محصول'],
+            ['type' => 'productTemplate', 'name' => 'نوع محصول'],
         ];
     }
 
@@ -462,6 +465,47 @@ class hook extends pluginController
         return $model->getLabel();
     }
 
+    public function _fieldService_showToFillOut_productTemplate($vars2)
+    {
+        $modelName = 'product_template';
+        /* @var product_template $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productTemplate($fieldInformation = null)
+    {
+        $modelName = 'product_template';
+        /** @var product_template $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
     public function _logField(): array
     {
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
@@ -475,6 +519,7 @@ class hook extends pluginController
             ["value" => "product_effect", "label" => "تغییرات افکت ها"],
             ["value" => "product_decor", "label" => "تغییرات دکور ها"],
             ["value" => "product_degree", "label" => "تغییرات درجه ها"],
+            ["value" => "product_template", "label" => "تغییرات قالب ها"],
         ];
     }
 }

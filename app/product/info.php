@@ -157,6 +157,22 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_template' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'bumper_glue' => "INT(11) NOT NULL",
+                'selfon' => "INT(11) NOT NULL",
+                'weight_after_chamfer' => "INT(11) NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',

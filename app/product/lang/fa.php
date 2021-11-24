@@ -12,4 +12,7 @@ return [
     'experiment'                                    => 'آزمایش',
     'size'                                          => 'سایز',
     'template'                                      => 'قالب',
+    'bumper_glue'                                   => 'میزان چسب بامپر',
+    'selfon'                                        => 'وزن سلفون',
+    'weight_after_chamfer'                          => 'وزن یک قالب محصول پس از چمفر',
 ];

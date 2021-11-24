@@ -44,7 +44,7 @@
                                     </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="6">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>
@@ -73,25 +73,22 @@
                     {_ "changeSuccessfully"}
                 </div>
                 <form>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
-                            <input type="text" class="form-control" id="name" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="bumper_glue" class="col-form-label float-right">{_ "bumper_glue"} :</label>
-                            <input type="number" class="form-control" id="bumper_glue" value="">
-                        </div>
+                    <input type="hidden" class="form-control" id="id" value="">
+                    <div class="col-md-6 form-group">
+                        <label for="name" class=" float-right">{_ "name"} {$item_label}:</label>
+                        <input type="text" class=" form-control "   id="name" name="label" value="">
                     </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label for="selfon" class="col-form-label float-right">{_ "selfon"} :</label>
-                            <input type="text" class="form-control" id="selfon" value="">
-                        </div>
-                        <div class="form-group">
-                            <label for="weight_after_chamfer" class="col-form-label float-right">{_ "weight_after_chamfer"} :</label>
-                            <input type="text" class="form-control" id="weight_after_chamfer" value="">
-                        </div>
+                    <div class="col-md-6 form-group">
+                        <label for="bumper_glue" class="  float-right">{_ "bumper_glue"}:</label>
+                        <input type="number" min="0" class="form-control "   id="bumper_glue" name="bumper_glue" value="">
+                    </div>
+                    <div class="col-md-4 form-group">
+                        <label for="selfon" class="  float-right">{_ "selfon"}:</label>
+                        <input type="number" min="0" class="form-control "   id="selfon" name="selfon" value="">
+                    </div>
+                    <div class="col-md-8 form-group">
+                        <label for="weight_after_chamfer" class="  float-right">{_ "weight_after_chamfer"}:</label>
+                        <input type="number" min="0"  class="form-control "   id="weight_after_chamfer" name="weight_after_chamfer" value="">
                     </div>
                 </form>
             </div>

@@ -61,7 +61,7 @@ class product_template extends controller
     public function update(): bool
     {
         /* @var \App\product\model\product_template $model */
-        $get = request::post('id,label');
+        $get = request::post('id,label,bumper_glue,selfon,weight_after_chamfer');
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],
         ];

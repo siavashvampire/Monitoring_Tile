@@ -255,31 +255,41 @@ return [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'example_code' => "INT(11) NOT NULL",
+                'production_design_code' => "varchar(65) NOT NULL",
                 'kind' => "INT(11) NOT NULL",
                 'size' => "INT(11) NOT NULL",
                 'phase' => "INT(11) NOT NULL",
                 'color' => "INT(11) NOT NULL",
-                'glaze' => "INT(11) NOT NULL",
-                'punch' => "INT(11) NOT NULL",
-                'degree' => "INT(11) NOT NULL",
-                'weight' => "INT(11) NOT NULL",
-                'pallet' => "INT(11) NOT NULL",
+                'punch' => "INT(11) NULL DEFAULT NULL",
+                'degree' => "INT(11) NULL DEFAULT NULL",
+                'weight' => "INT(11) NULL DEFAULT NULL",
+                'pallet' => "INT(11) NULL DEFAULT NULL",
                 'technique' => "INT(11) NOT NULL",
+                'template' => "INT(11) NOT NULL",
                 'effect' => "INT(11) NOT NULL",
                 'decor' => "INT(11) NOT NULL",
+                'body' => "INT(11) NOT NULL",
+                'body_weight' => "INT(11) NOT NULL",
+                'engobe' => "INT(11) NOT NULL",
+                'engobe_weight' => "INT(11) NOT NULL",
+                'glaze' => "INT(11) NOT NULL",
+                'glaze_weight' => "INT(11) NOT NULL",
             ],
             'KEY' => [
                 'kind',
                 'size',
                 'phase',
                 'color',
-                'glaze',
                 'punch',
                 'degree',
                 'pallet',
                 'technique',
                 'effect',
                 'decor',
+                'glaze',
+                'engobe',
+                'body',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -288,7 +298,6 @@ return [
                 'kind' => ['table' => 'product_kind', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'size' => ['table' => 'product_size', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'color' => ['table' => 'product_color', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'glaze' => ['table' => 'product_glaze', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'punch' => ['table' => 'product_punch', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'degree' => ['table' => 'product_degree', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet' => ['table' => 'product_pallet', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
@@ -296,6 +305,9 @@ return [
                 'effect' => ['table' => 'product_effect', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'decor' => ['table' => 'product_decor', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'phase' => ['table' => 'phases', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'glaze' => ['table' => 'product_glaze', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'engobe' => ['table' => 'product_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'body' => ['table' => 'product_body', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
     ],
@@ -313,6 +325,8 @@ return [
         (4 , 'مات hard'),
         (5 , 'مات soft'),
         (6 , 'پولیش طرح تیره');",
+        "INSERT IGNORE INTO `{prefix}product_glaze` (`id`,`parent`, `label`) VALUES
+        (7 ,3, 'GC94');",
         "INSERT IGNORE INTO `{prefix}product_punch` (`id`, `label`) VALUES
         (1 , 'تخت'),
         (2 , 'کونیک'),
@@ -357,5 +371,11 @@ return [
         "INSERT IGNORE INTO `{prefix}product_strap` (`id`, `label`) VALUES
         (1 , 'تسمه کارتن'),
         (2 , 'تسمه پالت');",
+        "INSERT IGNORE INTO `{prefix}product_template` (`id`, `label`) VALUES
+        (1 , 'تخت');",
+        "INSERT IGNORE INTO `{prefix}product_engobe` (`id`, `label`) VALUES
+        (1 , 'EC54');",
+        "INSERT IGNORE INTO `{prefix}product_body` (`id`, `label`) VALUES
+        (1 , 'BC53');",
     ],
 ];

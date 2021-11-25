@@ -28,21 +28,21 @@ class hook extends pluginController
     public function _adminHeaderNavbar($vars2)
     {
         $this->menu->addChild('configurationLine', 'product', 'کاشی‌ها', app::getBaseAppLink('product/list', 'admin'), 'fa fa-delicious', '', 'admin/product/list/product');
-        $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-delicious', '', 'admin/product_size/index/product');
-        $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-delicious', '', 'admin/product_glaze/index/product');
-        $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-delicious', '', 'admin/product_brand/index/product');
-        $this->menu->addChild('configurationLine', 'product_punch', 'پانچ ‌ها', app::getBaseAppLink('product_punch', 'admin'), 'fa fa-delicious', '', 'admin/product_punch/index/product');
-        $this->menu->addChild('configurationLine', 'product_color', 'رنگ ‌ها', app::getBaseAppLink('product_color', 'admin'), 'fa fa-delicious', '', 'admin/product_color/index/product');
-        $this->menu->addChild('configurationLine', 'product_kind', 'نوع محصول', app::getBaseAppLink('product_kind', 'admin'), 'fa fa-delicious', '', 'admin/product_kind/index/product');
-        $this->menu->addChild('configurationLine', 'product_technique', 'تکنیک تولید', app::getBaseAppLink('product_technique', 'admin'), 'fa fa-delicious', '', 'admin/product_technique/index/product');
-        $this->menu->addChild('configurationLine', 'product_effect', 'افکت ها', app::getBaseAppLink('product_effect', 'admin'), 'fa fa-delicious', '', 'admin/product_effect/index/product');
-        $this->menu->addChild('configurationLine', 'product_decor', 'دکور ها', app::getBaseAppLink('product_decor', 'admin'), 'fa fa-delicious', '', 'admin/product_decor/index/product');
-        $this->menu->addChild('configurationLine', 'product_degree', 'درجه ها', app::getBaseAppLink('product_degree', 'admin'), 'fa fa-delicious', '', 'admin/product_degree/index/product');
-        $this->menu->addChild('configurationLine', 'product_template', 'قالب ها', app::getBaseAppLink('product_template', 'admin'), 'fa fa-delicious', '', 'admin/product_template/index/product');
-        $this->menu->addChild('configurationLine', 'product_glue', 'چسب ها', app::getBaseAppLink('product_glue', 'admin'), 'fa fa-delicious', '', 'admin/product_glue/index/product');
-        $this->menu->addChild('configurationLine', 'product_strap', 'تسمه ها', app::getBaseAppLink('product_strap', 'admin'), 'fa fa-delicious', '', 'admin/product_strap/index/product');
+        $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-compress', '', 'admin/product_size/index/product');
+        $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-file-image-o', '', 'admin/product_glaze/index/product');
+        $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-bold', '', 'admin/product_brand/index/product');
+        $this->menu->addChild('configurationLine', 'product_punch', 'پانچ ‌ها', app::getBaseAppLink('product_punch', 'admin'), 'fa fa-chain-broken', '', 'admin/product_punch/index/product');
+        $this->menu->addChild('configurationLine', 'product_color', 'رنگ ‌ها', app::getBaseAppLink('product_color', 'admin'), 'fa fa-paint-brush', '', 'admin/product_color/index/product');
+        $this->menu->addChild('configurationLine', 'product_kind', 'نوع محصول', app::getBaseAppLink('product_kind', 'admin'), 'fa fa-tag', '', 'admin/product_kind/index/product');
+        $this->menu->addChild('configurationLine', 'product_technique', 'تکنیک تولید', app::getBaseAppLink('product_technique', 'admin'), 'fa fa-cog', '', 'admin/product_technique/index/product');
+        $this->menu->addChild('configurationLine', 'product_effect', 'افکت ها', app::getBaseAppLink('product_effect', 'admin'), 'fa fa-file-image-o', '', 'admin/product_effect/index/product');
+        $this->menu->addChild('configurationLine', 'product_decor', 'دکور ها', app::getBaseAppLink('product_decor', 'admin'), 'fa fa-photo', '', 'admin/product_decor/index/product');
+        $this->menu->addChild('configurationLine', 'product_degree', 'درجه ها', app::getBaseAppLink('product_degree', 'admin'), 'fa fa-sort-numeric-asc', '', 'admin/product_degree/index/product');
+        $this->menu->addChild('configurationLine', 'product_template', 'قالب ها', app::getBaseAppLink('product_template', 'admin'), 'fa fa-object-ungroup', '', 'admin/product_template/index/product');
+        $this->menu->addChild('configurationLine', 'product_glue', 'چسب ها', app::getBaseAppLink('product_glue', 'admin'), 'fa fa-flask', '', 'admin/product_glue/index/product');
+        $this->menu->addChild('configurationLine', 'product_strap', 'تسمه ها', app::getBaseAppLink('product_strap', 'admin'), 'fa fa-link', '', 'admin/product_strap/index/product');
         $this->menu->addChild('configurationLine', 'product_engobe', 'انگوب ها', app::getBaseAppLink('product_engobe', 'admin'), 'fa fa-delicious', '', 'admin/product_engobe/index/product');
-        $this->menu->addChild('configurationLine', 'product_body', 'بدنه ها', app::getBaseAppLink('product_body', 'admin'), 'fa fa-delicious', '', 'admin/product_body/index/product');
+        $this->menu->addChild('configurationLine', 'product_body', 'بدنه ها', app::getBaseAppLink('product_body', 'admin'), 'fa fa-cube', '', 'admin/product_body/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array

@@ -180,6 +180,14 @@ class product extends model implements modelInterFace
     }
 
     /**
+     * @return mixed
+     */
+    public function getSizeLabel()
+    {
+        return parent::search([$this->size], 'item.id = ?', 'product_size' . ' item', 'item.label')[0]['label'];
+    }
+
+    /**
      * @param mixed $size
      */
     public function setSize($size): void
@@ -196,6 +204,14 @@ class product extends model implements modelInterFace
     }
 
     /**
+     * @return mixed
+     */
+    public function getPhaseLabel()
+    {
+        return parent::search([$this->phase], 'item.id = ?', 'phases' . ' item', 'item.label')[0]['label'];
+    }
+
+    /**
      * @param mixed $phase
      */
     public function setPhase($phase): void
@@ -203,12 +219,29 @@ class product extends model implements modelInterFace
         $this->phase = $phase;
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getGlazeLabel()
+    {
+        return parent::search([$this->glaze], 'item.id = ?', 'product_glaze' . ' item', 'item.label')[0]['label'];
+    }
+
+
     /**
      * @return mixed
      */
     public function getGlaze()
     {
         return $this->glaze;
+    }
+    /**
+     * @return mixed
+     */
+    public function getGlazeParent()
+    {
+        return parent::search([$this->glaze], 'item.id = ?', 'product_glaze' . ' item', 'item.parent')[0]['parent'];
     }
 
     /**
@@ -249,6 +282,14 @@ class product extends model implements modelInterFace
     public function setDegree($degree): void
     {
         $this->degree = $degree;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTemplateLabel()
+    {
+        return parent::search([$this->template], 'item.id = ?', 'product_template' . ' item', 'item.label')[0]['label'];
     }
 
     /**
@@ -299,6 +340,15 @@ class product extends model implements modelInterFace
         $this->pallet = $pallet;
     }
 
+
+    /**
+     * @return mixed
+     */
+    public function getKindLabel()
+    {
+        return parent::search([$this->kind], 'item.id = ?', 'product_kind' . ' item', 'item.label')[0]['label'];
+    }
+
     /**
      * @return mixed
      */
@@ -318,6 +368,13 @@ class product extends model implements modelInterFace
     /**
      * @return mixed
      */
+    public function getColorLabel()
+    {
+        return parent::search([$this->color], 'item.id = ?', 'product_color' . ' item', 'item.label')[0]['label'];
+    }
+    /**
+     * @return mixed
+     */
     public function getColor()
     {
         return $this->color;
@@ -329,6 +386,15 @@ class product extends model implements modelInterFace
     public function setColor($color): void
     {
         $this->color = $color;
+    }
+
+
+    /**
+     * @return mixed
+     */
+    public function getTechniqueLabel()
+    {
+        return parent::search([$this->technique], 'item.id = ?', 'product_technique' . ' item', 'item.label')[0]['label'];
     }
 
     /**
@@ -347,6 +413,16 @@ class product extends model implements modelInterFace
         $this->technique = $technique;
     }
 
+
+
+    /**
+     * @return mixed
+     */
+    public function getEffectLabel()
+    {
+        return parent::search([$this->effect], 'item.id = ?', 'product_effect' . ' item', 'item.label')[0]['label'];
+    }
+
     /**
      * @return mixed
      */
@@ -362,6 +438,16 @@ class product extends model implements modelInterFace
     {
         $this->effect = $effect;
     }
+
+
+    /**
+     * @return mixed
+     */
+    public function getDecorLabel()
+    {
+        return parent::search([$this->decor], 'item.id = ?', 'product_decor' . ' item', 'item.label')[0]['label'];
+    }
+
 
     /**
      * @return mixed

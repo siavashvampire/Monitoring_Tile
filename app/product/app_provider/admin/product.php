@@ -5,9 +5,12 @@ namespace App\product\app_provider\admin;
 use App;
 use App\core\controller\httpErrorHandler;
 use App\LineMonitoring\app_provider\api\phases;
+use App\Sections\app_provider\api\sections;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
+use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -18,6 +21,7 @@ class product extends controller
 {
     private $item_label = "کاشی";
     private $ChangeURL = "product";
+    private $PDFURL = "product/getPDF";
     private $listChangeURL = "product/list";
     private $log_name = 'product';
     private $model_name = 'product';
@@ -26,11 +30,12 @@ class product extends controller
     private $active_menu = 'product';
     private $list_html_file_path = 'product_list.mold.html';
     private $html_file_path = 'product.mold.html';
+    private $certificate_html_file_path = 'CertificatePdf.mold.html';
 
     public function list(): bool
     {
         /* @var App\product\model\product $model */
-        $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
+        $get = request::post('page=1,perEachPage=25');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -59,6 +64,7 @@ class product extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
+        $this->mold->set('PDFURL', $this->PDFURL);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
@@ -77,16 +83,14 @@ class product extends controller
             $this->mold->set('model', $model);
         } else
             $model = parent::model($this->model_name);
-
         if (request::ispost()) {
-            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,glaze,effect,decor,production_design_code');
+            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight');
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
-                "production_design_code" => ["required|match:>0", rlang('code') . " ". rlang('example') . " ". rlang('experiment')],
-                "exampleCode" => ["required|match:>0", rlang('code') . " ". rlang('design') . " ". rlang('production')],
+                "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
+                "exampleCode" => ["required|match:>0", rlang('code') . " " . rlang('design') . " " . rlang('production')],
             ];
             $valid = validate::check($get, $rules);
-            $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
             if ($valid->isFail()) {
                 Response::jsonMessage($valid->errorsIn(), false);
@@ -109,28 +113,34 @@ class product extends controller
             $model->setDecor($get['decor']);
             $model->setBody($get['body']);
             $model->setBodyWeight($get['body_weight']);
-            $model->setBody($get['body']);
-            $model->setBodyWeight($get['body_weight']);
             $model->setEngobe($get['engobe']);
             $model->setEngobeWeight($get['engobe_weight']);
             $model->setGlaze($get['glaze']);
             $model->setGlazeWeight($get['glaze_weight']);
 
-            if ($get['id'] != '') {
-                $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
-                $Dis .= $model->getlabel() . " ";
-                $Dis .= rlang('changed');
-                $model->upDateDataBase();
+            if ($id != null) {
+                if ($model->upDateDataBase()) {
+                    $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
+                    $Dis .= $model->getlabel() . " ";
+                    $Dis .= rlang('changed');
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+                    $this->callHooks('addLog', [$Dis, $this->log_name]);
+                } else {
+                    $this->alert('danger', '', 'رید');
+                }
+
             } else {
-                $Dis .= $model->getLabel() . " ";
-                $Dis = $Dis . rlang('inserted');
-                $model->insertToDataBase();
+                if ($model->insertToDataBase()) {
+                    $Dis .= $model->getLabel() . " ";
+                    $Dis = $Dis . rlang('inserted');
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+                    $this->callHooks('addLog', [$Dis, $this->log_name]);
+                } else {
+                    $this->alert('danger', '', 'رید');
+                }
             }
 
-            $this->callHooks('addLog', [$Dis, $this->log_name]);
-            Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
         }
-
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->html_file_path);
         if ($id == null)
@@ -142,7 +152,6 @@ class product extends controller
         $this->mold->set('item_label', $this->item_label);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'list', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
-
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
@@ -151,10 +160,37 @@ class product extends controller
         $this->mold->set('templates', App\product\app_provider\api\product::template()["result"]);
         $this->mold->set('kinds', App\product\app_provider\api\product::kind()["result"]);
         $this->mold->set('techniques', App\product\app_provider\api\product::technique()["result"]);
-        $this->mold->set('glazeParents', App\product\app_provider\api\product::glaze()["result"]);
+        $this->mold->set('glazeParents', App\product\app_provider\api\product::glazeParents()["result"]);
+        $this->mold->set('glazes', App\product\app_provider\api\product::glaze()["result"]);
         $this->mold->set('effects', App\product\app_provider\api\product::effect()["result"]);
         $this->mold->set('decors', App\product\app_provider\api\product::decor()["result"]);
+        $this->mold->set('engobes', App\product\app_provider\api\product::engobe()["result"]);
+        $this->mold->set('bodys', App\product\app_provider\api\product::body()["result"]);
 
         return false;
+    }
+
+    public function getPDF($id)
+    {
+        $this->mold->path('default', $this->app_name);
+        $this->mold->view($this->certificate_html_file_path);
+        $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
+        $this->mold->set('activeMenu', $this->active_menu);
+        $views = $this->mold->getViews();
+        $this->mold->unshow($views);
+
+        /** @var \App\product\model\product $model */
+        $model = parent::model($this->model_name ,$id);
+        $this->mold->set('model', $model);
+        $header = [];
+        $header[] = 'ردیف';
+
+        $file_name = "بخش ";
+
+        $this->mold->setPageTitle('گزارش گیری خدمات');
+        $this->mold->unshow('footer.mold.html');
+        $htmlpersian = $this->mold->render();
+        show($htmlpersian);
+        $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
     }
 }

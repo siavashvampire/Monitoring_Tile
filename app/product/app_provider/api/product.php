@@ -39,12 +39,7 @@ class product extends innerController {
     public  static function glaze() {
         /** @var \App\product\model\product_glaze $model */
         $model = parent::model( ['product', 'product_glaze'] );
-
-        $value = array();
-        $variable = array();
-        $value[] = '1';
-        $variable[] = 'item.parent is Null';
-        return self::json( $model->getItems($value,$variable));
+        return self::json( $model->getItems());
     }
     public  static function glazeByParent($parent) {
         /** @var \App\product\model\product_glaze $model */
@@ -53,6 +48,17 @@ class product extends innerController {
         $variable = array();
         $value[] = $parent;
         $variable[] = 'item.parent = ?';
+        return self::json( $model->getItems($value,$variable));
+    }
+    public  static function glazeParents() {
+        /** @var \App\product\model\product_glaze $model */
+        $model = parent::model( ['product', 'product_glaze'] );
+
+        $value = array();
+        $variable = array();
+        $value[] = '1';
+        $variable[] = '?';
+        $variable[] = 'item.parent is Null';
         return self::json( $model->getItems($value,$variable));
     }
     public  static function glazeGroupList($id) {

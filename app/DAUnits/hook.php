@@ -9,7 +9,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
-        $this->menu->addChild('configurationLine' ,'DAUnitsList', rlang('DAUnits') , app::getBaseAppLink('DAUnits/List','admin') , 'fa fa-history' ,'','admin/DAUnits/index/DAUnits');
+        $this->menu->addChild('configurationLine' ,'DAUnitsList', rlang('DAUnits') , app::getBaseAppLink('DAUnits/List','admin') , 'fa fa-info' ,'','admin/DAUnits/index/DAUnits');
     }
     public function _should_update()
     {

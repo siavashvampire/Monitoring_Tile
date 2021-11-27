@@ -110,15 +110,28 @@ class product_glaze extends controller
             $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getlabel() . " ";
             $Dis .= rlang('changed');
-            $model->upDateDataBase();
+            if ($model->upDateDataBase()){
+                $this->callHooks('addLog', [$Dis, $this->log_name]);
+                Response::jsonMessage(rlang('changeSuccessfully'), true);
+                return false;
+            }
+            else{
+                Response::jsonMessage("rid", true);
+                return false;
+            }
         } else {
             $Dis .= $model->getLabel() . " ";
             $Dis = $Dis . rlang('inserted');
-            $model->insertToDataBase();
+            if ($model->insertToDataBase()){
+                $this->callHooks('addLog', [$Dis, $this->log_name]);
+                Response::jsonMessage(rlang('changeSuccessfully'), true);
+                return false;
+            }
+            else{
+                Response::jsonMessage("rid", true);
+                return false;
+            }
         }
 
-        $this->callHooks('addLog', [$Dis, $this->log_name]);
-        Response::jsonMessage(rlang('changeSuccessfully'), true);
-        return false;
     }
 }

@@ -49,9 +49,9 @@
                                         {/if}
                                     </tr>
                                 {foreachelse}
-                                <tr>
-                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
-                                </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                    </tr>
                                 {/foreach}
                                 </tbody>
                             </table>
@@ -111,6 +111,11 @@
 let urlc = '{url current}' ;
 
 let parent = '{if isset ($parentModel) }{$parentModel->getId()}{/if}' ;
+if (parent) {
+    surlc = urlc.split("/")
+    surlc = surlc.slice(0, surlc.length - 1);
+    urlc = surlc.join("/");
+}
 let add_new_item = '{_ "add"} {if !isset($isParent)}{_ "code"} {$item_label} {$parentModel->getLabel()}{else}{$item_label}{/if} {_ "new"}';
 let edit_item = '{if !isset($isParent)}{_ "Edit"} {_ "code"} {$item_label} {$parentModel->getLabel()}{else}{_ "Edit"} {$item_label}{/if} ';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
@@ -138,18 +143,20 @@ function sendItem(){
         type: 'post',
         dataType: 'json',
         data: {
-            'label': $('#name').val(),
             'id': $('#id').val(),
+            'label': $('#name').val(),
             'parent': parent,
         } ,
         success: function (result) {
             if (result['status']) {
                 $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
                 $('#sendDataButton').hide();
+                console.log("miad inja")
                 load();
                 return false;
             }
             else {
+                console.log("miad 234")
                 $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
             }
         }

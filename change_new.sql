@@ -1,1 +1,0 @@
-ALTER TABLE `per_product_glaze` ADD `parent` INT NULL DEFAULT NULL AFTER `id`;

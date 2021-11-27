@@ -68,6 +68,19 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_digitalPrint_color' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product_brand' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -335,6 +348,13 @@ return [
         (1 , 'کرم'),
         (2 , 'قهوه ای'),
         (3 , 'آبی');",
+        "INSERT IGNORE INTO `{prefix}product_digitalPrint_color` (`id`, `label`) VALUES
+        (1 , 'آبی'),
+        (2 , 'قهوه ای'),
+        (3 , 'بژ'),
+        (4 , 'مشکی'),
+        (5 , 'زرد'),
+        (6 , 'صورتی');",
         "INSERT IGNORE INTO `{prefix}product_kind` (`id`, `label`) VALUES
         (2 , 'پرسلان گرید a'),
         (1 , 'دیوار'),

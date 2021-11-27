@@ -102,5 +102,43 @@
         <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
                 style='font-weight:bold;'>وزن:{$model->getGlazeWeight()}</span></td>
     </tr>
+    <tr style="color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;">
+            {foreach from=$digitalPrint_colors key=key value=item }
+            {if ( $key % 4 ) == 0 }
+                <div style="font-size:10pt">&nbsp;</div>
+            {/if}
+            {/foreach}
+            <span
+                style='font-weight:bold;'>{_ "print"} {_ "digital"}:
+            </span>
+        </td>
+        <td class="noHover" style="border: 1px solid darkcyan;text-align: center;" colspan="2">
+            <table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+                <thead style="">
+                <tr>
+                    <th style="width: 50%;" class="headerZero"></th>
+                    <th style="width: 50%;border-right: 1px solid darkcyan" class="headerZero"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {foreach from=$digitalPrint_colors key=key value=item }
+                <tr>
+                    <td style="text-align: center;border-bottom: 1px solid darkcyan;">
+                        <label style="font-size: 14px;color:darkcyan;">
+                            {_ "color"} {$item.label}
+                        </label>
+                    </td>
+                    <td style="border-right: 1px solid darkcyan;border-bottom: 1px solid darkcyan;text-align: center;">
+                        <label style="font-size: 14px;color:darkcyan;">
+                            {$item.value}
+                        </label>
+                    </td>
+                </tr>
+                {/foreach}
+                </tbody>
+            </table>
+        </td>
+    </tr>
     </tbody>
 </table>

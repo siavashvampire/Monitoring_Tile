@@ -84,7 +84,7 @@ class product extends controller
         } else
             $model = parent::model($this->model_name);
         if (request::ispost()) {
-            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight');
+            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color');
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
                 "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
@@ -123,6 +123,7 @@ class product extends controller
                     $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
                     $Dis .= $model->getlabel() . " ";
                     $Dis .= rlang('changed');
+                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(),$get['digitalPrint_color']);
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
@@ -133,6 +134,8 @@ class product extends controller
                 if ($model->insertToDataBase()) {
                     $Dis .= $model->getLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
+
+                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(),$get['digitalPrint_color']);
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
@@ -154,6 +157,7 @@ class product extends controller
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
+        $this->mold->set('digitalPrint_colors', App\product\app_provider\api\product::digitalPrint_color_with_value($id)["result"]);
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
         $this->mold->set('templates', App\product\app_provider\api\product::template()["result"]);
@@ -182,6 +186,8 @@ class product extends controller
         $model = parent::model($this->model_name, $id);
         $this->mold->set('model', $model);
         $this->mold->set('date', JDate::jdate('Y/m/d'));
+        $this->mold->set('digitalPrint_colors', App\product\app_provider\api\product::digitalPrint_color_with_value($id)["result"]);
+
 
         $file_name = "شناسنامه محصول ";
         $file_name .= $model->getLabel();

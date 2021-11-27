@@ -33,6 +33,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-bold', '', 'admin/product_brand/index/product');
         $this->menu->addChild('configurationLine', 'product_punch', 'پانچ ‌ها', app::getBaseAppLink('product_punch', 'admin'), 'fa fa-chain-broken', '', 'admin/product_punch/index/product');
         $this->menu->addChild('configurationLine', 'product_color', 'رنگ ‌ها', app::getBaseAppLink('product_color', 'admin'), 'fa fa-paint-brush', '', 'admin/product_color/index/product');
+        $this->menu->addChild('configurationLine', 'product_digitalPrint_color', 'رنگ های چاپ دیجیتال', app::getBaseAppLink('product_digitalPrint_color', 'admin'), 'fa fa-paint-brush', '', 'admin/product_digitalPrint_color/index/product');
         $this->menu->addChild('configurationLine', 'product_kind', 'نوع محصول', app::getBaseAppLink('product_kind', 'admin'), 'fa fa-tag', '', 'admin/product_kind/index/product');
         $this->menu->addChild('configurationLine', 'product_technique', 'تکنیک تولید', app::getBaseAppLink('product_technique', 'admin'), 'fa fa-cog', '', 'admin/product_technique/index/product');
         $this->menu->addChild('configurationLine', 'product_effect', 'افکت ها', app::getBaseAppLink('product_effect', 'admin'), 'fa fa-file-image-o', '', 'admin/product_effect/index/product');
@@ -696,6 +697,7 @@ class hook extends pluginController
             ["value" => "product_strap", "label" => "تغییرات تسمه ها"],
             ["value" => "product_engobe", "label" => "تغییرات انگوب ها"],
             ["value" => "product_body", "label" => "تغییرات بدنه ها"],
+            ["value" => "product_digitalPrint_color", "label" => "تغییرات رنگ چاپ دیجیتال"],
         ];
     }
 }

@@ -179,7 +179,7 @@
                                 <label for="body_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
                                 <div class="col-md-9">
                                     <div class="form-group has-default">
-                                        <input type="number" min="1" class="form-control" required id="body_weight" name="body_weight" value="{if isset($Mold.post.body_weight)}{$Mold.post.body_weight}{elseif isset($model)}{$model->getBodyWeight()}{/if}">
+                                        <input type="number" min="0" class="form-control" required id="body_weight" name="body_weight" value="{if isset($Mold.post.body_weight)}{$Mold.post.body_weight}{elseif isset($model)}{$model->getBodyWeight()}{else}0{/if}" style="text-align: center">
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +203,7 @@
                                 <label for="engobe_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
                                 <div class="col-md-9">
                                     <div class="form-group has-default">
-                                        <input type="number" min="1" class="form-control" required id="engobe_weight" name="engobe_weight" value="{if isset($Mold.post.engobe_weight)}{$Mold.post.engobe_weight}{elseif isset($model)}{$model->getEngobeWeight()}{/if}">
+                                        <input type="number" min="0" class="form-control" required id="engobe_weight" name="engobe_weight" value="{if isset($Mold.post.engobe_weight)}{$Mold.post.engobe_weight}{elseif isset($model)}{$model->getEngobeWeight()}{else}0{/if}" style="text-align: center">
                                     </div>
                                 </div>
                             </div>
@@ -227,10 +227,42 @@
                                 <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
                                 <div class="col-md-9">
                                     <div class="form-group has-default">
-                                        <input type="number" min="1" class="form-control" required id="glaze_weight" name="glaze_weight" value="{if isset($Mold.post.glaze_weight)}{$Mold.post.glaze_weight}{elseif isset($model)}{$model->getGlazeWeight()}{/if}">
+                                        <input type="number" min="0" class="form-control" required id="glaze_weight" name="glaze_weight" value="{if isset($Mold.post.glaze_weight)}{$Mold.post.glaze_weight}{elseif isset($model)}{$model->getGlazeWeight()}{else}0{/if}" style="text-align: center">
                                     </div>
                                 </div>
                             </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-    md-8 form-group">
+                            <div class="col-md-4" style="display: flex;align-items: center;height: 100%;">
+                                <label class="float-right">{_ "print"} {_ "digital"}:<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+                                    <thead style="">
+                                    <tr>
+                                        <th style="width: 50%;border: 2px solid darkcyan;padding: 8px;font-size: 16px;font-weight: bold;">{_ "color"} {_ "print"}</th>
+                                        <th style="width: 50%;border: 2px solid darkcyan;padding: 8px;font-size: 16px;font-weight: bold;">{_ "weight"} {_ "ink"}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody style="border-bottom: 2px solid darkcyan;">
+                                    {foreach from=$digitalPrint_colors key=key value=item }
+                                        <tr>
+                                            <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                                <label style="font-size: 14px;color:gray;" for="digitalPrint_color_{$key}">
+                                                    {_ "color"} {$item.label}
+                                                </label>
+                                            </td>
+                                            <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                                <input type="number" min="0" step=".01" class="form-control" required id="digitalPrint_color_{$key}" name="digitalPrint_color[]" value="{$item.value}" style="text-align: center">
+                                            </td>
+                                        </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -258,7 +290,6 @@
 {map footerjs}
 <script>
     let urlapi = '{url api}' ;
-    var tempi = 0;
     function getItem(url,select_name,selected_id){
         $.ajax({
             url: urlapi+url,
@@ -296,6 +327,5 @@
     // getItem('product/body','#body',body_select);
     // getItem('product/engobe','#engobe',engobe_select);
     // getItem('product/glazeGroupList/'+glaze_select,'#glaze',glaze_select);
-
 </script>
 {/map}

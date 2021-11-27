@@ -1,1 +1,1 @@
-UPDATE `per_requestservice` SET `Time_End`= DATE_ADD(`Time_End`, INTERVAL 60 MINUTE) WHERE 1
+ALTER TABLE `per_product_glaze` ADD `parent` INT NULL DEFAULT NULL AFTER `id`;

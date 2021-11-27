@@ -85,7 +85,7 @@ class product extends model implements modelInterFace
         $array['engobe'] = $this->engobe;
         $array['engobe_weight'] = $this->engobe_weight;
         $array['glaze'] = $this->glaze;
-        $array['glaze_weight'] = $this->engobe_weight;
+        $array['glaze_weight'] = $this->glaze_weight;
         return $array;
     }
 

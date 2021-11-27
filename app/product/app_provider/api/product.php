@@ -41,6 +41,16 @@ class product extends innerController {
         $model = parent::model( ['product', 'product_glaze'] );
         return self::json( $model->getItems());
     }
+    public  static function glazeChild() {
+        /** @var \App\product\model\product_glaze $model */
+        $model = parent::model( ['product', 'product_glaze'] );
+        $value = array();
+        $variable = array();
+        $value[] = 1;
+        $variable[] = '?';
+        $variable[] = 'item.parent is not NULL';
+        return self::json( $model->getItems($value,$variable));
+    }
     public  static function glazeByParent($parent) {
         /** @var \App\product\model\product_glaze $model */
         $model = parent::model( ['product', 'product_glaze'] );

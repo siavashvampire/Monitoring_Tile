@@ -243,6 +243,10 @@ class product extends model implements modelInterFace
     {
         return parent::search([$this->glaze], 'item.id = ?', 'product_glaze' . ' item', 'item.parent')[0]['parent'];
     }
+    public function getGlazeParentLabel()
+    {
+        return parent::search([self::getGlazeParent()], 'item.id = ?', 'product_glaze' . ' item', 'item.label')[0]['label'];
+    }
 
     /**
      * @param mixed $glaze
@@ -472,6 +476,13 @@ class product extends model implements modelInterFace
     {
         return $this->body;
     }
+    /**
+     * @return mixed
+     */
+    public function getBodyLabel()
+    {
+        return parent::search([$this->body], 'item.id = ?', 'product_body' . ' item', 'item.label')[0]['label'];
+    }
 
     /**
      * @param mixed $body
@@ -503,6 +514,14 @@ class product extends model implements modelInterFace
     public function getEngobe()
     {
         return $this->engobe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEngobeLabel()
+    {
+        return parent::search([$this->engobe], 'item.id = ?', 'product_engobe' . ' item', 'item.label')[0]['label'];
     }
 
     /**

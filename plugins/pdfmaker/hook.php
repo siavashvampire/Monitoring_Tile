@@ -12,7 +12,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class hook extends pluginController
 {
-    public function _makePDF($htmlpersian, $nameOfFile, $landscape = false, $type = 'A4')
+    public function _makePDF($htmlpersian, $nameOfFile, $landscape = false, $type = 'A4',$font_size = 12)
     {
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -58,7 +58,7 @@ class hook extends pluginController
 //    $fontname = TCPDF_FONTS::addTTFfont('C:\Users\vampire\Desktop\test\BNazanin.ttf', 'TrueTypeUnicode', '', 32);
 //        $pdf->SetFont($fontname, '', 12);
         // set font
-        $pdf->SetFont('bnazanin', '', 12);
+        $pdf->SetFont('bnazanin', '', $font_size);
 
         // add a page
         $pdf->AddPage(($landscape) ? 'L' : 'P', $type);

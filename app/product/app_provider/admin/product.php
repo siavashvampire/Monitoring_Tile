@@ -161,7 +161,7 @@ class product extends controller
         $this->mold->set('kinds', App\product\app_provider\api\product::kind()["result"]);
         $this->mold->set('techniques', App\product\app_provider\api\product::technique()["result"]);
         $this->mold->set('glazeParents', App\product\app_provider\api\product::glazeParents()["result"]);
-        $this->mold->set('glazes', App\product\app_provider\api\product::glaze()["result"]);
+        $this->mold->set('glazes', App\product\app_provider\api\product::glazeChild()["result"]);
         $this->mold->set('effects', App\product\app_provider\api\product::effect()["result"]);
         $this->mold->set('decors', App\product\app_provider\api\product::decor()["result"]);
         $this->mold->set('engobes', App\product\app_provider\api\product::engobe()["result"]);
@@ -180,17 +180,16 @@ class product extends controller
         $this->mold->unshow($views);
 
         /** @var \App\product\model\product $model */
-        $model = parent::model($this->model_name ,$id);
+        $model = parent::model($this->model_name, $id);
         $this->mold->set('model', $model);
-        $header = [];
-        $header[] = 'ردیف';
+        $this->mold->set('date', JDate::jdate('Y/m/d'));
 
         $file_name = "بخش ";
 
         $this->mold->setPageTitle('گزارش گیری خدمات');
         $this->mold->unshow('footer.mold.html');
         $htmlpersian = $this->mold->render();
-        show($htmlpersian);
-        $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
+//        show($htmlpersian);
+        $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => false, 'type' => 'A4', 'font_size' => 12]);
     }
 }

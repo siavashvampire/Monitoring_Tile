@@ -1,0 +1,105 @@
+<style>
+    th.headerZero {
+        padding: 0 !important;
+    }
+
+    .noHover {
+        pointer-events: none;
+    }
+</style>
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;">
+    <thead style="">
+    <tr>
+        <th style="width: 34%;" class="headerZero"></th>
+        <th style="width: 33%;" class="headerZero"></th>
+        <th style="width: 34%;" class="headerZero"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr style="border: 2px solid!important;color:  black;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;font-size: 24px;text-align:center'><br>کاشی حافظ</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;font-size: 24px;text-align:center'><br>شناسنامه محصول</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;font-size: 24px;text-align:center'>شماره فرم اجرای طرح جدید:<br>شماره مدرک:{$model->getId()}<br>تاریخ:{$date}</span></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>نام طرح :{$model->getLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>رنگ :{$model->getColorLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>کد نمونه آزمایشی :{$model->getExampleCode()}</span></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>فاز :{$model->getPhaseLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>سایز :{$model->getSizeLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>نام قالب :{$model->getTemplateLabel()}</span></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>نوع محصول :{$model->getKindLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>تکنیک تولید :{$model->getTechniqueLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>نوع سطح :{$model->getGlazeParentLabel()}</span></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>افکت :{$model->getEffectLabel()}</span>
+        </td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>دکور :{$model->getDecorLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>کد طرح تولیدی :{$model->getProductionDesignCode()}</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;">
+    <thead style="">
+    <tr>
+        <th style="width: 34%;" class="headerZero"></th>
+        <th style="width: 33%;" class="headerZero"></th>
+        <th style="width: 34%;" class="headerZero"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr style="color:  black;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;font-size: 24px;'></span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;font-size: 24px;'>شماره فرمول</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;background: #00A77D;"><span
+                style='font-weight:bold;font-size: 24px;background: #00A77D;'>مشخصات</span></td>
+    </tr>
+    <tr style="color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>بدنه</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>{$model->getBodyLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>وزن:{$model->getBodyWeight()}</span></td>
+    </tr>
+    <tr style="color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>انگوب</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>{$model->getEngobeLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>وزن:{$model->getEngobeWeight()}</span></td>
+    </tr>
+    <tr style="color:  darkcyan;">
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>لعاب</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>{$model->getGlazeLabel()}</span></td>
+        <td class="noHover" style="border: 1px solid darkcyan;padding: 8px;text-align: center;"><span
+                style='font-weight:bold;'>وزن:{$model->getGlazeWeight()}</span></td>
+    </tr>
+    </tbody>
+</table>

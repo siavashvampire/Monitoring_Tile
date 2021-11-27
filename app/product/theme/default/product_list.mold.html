@@ -17,6 +17,7 @@
                                     <th style="width: 24%">{_ "name"} {$item_label}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 4%"></th>
+                                        <th style="width: 4%"></th>
                                     {/if}
                                 </tr>
                                 </thead>
@@ -27,8 +28,13 @@
                                     {if $editAccess == 'true'}
                                     <td>
                                         <button class="btn btn-link text-info"
-                                                onclick="openItemEditor('{$item.id}','{$item.label}','{$item.length}','{$item.width}','{$item.thickness}')">
+                                                onclick="location.href='{url}{$ChangeURL}/{$item.id}'">
                                             <i class="fa fa-pencil"></i></button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-link text-info"
+                                                onclick="location.href='{url}{$PDFURL}/{$item.id}'">
+                                            <i class="fa fa-address-card-o"></i></button>
                                     </td>
                                     {/if}
                                 </tr>
@@ -60,58 +66,4 @@
 {/map}
 
 {map footerjs}
-<script>
-    let urlc = '{url current}';
-    let div = '{$loadDivID}';
-    let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
-    let edit_item = '{_ "Edit"} {$item_label}';
-    let changeSuccessfully = '{_ "changeSuccessfully"}';
-
-    function openItemEditor(id, name, length, width, thickness) {
-        if (id === "") {
-            $('#exampleModalLabel').html(add_new_item);
-            $('#label').val("");
-            $('#id').val("");
-            $('#length_send').val("");
-            $('#width_send').val("");
-            $('#thickness_send').val("");
-        } else {
-            $('#exampleModalLabel').html(edit_item + " " + name);
-            $('#label').val(name);
-            $('#id').val(id);
-            $('#length_send').val(length);
-            $('#width_send').val(width);
-            $('#thickness_send').val(thickness);
-        }
-        $('.bmd-label-static').removeClass('bmd-label-static');
-        $('#sendDataButton').show();
-        $('#dataSendAlert').hide();
-        $('#exampleModal').modal('show');
-    }
-
-    function sendItem() {
-        $.ajax({
-            url: urlc + '/update',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                'label': $('#label').val(),
-                'id': $('#id').val(),
-                'length': $('#length_send').val(),
-                'width': $('#width_send').val(),
-                'thickness': $('#thickness_send').val(),
-            },
-            success: function (result) {
-                if (result['status']) {
-                    $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
-                    $('#sendDataButton').hide();
-                    load();
-                    return false;
-                } else {
-                    $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
-                }
-            }
-        });
-    }
-</script>
 {/map}

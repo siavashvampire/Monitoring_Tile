@@ -153,7 +153,6 @@ class product extends controller
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'list', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('activeMenu', $this->active_menu);
-        $this->mold->set('item_label', $this->item_label);
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
@@ -184,7 +183,8 @@ class product extends controller
         $this->mold->set('model', $model);
         $this->mold->set('date', JDate::jdate('Y/m/d'));
 
-        $file_name = "بخش ";
+        $file_name = "شناسنامه محصول ";
+        $file_name .= $model->getLabel();
 
         $this->mold->setPageTitle('گزارش گیری خدمات');
         $this->mold->unshow('footer.mold.html');

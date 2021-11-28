@@ -3,6 +3,7 @@
 namespace App\post_design;
 
 use app;
+use App\core\controller\fieldService;
 use App\user\app_provider\api\user;
 use pluginController;
 
@@ -45,6 +46,9 @@ class hook extends pluginController
 
         $adminUserList = user::getUsersByGroupId((int)$this->setting('postAdmin', 'post_design', true))["result"];
         $this->mold->set('adminUserList', $adminUserList);
+
+        $listfields = fieldService::getFieldsToEdit(1, 'post_type');;
+        $this->mold->set('listfields', $listfields);
 
         $this->mold->view('configuration.system.mold.html');
         $this->mold->path($getPath['folder'], $getPath['app']);

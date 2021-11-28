@@ -130,7 +130,19 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr style="border: 2px solid!important;color:  darkcyan;background-color: #c0fcca!important;">
+                                                {set finished,"0"}
+                                                {foreach from=$allFields key=key2 value=fields}
+                                                    {if ($key2 == $index) }
+                                                        {foreach from=$fields key=key value=field}
+                                                            {if ($field.title == $finishedFlagText) }
+                                                                {if isset($field.value) }
+                                                                    {set finished,"1"}
+                                                                {/if}
+                                                            {/if}
+                                                        {/foreach}
+                                                    {/if}
+                                                {/foreach}
+                                                <tr style="border: 2px solid!important;color:  darkcyan;{if $finished == 1 }background-color: #d5ffe5!important;{else}background-color: #fffde5!important;{/if}">
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.fname} {$Vote.lname}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.brand}</span></td>
                                                     <td class="noHover"><span style='font-weight:bold;'>{$Vote.phase}</span></td>

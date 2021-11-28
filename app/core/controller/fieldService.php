@@ -53,6 +53,9 @@ class fieldService extends innerController {
 		}
 		return ( isset($return['result']) ? $return['result'] : [] ) ;
 	}
+	public static function getFieldsById($fieldsId) {
+		return fields::getFieldsById($fieldsId);
+	}
 
 	public static function getFieldsToFillOut($serviceId,$serviceType, &$mold = null ) {
 		$return =  fields::getFieldsToEdit($serviceId,$serviceType , ['admin' , 'invisible'] , true);

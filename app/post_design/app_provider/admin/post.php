@@ -192,9 +192,10 @@ class post extends controller
             $this->mold->set('canChangeFinished', false);
         $this->mold->set('typeNames', $type);
         $this->mold->set('eval', $eval);
+        $this->mold->set('finishedFlagText', fieldService::getFieldsById((int)$this->setting('finished_field'))['result'][0]["title"]);
+
         $this->mold->set('allFields', $allFields['result']);
         $this->mold->set('activeMenu', 'post_list');
-
         $this->mold->path('default', 'post_design');
         $this->mold->view('FD_Evaluation_list.mold.html');
         $this->mold->setPageTitle('واحد فروش' . '(' . $numberOfAll . ')');

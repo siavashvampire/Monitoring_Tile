@@ -84,7 +84,7 @@ class product extends controller
         } else
             $model = parent::model($this->model_name);
         if (request::ispost()) {
-            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color');
+            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color,degree');
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
                 "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
@@ -124,6 +124,7 @@ class product extends controller
                     $Dis .= $model->getlabel() . " ";
                     $Dis .= rlang('changed');
                     app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(),$get['digitalPrint_color']);
+                    app\product\app_provider\api\product::degree_insert($model->getId(),$get['degree']);
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
@@ -188,6 +189,7 @@ class product extends controller
         $this->mold->set('model', $model);
         $this->mold->set('date', JDate::jdate('Y/m/d'));
         $this->mold->set('digitalPrint_colors', App\product\app_provider\api\product::digitalPrint_color_with_value($id)["result"]);
+        $this->mold->set('degrees', App\product\app_provider\api\product::degree_with_value($id)["result"]);
 
 
         $file_name = "شناسنامه محصول ";

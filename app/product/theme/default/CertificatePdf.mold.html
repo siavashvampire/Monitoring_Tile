@@ -159,3 +159,34 @@
     {/foreach}
     </tbody>
 </table>
+
+<div style="text-align: center;font-size: 18px;">
+    <label>{_ "print"} {_ "digital"}</label>
+</div>
+
+<br>
+
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+    <thead>
+    <tr>
+        <th style="width: 50%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            {_ "anticipation"} {_ "degree"}
+        </th>
+        <th style="width: 50%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            {_ "Percent"} {_ "suggested"}
+        </th>
+    </tr>
+    </thead>
+    <tbody style="border-bottom: 2px solid darkcyan;">
+    {foreach from=$degrees key=key value=item }
+    <tr style="color:  gray;">
+        <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;text-align: center;height:30px;">
+            {_ "degree"} {$item.label}
+        </td>
+        <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;text-align: center;height:30px;">
+            {$item.value}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>

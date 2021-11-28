@@ -6,6 +6,9 @@ use app;
 use App\product\model\product_body;
 use App\product\model\product_brand;
 use App\product\model\product_color;
+use App\product\model\product_complementary_printing_after_digital;
+use App\product\model\product_complementary_printing_before_digital;
+use App\product\model\product_cylinder;
 use App\product\model\product_decor;
 use App\product\model\product_degree;
 use App\product\model\product_effect;
@@ -44,6 +47,9 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_strap', 'تسمه ها', app::getBaseAppLink('product_strap', 'admin'), 'fa fa-link', '', 'admin/product_strap/index/product');
         $this->menu->addChild('configurationLine', 'product_engobe', 'انگوب ها', app::getBaseAppLink('product_engobe', 'admin'), 'fa fa-delicious', '', 'admin/product_engobe/index/product');
         $this->menu->addChild('configurationLine', 'product_body', 'بدنه ها', app::getBaseAppLink('product_body', 'admin'), 'fa fa-cube', '', 'admin/product_body/index/product');
+        $this->menu->addChild('configurationLine', 'product_cylinder', 'سیلندر ها', app::getBaseAppLink('product_cylinder', 'admin'), 'fa fa-cube', '', 'admin/product_cylinder/index/product');
+        $this->menu->addChild('configurationLine', 'product_complementary_printing_before_digital', 'چاپ مکمل قبل از دیجیتال', app::getBaseAppLink('product_complementary_printing_before_digital', 'admin'), 'fa fa-cube', '', 'admin/product_complementary_printing_before_digital/index/product');
+        $this->menu->addChild('configurationLine', 'product_complementary_printing_after_digital', 'چاپ مکمل بعد از دیجیتال', app::getBaseAppLink('product_complementary_printing_after_digital', 'admin'), 'fa fa-cube', '', 'admin/product_complementary_printing_after_digital/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array
@@ -679,6 +685,129 @@ class hook extends pluginController
         return $model->getLabel();
     }
 
+    public function _fieldService_showToFillOut_productCylinder($vars2)
+    {
+        $modelName = 'product_cylinder';
+        /* @var product_cylinder $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productCylinder($fieldInformation = null)
+    {
+        $modelName = 'product_cylinder';
+        /** @var product_cylinder $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
+    public function _fieldService_showToFillOut_productComplementaryPrintingBeforeDigital($vars2)
+    {
+        $modelName = 'product_complementary_printing_before_digital';
+        /* @var product_complementary_printing_before_digital $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productComplementaryPrintingBeforeDigital($fieldInformation = null)
+    {
+        $modelName = 'product_complementary_printing_before_digital';
+        /** @var product_complementary_printing_before_digital $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
+    public function _fieldService_showToFillOut_productComplementaryPrintingAfterDigital($vars2)
+    {
+        $modelName = 'product_complementary_printing_after_digital';
+        /* @var product_complementary_printing_after_digital $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productComplementaryPrintingAfterDigital($fieldInformation = null)
+    {
+        $modelName = 'product_complementary_printing_after_digital';
+        /** @var product_complementary_printing_after_digital $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
     public function _logField(): array
     {
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
@@ -698,6 +827,9 @@ class hook extends pluginController
             ["value" => "product_engobe", "label" => "تغییرات انگوب ها"],
             ["value" => "product_body", "label" => "تغییرات بدنه ها"],
             ["value" => "product_digitalPrint_color", "label" => "تغییرات رنگ چاپ دیجیتال"],
+            ["value" => "product_cylinder", "label" => "تغییرات سیلندر ها"],
+            ["value" => "product_complementary_printing_before_digital", "label" => "تغییرات چاپ مکمل قبل از دیجیتال"],
+            ["value" => "product_complementary_printing_after_digital", "label" => "تغییرات چاپ مکمل بعد از دیجیتال"],
         ];
     }
 }

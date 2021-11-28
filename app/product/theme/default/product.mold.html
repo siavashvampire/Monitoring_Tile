@@ -234,6 +234,78 @@
                     </div>
                     <hr>
                     <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="glaze" class="col-form-label col-md-3 float-right">{_ "complementary_printing_before_digital"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="complementary_printing_before_digital" name="complementary_printing_before_digital" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "complementary_printing"}">
+                                        {foreach from=$complementary_printing_before_digital key=key value=item }
+                                            <option value="{$item.id}" {if isset($Mold.post.complementary_printing_before_digital)}{if $item.id == $Mold.post.complementary_printing_before_digital}selected{/if}{elseif isset($model) and $item.id == $model->getComplementaryPrintingBeforeDigital()}selected{/if} >{$item.label}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" class="form-control" required id="complementary_printing_before_digital_weight" name="complementary_printing_before_digital_weight" value="{if isset($Mold.post.complementary_printing_before_digital_weight)}{$Mold.post.complementary_printing_before_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingBeforeDigitalWeight()}{else}0{/if}" style="text-align: center">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="glaze" class="col-form-label col-md-3 float-right">{_ "cylinder"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required  name="cylinder_before" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "cylinder"}">
+                                    {foreach from=$cylinder key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.cylinder_before)}{if $item.id == $Mold.post.cylinder_before}selected{/if}{elseif isset($model) and $item.id == $model->getCylinderBefore()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="glaze" class="col-form-label col-md-3 float-right">{_ "complementary_printing_after_digital"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="complementary_printing_after_digital" name="complementary_printing_after_digital" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "complementary_printing"}">
+                                        {foreach from=$complementary_printing_after_digital key=key value=item }
+                                            <option value="{$item.id}" {if isset($Mold.post.complementary_printing_after_digital)}{if $item.id == $Mold.post.complementary_printing_after_digital}selected{/if}{elseif isset($model) and $item.id == $model->getComplementaryPrintingAfterDigital()}selected{/if} >{$item.label}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                        <input type="number" min="0" class="form-control" required id="complementary_printing_after_digital_weight" name="complementary_printing_after_digital_weight" value="{if isset($Mold.post.complementary_printing_after_digital_weight)}{$Mold.post.complementary_printing_after_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingAfterDigitalWeight()}{else}0{/if}" style="text-align: center">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="glaze" class="col-form-label col-md-3 float-right">{_ "cylinder"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required  name="cylinder_after" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "cylinder"}">
+                                    {foreach from=$cylinder key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.cylinder_after)}{if $item.id == $Mold.post.cylinder_after}selected{/if}{elseif isset($model) and $item.id == $model->getCylinderAfter()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="col-md-8 form-group">
                             <div class="col-md-4" style="display: flex;align-items: center;height: 100%;">
                                 <label class="float-right">{_ "print"} {_ "digital"}:<span class="text-danger">*</span></label>

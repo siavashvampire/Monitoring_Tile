@@ -82,7 +82,7 @@ class product extends controller
         } else
             $model = parent::model($this->model_name);
         if (request::ispost()) {
-            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color,degree');
+            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color,degree,complementary_printing_before_digital,complementary_printing_before_digital_weight,cylinder_before,cylinder_after,complementary_printing_after_digital,complementary_printing_after_digital_weight');
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
                 "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
@@ -115,6 +115,12 @@ class product extends controller
             $model->setEngobeWeight($get['engobe_weight']);
             $model->setGlaze($get['glaze']);
             $model->setGlazeWeight($get['glaze_weight']);
+            $model->setCylinderBefore($get['cylinder_before']);
+            $model->setCylinderAfter($get['cylinder_after']);
+            $model->setComplementaryPrintingBeforeDigital($get['complementary_printing_before_digital']);
+            $model->setComplementaryPrintingBeforeDigitalWeight($get['complementary_printing_before_digital_weight']);
+            $model->setComplementaryPrintingAfterDigital($get['complementary_printing_after_digital']);
+            $model->setComplementaryPrintingAfterDigitalWeight($get['complementary_printing_after_digital_weight']);
 
             if ($id != null) {
                 if ($model->upDateDataBase()) {
@@ -169,6 +175,9 @@ class product extends controller
         $this->mold->set('decors', App\product\app_provider\api\product::decor()["result"]);
         $this->mold->set('engobes', App\product\app_provider\api\product::engobe()["result"]);
         $this->mold->set('bodys', App\product\app_provider\api\product::body()["result"]);
+        $this->mold->set('cylinder', App\product\app_provider\api\product::cylinder()["result"]);
+        $this->mold->set('complementary_printing_before_digital', App\product\app_provider\api\product::complementary_printing_before_digital()["result"]);
+        $this->mold->set('complementary_printing_after_digital', App\product\app_provider\api\product::complementary_printing_after_digital()["result"]);
 
         return false;
     }
@@ -197,6 +206,7 @@ class product extends controller
         $this->mold->unshow('footer.mold.html');
         $htmlpersian = $this->mold->render();
 //        show($htmlpersian);
+
         $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => false, 'type' => 'A4', 'font_size' => 12]);
     }
 }

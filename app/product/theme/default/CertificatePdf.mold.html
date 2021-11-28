@@ -95,7 +95,7 @@
         </td>
     </tr>
 
-    <tr style="color:gray;height:500px;">
+    <tr style="color:gray;height:30px;">
         <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
             <label style='font-weight:bold;'>
                 انگوب
@@ -113,7 +113,7 @@
         </td>
     </tr>
 
-    <tr style="color:gray;height:500px;">
+    <tr style="color:gray;height:30px;">
         <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
             <label style="font-size: 14px;color:gray;">
                 لعاب
@@ -123,6 +123,48 @@
                 style='font-weight:bold;'>{$model->getGlazeLabel()}</label></td>
         <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
                 style='font-weight:bold;'>وزن:{$model->getGlazeWeight()}</label></td>
+    </tr>
+    <tr style="color:gray;height:30px;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {_ "complementary_printing_before_digital"}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {$model->getComplementaryPrintingBeforeDigitalLabel()}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                وزن:{$model->getComplementaryPrintingBeforeDigitalWeight()}
+            </label>
+            <br>
+            <label style='font-weight:bold;'>
+                سیلندر:{$model->getCylinderBeforeLabel()}
+            </label>
+        </td>
+    </tr>
+    <tr style="color:gray;height:30px;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {_ "complementary_printing_after_digital"}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {$model->getComplementaryPrintingAfterDigitalLabel()}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                وزن:{$model->getComplementaryPrintingAfterDigitalWeight()}
+            </label>
+            <br>
+            <label style='font-weight:bold;'>
+                سیلندر:{$model->getCylinderAfterLabel()}
+            </label>
+        </td>
     </tr>
     </tbody>
 </table>

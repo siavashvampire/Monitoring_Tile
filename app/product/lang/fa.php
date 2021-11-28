@@ -30,4 +30,8 @@ return [
     'degree'                                        => 'درجه بندی',
     'suggested'                                     => 'پیشنهادی',
     'anticipation'                                  => 'پیش بینی',
+    'complementary_printing_before_digital'         => 'چاپ مکمل قبل از دیجیتال',
+    'complementary_printing_after_digital'          => 'چاپ مکمل بعد از دیجیتال',
+    'cylinder'                                      => 'سیلندر',
+    'complementary_printing'                        => 'چاپ مکمل',
 ];

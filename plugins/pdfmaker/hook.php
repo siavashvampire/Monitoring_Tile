@@ -67,7 +67,6 @@ class hook extends pluginController
         $pdf->writeHTML($htmlpersian, true, true, true, true,'C');
 //        $pdf->MultiCell(300, 500, $htmlpersian, 0, 'C',false,1,'','',true,0,true);
 
-
         //Close and output PDF document
         $pdf->Output($nameOfFile . '.pdf', 'I');
     }

@@ -55,6 +55,45 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_cylinder' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_complementary_printing_before_digital' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_complementary_printing_after_digital' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product_color' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -274,6 +313,12 @@ return [
                 'size' => "INT(11) NOT NULL",
                 'phase' => "INT(11) NOT NULL",
                 'color' => "INT(11) NOT NULL",
+                'cylinder_before' => "INT(11) NOT NULL",
+                'cylinder_after' => "INT(11) NOT NULL",
+                'complementary_printing_before_digital' => "INT(11) NOT NULL",
+                'complementary_printing_before_digital_weight' => "INT(11) NOT NULL",
+                'complementary_printing_after_digital' => "INT(11) NOT NULL",
+                'complementary_printing_after_digital_weight' => "INT(11) NOT NULL",
                 'punch' => "INT(11) NULL DEFAULT NULL",
                 'degree' => "INT(11) NULL DEFAULT NULL",
                 'weight' => "INT(11) NULL DEFAULT NULL",
@@ -294,6 +339,9 @@ return [
                 'size',
                 'phase',
                 'color',
+                'cylinder',
+                'complementary_printing_before_digital',
+                'complementary_printing_after_digital',
                 'punch',
                 'degree',
                 'pallet',
@@ -311,6 +359,9 @@ return [
                 'kind' => ['table' => 'product_kind', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'size' => ['table' => 'product_size', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'color' => ['table' => 'product_color', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'cylinder' => ['table' => 'product_cylinder', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'complementary_printing_before_digital' => ['table' => 'product_complementary_printing_before_digital', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'complementary_printing_after_digital' => ['table' => 'product_complementary_printing_after_digital', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'punch' => ['table' => 'product_punch', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'degree' => ['table' => 'product_degree', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet' => ['table' => 'product_pallet', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],

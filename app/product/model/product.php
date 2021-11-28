@@ -35,6 +35,12 @@ class product extends model implements modelInterFace
     private $engobe_weight;
     private $glaze;
     private $glaze_weight;
+    private $cylinder_before;
+    private $cylinder_after;
+    private $complementary_printing_before_digital;
+    private $complementary_printing_before_digital_weight;
+    private $complementary_printing_after_digital;
+    private $complementary_printing_after_digital_weight;
 
     public function setFromArray($result)
     {
@@ -60,6 +66,12 @@ class product extends model implements modelInterFace
         $this->engobe_weight = $result['engobe_weight'];
         $this->glaze = $result['glaze'];
         $this->glaze_weight = $result['glaze_weight'];
+        $this->cylinder_before = $result['cylinder_before'];
+        $this->cylinder_after = $result['cylinder_after'];
+        $this->complementary_printing_before_digital = $result['complementary_printing_before_digital'];
+        $this->complementary_printing_before_digital_weight = $result['complementary_printing_before_digital_weight'];
+        $this->complementary_printing_after_digital = $result['complementary_printing_after_digital'];
+        $this->complementary_printing_after_digital_weight = $result['complementary_printing_after_digital_weight'];
     }
 
     public function returnAsArray()
@@ -86,6 +98,12 @@ class product extends model implements modelInterFace
         $array['engobe_weight'] = $this->engobe_weight;
         $array['glaze'] = $this->glaze;
         $array['glaze_weight'] = $this->glaze_weight;
+        $array['cylinder_before'] = $this->cylinder_before;
+        $array['cylinder_after'] = $this->cylinder_after;
+        $array['complementary_printing_before_digital'] = $this->complementary_printing_before_digital;
+        $array['complementary_printing_before_digital_weight'] = $this->complementary_printing_before_digital_weight;
+        $array['complementary_printing_after_digital'] = $this->complementary_printing_after_digital;
+        $array['complementary_printing_after_digital_weight'] = $this->complementary_printing_after_digital_weight;
         return $array;
     }
 
@@ -562,6 +580,133 @@ class product extends model implements modelInterFace
     public function setGlazeWeight($glaze_weight): void
     {
         $this->glaze_weight = $glaze_weight;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCylinderBefore()
+    {
+        return $this->cylinder_before;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCylinderBeforeLabel()
+    {
+        return parent::search([$this->cylinder_before], 'item.id = ?', 'product_cylinder' . ' item', 'item.label')[0]['label'];
+    }
+
+    /**
+     * @param mixed $cylinder_before
+     */
+    public function setCylinderBefore($cylinder_before): void
+    {
+        $this->cylinder_before = $cylinder_before;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCylinderAfter()
+    {
+        return $this->cylinder_after;
+    }
+    /**
+     * @return mixed
+     */
+    public function getCylinderAfterLabel()
+    {
+        return parent::search([$this->cylinder_after], 'item.id = ?', 'product_cylinder' . ' item', 'item.label')[0]['label'];
+    }
+
+    /**
+     * @param mixed $cylinder_after
+     */
+    public function setCylinderAfter($cylinder_after): void
+    {
+        $this->cylinder_after = $cylinder_after;
+    }
+
+
+
+
+    /**
+     * @return mixed
+     */
+    public function getComplementaryPrintingBeforeDigital()
+    {
+        return $this->complementary_printing_before_digital;
+    }
+    /**
+     * @return mixed
+     */
+    public function getComplementaryPrintingBeforeDigitalLabel()
+    {
+        return parent::search([$this->complementary_printing_before_digital], 'item.id = ?', 'product_complementary_printing_before_digital' . ' item', 'item.label')[0]['label'];
+    }
+
+    /**
+     * @param mixed $complementary_printing_before_digital
+     */
+    public function setComplementaryPrintingBeforeDigital($complementary_printing_before_digital): void
+    {
+        $this->complementary_printing_before_digital = $complementary_printing_before_digital;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComplementaryPrintingBeforeDigitalWeight()
+    {
+        return $this->complementary_printing_before_digital_weight;
+    }
+
+    /**
+     * @param mixed $complementary_printing_before_digital_weight
+     */
+    public function setComplementaryPrintingBeforeDigitalWeight($complementary_printing_before_digital_weight): void
+    {
+        $this->complementary_printing_before_digital_weight = $complementary_printing_before_digital_weight;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComplementaryPrintingAfterDigital()
+    {
+        return $this->complementary_printing_after_digital;
+    }
+    /**
+     * @return mixed
+     */
+    public function getComplementaryPrintingAfterDigitalLabel()
+    {
+        return parent::search([$this->complementary_printing_after_digital], 'item.id = ?', 'product_complementary_printing_after_digital' . ' item', 'item.label')[0]['label'];
+    }
+
+    /**
+     * @param mixed $complementary_printing_after_digital
+     */
+    public function setComplementaryPrintingAfterDigital($complementary_printing_after_digital): void
+    {
+        $this->complementary_printing_after_digital = $complementary_printing_after_digital;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getComplementaryPrintingAfterDigitalWeight()
+    {
+        return $this->complementary_printing_after_digital_weight;
+    }
+
+    /**
+     * @param mixed $complementary_printing_after_digital_weight
+     */
+    public function setComplementaryPrintingAfterDigitalWeight($complementary_printing_after_digital_weight): void
+    {
+        $this->complementary_printing_after_digital_weight = $complementary_printing_after_digital_weight;
     }
 
 

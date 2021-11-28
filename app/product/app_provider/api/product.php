@@ -6,6 +6,9 @@ use App\api\controller\innerController;
 use App\core\controller\fieldService;
 use App\product\model\product_body;
 use App\product\model\product_color;
+use App\product\model\product_complementary_printing_after_digital;
+use App\product\model\product_complementary_printing_before_digital;
+use App\product\model\product_cylinder;
 use App\product\model\product_decor;
 use App\product\model\product_degree;
 use App\product\model\product_digitalPrint_color;
@@ -102,7 +105,7 @@ class product extends innerController
         $temp = array();
         foreach ($allField as $key => $field) {
             $temp[$key]['label'] = $field["title"];
-            if ($field["value"])
+            if (isset($field["value"]))
                 $temp[$key]['value'] = $field["value"];
             else
                 $temp[$key]['value'] = 0.00;
@@ -216,6 +219,24 @@ class product extends innerController
     {
         /** @var product_engobe $model */
         $model = parent::model(['product', 'product_engobe']);
+        return self::json($model->getItems());
+    }
+    public static function cylinder(): array
+    {
+        /** @var product_cylinder $model */
+        $model = parent::model(['product', 'product_cylinder']);
+        return self::json($model->getItems());
+    }
+    public static function complementary_printing_before_digital(): array
+    {
+        /** @var product_complementary_printing_before_digital $model */
+        $model = parent::model(['product', 'product_complementary_printing_before_digital']);
+        return self::json($model->getItems());
+    }
+    public static function complementary_printing_after_digital(): array
+    {
+        /** @var product_complementary_printing_after_digital $model */
+        $model = parent::model(['product', 'product_complementary_printing_after_digital']);
         return self::json($model->getItems());
     }
 }

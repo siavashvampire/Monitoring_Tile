@@ -21,6 +21,8 @@ class product_digitalPrint_color extends controller
     private $app_name = 'product';
     private $active_menu = 'product_color';
     private $html_file_path = 'product_digitalPrint_color.mold.html';
+    private $serviceId = 1;
+    private $serviceType = 'product_digitalPrint_color';
 
     public function index(): bool
     {
@@ -63,6 +65,7 @@ class product_digitalPrint_color extends controller
     {
         /* @var \App\product\model\product_color $model */
         $get = request::post('id,label');
+
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],
         ];
@@ -83,69 +86,36 @@ class product_digitalPrint_color extends controller
         } else
             $model = parent::model($this->model_name);
 
+        $oldLabel = $model->getLabel();
 
         $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
-
-        $resultUpdateField = fieldService::getFieldsToEdit(1, 'product_digitalPrint_color');
-        $found = false;
-        if ($get['id'] != '') {
-            foreach ($resultUpdateField as $key => $field) {
-                if ($field['title'] == $model->getLabel()) {
-                    $resultUpdateField[$key]['title'] = $get['label'];
-                    $found = true;
-                }
-            }
-        }
 
         $Dis .= $model->getLabel() . " ";
 
         $model->setLabel($get['label']);
 
-        $resultUpdateField = self::convert($resultUpdateField);
 
         if ($get['id'] != '') {
             $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getlabel() . " ";
             $Dis .= rlang('changed');
-            $model->upDateDataBase();
+
+            if (!$model->upDateDataBase()) {
+                Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
+                return false;
+            }
         } else {
             $Dis .= $model->getLabel() . " ";
             $Dis = $Dis . rlang('inserted');
-            $model->insertToDataBase();
+            if (!$model->insertToDataBase()) {
+                Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
+                return false;
+            }
         }
 
-        if (!$found){
-            $temp = array();
-            $temp['id'] = "0";
-            $temp['name'] = $model->getLabel();
-            $temp['type'] = "number";
-            $temp['description'] = "";
-            $temp['status'] = "visible";
-            $temp['value'] = "";
-            $temp['order'] = "";
-            $temp['regex'] = "";
-            $resultUpdateField[] = $temp;
-        }
-
-        fieldService::updateFields(1, 'product_digitalPrint_color', $resultUpdateField);
+        fieldService::updateFieldsByLabel($model, $oldLabel, $this->serviceId, $this->serviceType);
         $this->callHooks('addLog', [$Dis, $this->log_name]);
         Response::jsonMessage(rlang('changeSuccessfully'), true);
         return false;
-    }
-    private function convert($resultUpdateField){
-        $temp = array();
-        $returnArray = array();
-        foreach ($resultUpdateField as $field) {
-            $temp['id'] = $field["fieldId"];
-            $temp['name'] = $field["title"];
-            $temp['type'] = $field["type"];
-            $temp['description'] = $field["description"];
-            $temp['status'] = $field["status"];
-            $temp['value'] = "";
-            $temp['order'] = "";
-            $temp['regex'] = "";
-            $returnArray[] = $temp;
-        }
-        return $returnArray;
     }
 }

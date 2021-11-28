@@ -266,6 +266,38 @@
                     </div>
                     <hr>
                     <div class="row">
+                        <div class="col-md-8 form-group">
+                            <div class="col-md-4" style="display: flex;align-items: center;height: 100%;">
+                                <label class="float-right">{_ "degree"}:<span class="text-danger">*</span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+                                    <thead style="">
+                                    <tr>
+                                        <th style="width: 50%;border: 2px solid darkcyan;padding: 8px;font-size: 16px;font-weight: bold;">{_ "anticipation"} {_ "degree"}</th>
+                                        <th style="width: 50%;border: 2px solid darkcyan;padding: 8px;font-size: 16px;font-weight: bold;">{_ "Percent"} {_ "suggested"}</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody style="border-bottom: 2px solid darkcyan;">
+                                    {foreach from=$degrees key=key value=item }
+                                        <tr>
+                                            <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                                <label style="font-size: 14px;color:gray;" for="degree_{$key}">
+                                                    {_ "degree"} {$item.label}
+                                                </label>
+                                            </td>
+                                            <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                                <input type="number" min="0" step=".01" class="form-control" required id="degree_{$key}" name="degree[]" value="{$item.value}" style="text-align: center">
+                                            </td>
+                                        </tr>
+                                    {/foreach}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
                         <div class="col-md-12">
                             <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i>{_ "insert"}</button>
                         </div>

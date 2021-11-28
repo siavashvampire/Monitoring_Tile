@@ -158,6 +158,7 @@ class product extends controller
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('colors', App\product\app_provider\api\product::color()["result"]);
         $this->mold->set('digitalPrint_colors', App\product\app_provider\api\product::digitalPrint_color_with_value($id)["result"]);
+        $this->mold->set('degrees', App\product\app_provider\api\product::degree_with_value($id)["result"]);
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
         $this->mold->set('templates', App\product\app_provider\api\product::template()["result"]);

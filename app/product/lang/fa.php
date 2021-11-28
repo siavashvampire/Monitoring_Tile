@@ -27,4 +27,7 @@ return [
     'weight_after_chamfer'                          => 'وزن یک قالب محصول پس از چمفر',
     'digital'                                       => 'دیجیتال',
     'ink'                                           => 'جوهر',
+    'degree'                                        => 'درجه بندی',
+    'suggested'                                     => 'پیشنهادی',
+    'anticipation'                                  => 'پیش بینی',
 ];

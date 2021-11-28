@@ -4,33 +4,46 @@ namespace App\product\app_provider\api;
 
 use App\api\controller\innerController;
 use App\core\controller\fieldService;
+use App\product\model\product_body;
+use App\product\model\product_color;
+use App\product\model\product_decor;
+use App\product\model\product_degree;
+use App\product\model\product_digitalPrint_color;
+use App\product\model\product_effect;
+use App\product\model\product_engobe;
+use App\product\model\product_glaze;
+use App\product\model\product_kind;
+use App\product\model\product_punch;
+use App\product\model\product_size;
+use App\product\model\product_technique;
+use App\product\model\product_template;
 
-if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
+if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class product extends innerController
 {
-    public static function size()
+    public static function size(): array
     {
-        /** @var \App\product\model\product_size $model */
+        /** @var product_size $model */
         $model = parent::model(['product', 'product_size']);
         return self::json($model->getItems());
     }
 
-    public static function color()
+    public static function color(): array
     {
-        /** @var \App\product\model\product_color $model */
+        /** @var product_color $model */
         $model = parent::model(['product', 'product_color']);
         return self::json($model->getItems());
     }
 
-    public static function digitalPrint_color()
+    public static function digitalPrint_color(): array
     {
-        /** @var \App\product\model\product_digitalPrint_color $model */
+        /** @var product_digitalPrint_color $model */
         $model = parent::model(['product', 'product_digitalPrint_color']);
         return self::json($model->getItems());
     }
 
-    public static function digitalPrint_color_with_value($id = null)
+    public static function digitalPrint_color_with_value($id = null): array
     {
         $_SERVER['JsonOff'] = true;
         $allField = fieldService::showFilledOutForm(1, 'product_digitalPrint_color', $id, 'color_data')["result"];
@@ -60,44 +73,73 @@ class product extends innerController
 
     }
 
-    public static function body()
+    public static function body(): array
     {
-        /** @var \App\product\model\product_body $model */
+        /** @var product_body $model */
         $model = parent::model(['product', 'product_body']);
         return self::json($model->getItems());
     }
 
-    public static function decor()
+    public static function decor(): array
     {
-        /** @var \App\product\model\product_decor $model */
+        /** @var product_decor $model */
         $model = parent::model(['product', 'product_decor']);
         return self::json($model->getItems());
     }
 
-    public static function degree()
+    public static function degree(): array
     {
-        /** @var \App\product\model\product_degree $model */
+        /** @var product_degree $model */
         $model = parent::model(['product', 'product_degree']);
         return self::json($model->getItems());
     }
 
-    public static function effect()
+    public static function degree_with_value($id = null): array
     {
-        /** @var \App\product\model\product_effect $model */
+        $_SERVER['JsonOff'] = true;
+        $allField = fieldService::showFilledOutForm(1, 'product_degree', $id, 'degree_data')["result"];
+        unset($_SERVER['JsonOff']);
+        $temp = array();
+        foreach ($allField as $key => $field) {
+            $temp[$key]['label'] = $field["title"];
+            if ($field["value"])
+                $temp[$key]['value'] = $field["value"];
+            else
+                $temp[$key]['value'] = 0.00;
+        }
+        return self::json($temp);
+    }
+
+    public static function degree_insert($id, $colors_weight)
+    {
+        $_SERVER['JsonOff'] = true;
+        $resultUpdateField = fieldService::getFieldsToEdit(1, 'product_degree');
+        unset($_SERVER['JsonOff']);
+
+        $temp = array();
+        foreach ($resultUpdateField as $key => $field) {
+            $temp[$field['fieldId']] = (string)$colors_weight[$key];
+        }
+        fieldService::updateFillOutForm(1, 'product_degree', $temp, $id, 'degree_data');
+    }
+
+    public static function effect(): array
+    {
+        /** @var product_effect $model */
         $model = parent::model(['product', 'product_effect']);
         return self::json($model->getItems());
     }
 
-    public static function glaze()
+    public static function glaze(): array
     {
-        /** @var \App\product\model\product_glaze $model */
+        /** @var product_glaze $model */
         $model = parent::model(['product', 'product_glaze']);
         return self::json($model->getItems());
     }
 
-    public static function glazeChild()
+    public static function glazeChild(): array
     {
-        /** @var \App\product\model\product_glaze $model */
+        /** @var product_glaze $model */
         $model = parent::model(['product', 'product_glaze']);
         $value = array();
         $variable = array();
@@ -107,9 +149,9 @@ class product extends innerController
         return self::json($model->getItems($value, $variable));
     }
 
-    public static function glazeByParent($parent)
+    public static function glazeByParent($parent): array
     {
-        /** @var \App\product\model\product_glaze $model */
+        /** @var product_glaze $model */
         $model = parent::model(['product', 'product_glaze']);
         $value = array();
         $variable = array();
@@ -118,9 +160,9 @@ class product extends innerController
         return self::json($model->getItems($value, $variable));
     }
 
-    public static function glazeParents()
+    public static function glazeParents(): array
     {
-        /** @var \App\product\model\product_glaze $model */
+        /** @var product_glaze $model */
         $model = parent::model(['product', 'product_glaze']);
 
         $value = array();
@@ -131,9 +173,9 @@ class product extends innerController
         return self::json($model->getItems($value, $variable));
     }
 
-    public static function glazeGroupList($id)
+    public static function glazeGroupList($id): array
     {
-        /** @var \App\product\model\product_glaze $model */
+        /** @var product_glaze $model */
         $model = parent::model(['product', 'product_glaze'], $id);
         $value = array();
         $variable = array();
@@ -142,37 +184,37 @@ class product extends innerController
         return self::json($model->getItems($value, $variable));
     }
 
-    public static function kind()
+    public static function kind(): array
     {
-        /** @var \App\product\model\product_kind $model */
+        /** @var product_kind $model */
         $model = parent::model(['product', 'product_kind']);
         return self::json($model->getItems());
     }
 
-    public static function punch()
+    public static function punch(): array
     {
-        /** @var \App\product\model\product_punch $model */
+        /** @var product_punch $model */
         $model = parent::model(['product', 'product_punch']);
         return self::json($model->getItems());
     }
 
-    public static function technique()
+    public static function technique(): array
     {
-        /** @var \App\product\model\product_technique $model */
+        /** @var product_technique $model */
         $model = parent::model(['product', 'product_technique']);
         return self::json($model->getItems());
     }
 
-    public static function template()
+    public static function template(): array
     {
-        /** @var \App\product\model\product_template $model */
+        /** @var product_template $model */
         $model = parent::model(['product', 'product_template']);
         return self::json($model->getItems());
     }
 
-    public static function engobe()
+    public static function engobe(): array
     {
-        /** @var \App\product\model\product_engobe $model */
+        /** @var product_engobe $model */
         $model = parent::model(['product', 'product_engobe']);
         return self::json($model->getItems());
     }

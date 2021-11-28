@@ -2,6 +2,7 @@
 
 namespace App\product\app_provider\admin;
 
+use App\core\controller\fieldService;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
@@ -20,6 +21,8 @@ class product_degree extends controller
     private $app_name = 'product';
     private $active_menu = 'product_degree';
     private $html_file_path = 'product_degree.mold.html';
+    private $serviceId = 1;
+    private $serviceType = 'product_degree';
 
     public function index(): bool
     {
@@ -82,6 +85,7 @@ class product_degree extends controller
         } else
             $model = parent::model($this->model_name);
 
+        $oldLabel = $model->getLabel();
 
         $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
         $Dis .= $model->getLabel() . " ";
@@ -94,13 +98,20 @@ class product_degree extends controller
             $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getlabel() . " ";
             $Dis .= rlang('changed');
-            $model->upDateDataBase();
+            if (!$model->upDateDataBase()) {
+                Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
+                return false;
+            }
         } else {
             $Dis .= $model->getLabel() . " ";
             $Dis = $Dis . rlang('inserted');
-            $model->insertToDataBase();
+            if (!$model->insertToDataBase()) {
+                Response::jsonMessage(rlang('insert') . ' ' . rlang("fail") . ' ' . rlang("was"), false);
+                return false;
+            }
         }
 
+        fieldService::updateFieldsByLabel($model, $oldLabel, $this->serviceId, $this->serviceType);
         $this->callHooks('addLog', [$Dis, $this->log_name]);
         Response::jsonMessage(rlang('changeSuccessfully'), true);
         return false;

@@ -5,12 +5,10 @@ namespace App\product\app_provider\admin;
 use App;
 use App\core\controller\httpErrorHandler;
 use App\LineMonitoring\app_provider\api\phases;
-use App\Sections\app_provider\api\sections;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -184,7 +182,7 @@ class product extends controller
         $views = $this->mold->getViews();
         $this->mold->unshow($views);
 
-        /** @var \App\product\model\product $model */
+        /** @var App\product\model\product $model */
         $model = parent::model($this->model_name, $id);
         $this->mold->set('model', $model);
         $this->mold->set('date', JDate::jdate('Y/m/d'));

@@ -69,6 +69,37 @@ class fieldService extends innerController {
 	public static function updateFields($serviceId,$serviceType,$fields,$deletedFields=null){
 		return fields::updateFields($serviceId,$serviceType , $fields , $deletedFields);
 	}
+	public static function updateFieldsByLabel($model, $label, $serviceId, $serviceType){
+        $resultUpdateField = self::getFieldsToEdit($serviceId, $serviceType);
+
+        $found = false;
+        if ($model->getId()) {
+            foreach ($resultUpdateField as $key => $field) {
+                if ($field['title'] == $label) {
+                    $resultUpdateField[$key]['title'] = $model->getLabel();
+                    $found = true;
+                }
+            }
+        }
+
+        $resultUpdateField = self::convertFieldForUpdate($resultUpdateField);
+
+        if (!$found) {
+            $temp = array();
+            $temp['id'] = "0";
+            $temp['name'] = $model->getLabel();
+            $temp['type'] = "number";
+            $temp['description'] = "";
+            $temp['status'] = "visible";
+            $temp['value'] = "";
+            $temp['order'] = "";
+            $temp['regex'] = "";
+            $resultUpdateField[] = $temp;
+        }
+
+        return self::updateFields($serviceId, $serviceType, $resultUpdateField);
+
+    }
 
 	public static function fillOutForm($serviceId,$serviceType,$data,$objectId , $objectType){
 		return fields::fillOutForm($serviceId,$serviceType , $data , $objectId , $objectType);
@@ -110,4 +141,20 @@ class fieldService extends innerController {
 	public static function saveInServiceTable(){
 		fields::$creatTable = true;
 	}
+	public static function convertFieldForUpdate($fields){
+        $temp = array();
+        $returnArray = array();
+        foreach ($fields as $field) {
+            $temp['id'] = $field["fieldId"];
+            $temp['name'] = $field["title"];
+            $temp['type'] = $field["type"];
+            $temp['description'] = $field["description"];
+            $temp['status'] = $field["status"];
+            $temp['value'] = "";
+            $temp['order'] = "";
+            $temp['regex'] = "";
+            $returnArray[] = $temp;
+        }
+        return $returnArray;
+    }
 }

@@ -60,6 +60,21 @@
         <div class="small text-gray"></div>
     </div>
 </div>
+
+<div class="col-md-12 mb-3">
+    <label class="col-md-4 col-form-label" for="field_finished_field">{_ "end"} {_ "field"}<span class="text-danger">*</span> </label>
+    <div class="col-md-8">
+        <select class="selectpicker" id="field_finished_field" name="setting[finished_field]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+            {if isset($values.[$nameApp])}
+                {set value=$values.[$nameApp] name="valueThisOne"}
+            {/if}
+            {foreach from=$listfields key=keyValue value=valueOne}
+                <option value="{$valueOne.fieldId}" {if isset($valueThisOne.finished_field)}{if $valueThisOne.finished_field == $valueOne.fieldId }selected{/if}{elseif isset($Mold.post.setting.finished_field)}{if $Mold.post.setting.finished_field == $valueOne.fieldId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.fieldId}selected{/if} >{$valueOne.title}</option>
+            {/foreach}
+        </select>
+        <div class="small text-gray"></div>
+    </div>
+</div>
 {/if}
 {/if}
 {/map}

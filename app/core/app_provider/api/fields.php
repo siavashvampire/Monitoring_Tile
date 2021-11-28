@@ -74,6 +74,19 @@ class fields extends innerController {
 
 		return self::json($fields);
 	}
+	public static function getFieldsById( $fieldsId){
+		/* @var field $fieldModel */
+		$fieldModel = self::model('field') ;
+		$searchWhere = ' fieldId = ? ';
+		$searchValue[] = $fieldsId ;
+
+
+		$fields = $fieldModel->search($searchValue, $searchWhere ,null,'*',['column'=>'orderNumber' , 'type' => 'desc' ]  );
+		if ( $fields === true)
+			$fields = [] ;
+
+		return self::json($fields);
+	}
 
 
 	public static function updateFields($serviceId , $serviceType , $fields, $deletedFields = null){

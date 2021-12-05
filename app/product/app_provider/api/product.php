@@ -16,6 +16,8 @@ use App\product\model\product_effect;
 use App\product\model\product_engobe;
 use App\product\model\product_glaze;
 use App\product\model\product_kind;
+use App\product\model\product_pallet;
+use App\product\model\product_plastic;
 use App\product\model\product_punch;
 use App\product\model\product_size;
 use App\product\model\product_technique;
@@ -237,6 +239,18 @@ class product extends innerController
     {
         /** @var product_complementary_printing_after_digital $model */
         $model = parent::model(['product', 'product_complementary_printing_after_digital']);
+        return self::json($model->getItems());
+    }
+    public static function plastic(): array
+    {
+        /** @var product_plastic $model */
+        $model = parent::model(['product', 'product_plastic']);
+        return self::json($model->getItems());
+    }
+    public static function pallet(): array
+    {
+        /** @var product_pallet $model */
+        $model = parent::model(['product', 'product_pallet']);
         return self::json($model->getItems());
     }
 }

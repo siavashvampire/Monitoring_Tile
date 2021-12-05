@@ -16,6 +16,8 @@ use App\product\model\product_engobe;
 use App\product\model\product_glaze;
 use App\product\model\product_glue;
 use App\product\model\product_kind;
+use App\product\model\product_pallet;
+use App\product\model\product_plastic;
 use App\product\model\product_size;
 use App\product\model\product_punch;
 use App\product\model\product_strap;
@@ -50,6 +52,8 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_cylinder', 'سیلندر ها', app::getBaseAppLink('product_cylinder', 'admin'), 'fa fa-cube', '', 'admin/product_cylinder/index/product');
         $this->menu->addChild('configurationLine', 'product_complementary_printing_before_digital', 'چاپ مکمل قبل از دیجیتال', app::getBaseAppLink('product_complementary_printing_before_digital', 'admin'), 'fa fa-cube', '', 'admin/product_complementary_printing_before_digital/index/product');
         $this->menu->addChild('configurationLine', 'product_complementary_printing_after_digital', 'چاپ مکمل بعد از دیجیتال', app::getBaseAppLink('product_complementary_printing_after_digital', 'admin'), 'fa fa-cube', '', 'admin/product_complementary_printing_after_digital/index/product');
+        $this->menu->addChild('configurationLine', 'product_plastic', 'پلاستیک ها', app::getBaseAppLink('product_plastic', 'admin'), 'fa fa-cube', '', 'admin/product_plastic/index/product');
+        $this->menu->addChild('configurationLine', 'product_pallet', 'پالت ها', app::getBaseAppLink('product_pallet', 'admin'), 'fa fa-cube', '', 'admin/product_pallet/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array
@@ -808,6 +812,88 @@ class hook extends pluginController
         return $model->getLabel();
     }
 
+    public function _fieldService_showToFillOut_productPlastic($vars2)
+    {
+        $modelName = 'product_plastic';
+        /* @var product_plastic $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productPlastic($fieldInformation = null)
+    {
+        $modelName = 'product_plastic';
+        /** @var product_plastic $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
+    public function _fieldService_showToFillOut_productPallet($vars2)
+    {
+        $modelName = 'product_pallet';
+        /* @var product_pallet $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productPallet($fieldInformation = null)
+    {
+        $modelName = 'product_pallet';
+        /** @var product_pallet $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
     public function _logField(): array
     {
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
@@ -830,6 +916,8 @@ class hook extends pluginController
             ["value" => "product_cylinder", "label" => "تغییرات سیلندر ها"],
             ["value" => "product_complementary_printing_before_digital", "label" => "تغییرات چاپ مکمل قبل از دیجیتال"],
             ["value" => "product_complementary_printing_after_digital", "label" => "تغییرات چاپ مکمل بعد از دیجیتال"],
+            ["value" => "product_plastic", "label" => "تغییرات پلاستیک ها"],
+            ["value" => "product_pallet", "label" => "تغییرات پالت ها"],
         ];
     }
 }

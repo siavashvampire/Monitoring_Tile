@@ -41,6 +41,9 @@ class product extends model implements modelInterFace
     private $complementary_printing_before_digital_weight;
     private $complementary_printing_after_digital;
     private $complementary_printing_after_digital_weight;
+    private $packing;
+    private $carton_packing;
+    private $pallet_packing;
 
     public function setFromArray($result)
     {
@@ -72,6 +75,9 @@ class product extends model implements modelInterFace
         $this->complementary_printing_before_digital_weight = $result['complementary_printing_before_digital_weight'];
         $this->complementary_printing_after_digital = $result['complementary_printing_after_digital'];
         $this->complementary_printing_after_digital_weight = $result['complementary_printing_after_digital_weight'];
+        $this->packing = $result['packing'];
+        $this->carton_packing = $result['carton_packing'];
+        $this->pallet_packing = $result['pallet_packing'];
     }
 
     public function returnAsArray()
@@ -104,6 +110,9 @@ class product extends model implements modelInterFace
         $array['complementary_printing_before_digital_weight'] = $this->complementary_printing_before_digital_weight;
         $array['complementary_printing_after_digital'] = $this->complementary_printing_after_digital;
         $array['complementary_printing_after_digital_weight'] = $this->complementary_printing_after_digital_weight;
+        $array['packing'] = $this->packing;
+        $array['carton_packing'] = $this->carton_packing;
+        $array['pallet_packing'] = $this->pallet_packing;
         return $array;
     }
 
@@ -709,6 +718,53 @@ class product extends model implements modelInterFace
         $this->complementary_printing_after_digital_weight = $complementary_printing_after_digital_weight;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPacking()
+    {
+        return $this->packing;
+    }
+
+    /**
+     * @param mixed $packing
+     */
+    public function setPacking($packing): void
+    {
+        $this->packing = $packing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCartonPacking()
+    {
+        return $this->carton_packing;
+    }
+
+    /**
+     * @param mixed $carton_packing
+     */
+    public function setCartonPacking($carton_packing): void
+    {
+        $this->carton_packing = $carton_packing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPalletPacking()
+    {
+        return $this->pallet_packing;
+    }
+
+    /**
+     * @param mixed $pallet_packing
+     */
+    public function setPalletPacking($pallet_packing): void
+    {
+        $this->pallet_packing = $pallet_packing;
+    }
 
     public function getCount($value = array(), $variable = array())
     {

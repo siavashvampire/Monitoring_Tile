@@ -4,7 +4,11 @@ namespace App\product\app_provider\api;
 
 use App\api\controller\innerController;
 use App\core\controller\fieldService;
+use App\product\model\carton_size;
+use App\product\model\carton_theme;
+use App\product\model\pallet_size;
 use App\product\model\product_body;
+use App\product\model\product_carton;
 use App\product\model\product_color;
 use App\product\model\product_complementary_printing_after_digital;
 use App\product\model\product_complementary_printing_before_digital;
@@ -251,6 +255,30 @@ class product extends innerController
     {
         /** @var product_pallet $model */
         $model = parent::model(['product', 'product_pallet']);
+        return self::json($model->getItems());
+    }
+    public static function carton(): array
+    {
+        /** @var product_carton $model */
+        $model = parent::model(['product', 'product_carton']);
+        return self::json($model->getItems());
+    }
+    public static function carton_theme(): array
+    {
+        /** @var carton_theme $model */
+        $model = parent::model(['product', 'carton_theme']);
+        return self::json($model->getItems());
+    }
+    public static function carton_size(): array
+    {
+        /** @var carton_size $model */
+        $model = parent::model(['product', 'carton_size']);
+        return self::json($model->getItems());
+    }
+    public static function pallet_size(): array
+    {
+        /** @var pallet_size $model */
+        $model = parent::model(['product', 'pallet_size']);
         return self::json($model->getItems());
     }
 }

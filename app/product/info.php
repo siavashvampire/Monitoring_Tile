@@ -503,9 +503,9 @@ return [
                 'engobe_weight' => "INT(11) NOT NULL",
                 'glaze' => "INT(11) NOT NULL",
                 'glaze_weight' => "INT(11) NOT NULL",
-                'packing' => "INT(11) NOT NULL",
                 'carton_packing' => "INT(11) NOT NULL",
                 'pallet_packing' => "INT(11) NOT NULL",
+                'packing' => "INT(11) NOT NULL",
             ],
             'KEY' => [
                 'kind',
@@ -524,9 +524,9 @@ return [
                 'glaze',
                 'engobe',
                 'body',
-                'packing',
                 'carton_packing',
                 'pallet_packing',
+                'packing',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -541,7 +541,6 @@ return [
                 'complementary_printing_after_digital' => ['table' => 'product_complementary_printing_after_digital', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'punch' => ['table' => 'product_punch', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'degree' => ['table' => 'product_degree', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'pallet' => ['table' => 'product_pallet', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'technique' => ['table' => 'product_technique', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'effect' => ['table' => 'product_effect', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'decor' => ['table' => 'product_decor', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
@@ -549,9 +548,9 @@ return [
                 'glaze' => ['table' => 'product_glaze', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'engobe' => ['table' => 'product_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'body' => ['table' => 'product_body', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'packing' => ['table' => 'product_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'carton_packing' => ['table' => 'product_carton_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet_packing' => ['table' => 'product_pallet_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'packing' => ['table' => 'product_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
     ],

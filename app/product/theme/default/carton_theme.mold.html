@@ -1,0 +1,144 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10%;">{_ "code"} {$item_label}</th>
+                                    <th>{_ "name"} {$item_label}</th>
+                                    {if $editAccess == 'true'}
+                                        <th style="width: 25px;"></th>
+                                    {/if}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$items key=key value=item}
+                                    <tr>
+                                        <td>{$item.id}</td>
+                                        <td>{$item.label}</td>
+                                        {if $editAccess == 'true'}
+                                            <td>
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}')">
+                                                    <i class="fa fa-pencil">
+
+                                                    </i>
+                                                </button>
+                                            </td>
+                                        {/if}
+                                    </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    {_ "changeSuccessfully"}
+                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="name" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
+                        <input type="text" class="form-control" id="name" value="">
+                        <input type="hidden" class="form-control" id="id" value="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()" >{_ "send"}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <button class="btn btn-info"  onclick="openItemEditor('','')">
+            <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
+            {_ "add"} {$item_label} {_ "new"}
+        </button>
+    {/if}
+{/map}
+
+{map footerjs}
+<script>
+let urlc = '{url current}' ;
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
+let changeSuccessfully = '{_ "changeSuccessfully"}';
+
+function openItemEditor(id,name){
+    if ( id === "" ){
+        $("#exampleModalLabel").html(add_new_item);
+        $("#name").val("");
+        $("#id").val("");
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    } else {
+        $("#exampleModalLabel").html(edit_item + " " + name);
+        $("#name").val(name);
+        $("#id").val(id);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    }
+    $('.bmd-label-static').removeClass('bmd-label-static');
+    $('#sendDataButton').show();
+    $('#dataSendAlert').hide();
+    $('#exampleModal').modal('show');
+}
+function sendItem(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'label': $('#name').val(),
+            'id': $('#id').val(),
+        } ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
+            }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
+</script>
+{/map}

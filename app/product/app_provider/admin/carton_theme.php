@@ -8,23 +8,22 @@ use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
-use App\product\app_provider\api\product;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class product_pallet extends controller
+class carton_theme extends controller
 {
-    private $item_label = "پالت";
-    private $model_name = 'product_pallet';
-    private $controller_name = 'product_pallet';
-    private $log_name = 'product_pallet';
+    private $item_label = "تم کارتون";
+    private $model_name = 'carton_theme';
+    private $controller_name = 'carton_theme';
+    private $log_name = 'carton_theme';
     private $app_name = 'product';
-    private $active_menu = 'product_pallet';
-    private $html_file_path = 'product_pallet.mold.html';
+    private $active_menu = 'carton_theme';
+    private $html_file_path = 'carton_theme.mold.html';
 
     public function index(): bool
     {
-        /* @var \App\product\model\product_pallet $model */
+        /* @var \App\product\model\carton_theme $model */
         $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -38,7 +37,7 @@ class product_pallet extends controller
             return false;
         } else {
             if ($get['label'] != null) {
-                $value[] = '%' . $get['label'] . '%';
+                $value[] = '%' . $get['name'] . '%';
                 $variable[] = 'item.label Like ? ';
             }
         }
@@ -53,18 +52,16 @@ class product_pallet extends controller
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
-        $this->mold->set('digitalPrint_colors', App\product\app_provider\api\product::digitalPrint_color_with_value($id)["result"]);
         $this->mold->set('item_label', $this->item_label);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->controller_name, 'update', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         return false;
-
     }
 
     public function update(): bool
     {
-        /* @var \App\product\model\product_pallet $model */
-        $get = request::post('id,label,pallet_size,pallet_weight');
+        /* @var \App\product\model\carton_theme $model */
+        $get = request::post('id,label');
         $rules = [
             "label" => ["required", rlang('name') . " " . $this->item_label],
         ];
@@ -86,16 +83,13 @@ class product_pallet extends controller
             $model = parent::model($this->model_name);
 
 
-
         $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
         $Dis .= $model->getLabel() . " ";
 
         $model->setLabel($get['label']);
-        $model->setPalletSize($get['pallet_size']);
-        $model->setPalletWeight($get['pallet_weight']);
+
 
         if ($get['id'] != '') {
-
             $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getlabel() . " ";
             $Dis .= rlang('changed');

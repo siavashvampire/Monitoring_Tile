@@ -227,18 +227,21 @@ class product extends innerController
         $model = parent::model(['product', 'product_engobe']);
         return self::json($model->getItems());
     }
+
     public static function cylinder(): array
     {
         /** @var product_cylinder $model */
         $model = parent::model(['product', 'product_cylinder']);
         return self::json($model->getItems());
     }
+
     public static function complementary_printing_before_digital(): array
     {
         /** @var product_complementary_printing_before_digital $model */
         $model = parent::model(['product', 'product_complementary_printing_before_digital']);
         return self::json($model->getItems());
     }
+
     public static function complementary_printing_after_digital(): array
     {
         /** @var product_complementary_printing_after_digital $model */

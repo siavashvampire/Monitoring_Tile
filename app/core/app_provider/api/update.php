@@ -12,11 +12,12 @@ class update extends innerController
     {
         return self::json(parent::callHooks('should_update'));
     }
+
     public static function need_update(): array
     {
         $updates = parent::callHooks('should_update');
         foreach ($updates as $update) {
-            if(is_array($update))
+            if (is_array($update))
                 return self::json(true);
         }
         return self::json(false);

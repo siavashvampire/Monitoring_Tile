@@ -31,13 +31,14 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class user extends innerController
 {
-    public static function index(){
+    public static function index()
+    {
         $model = parent::model('user');
         $value = array();
         $variable = array();
         $value[] = -1;
         $variable[] = 'item.userId <> ?';
-        return self::json($model->getUsers($value,$variable));
+        return self::json($model->getUsers($value, $variable));
     }
 
 
@@ -292,19 +293,19 @@ class user extends innerController
     /**
      * @param bool $justId
      *
-     * @return bool|null
+     * @return bool|null|array
      *                  [no-access]
      */
-    public static function getUserLogin($justId = false)
+    public static function getUserLogin($justId = false, $json_output = false)
     {
         if (session::has('userAppLoginInformation')) {
             $user = session::get('userAppLoginInformation');
             if ($justId)
-                return $user['userId'];
+                return ($json_output) ? self::json($user['userId']) : $user['userId'];
             else
-                return $user;
+                return ($json_output) ? self::json($user) : $user;
         } else
-            return false;
+            return ($json_output) ? self::json(false) : false;
     }
 
 

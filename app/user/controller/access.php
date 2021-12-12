@@ -78,7 +78,10 @@ class access extends controller
         $input_flag =false;
         $data = null;
         if (session::has('userAppLoginInformation')) {
-            Response::redirect(App::getBaseAppLink(null, 'admin'));
+            if (request::isGet('callBack')) {
+                Response::redirect(urldecode(request::getOne('callBack')));
+            } else
+                Response::redirect(App::getBaseAppLink(null, 'admin'));
             exit;
         }
 
@@ -87,7 +90,7 @@ class access extends controller
             $data['password'] = $password;
             $input_flag = true;
         }
-        
+
 //		if (isset($_POST['username'])) {
 //			$_POST['username'] = str_replace('+', '', $_POST['username']);
 //			$_POST['username'] = (substr($_POST['username'], 0, 1) != '0') ? '0' . $_POST['username'] : $_POST['username'];
@@ -98,7 +101,9 @@ class access extends controller
         $this->mold->view('login.mold.html');
         $this->mold->setPageTitle(rlang('loginInToAccount'));
         $this->callHooks('loginBeforePost', []);
+
         if (request::isPost() or $input_flag) {
+
             $result = user::login(false,$data);
             if (isset($result['status']) and !$result['status']) {
                 $this->alert('danger', '', $result['massage']);

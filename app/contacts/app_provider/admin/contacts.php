@@ -66,6 +66,7 @@ class contacts extends controller
     {
         $get = request::post('name,Phone,send_allow,Access,unit,phase,type', null);
         if ($id != null) {
+            /** @var TYPE_NAME $model */
             $model = parent::model('phone', $id);
 
             if ($model->getId() != $id) {
@@ -105,9 +106,8 @@ class contacts extends controller
             $model->setAccess($get['Access']);
             $model->setUnits($get['unit']);
             $model->setPhase($get['phase']);
-
-
             $model->setType($get['type']);
+
             $Dis = 'مخاطب با نام ';
 
             $Dis = $Dis . $model->getName();

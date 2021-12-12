@@ -4,11 +4,11 @@ namespace App\product\app_provider\admin;
 
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
+use App\user\controller\api;
 use controller;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
-use App\product\app_provider\api\product;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
@@ -25,6 +25,7 @@ class product_pallet extends controller
     public function index(): bool
     {
         /* @var \App\product\model\product_pallet $model */
+        $model = parent::model($this->model_name);
         $get = request::post('page=1,perEachPage=25,label,width,length,thickness');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -43,7 +44,6 @@ class product_pallet extends controller
             }
         }
 
-        $model = parent::model($this->model_name);
         $numberOfAll = $model->getCount($value, $variable);
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
@@ -53,7 +53,7 @@ class product_pallet extends controller
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
-        $this->mold->set('digitalPrint_colors', App\product\app_provider\api\product::digitalPrint_color_with_value($id)["result"]);
+        $this->mold->set('pallet_size', \App\product\app_provider\api\product::pallet_size()["result"]);
         $this->mold->set('item_label', $this->item_label);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->controller_name, 'update', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);

@@ -117,6 +117,9 @@ class product_pallet extends model implements modelInterFace {
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+        parent::join('pallet_size p_size', 'p_size.id =  item.pallet_size');
+
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*,p_size.label as size_label', $sortWith, $pagination);
     }
+
 }

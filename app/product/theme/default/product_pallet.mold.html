@@ -26,11 +26,11 @@
                                 {foreach from=$items key=key value=item}
                                     <tr>
                                         <td>{$item.label}</td>
-                                        <td>{$item.pallet_size}</td>
+                                        <td>{$item.size_label}</td>
                                         <td>{$item.pallet_weight}</td>
                                         {if $editAccess == 'true'}
                                             <td>
-                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.pallet_weight}','{$item.pallet_size}')">
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.pallet_size}','{$item.pallet_weight}')">
                                                     <i class="fa fa-pencil">
 
                                                     </i>
@@ -72,10 +72,15 @@
                     <div class="col-md-12 form-group">
                         <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="label" value="">
+                        <input type="hidden" class="form-control" id="id" value="">
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label for="pallet_size" class="col-form-label float-right">{_ "size"} {$item_label}:</label>
-                        <input type="number" class="form-control" id="pallet_size" value="">
+                    <div class="col-md-6 form-group" id="sizeDiv">
+                        <label for="label" class="col-form-label float-right">{_ "size"} {$item_label}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="pallet_size[]" id="pallet_size" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "size"} {$item_label}" >
+                            {foreach from=$pallet_size key=key value=item }
+                            <option value="{$item.id}"  >{$item.label}</option>
+                            {/foreach}
+                        </select>
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="pallet_weight" class="col-form-label float-right">{_ "weight"} {$item_label}:</label>
@@ -94,7 +99,7 @@
 
 {map navBarButton}
     {if $editAccess == 'true'}
-        <button class="btn btn-info"  onclick="openItemEditor('','')">
+        <button class="btn btn-info"  onclick="openItemEditor('','','','')">
             <span class="btn-label">
                 <i class="fa fa-plus"></i>
             </span>
@@ -109,6 +114,8 @@ let urlc = '{url current}' ;
 let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
 let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
+let unit = $('#sizeDiv').html();
+
 
 function openItemEditor(id,label,pallet_size,pallet_weight){
     if ( id === "" ){
@@ -122,7 +129,10 @@ function openItemEditor(id,label,pallet_size,pallet_weight){
         $("#exampleModalLabel").html(edit_item + " " + label);
         $("#label").val(label);
         $("#id").val(id);
-        $("#pallet_size").val(pallet_size);
+        $("#sizeDiv").html(unit).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+pallet_size+'\']')
+            .attr('selected', true);
         $("#pallet_weight").val(pallet_weight);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     }

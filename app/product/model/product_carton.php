@@ -137,6 +137,8 @@ class product_carton extends model implements modelInterFace {
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+        parent::join('carton_size c_size', 'c_size.id =  item.carton_size');
+        parent::join('carton_theme c_theme', 'c_theme.id =  item.carton_theme');
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*,c_theme.label as theme_label,c_size.label as size_label', $sortWith, $pagination);
     }
 }

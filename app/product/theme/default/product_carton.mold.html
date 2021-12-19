@@ -1,0 +1,185 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10%;">{_ "name"} {$item_label}</th>
+                                    <th>{_ "size"} {$item_label}</th>
+                                    <th>{_ "weight"} {$item_label}</th>
+                                    <th>{_ "theme"} {$item_theme}</th>
+                                    {if $editAccess == 'true'}
+                                        <th style="width: 25px;"></th>
+                                    {/if}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$items key=key value=item}
+                                    <tr>
+                                        <td>{$item.label}</td>
+                                        <td>{$item.size_label}</td>
+                                        <td>{$item.carton_weight}</td>
+                                        <td>{$item.theme_label}</td>
+                                        {if $editAccess == 'true'}
+                                            <td>
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.carton_size}','{$item.carton_weight}','{$item.carton_theme}')">
+                                                    <i class="fa fa-pencil">
+
+                                                    </i>
+                                                </button>
+                                            </td>
+                                        {/if}
+                                    </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    {_ "changeSuccessfully"}
+                </div>
+                <form>
+                    <div class="col-md-6 form-group">
+                        <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
+                        <input type="text" class="form-control" id="label" value="">
+                        <input type="hidden" class="form-control" id="id" value="">
+                    </div>
+                    <div class="col-md-6 form-group" id="themeDiv">
+                        <label for="label" class="col-form-label float-right">{_ "theme"} {$item_label}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton_theme[]" id="carton_theme" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "theme"} {$item_label}" >
+                        {foreach from=$carton_theme key=key value=item }
+                        <option value="{$item.id}"  >{$item.label}</option>
+                        {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group" id="sizeDiv">
+                        <label for="label" class="col-form-label float-right">{_ "size"} {$item_label}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton_size[]" id="carton_size" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "size"} {$item_label}" >
+                            {foreach from=$carton_size key=key value=item }
+                            <option value="{$item.id}"  >{$item.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="carton_weight" class="col-form-label float-right">{_ "weight"} {$item_label}:</label>
+                        <input type="number" class="form-control" id="carton_weight" value="">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()" >{_ "send"}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <button class="btn btn-info"  onclick="openItemEditor('','','','')">
+            <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
+            {_ "add"} {$item_label} {_ "new"}
+        </button>
+    {/if}
+{/map}
+
+{map footerjs}
+<script>
+let urlc = '{url current}' ;
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
+let changeSuccessfully = '{_ "changeSuccessfully"}';
+let unit = $('#sizeDiv').html();
+
+
+function openItemEditor(id,label,carton_size,carton_weight,carton_theme){
+    if ( id === "" ){
+        $("#exampleModalLabel").html(add_new_item);
+        $("#label").val("");
+        $("#id").val("");
+        $("#carton_size").val("");
+        $("#carton_weight").val("");
+        $("#carton_theme").val("");
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    } else {
+        $("#exampleModalLabel").html(edit_item + " " + label);
+        $("#label").val(label);
+        $("#id").val(id);
+        $("#sizeDiv").html(unit).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+carton_size+'\']')
+            .attr('selected', true);
+        $("#carton_weight").val(carton_weight);
+        $("#themeDiv").html(unit).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+carton_theme+'\']')
+            .attr('selected', true);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    }
+    $('.bmd-label-static').removeClass('bmd-label-static');
+    $('#sendDataButton').show();
+    $('#dataSendAlert').hide();
+    $('#exampleModal').modal('show');
+}
+function sendItem(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'label': $('#label').val(),
+            'id': $('#id').val(),
+            'carton_size': $('#carton_size').val(),
+            'carton_weight': $('#carton_weight').val(),
+            'carton_theme': $('#carton_theme').val(),
+        } ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
+            }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
+</script>
+{/map}

@@ -8,6 +8,7 @@ use App\product\model\carton_theme;
 use App\product\model\pallet_size;
 use App\product\model\product_body;
 use App\product\model\product_brand;
+use App\product\model\product_carton;
 use App\product\model\product_color;
 use App\product\model\product_complementary_printing_after_digital;
 use App\product\model\product_complementary_printing_before_digital;
@@ -60,6 +61,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'carton_theme', 'تم کارتون ها', app::getBaseAppLink('carton_theme', 'admin'), 'fa fa-cube', '', 'admin/carton_theme/index/product');
         $this->menu->addChild('configurationLine', 'carton_size', 'سایز کارتون ها', app::getBaseAppLink('carton_size', 'admin'), 'fa fa-cube', '', 'admin/carton_size/index/product');
         $this->menu->addChild('configurationLine', 'pallet_size', 'سایز پالت ها', app::getBaseAppLink('pallet_size', 'admin'), 'fa fa-cube', '', 'admin/pallet_size/index/product');
+        $this->menu->addChild('configurationLine', 'product_carton', ' کارتون ها', app::getBaseAppLink('product_carton', 'admin'), 'fa fa-cube', '', 'admin/product_carton/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array
@@ -1023,6 +1025,47 @@ class hook extends pluginController
         return $model->getLabel();
     }
 
+    public function _fieldService_showToFillOut_productCarton($vars2)
+    {
+        $modelName = 'product_carton';
+        /* @var product_carton $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productCarton($fieldInformation = null)
+    {
+        $modelName = 'product_carton';
+        /** @var product_carton $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
     public function _logField(): array
     {
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
@@ -1050,6 +1093,7 @@ class hook extends pluginController
             ["value" => "carton_theme", "label" => "تغییرات تم کارتون ها"],
             ["value" => "carton_size", "label" => "تغییرات سایز کارتون ها"],
             ["value" => "pallet_size", "label" => "تغییرات سایز پالت ها"],
+            ["value" => "product_carton", "label" => "تغییرات کارتون ها"],
         ];
     }
 }

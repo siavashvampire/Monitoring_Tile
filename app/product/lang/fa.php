@@ -34,4 +34,5 @@ return [
     'complementary_printing_after_digital'          => 'چاپ مکمل بعد از دیجیتال',
     'cylinder'                                      => 'سیلندر',
     'complementary_printing'                        => 'چاپ مکمل',
+    'theme'                                         => 'طرح',
 ];

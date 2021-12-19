@@ -50,5 +50,6 @@ return [
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}phone_type` (`id`, `label`) VALUES (1 , 'bale');",
         "INSERT IGNORE INTO `{prefix}phone_type` (`id`, `label`) VALUES (2 , 'sms');",
+        "INSERT IGNORE INTO `{prefix}phone_type` (`id`, `label`) VALUES (3 , 'whatsApp');",
     ],
 ];

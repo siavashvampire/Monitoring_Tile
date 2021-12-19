@@ -7,21 +7,12 @@ use paymentCms\component\cache;
 
 class contacts_update extends innerController
 {
-    public static function SmsItems()
+    public static function Phones()
     {
         /** @var \App\contacts\model\phone $model */
         $model = parent::model(['contacts', 'phone']);
 
         cache::save('yes', 'is_contacts_update', 2592000, 'contacts');
-        return self::json($model->getSmsItems());
-    }
-
-    public static function BaleItems()
-    {
-        /** @var \App\contacts\model\phone $model */
-        $model = parent::model(['contacts', 'phone']);
-
-        cache::save('yes', 'is_contacts_update', 2592000, 'contacts');
-        return self::json($model->getBaleItems());
+        return self::json($model->getItems());
     }
 }

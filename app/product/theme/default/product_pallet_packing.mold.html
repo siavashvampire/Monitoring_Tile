@@ -16,13 +16,12 @@
                                 <tr>
                                     <th style="width: 10%;">{_ "name"} {$item_label}</th>
                                     <th>{_ "carton"}</th>
-                                    <th>{_ "glue"}</th>
+                                    <th>{_ "pallet"}</th>
                                     <th>{_ "strap"}</th>
                                     <th>{_ "plastic"}</th>
-                                    <th>{_ "weight"} {_ "glue"}</th>
                                     <th>{_ "weight"} {_ "plastic"}</th>
                                     <th>{_ "weight"} {_ "strap"}</th>
-                                    <th>{_ "number_of_tiles"}</th>
+                                    <th>{_ "carton_on_pallet"}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 25px;"></th>
                                     {/if}
@@ -33,16 +32,15 @@
                                     <tr>
                                         <td>{$item.label}</td>
                                         <td>{$item.carton_label}</td>
-                                        <td>{$item.glue_label}</td>
+                                        <td>{$item.pallet_label}</td>
                                         <td>{$item.strap_label}</td>
                                         <td>{$item.plastic_label}</td>
-                                        <td>{$item.glue_weight}</td>
                                         <td>{$item.plastic_weight}</td>
                                         <td>{$item.strap_weight}</td>
-                                        <td>{$item.number_of_tiles}</td>
+                                        <td>{$item.carton_on_pallet}</td>
                                         {if $editAccess == 'true'}
                                             <td>
-                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.carton}','{$item.glue}','{$item.strap}','{$item.plastic}','{$item.glue_weight}','{$item.plastic_weight}','{$item.strap_weight}','{$item.number_of_tiles}')">
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.carton}','{$item.pallet}','{$item.strap}','{$item.plastic}','{$item.plastic_weight}','{$item.strap_weight}','{$item.carton_on_pallet}')">
                                                     <i class="fa fa-pencil">
 
                                                     </i>
@@ -52,7 +50,7 @@
                                     </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="9">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="10">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>
@@ -81,14 +79,14 @@
                     {_ "changeSuccessfully"}
                 </div>
                 <form>
-                    <div class="col-md-12 form-group">
+                    <div class="col-md-6 form-group">
                         <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="label" value="">
                         <input type="hidden" class="form-control" id="id" value="">
                     </div>
                     <div class="col-md-6 form-group">
-                        <label for="number_of_tiles" class="col-form-label float-right">{_ "number_of_tiles"} :</label>
-                        <input type="number" class="form-control" id="number_of_tiles" value="">
+                        <label for="carton_on_pallet" class="col-form-label float-right">{_ "carton_on_pallet"} :</label>
+                        <input type="number" class="form-control" id="carton_on_pallet" value="">
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="plastic_weight" class="col-form-label float-right">{_ "weight"} {_ "plastic"}  :</label>
@@ -98,10 +96,6 @@
                         <label for="strap_weight" class="col-form-label float-right">{_ "weight"} {_ "strap"} :</label>
                         <input type="number" min="0" class="form-control" id="strap_weight" value="">
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label for="glue_weight" class="col-form-label float-right">{_ "weight"} {_ "glue"} :</label>
-                        <input type="number" min="0" class="form-control" id="glue_weight" value="">
-                    </div>
                     <div class="col-md-6 form-group" id="cartonDiv">
                         <label for="carton" class="col-form-label float-right">{_ "carton"} :</label>
                         <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton[]" id="carton" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "carton"} " >
@@ -110,10 +104,10 @@
                         {/foreach}
                         </select>
                     </div>
-                    <div class="col-md-6 form-group" id="glueDiv">
-                        <label for="glue" class="col-form-label float-right">{_ "glue"}:</label>
-                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="glue[]" id="glue" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "glue"}" >
-                            {foreach from=$glue key=key value=item }
+                    <div class="col-md-6 form-group" id="palletDiv">
+                        <label for="pallet" class="col-form-label float-right">{_ "pallet"}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="pallet[]" id="pallet" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "pallet"}" >
+                            {foreach from=$pallet key=key value=item }
                             <option value="{$item.id}"  >{$item.label}</option>
                             {/foreach}
                         </select>
@@ -163,23 +157,22 @@ let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
 let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
 let carton_id = $('#cartonDiv').html();
-let glue_id = $('#glueDiv').html();
+let pallet_id = $('#palletDiv').html();
 let strap_id = $('#strapDiv').html();
 let plastic_id = $('#plasticDiv').html();
 
-function openItemEditor(id,label,carton,glue,strap,plastic,glue_weight,plastic_weight,strap_weight,number_of_tiles){
+function openItemEditor(id,label,carton,pallet,strap,plastic,plastic_weight,strap_weight,carton_on_pallet){
     if ( id === "" ){
         $("#exampleModalLabel").html(add_new_item);
         $("#label").val("");
         $("#id").val("");
         $("#carton").val("");
-        $("#glue").val("");
+        $("#pallet").val("");
         $("#strap").val("");
         $("#plastic").val("");
-        $("#glue_weight").val("");
         $("#plastic_weight").val("");
         $("#strap_weight").val("");
-        $("#number_of_tiles").val("");
+        $("#carton_on_pallet").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
         $("#exampleModalLabel").html(edit_item + " " + label);
@@ -189,9 +182,9 @@ function openItemEditor(id,label,carton,glue,strap,plastic,glue_weight,plastic_w
             .removeAttr('selected')
             .filter('[value=\''+carton+'\']')
             .attr('selected', true);
-        $("#glueDiv").html(glue_id).find('.selectpicker option')
+        $("#palletDiv").html(pallet_id).find('.selectpicker option')
             .removeAttr('selected')
-            .filter('[value=\''+glue+'\']')
+            .filter('[value=\''+pallet+'\']')
             .attr('selected', true);
         $("#strapDiv").html(strap_id).find('.selectpicker option')
             .removeAttr('selected')
@@ -201,10 +194,9 @@ function openItemEditor(id,label,carton,glue,strap,plastic,glue_weight,plastic_w
             .removeAttr('selected')
             .filter('[value=\''+plastic+'\']')
             .attr('selected', true);
-        $("#glue_weight").val(glue_weight);
         $("#plastic_weight").val(plastic_weight);
         $("#strap_weight").val(strap_weight);
-        $("#number_of_tiles").val(number_of_tiles);
+        $("#carton_on_pallet").val(carton_on_pallet);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
 
     }
@@ -222,13 +214,12 @@ function sendItem(){
             'label': $('#label').val(),
             'id': $('#id').val(),
             'carton': $('#carton').val(),
-            'glue': $('#glue').val(),
+            'pallet': $('#pallet').val(),
             'strap': $('#strap').val(),
             'plastic': $('#plastic').val(),
-            'glue_weight': $('#glue_weight').val(),
             'plastic_weight': $('#plastic_weight').val(),
             'strap_weight': $('#strap_weight').val(),
-            'number_of_tiles': $('#number_of_tiles').val(),
+            'carton_on_pallet': $('#carton_on_pallet').val(),
         } ,
         success: function (result) {
             if (result['status']) {

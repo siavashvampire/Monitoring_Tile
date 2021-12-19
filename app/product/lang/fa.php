@@ -38,6 +38,8 @@ return [
     'glue'                                          => 'چسب',
     'strap'                                         => 'تسمه',
     'plastic'                                       => 'پلاستیک',
-    'number_of_tiles'                               => 'تعداد کاشی',
+    'number_of_tiles'                               => 'تعداد کاشی در کارتون',
     'carton'                                        => 'کارتون',
+    'pallet'                                        => 'پالت',
+    'carton_on_pallet'                              => 'تعداد کارتون روی پالت',
 ];

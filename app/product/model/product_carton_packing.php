@@ -230,10 +230,10 @@ class product_carton_packing extends model implements modelInterFace {
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'ASC'], $pagination = [0, 9999])
     {
-        parent::join('product_carton c_label', 'c_label.id =  item.carton');
-        parent::join('product_glue g_label', 'g_label.id =  item.glue');
-        parent::join('product_strap s_label', 's_label.id =  item.strap');
-        parent::join('product_plastic p_label', 'p_label.id =  item.plastic');
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*,c_label.label as carton_label,g_label.label as glue_label,s_label.label as strap_label,p_label.label as plastic_label', $sortWith, $pagination);
+        parent::join('product_carton carton', 'carton.id =  item.carton');
+        parent::join('product_glue glue', 'glue.id =  item.glue');
+        parent::join('product_strap strap', 'strap.id =  item.strap');
+        parent::join('product_plastic plastic', 'plastic.id =  item.plastic');
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*,carton.label as carton_label,glue.label as glue_label,strap.label as strap_label,plastic.label as plastic_label', $sortWith, $pagination);
     }
 }

@@ -211,6 +211,10 @@ class product_pallet_packing extends model implements modelInterFace {
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'ASC'], $pagination = [0, 9999])
     {
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+        parent::join('product_carton carton', 'carton.id =  item.carton');
+        parent::join('product_pallet pallet', 'pallet.id =  item.pallet');
+        parent::join('product_strap strap', 'strap.id =  item.strap');
+        parent::join('product_plastic plastic', 'plastic.id =  item.plastic');
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*,carton.label as carton_label,pallet.label as pallet_label,strap.label as strap_label,plastic.label as plastic_label', $sortWith, $pagination);
     }
 }

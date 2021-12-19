@@ -22,6 +22,7 @@ use App\product\model\product_glaze;
 use App\product\model\product_glue;
 use App\product\model\product_kind;
 use App\product\model\product_pallet;
+use App\product\model\product_pallet_packing;
 use App\product\model\product_plastic;
 use App\product\model\product_size;
 use App\product\model\product_punch;
@@ -63,7 +64,8 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'carton_size', 'سایز کارتون ها', app::getBaseAppLink('carton_size', 'admin'), 'fa fa-cube', '', 'admin/carton_size/index/product');
         $this->menu->addChild('configurationLine', 'pallet_size', 'سایز پالت ها', app::getBaseAppLink('pallet_size', 'admin'), 'fa fa-cube', '', 'admin/pallet_size/index/product');
         $this->menu->addChild('configurationLine', 'product_carton', ' کارتون ها', app::getBaseAppLink('product_carton', 'admin'), 'fa fa-cube', '', 'admin/product_carton/index/product');
-        $this->menu->addChild('configurationLine', 'product_carton_packing', ' نوع بسته بندی کارتو ها', app::getBaseAppLink('product_carton_packing', 'admin'), 'fa fa-cube', '', 'admin/product_carton_packing/index/product');
+        $this->menu->addChild('configurationLine', 'product_carton_packing', ' نوع بسته بندی کارتون ها', app::getBaseAppLink('product_carton_packing', 'admin'), 'fa fa-cube', '', 'admin/product_carton_packing/index/product');
+        $this->menu->addChild('configurationLine', 'product_pallet_packing', ' نوع بسته بندی پالت ها', app::getBaseAppLink('product_pallet_packing', 'admin'), 'fa fa-cube', '', 'admin/product_pallet_packing/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array
@@ -1109,6 +1111,47 @@ class hook extends pluginController
         return $model->getLabel();
     }
 
+    public function _fieldService_showToFillOut_productPalletPacking($vars2)
+    {
+        $modelName = 'product_pallet_packing';
+        /* @var product_pallet_packing $model */
+        $model = $this->model([$this->appName, $modelName]);
+        $searchFathers = $model->getItems();
+
+        $options = '';
+        if (is_array($searchFathers))
+            foreach ($searchFathers as $search) {
+                $selected = '';
+                if (isset($this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']])) {
+                    if (in_array($search['id'], $this->mold->get('Mold')['post']['customField'][$this->mold->get('field')['fieldId']]))
+                        $selected = 'selected';
+                } elseif (isset($this->mold->get('field')['value'])) {
+                    $explodeSelectedValue = explode(' - ', $this->mold->get('field')['value']);
+                    if (in_array($search['id'], $explodeSelectedValue))
+                        $selected = 'selected';
+                }
+                $options .= '<option value ="' . $search['id'] . '" ' . $selected . '>' . $search['label'] . '</option>';
+            }
+        $html = '<div class="' . $this->mold->get('fillOutFieldServiceFormCssClassAllDiv') . '">
+    <label class="' . $this->mold->get('fillOutFieldServiceFormCssClassLabelDiv') . '" for="field_' . $this->mold->get('field')['fieldId'] . '">' . $this->mold->get('field')['title'] . ' ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? '<span class="text-danger">*</span>' : '') . '</label>
+    <div class="' . $this->mold->get('fillOutFieldServiceFormCssClassInputDiv') . '">
+        <select  autocomplete="off" data-live-search="true" class="selectpicker" id="field_' . $this->mold->get('field')['fieldId'] . '"  name="customField[' . $this->mold->get('field')['fieldId'] . '][]" ' . (($this->mold->get('field')['status'] == 'required' and !$this->mold->get('shouldNotUserRequired')) ? 'required' : '') . ' data-size="7" data-style="btn btn-outline-info btn-round text-right" title="' . rlang(['please', 'selecting']) . '">
+        ' . $options . '
+        </select>
+        ' . (($this->mold->get('field')['description'] != '') ? '<div class="small text-gray">' . $this->mold->get('field')['description'] . '</div>' : '') . '
+    </div>
+</div>';
+        return $html;
+    }
+
+    public function _fieldService_showValue_productPalletPacking($fieldInformation = null)
+    {
+        $modelName = 'product_pallet_packing';
+        /** @var product_pallet_packing $model */
+        $model = $this->model([$this->appName, $modelName], $fieldInformation['value']);
+        return $model->getLabel();
+    }
+
     public function _logField(): array
     {
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
@@ -1138,6 +1181,7 @@ class hook extends pluginController
             ["value" => "pallet_size", "label" => "تغییرات سایز پالت ها"],
             ["value" => "product_carton", "label" => "تغییرات کارتون ها"],
             ["value" => "product_carton_packing", "label" => "تغییرات نوع بسته بندی کارتون ها"],
+            ["value" => "product_pallet_packing", "label" => "تغییرات نوع بسته بندی پالت ها"],
         ];
     }
 }

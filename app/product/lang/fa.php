@@ -42,4 +42,6 @@ return [
     'carton'                                        => 'کارتون',
     'pallet'                                        => 'پالت',
     'carton_on_pallet'                              => 'تعداد کارتون روی پالت',
+    'product_carton_packing'                              => 'نوع بسته بندی کارتون',
+    'product_pallet_packing'                              => 'نوع بسته بندی پالت',
 ];

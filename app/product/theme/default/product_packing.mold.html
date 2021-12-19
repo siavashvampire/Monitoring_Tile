@@ -14,33 +14,55 @@
                             <table class="table text-{$text_align}" id="tebleExport">
                                 <thead>
                                 <tr>
-                                    <th style="width: 20%;">{$item_label}</th>
-                                    <th>{_ "carton"}</th>
-                                    <th>{_ "pallet"}</th>
-                                    <th>{_ "strap"}</th>
-                                    <th>{_ "plastic"}</th>
-                                    <th>{_ "weight"} {_ "plastic"}</th>
-                                    <th>{_ "weight"} {_ "strap"}</th>
-                                    <th>{_ "carton_on_pallet"}</th>
+                                    <th style="width: 10%;">{_ "name"} {$item_label}</th>
+                                    <th>{_ "product_carton_packing"}</th>
+                                    <th>{_ "product_pallet_packing"}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 25px;"></th>
                                     {/if}
+                                    <th style="width: 25px;"></th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody style="border-collapse:collapse">
                                 {foreach from=$items key=key value=item}
                                     <tr>
-                                        <td>{$item.label}</td>
+                                        <td colspan="4">
+                                            <table class="table text-{$text_align}" style="margin: unset!important;">
+                                                <thead style="border: 1.5px solid;border-bottom-style : hidden!important;">
+                                                <tr>
+                                                    <th style="width: 25%;" class="headerZero"></th>
+                                                    <th style="width: 25%;" class="headerZero"></th>
+                                                    <th style="width: 25%;" class="headerZero"></th>
+                                                    <th style="width: 25%;" class="headerZero"></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="border: 2px solid!important;color:  darkcyan;background-color: #d5ffe5!important;">
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$item.label}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$item.product_carton_packing}</span></td>
+                                                    <td class="noHover"><span style='font-weight:bold;'>{$item.product_pallet_packing}</span></td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td colspan="1" class="noHover">
+                                                       {$item.carton_packing_carton}
+                                                    </td>
+                                                    <td colspan="1" class="noHover">
+                                                       {$item.carton_packing_carton_size}
+                                                    </td>
+                                                    <td colspan="1" class="noHover">
+                                                       {$item.carton_packing_carton_theme}
+                                                    </td>
                                         <td>{$item.carton_label}</td>
-                                        <td>{$item.pallet_label}</td>
+                                        <td>{$item.glue_label}</td>
                                         <td>{$item.strap_label}</td>
                                         <td>{$item.plastic_label}</td>
+                                        <td>{$item.glue_weight}</td>
                                         <td>{$item.plastic_weight}</td>
                                         <td>{$item.strap_weight}</td>
-                                        <td>{$item.carton_on_pallet}</td>
+                                        <td>{$item.number_of_tiles}</td>
                                         {if $editAccess == 'true'}
                                             <td>
-                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.carton}','{$item.pallet}','{$item.strap}','{$item.plastic}','{$item.plastic_weight}','{$item.strap_weight}','{$item.carton_on_pallet}')">
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.carton}','{$item.glue}','{$item.strap}','{$item.plastic}','{$item.glue_weight}','{$item.plastic_weight}','{$item.strap_weight}','{$item.number_of_tiles}')">
                                                     <i class="fa fa-pencil">
 
                                                     </i>
@@ -50,7 +72,7 @@
                                     </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="10">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="9">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>
@@ -79,14 +101,14 @@
                     {_ "changeSuccessfully"}
                 </div>
                 <form>
-                    <div class="col-md-6 form-group">
-                        <label for="label" class="col-form-label float-right">{$item_label}:</label>
+                    <div class="col-md-12 form-group">
+                        <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
                         <input type="text" class="form-control" id="label" value="">
                         <input type="hidden" class="form-control" id="id" value="">
                     </div>
                     <div class="col-md-6 form-group">
-                        <label for="carton_on_pallet" class="col-form-label float-right">{_ "carton_on_pallet"} :</label>
-                        <input type="number" class="form-control" id="carton_on_pallet" value="">
+                        <label for="number_of_tiles" class="col-form-label float-right">{_ "number_of_tiles"} :</label>
+                        <input type="number" class="form-control" id="number_of_tiles" value="">
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="plastic_weight" class="col-form-label float-right">{_ "weight"} {_ "plastic"}  :</label>
@@ -96,6 +118,10 @@
                         <label for="strap_weight" class="col-form-label float-right">{_ "weight"} {_ "strap"} :</label>
                         <input type="number" min="0" class="form-control" id="strap_weight" value="">
                     </div>
+                    <div class="col-md-6 form-group">
+                        <label for="glue_weight" class="col-form-label float-right">{_ "weight"} {_ "glue"} :</label>
+                        <input type="number" min="0" class="form-control" id="glue_weight" value="">
+                    </div>
                     <div class="col-md-6 form-group" id="cartonDiv">
                         <label for="carton" class="col-form-label float-right">{_ "carton"} :</label>
                         <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton[]" id="carton" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "carton"} " >
@@ -104,10 +130,10 @@
                         {/foreach}
                         </select>
                     </div>
-                    <div class="col-md-6 form-group" id="palletDiv">
-                        <label for="pallet" class="col-form-label float-right">{_ "pallet"}:</label>
-                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="pallet[]" id="pallet" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "pallet"}" >
-                            {foreach from=$pallet key=key value=item }
+                    <div class="col-md-6 form-group" id="glueDiv">
+                        <label for="glue" class="col-form-label float-right">{_ "glue"}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="glue[]" id="glue" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "glue"}" >
+                            {foreach from=$glue key=key value=item }
                             <option value="{$item.id}"  >{$item.label}</option>
                             {/foreach}
                         </select>
@@ -157,22 +183,23 @@ let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
 let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
 let carton_id = $('#cartonDiv').html();
-let pallet_id = $('#palletDiv').html();
+let glue_id = $('#glueDiv').html();
 let strap_id = $('#strapDiv').html();
 let plastic_id = $('#plasticDiv').html();
 
-function openItemEditor(id,label,carton,pallet,strap,plastic,plastic_weight,strap_weight,carton_on_pallet){
+function openItemEditor(id,label,carton,glue,strap,plastic,glue_weight,plastic_weight,strap_weight,number_of_tiles){
     if ( id === "" ){
         $("#exampleModalLabel").html(add_new_item);
         $("#label").val("");
         $("#id").val("");
         $("#carton").val("");
-        $("#pallet").val("");
+        $("#glue").val("");
         $("#strap").val("");
         $("#plastic").val("");
+        $("#glue_weight").val("");
         $("#plastic_weight").val("");
         $("#strap_weight").val("");
-        $("#carton_on_pallet").val("");
+        $("#number_of_tiles").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
         $("#exampleModalLabel").html(edit_item + " " + label);
@@ -182,9 +209,9 @@ function openItemEditor(id,label,carton,pallet,strap,plastic,plastic_weight,stra
             .removeAttr('selected')
             .filter('[value=\''+carton+'\']')
             .attr('selected', true);
-        $("#palletDiv").html(pallet_id).find('.selectpicker option')
+        $("#glueDiv").html(glue_id).find('.selectpicker option')
             .removeAttr('selected')
-            .filter('[value=\''+pallet+'\']')
+            .filter('[value=\''+glue+'\']')
             .attr('selected', true);
         $("#strapDiv").html(strap_id).find('.selectpicker option')
             .removeAttr('selected')
@@ -194,9 +221,10 @@ function openItemEditor(id,label,carton,pallet,strap,plastic,plastic_weight,stra
             .removeAttr('selected')
             .filter('[value=\''+plastic+'\']')
             .attr('selected', true);
+        $("#glue_weight").val(glue_weight);
         $("#plastic_weight").val(plastic_weight);
         $("#strap_weight").val(strap_weight);
-        $("#carton_on_pallet").val(carton_on_pallet);
+        $("#number_of_tiles").val(number_of_tiles);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
 
     }
@@ -214,12 +242,13 @@ function sendItem(){
             'label': $('#label').val(),
             'id': $('#id').val(),
             'carton': $('#carton').val(),
-            'pallet': $('#pallet').val(),
+            'glue': $('#glue').val(),
             'strap': $('#strap').val(),
             'plastic': $('#plastic').val(),
+            'glue_weight': $('#glue_weight').val(),
             'plastic_weight': $('#plastic_weight').val(),
             'strap_weight': $('#strap_weight').val(),
-            'carton_on_pallet': $('#carton_on_pallet').val(),
+            'number_of_tiles': $('#number_of_tiles').val(),
         } ,
         success: function (result) {
             if (result['status']) {

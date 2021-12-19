@@ -17,7 +17,6 @@ class product_packing extends model implements modelInterFace {
 	private $carton_packing_carton ;
 	private $carton_packing_carton_size ;
 	private $carton_packing_carton_theme ;
-	private $carton_packing_carton_thickness ;
 	private $carton_packing_carton_weight ;
 	private $carton_packing_glue ;
 	private $carton_packing_strap ;
@@ -41,7 +40,6 @@ class product_packing extends model implements modelInterFace {
 		$this->carton_packing_carton = $result['carton_packing_carton'] ;
 		$this->carton_packing_carton_size = $result['carton_packing_carton_size'] ;
 		$this->carton_packing_carton_theme = $result['carton_packing_carton_theme'] ;
-		$this->carton_packing_carton_thickness = $result['carton_packing_carton_thickness'] ;
 		$this->carton_packing_carton_weight = $result['carton_packing_carton_weight'] ;
 		$this->carton_packing_glue = $result['carton_packing_glue'] ;
 		$this->carton_packing_strap = $result['carton_packing_strap'] ;
@@ -67,7 +65,6 @@ class product_packing extends model implements modelInterFace {
 		$array['carton_packing_carton'] = $this->carton_packing_carton ;
 		$array['carton_packing_carton_size'] = $this->carton_packing_carton_size ;
 		$array['carton_packing_carton_theme'] = $this->carton_packing_carton_theme ;
-		$array['carton_packing_carton_thickness'] = $this->carton_packing_carton_thickness ;
 		$array['carton_packing_carton_weight'] = $this->carton_packing_carton_weight ;
 		$array['carton_packing_glue'] = $this->carton_packing_glue ;
 		$array['carton_packing_strap'] = $this->carton_packing_strap ;
@@ -182,21 +179,6 @@ class product_packing extends model implements modelInterFace {
         $this->carton_packing_carton_theme = $carton_packing_carton_theme;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCartonPackingCartonThickness()
-    {
-        return $this->carton_packing_carton_thickness;
-    }
-
-    /**
-     * @param mixed $carton_packing_carton_thickness
-     */
-    public function setCartonPackingCartonThickness($carton_packing_carton_thickness): void
-    {
-        $this->carton_packing_carton_thickness = $carton_packing_carton_thickness;
-    }
 
     /**
      * @return mixed
@@ -465,7 +447,7 @@ class product_packing extends model implements modelInterFace {
     /**
      * @param mixed $pallet_packing_carton
      */
-    public function setPalletPackingCarton($pallet_packing_carton): void
+        public function setPalletPackingCarton($pallet_packing_carton): void
     {
         $this->pallet_packing_carton = $pallet_packing_carton;
     }

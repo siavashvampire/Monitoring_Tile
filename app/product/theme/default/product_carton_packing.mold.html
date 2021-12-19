@@ -1,0 +1,247 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                <tr>
+                                    <th style="width: 10%;">{_ "name"} {$item_label}</th>
+                                    <th>{_ "carton"}</th>
+                                    <th>{_ "glue"}</th>
+                                    <th>{_ "strap"}</th>
+                                    <th>{_ "plastic"}</th>
+                                    <th>{_ "weight"}{_ "glue"}</th>
+                                    <th>{_ "weight"}{_ "plastic"}</th>
+                                    <th>{_ "weight"}{_ "strap"}</th>
+                                    <th>{_ "number_of_tiles"}</th>
+                                    {if $editAccess == 'true'}
+                                        <th style="width: 25px;"></th>
+                                    {/if}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$items key=key value=item}
+                                    <tr>
+                                        <td>{$item.label}</td>
+                                        <td>{$item.carton_label}</td>
+                                        <td>{$item.glue_label}</td>
+                                        <td>{$item.strap_label}</td>
+                                        <td>{$item.plastic_label}</td>
+                                        <td>{$item.glue_weight}</td>
+                                        <td>{$item.plastic_weight}</td>
+                                        <td>{$item.strap_weight}</td>
+                                        <td>{$item.number_of_tiles}</td>
+                                        {if $editAccess == 'true'}
+                                            <td>
+                                                <button class="btn btn-link text-info" onclick="openItemEditor('{$item.id}','{$item.label}','{$item.carton}','{$item.glue}','{$item.strap}','{$item.plastic}','{$item.glue_weight}','{$item.plastic_weight}','{$item.strap_weight}','{$item.number_of_tiles}')">
+                                                    <i class="fa fa-pencil">
+
+                                                    </i>
+                                                </button>
+                                            </td>
+                                        {/if}
+                                    </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="10">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-success text-right" id="dataSendAlert">
+                    {_ "changeSuccessfully"}
+                </div>
+                <form>
+                    <div class="col-md-12 form-group">
+                        <label for="label" class="col-form-label float-right">{_ "name"} {$item_label}:</label>
+                        <input type="text" class="form-control" id="label" value="">
+                        <input type="hidden" class="form-control" id="id" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="number_of_tiles" class="col-form-label float-right">{_ "number_of_tiles"} :</label>
+                        <input type="text" class="form-control" id="number_of_tiles" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="plastic_weight" class="col-form-label float-right">{_ "weight"} {_ "plastic"}  :</label>
+                        <input type="number" min="0" class="form-control" id="plastic_weight" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="strap_weight" class="col-form-label float-right">{_ "weight"} {_ "strap"} :</label>
+                        <input type="number" min="0" class="form-control" id="strap_weight" value="">
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="glue_weight" class="col-form-label float-right">{_ "weight"} {_ "glue"} :</label>
+                        <input type="number" min="0" class="form-control" id="glue_weight" value="">
+                    </div>
+                    <div class="col-md-6 form-group" id="cartonDiv">
+                        <label for="carton" class="col-form-label float-right">{_ "carton"} :</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton[]" id="carton" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "carton"} " >
+                        {foreach from=$carton key=key value=item }
+                        <option value="{$item.id}"  >{$item.label}</option>
+                        {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group" id="glueDiv">
+                        <label for="glue" class="col-form-label float-right">{_ "glue"}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="glue[]" id="glue" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "glue"}" >
+                            {foreach from=$glue key=key value=item }
+                            <option value="{$item.id}"  >{$item.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group" id="plasticDiv">
+                        <label for="plastic" class="col-form-label float-right">{_ "plastic"}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="plastic[]" id="plastic" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "plastic"}" >
+                            {foreach from=$plastic key=key value=item }
+                            <option value="{$item.id}"  >{$item.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                    <div class="col-md-6 form-group" id="strapDiv">
+                        <label for="strap" class="col-form-label float-right">{_ "strap"}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="strap[]" id="strap" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "strap"}" >
+                            {foreach from=$strap key=key value=item }
+                            <option value="{$item.id}"  >{$item.label}</option>
+                            {/foreach}
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()" >{_ "send"}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <button class="btn btn-info"  onclick="openItemEditor('','','','')">
+            <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
+            {_ "add"} {$item_label} {_ "new"}
+        </button>
+    {/if}
+{/map}
+
+{map footerjs}
+<script>
+let urlc = '{url current}' ;
+let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
+let edit_item = '{_ "Edit"} {$item_label}';
+let changeSuccessfully = '{_ "changeSuccessfully"}';
+let carton_id = $('#cartonDiv').html();
+let glue_id = $('#glueDiv').html();
+let strap_id = $('#strapDiv').html();
+let plastic_id = $('#plasticDiv').html();
+
+function openItemEditor(id,label,carton,glue,strap,plastic,glue_weight,plastic_weight,strap_weight,number_of_tiles){
+    if ( id === "" ){
+        $("#exampleModalLabel").html(add_new_item);
+        $("#label").val("");
+        $("#id").val("");
+        $("#carton").val("");
+        $("#glue").val("");
+        $("#strap").val("");
+        $("#plastic").val("");
+        $("#glue_weight").val("");
+        $("#plastic_weight").val("");
+        $("#strap_weight").val("");
+        $("#number_of_tiles").val("");
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+    } else {
+        $("#exampleModalLabel").html(edit_item + " " + label);
+        $("#label").val(label);
+        $("#id").val(id);
+        $("#cartonDiv").html(carton_id).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+carton+'\']')
+            .attr('selected', true);
+        $("#glueDiv").html(glue_id).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+glue+'\']')
+            .attr('selected', true);
+        $("#strapDiv").html(strap_id).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+strap+'\']')
+            .attr('selected', true);
+        $("#plasticDiv").html(plastic_id).find('.selectpicker option')
+            .removeAttr('selected')
+            .filter('[value=\''+plastic+'\']')
+            .attr('selected', true);
+        $("#glue_weight").val(glue_weight);
+        $("#plastic_weight").val(plastic_weight);
+        $("#strap_weight").val(strap_weight);
+        $("#number_of_tiles").val(number_of_tiles);
+        $('.selectPickerShouldRefresh').selectpicker('refresh');
+
+    }
+    $('.bmd-label-static').removeClass('bmd-label-static');
+    $('#sendDataButton').show();
+    $('#dataSendAlert').hide();
+    $('#exampleModal').modal('show');
+}
+function sendItem(){
+    $.ajax({
+        url: urlc+'/update',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            'label': $('#label').val(),
+            'id': $('#id').val(),
+            'carton': $('#carton').val(),
+            'glue': $('#glue').val(),
+            'strap': $('#strap').val(),
+            'plastic': $('#plastic').val(),
+            'glue_weight': $('#glue_weight').val(),
+            'plastic_weight': $('#plastic_weight').val(),
+            'strap_weight': $('#strap_weight').val(),
+            'number_of_tiles': $('#number_of_tiles').val(),
+        } ,
+        success: function (result) {
+            if (result['status']) {
+                $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
+                $('#sendDataButton').hide();
+                load();
+                return false;
+            }
+            else {
+                $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
+            }
+        }
+    });
+}
+</script>
+{/map}

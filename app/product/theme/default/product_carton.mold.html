@@ -17,7 +17,7 @@
                                     <th style="width: 10%;">{_ "name"} {$item_label}</th>
                                     <th>{_ "size"} {$item_label}</th>
                                     <th>{_ "weight"} {$item_label}</th>
-                                    <th>{_ "theme"} {$item_theme}</th>
+                                    <th>{_ "theme"} {$item_label}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 25px;"></th>
                                     {/if}
@@ -124,7 +124,8 @@ let urlc = '{url current}' ;
 let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
 let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
-let unit = $('#sizeDiv').html();
+let size = $('#sizeDiv').html();
+let theme = $('#themeDiv').html();
 
 
 function openItemEditor(id,label,carton_size,carton_weight,carton_theme){
@@ -140,12 +141,12 @@ function openItemEditor(id,label,carton_size,carton_weight,carton_theme){
         $("#exampleModalLabel").html(edit_item + " " + label);
         $("#label").val(label);
         $("#id").val(id);
-        $("#sizeDiv").html(unit).find('.selectpicker option')
+        $("#sizeDiv").html(size).find('.selectpicker option')
             .removeAttr('selected')
             .filter('[value=\''+carton_size+'\']')
             .attr('selected', true);
         $("#carton_weight").val(carton_weight);
-        $("#themeDiv").html(unit).find('.selectpicker option')
+        $("#themeDiv").html(theme).find('.selectpicker option')
             .removeAttr('selected')
             .filter('[value=\''+carton_theme+'\']')
             .attr('selected', true);

@@ -35,4 +35,9 @@ return [
     'cylinder'                                      => 'سیلندر',
     'complementary_printing'                        => 'چاپ مکمل',
     'theme'                                         => 'طرح',
+    'glue'                                          => 'چسب',
+    'strap'                                         => 'تسمه',
+    'plastic'                                       => 'پلاستیک',
+    'number_of_tiles'                               => 'تعداد کاشی',
+    'carton'                                        => 'کارتون',
 ];

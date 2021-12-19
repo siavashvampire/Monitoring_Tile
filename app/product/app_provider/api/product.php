@@ -19,11 +19,13 @@ use App\product\model\product_digitalPrint_color;
 use App\product\model\product_effect;
 use App\product\model\product_engobe;
 use App\product\model\product_glaze;
+use App\product\model\product_glue;
 use App\product\model\product_kind;
 use App\product\model\product_pallet;
 use App\product\model\product_plastic;
 use App\product\model\product_punch;
 use App\product\model\product_size;
+use App\product\model\product_strap;
 use App\product\model\product_technique;
 use App\product\model\product_template;
 
@@ -252,6 +254,18 @@ class product extends innerController
     {
         /** @var product_plastic $model */
         $model = parent::model(['product', 'product_plastic']);
+        return self::json($model->getItems());
+    }
+    public static function glue(): array
+    {
+        /** @var product_glue $model */
+        $model = parent::model(['product', 'product_glue']);
+        return self::json($model->getItems());
+    }
+    public static function strap(): array
+    {
+        /** @var product_strap $model */
+        $model = parent::model(['product', 'product_strap']);
         return self::json($model->getItems());
     }
     public static function pallet(): array

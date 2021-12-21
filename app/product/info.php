@@ -356,8 +356,8 @@ return [
                 'id'
             ],
             'REFERENCES' => [
-                'carton_theme' => ['table' => 'product_carton_theme', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'carton_size' => ['table' => 'product_carton_size', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'carton_theme' => ['table' => 'carton_theme', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'carton_size' => ['table' => 'carton_size', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
         'product_carton_packing' => [

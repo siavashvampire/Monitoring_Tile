@@ -30,10 +30,25 @@ class product_export extends controller
         /* @var product $model */
         $model = parent::model($this->model_name);
         $get['getPDF'] = 1;
-        $search = $model->getItems();
+        $search = $model->getItemsForQC();
+
         $header = [];
         $header[] = 'شماره';
+        $header[] = 'روز';
+        $header[] = 'ماه';
+        $header[] = 'سال';
+        $header[] = 'فاز تولیدی';
+        $header[] = 'سایز';
+        $header[] = 'فرمول گرانول';
+        $header[] = 'ضخامت';
         $header[] = 'نام طرح';
+        $header[] = 'نوانس';
+        $header[] = 'کد';
+        $header[] = 'شماره پرونده';
+        $header[] = 'کنترلر';
+        $header[] = 'فرمول انگوب';
+        $header[] = 'فرمول لعاب';
+        $header[] = 'فرمول انگوب زیر';
 
 
 

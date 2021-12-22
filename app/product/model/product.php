@@ -948,6 +948,17 @@ class product extends model implements modelInterFace
     }
     public function getItemsForQC($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
+        model::join('phases  phase','phase.id = item.phase');
+        model::join('product_size  size','size.id = item.size');
+        model::join('product_body  body','body.id = item.body');
+        model::join('product_novanc  novanc','novanc.id = item.novanc');
+        model::join('product_engobe  engobe','engobe.id = item.engobe');
+        model::join('product_sub_engobe  sub_engobe','sub_engobe.id = item.sub_engobe');
+        model::join('product_glaze  glaze','glaze.id = item.glaze');
+
+        model::join('user controller', 'item.controller = user.userId');
+
+        $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
     }
 }

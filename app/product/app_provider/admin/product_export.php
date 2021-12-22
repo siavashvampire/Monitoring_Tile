@@ -31,7 +31,6 @@ class product_export extends controller
         $model = parent::model($this->model_name);
         $get['getPDF'] = 1;
         $search = $model->getItemsForQC();
-
         $header = [];
         $header[] = 'شماره';
         $header[] = 'روز';
@@ -49,6 +48,7 @@ class product_export extends controller
         $header[] = 'فرمول انگوب';
         $header[] = 'فرمول لعاب';
         $header[] = 'فرمول انگوب زیر';
+        $header[] = 'توضیحات';
 
 
 
@@ -66,8 +66,10 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-                show($htmlpersian);
-                $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => date('Y-M-d H-i'), 'landscape' => true]);
+                $file_name = "تولیدات";
+                $file_name .= " - ";
+                $file_name .= JDate::jdate(' Y');
+                $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
                 header('Content-type: text/csv; charset=UTF-8');

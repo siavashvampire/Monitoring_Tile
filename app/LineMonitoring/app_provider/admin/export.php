@@ -18,7 +18,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class export extends controller {
 	public function  index() {
-		$get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1' ,null);
+		$get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1');
         $_SERVER['JsonOff'] = true;
         $shiftData = shift::index();
         unset($_SERVER['JsonOff']);

@@ -96,7 +96,6 @@ class product extends controller
                 Response::jsonMessage($valid->errorsIn(), false);
                 return false;
             }
-
             $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getLabel() . " ";
 
@@ -128,6 +127,7 @@ class product extends controller
             $model->setSubEngobe($get['sub_engobe']);
             $model->setFileCode($get['file_code']);
             $model->setDescription($get['description']);
+            $model->setController(user::getUserLogin(true));
 
             if ($id != null) {
                 if ($model->upDateDataBase()) {

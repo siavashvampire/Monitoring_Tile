@@ -49,6 +49,7 @@ class product extends model implements modelInterFace
     private $file_code;
     private $description;
     private $sub_engobe;
+    private $controller;
 
     public function setFromArray($result)
     {
@@ -88,6 +89,7 @@ class product extends model implements modelInterFace
         $this->file_code = $result['file_code'];
         $this->description = $result['description'];
         $this->sub_engobe = $result['sub_engobe'];
+        $this->controller = $result['controller'];
     }
 
     public function returnAsArray()
@@ -128,6 +130,7 @@ class product extends model implements modelInterFace
         $array['file_code'] = $this->file_code;
         $array['description'] = $this->description;
         $array['sub_engobe'] = $this->sub_engobe;
+        $array['controller'] = $this->controller;
         return $array;
     }
 
@@ -916,6 +919,22 @@ class product extends model implements modelInterFace
         if ($sub_engobe == '')
             $sub_engobe = null;
         $this->sub_engobe = $sub_engobe;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getController()
+    {
+        return $this->controller;
+    }
+
+    /**
+     * @param mixed $controller
+     */
+    public function setController($controller): void
+    {
+        $this->controller = $controller;
     }
 
     public function getCount($value = array(), $variable = array())

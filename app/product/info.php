@@ -544,6 +544,8 @@ return [
                 'file_code' => "INT(11)",
                 'description' => "varchar(65) COLLATE utf8_persian_ci",
                 'sub_engobe' => "INT(11)",
+                'controller' => "INT(11)",
+
             ],
             'KEY' => [
                 'kind',
@@ -567,6 +569,7 @@ return [
                 'pallet_packing',
                 'packing',
                 'sub_engobe',
+                'controller',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -593,6 +596,7 @@ return [
                 'pallet_packing' => ['table' => 'product_pallet_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'packing' => ['table' => 'product_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'sub_engobe' => ['table' => 'product_sub_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'controller' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
             ]
         ],
     ],

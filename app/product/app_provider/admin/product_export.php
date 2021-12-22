@@ -7,6 +7,7 @@ use App\Sections\app_provider\admin\Sections;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
+use paymentCms\component\JDate;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -31,8 +32,11 @@ class product_export extends controller
         $get['getPDF'] = 1;
         $search = $model->getItems();
         $header = [];
-        show($search);
-        $header[] = 'فاز';
+        $header[] = 'شماره';
+        $header[] = 'نام طرح';
+
+
+
         if (is_array($search) and count($search) > 0) {
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
@@ -41,6 +45,8 @@ class product_export extends controller
                 $views = $this->mold->getViews();
                 $this->mold->unshow($views);
                 $this->mold->view('QC_Pdf.mold.html');
+
+                $this->mold->set('date', JDate::jdate('Y/m/d'));
                 $this->mold->set('headersTable', $header);
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');

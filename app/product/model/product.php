@@ -50,6 +50,7 @@ class product extends model implements modelInterFace
     private $description;
     private $sub_engobe;
     private $controller;
+    private $thickness;
 
     public function setFromArray($result)
     {
@@ -90,6 +91,7 @@ class product extends model implements modelInterFace
         $this->description = $result['description'];
         $this->sub_engobe = $result['sub_engobe'];
         $this->controller = $result['controller'];
+        $this->thickness = $result['thickness'];
     }
 
     public function returnAsArray()
@@ -131,6 +133,7 @@ class product extends model implements modelInterFace
         $array['description'] = $this->description;
         $array['sub_engobe'] = $this->sub_engobe;
         $array['controller'] = $this->controller;
+        $array['thickness'] = $this->thickness;
         return $array;
     }
 
@@ -937,6 +940,22 @@ class product extends model implements modelInterFace
         $this->controller = $controller;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getThickness()
+    {
+        return $this->thickness;
+    }
+
+    /**
+     * @param mixed $thickness
+     */
+    public function setThickness($thickness): void
+    {
+        $this->thickness = $thickness;
+    }
+
     public function getCount($value = array(), $variable = array())
     {
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
@@ -959,6 +978,22 @@ class product extends model implements modelInterFace
         model::join('user controller', 'item.controller = user.userId');
 
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
+        $field = array();
+        $field[] = 'item.register_date';
+        $field[] = 'phase.label';
+        $field[] = 'size.label';
+        $field[] = 'body.label';
+        $field[] = 'item.thickness';
+        $field[] = 'item.label';
+        $field[] = 'novanc.label';
+        $field[] = 'item.code';
+        $field[] = 'item.file_code';
+        $field[] = 'item.controller';
+        $field[] = 'engobe.label';
+        $field[] = 'glaze.label';
+        $field[] = 'sub_engobe.label';
+        $field[] = 'item.description';
+        $field = implode(',', $field);
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
     }
 }

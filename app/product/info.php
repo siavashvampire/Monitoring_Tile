@@ -640,13 +640,13 @@ return [
         "INSERT IGNORE INTO `{prefix}product_punch` (`id`, `label`) VALUES
         (1 , 'تخت'),
         (2 , 'کونیک'),
+        (6 , '3090000220S1'),
+        (5 , '3090000220S2'),
+        (4 , 'فیوره'),
         (3 , 'آرشام');",
         "INSERT IGNORE INTO `{prefix}product_color` (`id`, `label`) VALUES
         (1 , 'کرم'),
         (2 , 'قهوه ای'),
-        (6 , '3090000220S1'),
-        (5 , '3090000220S2'),
-        (4 , 'فیوره'),
         (3 , 'آبی');",
         "INSERT IGNORE INTO `{prefix}product_digitalPrint_color` (`id`, `label`) VALUES
         (1 , 'آبی'),

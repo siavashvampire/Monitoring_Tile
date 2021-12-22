@@ -9,6 +9,7 @@ use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -82,11 +83,12 @@ class product extends controller
         } else
             $model = parent::model($this->model_name);
         if (request::ispost()) {
-            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color,degree,complementary_printing_before_digital,complementary_printing_before_digital_weight,cylinder_before,cylinder_after,complementary_printing_after_digital,complementary_printing_after_digital_weight');
+            $get = request::post('label,color,exampleCode,phase,size,template,kind,technique,effect,decor,production_design_code,body,body_weight,engobe,engobe_weight,glaze,glaze_weight,digitalPrint_color,degree,complementary_printing_before_digital,complementary_printing_before_digital_weight,cylinder_before,cylinder_after,complementary_printing_after_digital,complementary_printing_after_digital_weight,novanc,sub_engobe,description,file_code');
+
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
-                "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
-                "exampleCode" => ["required|match:>0", rlang('code') . " " . rlang('design') . " " . rlang('production')],
+//                "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
+//                "exampleCode" => ["required|match:>0", rlang('code') . " " . rlang('design') . " " . rlang('production')],
             ];
             $valid = validate::check($get, $rules);
             $GLOBALS['timeStart'] = '';
@@ -99,6 +101,7 @@ class product extends controller
             $Dis .= $model->getLabel() . " ";
 
             $model->setLabel($get['label']);
+            $model->setRegisterDate(date('Y-m-d H:i:s'));
             $model->setColor($get['color']);
             $model->setExampleCode($get['exampleCode']);
             $model->setProductionDesignCode($get['production_design_code']);
@@ -115,12 +118,16 @@ class product extends controller
             $model->setEngobeWeight($get['engobe_weight']);
             $model->setGlaze($get['glaze']);
             $model->setGlazeWeight($get['glaze_weight']);
-            $model->setCylinderBefore($get['cylinder_before']);
-            $model->setCylinderAfter($get['cylinder_after']);
+            $model->setCylinderBefore(1);
+            $model->setCylinderAfter(1);
             $model->setComplementaryPrintingBeforeDigital($get['complementary_printing_before_digital']);
             $model->setComplementaryPrintingBeforeDigitalWeight($get['complementary_printing_before_digital_weight']);
             $model->setComplementaryPrintingAfterDigital($get['complementary_printing_after_digital']);
             $model->setComplementaryPrintingAfterDigitalWeight($get['complementary_printing_after_digital_weight']);
+            $model->setNovanc($get['novanc']);
+            $model->setSubEngobe($get['sub_engobe']);
+            $model->setFileCode($get['file_code']);
+            $model->setDescription($get['description']);
 
             if ($id != null) {
                 if ($model->upDateDataBase()) {
@@ -132,7 +139,7 @@ class product extends controller
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
-                    $this->alert('danger', '', 'رید');
+                    $this->alert('danger', '', model::getLastQuery());
                 }
 
             } else {
@@ -144,7 +151,7 @@ class product extends controller
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
-                    $this->alert('danger', '', 'رید');
+                    $this->alert('danger', '', model::getLastQuery());
                 }
             }
 
@@ -178,6 +185,8 @@ class product extends controller
         $this->mold->set('cylinder', App\product\app_provider\api\product::cylinder()["result"]);
         $this->mold->set('complementary_printing_before_digital', App\product\app_provider\api\product::complementary_printing_before_digital()["result"]);
         $this->mold->set('complementary_printing_after_digital', App\product\app_provider\api\product::complementary_printing_after_digital()["result"]);
+        $this->mold->set('novanc', App\product\app_provider\api\product::novanc()["result"]);
+        $this->mold->set('sub_engobe', App\product\app_provider\api\product::sub_engobe()["result"]);
 
         return false;
     }

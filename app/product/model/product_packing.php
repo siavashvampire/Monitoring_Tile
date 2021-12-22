@@ -34,6 +34,8 @@ class product_packing extends model implements modelInterFace {
 	private $pallet_packing_plastic_weight ;
 	private $pallet_packing_carton_on_pallet ;
 	private $pallet_packing_carton ;
+	private $pallet_packing ;
+	private $carton_packing ;
 	public function setFromArray($result) {
 		$this->id = $result['id'] ;
 		$this->label = $result['label'] ;
@@ -57,6 +59,8 @@ class product_packing extends model implements modelInterFace {
 		$this->pallet_packing_plastic_weight = $result['pallet_packing_plastic_weight'] ;
 		$this->pallet_packing_carton_on_pallet = $result['pallet_packing_carton_on_pallet'] ;
 		$this->pallet_packing_carton = $result['pallet_packing_carton'] ;
+		$this->pallet_packing = $result['pallet_packing'] ;
+		$this->carton_packing = $result['carton_packing'] ;
 	}
 
 	public function returnAsArray( ) {
@@ -82,6 +86,8 @@ class product_packing extends model implements modelInterFace {
 		$array['pallet_packing_plastic_weight'] = $this->pallet_packing_plastic_weight ;
 		$array['pallet_packing_carton_on_pallet'] = $this->pallet_packing_carton_on_pallet ;
 		$array['pallet_packing_carton'] = $this->pallet_packing_carton ;
+		$array['pallet_packing'] = $this->pallet_packing ;
+		$array['carton_packing'] = $this->carton_packing ;
 		return $array ;
 	}
 
@@ -452,12 +458,45 @@ class product_packing extends model implements modelInterFace {
         $this->pallet_packing_carton = $pallet_packing_carton;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getPalletPacking()
+    {
+        return $this->pallet_packing;
+    }
+
+    /**
+     * @param mixed $pallet_packing
+     */
+    public function setPalletPacking($pallet_packing): void
+    {
+        $this->pallet_packing = $pallet_packing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCartonPacking()
+    {
+        return $this->carton_packing;
+    }
+
+    /**
+     * @param mixed $carton_packing
+     */
+    public function setCartonPacking($carton_packing): void
+    {
+        $this->carton_packing = $carton_packing;
+    }
     public function getCount($value = array(), $variable = array())
     {
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'ASC'], $pagination = [0, 9999])
     {
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+        parent::join('product_carton_packing carton_packing', 'carton_packing.id =  item.carton_packing');
+        parent::join('product_pallet_packing pallet_packing', 'pallet_packing.id =  item.pallet_packing');
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*,carton_packing.label as carton_packing_label,pallet_packing.label as pallet_packing_label', $sortWith, $pagination);
     }
 }

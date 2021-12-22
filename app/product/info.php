@@ -212,6 +212,19 @@ return [
             'REFERENCES' => [
             ]
         ],
+        'product_sub_engobe' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
         'product_body' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -242,6 +255,19 @@ return [
             ]
         ],
         'product_glue' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+            ],
+            'KEY' => [
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+            ]
+        ],
+        'product_novanc' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
@@ -443,6 +469,8 @@ return [
                 'pallet_packing_plastic_weight' => "INT(11) NOT NULL",
                 'pallet_packing_carton_on_pallet' => "INT(11) NOT NULL",
                 'pallet_packing_carton' => "INT(11) NOT NULL",
+                'pallet_packing' => "INT(11) NOT NULL",
+                'carton_packing' => "INT(11) NOT NULL",
             ],
             'KEY' => [
                 'carton_packing_carton',
@@ -456,6 +484,8 @@ return [
                 'pallet_packing_strap',
                 'pallet_packing_plastic',
                 'pallet_packing_carton',
+                'pallet_packing',
+                'carton_packing',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -472,46 +502,55 @@ return [
                 'pallet_packing_strap' => ['table' => 'product_strap', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet_packing_plastic' => ['table' => 'product_plastic', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet_packing_carton' => ['table' => 'product_carton', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'pallet_packing' => ['table' => 'product_pallet_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'carton_packing' => ['table' => 'product_carton_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
         'product' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'label' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-                'example_code' => "INT(11) NOT NULL",
-                'production_design_code' => "varchar(65) NOT NULL",
+                'register_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'example_code' => "INT(11)",
+                'code' => "INT(11)",
+                'production_design_code' => "varchar(65)",
                 'kind' => "INT(11) NOT NULL",
                 'size' => "INT(11) NOT NULL",
                 'phase' => "INT(11) NOT NULL",
-                'color' => "INT(11) NOT NULL",
-                'cylinder_before' => "INT(11) NOT NULL",
-                'cylinder_after' => "INT(11) NOT NULL",
-                'complementary_printing_before_digital' => "INT(11) NOT NULL",
-                'complementary_printing_before_digital_weight' => "INT(11) NOT NULL",
-                'complementary_printing_after_digital' => "INT(11) NOT NULL",
-                'complementary_printing_after_digital_weight' => "INT(11) NOT NULL",
+                'color' => "INT(11)",
+                'novanc' => "INT(11)",
+                'cylinder_before' => "INT(11)",
+                'cylinder_after' => "INT(11)",
+                'complementary_printing_before_digital' => "INT(11)",
+                'complementary_printing_before_digital_weight' => "INT(11)",
+                'complementary_printing_after_digital' => "INT(11)",
+                'complementary_printing_after_digital_weight' => "INT(11)",
                 'punch' => "INT(11) NULL DEFAULT NULL",
                 'degree' => "INT(11) NULL DEFAULT NULL",
                 'weight' => "INT(11) NULL DEFAULT NULL",
-                'technique' => "INT(11) NOT NULL",
-                'template' => "INT(11) NOT NULL",
-                'effect' => "INT(11) NOT NULL",
-                'decor' => "INT(11) NOT NULL",
-                'body' => "INT(11) NOT NULL",
-                'body_weight' => "INT(11) NOT NULL",
-                'engobe' => "INT(11) NOT NULL",
-                'engobe_weight' => "INT(11) NOT NULL",
-                'glaze' => "INT(11) NOT NULL",
-                'glaze_weight' => "INT(11) NOT NULL",
-                'carton_packing' => "INT(11) NOT NULL",
-                'pallet_packing' => "INT(11) NOT NULL",
-                'packing' => "INT(11) NOT NULL",
+                'technique' => "INT(11)",
+                'template' => "INT(11)",
+                'effect' => "INT(11)",
+                'decor' => "INT(11)",
+                'body' => "INT(11)",
+                'body_weight' => "INT(11)",
+                'engobe' => "INT(11)",
+                'engobe_weight' => "INT(11)",
+                'glaze' => "INT(11)",
+                'glaze_weight' => "INT(11)",
+                'carton_packing' => "INT(11)",
+                'pallet_packing' => "INT(11)",
+                'packing' => "INT(11)",
+                'file_code' => "INT(11)",
+                'description' => "varchar(65) COLLATE utf8_persian_ci",
+                'sub_engobe' => "INT(11)",
             ],
             'KEY' => [
                 'kind',
                 'size',
                 'phase',
                 'color',
+                'novanc',
                 'cylinder_before',
                 'cylinder_after',
                 'complementary_printing_before_digital',
@@ -527,6 +566,7 @@ return [
                 'carton_packing',
                 'pallet_packing',
                 'packing',
+                'sub_engobe',
             ],
             'PRIMARY KEY' => [
                 'id'
@@ -535,6 +575,7 @@ return [
                 'kind' => ['table' => 'product_kind', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'size' => ['table' => 'product_size', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'color' => ['table' => 'product_color', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'novanc' => ['table' => 'product_novanc', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'cylinder_before' => ['table' => 'product_cylinder', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'cylinder_after' => ['table' => 'product_cylinder', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'complementary_printing_before_digital' => ['table' => 'product_complementary_printing_before_digital', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
@@ -551,6 +592,7 @@ return [
                 'carton_packing' => ['table' => 'product_carton_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet_packing' => ['table' => 'product_pallet_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'packing' => ['table' => 'product_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'sub_engobe' => ['table' => 'product_sub_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
     ],
@@ -618,6 +660,16 @@ return [
         (5 , 'درجه U');",
         "INSERT IGNORE INTO `{prefix}product_glue` (`id`, `label`) VALUES
         (1 , 'چسب حرارتی');",
+        "INSERT IGNORE INTO `{prefix}product_novanc` (`id`, `label`) VALUES
+        (1 , 'A'),
+        (2 , 'B'),
+        (3 , 'C'),
+        (4 , 'D'),
+        (5 , 'E'),
+        (6 , 'F'),
+        (7 , 'G'),
+        (8 , 'H'),
+        (9 , 'Z');",
         "INSERT IGNORE INTO `{prefix}product_strap` (`id`, `label`) VALUES
         (1 , 'تسمه کارتن'),
         (2 , 'تسمه پالت');",

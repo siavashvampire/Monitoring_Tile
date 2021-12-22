@@ -140,6 +140,10 @@ class product_size extends model implements modelInterFace
     }
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
     {
+        if ($this->id) {
+            $value[] = $this->id;
+            $variable[] = 'id = ?';
+        }
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
     }
 }

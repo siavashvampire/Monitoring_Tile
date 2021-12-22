@@ -1,0 +1,235 @@
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;">
+    <thead style="">
+    <tr>
+        <th style="width: 34%;"></th>
+        <th style="width: 33%;"></th>
+        <th style="width: 34%;"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr style="border: 2px solid!important;color:  black;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;font-size: 18px;text-align:center'>
+                Hafez Tile
+                <br>
+                کاشی حافظ
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;font-size: 18px;text-align:center'><br>کنترل کیفیت</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;font-size: 18px;text-align:center'>{$model->getCode()}کد:<br>شماره مدرک:{$model->getId()}<br>تاریخ:{$date}</label></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  gray;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>نام طرح :{$model->getLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>رنگ :{$model->getColorLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>کد نمونه آزمایشی :{$model->getExampleCode()}</label></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  gray;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>فاز :{$model->getPhaseLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>سایز :{$model->getSizeLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>فرمول بدنه :{$model->getBodyLabel()}</label></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  gray;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>نوع محصول :{$model->getKindLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>تکنیک تولید :{$model->getTechniqueLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>نوع سطح :{$model->getGlazeParentLabel()}</label></td>
+    </tr>
+    <tr style="border: 2px solid!important;color:  gray;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>افکت :{$model->getEffectLabel()}</label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>دکور :{$model->getDecorLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>کد طرح تولیدی :{$model->getProductionDesignCode()}</label>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div style="text-align: center;font-size: 18px;">
+
+</div>
+
+<br>
+
+<table class="table " style="border-collapse:collapse;width: 100%;">
+    <thead style="">
+    <tr style="color:black;">
+        <th style="width: 33.33%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;background-color: #00A77D;"></th>
+        <th style="width: 33.34%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            شماره فرمول
+        </th>
+        <th style="width: 33.33%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            مشخصات
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr style="color:gray;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                بدنه
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;height:500px;'>
+                {$model->getBodyLabel()}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                وزن:{$model->getBodyWeight()}
+            </label>
+        </td>
+    </tr>
+
+    <tr style="color:gray;height:30px;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                انگوب
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {$model->getEngobeLabel()}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                وزن:{$model->getEngobeWeight()}
+            </label>
+        </td>
+    </tr>
+
+    <tr style="color:gray;height:30px;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style="font-size: 14px;color:gray;">
+                لعاب
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>{$model->getGlazeLabel()}</label></td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                style='font-weight:bold;'>وزن:{$model->getGlazeWeight()}</label></td>
+    </tr>
+    <tr style="color:gray;height:30px;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {_ "complementary_printing_before_digital"}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {$model->getComplementaryPrintingBeforeDigitalLabel()}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                وزن:{$model->getComplementaryPrintingBeforeDigitalWeight()}
+            </label>
+            <br>
+            <label style='font-weight:bold;'>
+                سیلندر:{$model->getCylinderBeforeLabel()}
+            </label>
+        </td>
+    </tr>
+    <tr style="color:gray;height:30px;">
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {_ "complementary_printing_after_digital"}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                {$model->getComplementaryPrintingAfterDigitalLabel()}
+            </label>
+        </td>
+        <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+            <label style='font-weight:bold;'>
+                وزن:{$model->getComplementaryPrintingAfterDigitalWeight()}
+            </label>
+            <br>
+            <label style='font-weight:bold;'>
+                سیلندر:{$model->getCylinderAfterLabel()}
+            </label>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<div style="text-align: center;font-size: 18px;">
+    <label>{_ "print"} {_ "digital"}</label>
+</div>
+
+<br>
+
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+    <thead style="">
+    <tr>
+        <th style="width: 50%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            {_ "color"} {_ "print"}
+        </th>
+        <th style="width: 50%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            {_ "weight"} {_ "ink"}
+        </th>
+    </tr>
+    </thead>
+    <tbody style="border-bottom: 2px solid darkcyan;">
+    {foreach from=$digitalPrint_colors key=key value=item }
+    <tr style="color:  gray;">
+        <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;text-align: center;height:30px;">
+            {_ "color"} {$item.label}
+        </td>
+        <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;text-align: center;height:30px;">
+            {$item.value}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>
+
+<br>
+
+<div style="text-align: center;font-size: 18px;">
+    <label>{_ "anticipation"} {_ "degree"}</label>
+</div>
+
+<br>
+
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+    <thead>
+    <tr>
+        <th style="width: 50%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            {_ "anticipation"} {_ "degree"}
+        </th>
+        <th style="width: 50%;border: 2px solid darkcyan;font-size: 18px;font-weight: bold;text-align: center;height:30px;">
+            {_ "Percent"} {_ "suggested"}
+        </th>
+    </tr>
+    </thead>
+    <tbody style="border-bottom: 2px solid darkcyan;">
+    {foreach from=$degrees key=key value=item }
+    <tr style="color:  gray;">
+        <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;text-align: center;height:30px;">
+            {_ "degree"} {$item.label}
+        </td>
+        <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;text-align: center;height:30px;">
+            {$item.value}
+        </td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>

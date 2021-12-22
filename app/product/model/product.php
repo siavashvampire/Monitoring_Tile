@@ -15,16 +15,18 @@ class product extends model implements modelInterFace
     private $primaryKeyShouldNotInsertOrUpdate = 'id';
     private $id;
     private $label;
+    private $register_date;
     private $example_code;
+    private $code;
     private $production_design_code;
     private $kind;
     private $size;
     private $phase;
     private $color;
+    private $novanc;
     private $punch;
     private $degree;
     private $weight;
-    private $pallet;
     private $technique;
     private $template;
     private $effect;
@@ -44,21 +46,26 @@ class product extends model implements modelInterFace
     private $packing;
     private $carton_packing;
     private $pallet_packing;
+    private $file_code;
+    private $description;
+    private $sub_engobe;
 
     public function setFromArray($result)
     {
         $this->id = $result['id'];
         $this->label = $result['label'];
+        $this->register_date = $result['register_date'];
         $this->example_code = $result['example_code'];
+        $this->code = $result['code'];
         $this->production_design_code = $result['production_design_code'];
         $this->kind = $result['kind'];
         $this->size = $result['size'];
         $this->phase = $result['phase'];
         $this->color = $result['color'];
+        $this->novanc = $result['novanc'];
         $this->punch = $result['punch'];
         $this->degree = $result['degree'];
         $this->weight = $result['weight'];
-        $this->pallet = $result['pallet'];
         $this->technique = $result['technique'];
         $this->template = $result['template'];
         $this->effect = $result['effect'];
@@ -78,22 +85,27 @@ class product extends model implements modelInterFace
         $this->packing = $result['packing'];
         $this->carton_packing = $result['carton_packing'];
         $this->pallet_packing = $result['pallet_packing'];
+        $this->file_code = $result['file_code'];
+        $this->description = $result['description'];
+        $this->sub_engobe = $result['sub_engobe'];
     }
 
     public function returnAsArray()
     {
         $array['id'] = $this->id;
         $array['label'] = $this->label;
+        $array['register_date'] = $this->register_date;
         $array['example_code'] = $this->example_code;
+        $array['code'] = $this->code;
         $array['production_design_code'] = $this->production_design_code;
         $array['kind'] = $this->kind;
         $array['size'] = $this->size;
         $array['phase'] = $this->phase;
         $array['color'] = $this->color;
+        $array['novanc'] = $this->novanc;
         $array['punch'] = $this->punch;
         $array['degree'] = $this->degree;
         $array['weight'] = $this->weight;
-        $array['pallet'] = $this->pallet;
         $array['technique'] = $this->technique;
         $array['template'] = $this->template;
         $array['effect'] = $this->effect;
@@ -113,6 +125,9 @@ class product extends model implements modelInterFace
         $array['packing'] = $this->packing;
         $array['carton_packing'] = $this->carton_packing;
         $array['pallet_packing'] = $this->pallet_packing;
+        $array['file_code'] = $this->file_code;
+        $array['description'] = $this->description;
+        $array['sub_engobe'] = $this->sub_engobe;
         return $array;
     }
 
@@ -167,6 +182,22 @@ class product extends model implements modelInterFace
     /**
      * @return mixed
      */
+    public function getRegisterDate()
+    {
+        return $this->register_date;
+    }
+
+    /**
+     * @param mixed $register_date
+     */
+    public function setRegisterDate($register_date): void
+    {
+        $this->register_date = $register_date;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getExampleCode()
     {
         return $this->example_code;
@@ -177,7 +208,27 @@ class product extends model implements modelInterFace
      */
     public function setExampleCode($example_code): void
     {
+        if ($example_code == '')
+            $example_code = null;
         $this->example_code = $example_code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * @param mixed $code
+     */
+    public function setCode($code): void
+    {
+        if ($code == '')
+            $code = null;
+        $this->code = $code;
     }
 
     /**
@@ -193,6 +244,8 @@ class product extends model implements modelInterFace
      */
     public function setProductionDesignCode($production_design_code): void
     {
+        if ($production_design_code == '')
+            $production_design_code = null;
         $this->production_design_code = $production_design_code;
     }
 
@@ -219,6 +272,8 @@ class product extends model implements modelInterFace
      */
     public function setSize($size): void
     {
+        if ($size == '')
+            $size = null;
         $this->size = $size;
     }
 
@@ -280,6 +335,8 @@ class product extends model implements modelInterFace
      */
     public function setGlaze($glaze): void
     {
+        if ($glaze == '')
+            $glaze = null;
         $this->glaze = $glaze;
     }
 
@@ -296,6 +353,8 @@ class product extends model implements modelInterFace
      */
     public function setPunch($punch): void
     {
+        if ($punch == '')
+            $punch = null;
         $this->punch = $punch;
     }
 
@@ -312,6 +371,8 @@ class product extends model implements modelInterFace
      */
     public function setDegree($degree): void
     {
+        if ($degree == '')
+            $degree = null;
         $this->degree = $degree;
     }
 
@@ -336,6 +397,8 @@ class product extends model implements modelInterFace
      */
     public function setTemplate($template): void
     {
+        if ($template == '')
+            $template = null;
         $this->template = $template;
     }
 
@@ -352,23 +415,9 @@ class product extends model implements modelInterFace
      */
     public function setWeight($weight): void
     {
+        if ($weight == '')
+            $weight = null;
         $this->weight = $weight;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPallet()
-    {
-        return $this->pallet;
-    }
-
-    /**
-     * @param mixed $pallet
-     */
-    public function setPallet($pallet): void
-    {
-        $this->pallet = $pallet;
     }
 
 
@@ -393,6 +442,8 @@ class product extends model implements modelInterFace
      */
     public function setKind($kind): void
     {
+        if ($kind == '')
+            $kind = null;
         $this->kind = $kind;
     }
 
@@ -412,10 +463,28 @@ class product extends model implements modelInterFace
     }
 
     /**
+     * @return mixed
+     */
+    public function getNovanc()
+    {
+        return $this->novanc;
+    }
+
+    /**
+     * @param mixed $novanc
+     */
+    public function setNovanc($novanc): void
+    {
+        $this->novanc = $novanc;
+    }
+
+    /**
      * @param mixed $color
      */
     public function setColor($color): void
     {
+        if ($color == '')
+            $color = null;
         $this->color = $color;
     }
 
@@ -441,6 +510,8 @@ class product extends model implements modelInterFace
      */
     public function setTechnique($technique): void
     {
+        if ($technique == '')
+            $technique = null;
         $this->technique = $technique;
     }
 
@@ -467,6 +538,8 @@ class product extends model implements modelInterFace
      */
     public function setEffect($effect): void
     {
+        if ($effect == '')
+            $effect = null;
         $this->effect = $effect;
     }
 
@@ -493,6 +566,8 @@ class product extends model implements modelInterFace
      */
     public function setDecor($decor): void
     {
+        if ($decor == '')
+            $decor = null;
         $this->decor = $decor;
     }
 
@@ -516,6 +591,8 @@ class product extends model implements modelInterFace
      */
     public function setBody($body): void
     {
+        if ($body == '')
+            $body = null;
         $this->body = $body;
     }
 
@@ -532,6 +609,8 @@ class product extends model implements modelInterFace
      */
     public function setBodyWeight($body_weight): void
     {
+        if ($body_weight == '')
+            $body_weight = null;
         $this->body_weight = $body_weight;
     }
 
@@ -556,6 +635,8 @@ class product extends model implements modelInterFace
      */
     public function setEngobe($engobe): void
     {
+        if ($engobe == '')
+            $engobe = null;
         $this->engobe = $engobe;
     }
 
@@ -572,6 +653,8 @@ class product extends model implements modelInterFace
      */
     public function setEngobeWeight($engobe_weight): void
     {
+        if ($engobe_weight == '')
+            $engobe_weight = null;
         $this->engobe_weight = $engobe_weight;
     }
 
@@ -611,6 +694,8 @@ class product extends model implements modelInterFace
      */
     public function setCylinderBefore($cylinder_before): void
     {
+        if ($cylinder_before == '')
+            $cylinder_before = null;
         $this->cylinder_before = $cylinder_before;
     }
 
@@ -634,11 +719,10 @@ class product extends model implements modelInterFace
      */
     public function setCylinderAfter($cylinder_after): void
     {
+        if ($cylinder_after == '')
+            $cylinder_after = null;
         $this->cylinder_after = $cylinder_after;
     }
-
-
-
 
     /**
      * @return mixed
@@ -660,6 +744,8 @@ class product extends model implements modelInterFace
      */
     public function setComplementaryPrintingBeforeDigital($complementary_printing_before_digital): void
     {
+        if ($complementary_printing_before_digital == '')
+            $complementary_printing_before_digital = null;
         $this->complementary_printing_before_digital = $complementary_printing_before_digital;
     }
 
@@ -676,6 +762,8 @@ class product extends model implements modelInterFace
      */
     public function setComplementaryPrintingBeforeDigitalWeight($complementary_printing_before_digital_weight): void
     {
+        if ($complementary_printing_before_digital_weight == '')
+            $complementary_printing_before_digital_weight = null;
         $this->complementary_printing_before_digital_weight = $complementary_printing_before_digital_weight;
     }
 
@@ -699,6 +787,8 @@ class product extends model implements modelInterFace
      */
     public function setComplementaryPrintingAfterDigital($complementary_printing_after_digital): void
     {
+        if ($complementary_printing_after_digital == '')
+            $complementary_printing_after_digital = null;
         $this->complementary_printing_after_digital = $complementary_printing_after_digital;
     }
 
@@ -715,6 +805,8 @@ class product extends model implements modelInterFace
      */
     public function setComplementaryPrintingAfterDigitalWeight($complementary_printing_after_digital_weight): void
     {
+        if ($complementary_printing_after_digital_weight == '')
+            $complementary_printing_after_digital_weight = null;
         $this->complementary_printing_after_digital_weight = $complementary_printing_after_digital_weight;
     }
 
@@ -731,6 +823,8 @@ class product extends model implements modelInterFace
      */
     public function setPacking($packing): void
     {
+        if ($packing == '')
+            $packing = null;
         $this->packing = $packing;
     }
 
@@ -747,6 +841,8 @@ class product extends model implements modelInterFace
      */
     public function setCartonPacking($carton_packing): void
     {
+        if ($carton_packing == '')
+            $carton_packing = null;
         $this->carton_packing = $carton_packing;
     }
 
@@ -763,7 +859,63 @@ class product extends model implements modelInterFace
      */
     public function setPalletPacking($pallet_packing): void
     {
+        if ($pallet_packing == '')
+            $pallet_packing = null;
         $this->pallet_packing = $pallet_packing;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFileCode()
+    {
+        return $this->file_code;
+    }
+
+    /**
+     * @param mixed $file_code
+     */
+    public function setFileCode($file_code): void
+    {
+        if ($file_code == '')
+            $file_code = null;
+        $this->file_code = $file_code;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        if ($description == '')
+            $description = null;
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSubEngobe()
+    {
+        return $this->sub_engobe;
+    }
+
+    /**
+     * @param mixed $sub_engobe
+     */
+    public function setSubEngobe($sub_engobe): void
+    {
+        if ($sub_engobe == '')
+            $sub_engobe = null;
+        $this->sub_engobe = $sub_engobe;
     }
 
     public function getCount($value = array(), $variable = array())

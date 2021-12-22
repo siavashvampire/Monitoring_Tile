@@ -9,6 +9,7 @@ use App\product\model\carton_theme;
 use App\product\model\pallet_size;
 use App\product\model\product_body;
 use App\product\model\product_carton;
+use App\product\model\product_carton_packing;
 use App\product\model\product_color;
 use App\product\model\product_complementary_printing_after_digital;
 use App\product\model\product_complementary_printing_before_digital;
@@ -21,22 +22,29 @@ use App\product\model\product_engobe;
 use App\product\model\product_glaze;
 use App\product\model\product_glue;
 use App\product\model\product_kind;
+use App\product\model\product_novanc;
 use App\product\model\product_pallet;
+use App\product\model\product_pallet_packing;
 use App\product\model\product_plastic;
 use App\product\model\product_punch;
 use App\product\model\product_size;
 use App\product\model\product_strap;
+use App\product\model\product_sub_engobe;
 use App\product\model\product_technique;
 use App\product\model\product_template;
+use paymentCms\component\request;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class product extends innerController
 {
-    public static function size(): array
+    public static function size($id = null): array
     {
+        $get = request::postOne('id');
+        if ($get)
+            $id = $get;
         /** @var product_size $model */
-        $model = parent::model(['product', 'product_size']);
+        $model = parent::model(['product', 'product_size'],$id);
         return self::json($model->getItems());
     }
 
@@ -296,6 +304,30 @@ class product extends innerController
     {
         /** @var pallet_size $model */
         $model = parent::model(['product', 'pallet_size']);
+        return self::json($model->getItems());
+    }
+    public static function pallet_packing(): array
+    {
+        /** @var product_pallet_packing $model */
+        $model = parent::model(['product', 'product_pallet_packing']);
+        return self::json($model->getItems());
+    }
+    public static function carton_packing(): array
+    {
+        /** @var product_carton_packing $model */
+        $model = parent::model(['product', 'product_carton_packing']);
+        return self::json($model->getItems());
+    }
+    public static function novanc(): array
+    {
+        /** @var product_novanc $model */
+        $model = parent::model(['product', 'product_novanc']);
+        return self::json($model->getItems());
+    }
+    public static function sub_engobe(): array
+    {
+        /** @var product_sub_engobe $model */
+        $model = parent::model(['product', 'product_sub_engobe']);
         return self::json($model->getItems());
     }
 }

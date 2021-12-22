@@ -18,7 +18,7 @@ class product_export extends controller
     private $item_label = "برند";
     private $log_name = 'product_brand';
     private $controller_name = 'product_brand';
-    private $model_name = 'product_brand';
+    private $model_name = 'product';
     private $app_name = 'product';
     private $active_menu = 'product_brand';
     private $html_file_path = 'product_brand.mold.html';
@@ -27,12 +27,12 @@ class product_export extends controller
     {
 
         /* @var product $model */
-        $model = parent::model('product');
+        $model = parent::model($this->model_name);
         $get['getPDF'] = 1;
         $search = $model->getItems();
         $header = [];
+        show($search);
         $header[] = 'فاز';
-
         if (is_array($search) and count($search) > 0) {
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';

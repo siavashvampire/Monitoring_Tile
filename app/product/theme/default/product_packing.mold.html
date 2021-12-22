@@ -106,50 +106,18 @@
                         <input type="text" class="form-control" id="label" value="">
                         <input type="hidden" class="form-control" id="id" value="">
                     </div>
-                    <div class="col-md-6 form-group">
-                        <label for="number_of_tiles" class="col-form-label float-right">{_ "number_of_tiles"} :</label>
-                        <input type="number" class="form-control" id="number_of_tiles" value="">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label for="plastic_weight" class="col-form-label float-right">{_ "weight"} {_ "plastic"}  :</label>
-                        <input type="number" min="0" class="form-control" id="plastic_weight" value="">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label for="strap_weight" class="col-form-label float-right">{_ "weight"} {_ "strap"} :</label>
-                        <input type="number" min="0" class="form-control" id="strap_weight" value="">
-                    </div>
-                    <div class="col-md-6 form-group">
-                        <label for="glue_weight" class="col-form-label float-right">{_ "weight"} {_ "glue"} :</label>
-                        <input type="number" min="0" class="form-control" id="glue_weight" value="">
-                    </div>
-                    <div class="col-md-6 form-group" id="cartonDiv">
-                        <label for="carton" class="col-form-label float-right">{_ "carton"} :</label>
-                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton[]" id="carton" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "carton"} " >
-                        {foreach from=$carton key=key value=item }
+                    <div class="col-md-6 form-group" id="carton_packingDiv">
+                        <label for="carton_packing" class="col-form-label float-right">{_ "product_carton_packing"} :</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="carton_packing[]" id="carton_packing" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "product_carton_packing"} " >
+                        {foreach from=$carton_packing key=key value=item }
                         <option value="{$item.id}"  >{$item.label}</option>
                         {/foreach}
                         </select>
                     </div>
-                    <div class="col-md-6 form-group" id="glueDiv">
-                        <label for="glue" class="col-form-label float-right">{_ "glue"}:</label>
-                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="glue[]" id="glue" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "glue"}" >
-                            {foreach from=$glue key=key value=item }
-                            <option value="{$item.id}"  >{$item.label}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group" id="plasticDiv">
-                        <label for="plastic" class="col-form-label float-right">{_ "plastic"}:</label>
-                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="plastic[]" id="plastic" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "plastic"}" >
-                            {foreach from=$plastic key=key value=item }
-                            <option value="{$item.id}"  >{$item.label}</option>
-                            {/foreach}
-                        </select>
-                    </div>
-                    <div class="col-md-6 form-group" id="strapDiv">
-                        <label for="strap" class="col-form-label float-right">{_ "strap"}:</label>
-                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="strap[]" id="strap" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "strap"}" >
-                            {foreach from=$strap key=key value=item }
+                    <div class="col-md-6 form-group" id="pallet_packingDiv">
+                        <label for="pallet_packing" class="col-form-label float-right">{_ "product_pallet_packing"}:</label>
+                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" name="pallet_packing[]" id="pallet_packing" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round" title= "{_ "product_pallet_packing"}" >
+                            {foreach from=$pallet_packing key=key value=item }
                             <option value="{$item.id}"  >{$item.label}</option>
                             {/foreach}
                         </select>
@@ -182,49 +150,29 @@ let urlc = '{url current}' ;
 let add_new_item = '{_ "add"} {$item_label} {_ "new"}';
 let edit_item = '{_ "Edit"} {$item_label}';
 let changeSuccessfully = '{_ "changeSuccessfully"}';
-let carton_id = $('#cartonDiv').html();
-let glue_id = $('#glueDiv').html();
-let strap_id = $('#strapDiv').html();
-let plastic_id = $('#plasticDiv').html();
+let carton_packing_id = $('#carton_packingDiv').html();
+let pallet_packing_id = $('#pallet_packingDiv').html();
 
-function openItemEditor(id,label,carton,glue,strap,plastic,glue_weight,plastic_weight,strap_weight,number_of_tiles){
+function openItemEditor(id,label,pallet_packing,carton_packing){
     if ( id === "" ){
         $("#exampleModalLabel").html(add_new_item);
         $("#label").val("");
         $("#id").val("");
-        $("#carton").val("");
-        $("#glue").val("");
-        $("#strap").val("");
-        $("#plastic").val("");
-        $("#glue_weight").val("");
-        $("#plastic_weight").val("");
-        $("#strap_weight").val("");
-        $("#number_of_tiles").val("");
+        $("#carton_packing").val("");
+        $("#pallet_packing").val("");
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
         $("#exampleModalLabel").html(edit_item + " " + label);
         $("#label").val(label);
         $("#id").val(id);
-        $("#cartonDiv").html(carton_id).find('.selectpicker option')
+        $("#carton_packingDiv").html(carton_packing_id).find('.selectpicker option')
             .removeAttr('selected')
-            .filter('[value=\''+carton+'\']')
+            .filter('[value=\''+carton_packing+'\']')
             .attr('selected', true);
-        $("#glueDiv").html(glue_id).find('.selectpicker option')
+        $("#pallet_packingDiv").html(pallet_packing_id).find('.selectpicker option')
             .removeAttr('selected')
-            .filter('[value=\''+glue+'\']')
+            .filter('[value=\''+pallet_packing+'\']')
             .attr('selected', true);
-        $("#strapDiv").html(strap_id).find('.selectpicker option')
-            .removeAttr('selected')
-            .filter('[value=\''+strap+'\']')
-            .attr('selected', true);
-        $("#plasticDiv").html(plastic_id).find('.selectpicker option')
-            .removeAttr('selected')
-            .filter('[value=\''+plastic+'\']')
-            .attr('selected', true);
-        $("#glue_weight").val(glue_weight);
-        $("#plastic_weight").val(plastic_weight);
-        $("#strap_weight").val(strap_weight);
-        $("#number_of_tiles").val(number_of_tiles);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
 
     }
@@ -241,14 +189,8 @@ function sendItem(){
         data: {
             'label': $('#label').val(),
             'id': $('#id').val(),
-            'carton': $('#carton').val(),
-            'glue': $('#glue').val(),
-            'strap': $('#strap').val(),
-            'plastic': $('#plastic').val(),
-            'glue_weight': $('#glue_weight').val(),
-            'plastic_weight': $('#plastic_weight').val(),
-            'strap_weight': $('#strap_weight').val(),
-            'number_of_tiles': $('#number_of_tiles').val(),
+            'carton': $('#carton_packing').val(),
+            'glue': $('#pallet_packing').val(),
         } ,
         success: function (result) {
             if (result['status']) {

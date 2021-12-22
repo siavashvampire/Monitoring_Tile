@@ -609,7 +609,9 @@ return [
         (4 , '60-120' , 600 , 1200 ,10),
         (5 , '80-80' , 800 , 800 ,10),
         (6 , '30*60' , 300 , 600 ,10),
-        (7 , '61*61' , 610 , 610 ,10);",
+        (7 , '61*61' , 610 , 610 ,10),
+        (8 , '80-160' , 1600 , 800 ,11),
+        (9 , '100-100' , 1000 , 1000 ,11);",
         "INSERT IGNORE INTO `{prefix}product_glaze` (`id`, `label`) VALUES
         (1 , 'پولیش'),
         (2 , 'شوگر'),
@@ -642,6 +644,9 @@ return [
         "INSERT IGNORE INTO `{prefix}product_color` (`id`, `label`) VALUES
         (1 , 'کرم'),
         (2 , 'قهوه ای'),
+        (6 , '3090000220S1'),
+        (5 , '3090000220S2'),
+        (4 , 'فیوره'),
         (3 , 'آبی');",
         "INSERT IGNORE INTO `{prefix}product_digitalPrint_color` (`id`, `label`) VALUES
         (1 , 'آبی'),

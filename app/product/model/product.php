@@ -961,11 +961,11 @@ class product extends model implements modelInterFace
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
     }
 
-    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $pagination = [0, 9999])
     {
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
     }
-    public function getItemsForQC($value = array(), $variable = array(), $sortWith = ['column' => 'id', 'type' => 'asc'], $pagination = [0, 9999])
+    public function getItemsForQC($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $pagination = [0, 9999])
     {
         model::join('phases  phase','phase.id = item.phase');
         model::join('product_size  size','size.id = item.size');
@@ -975,25 +975,29 @@ class product extends model implements modelInterFace
         model::join('product_sub_engobe  sub_engobe','sub_engobe.id = item.sub_engobe');
         model::join('product_glaze  glaze','glaze.id = item.glaze');
 
-        model::join('user controller', 'item.controller = user.userId');
+        model::join('user controller', 'item.controller = controller.userId');
 
-        $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
         $field = array();
-        $field[] = 'item.register_date';
-        $field[] = 'phase.label';
-        $field[] = 'size.label';
-        $field[] = 'body.label';
+        $field[] = 'item.id';
+        $field[] = 'DATE_FORMAT(jdate(item.register_date), "%d")';
+        $field[] = 'DATE_FORMAT(jdate(item.register_date), "%m")';
+        $field[] = 'DATE_FORMAT(jdate(item.register_date), "%Y")';
+        $field[] = 'phase.label as phaseLabel';
+        $field[] = 'size.label as sizeLabel';
+        $field[] = 'body.label as bodyeLabel';
         $field[] = 'item.thickness';
         $field[] = 'item.label';
-        $field[] = 'novanc.label';
+        $field[] = 'novanc.label as novancLabel';
         $field[] = 'item.code';
         $field[] = 'item.file_code';
-        $field[] = 'item.controller';
-        $field[] = 'engobe.label';
-        $field[] = 'glaze.label';
-        $field[] = 'sub_engobe.label';
+        $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
+        $field[] = 'engobe.label as engobeLabel';
+        $field[] = 'glaze.label as glazeLabel';
+        $field[] = 'sub_engobe.label as sub_engobeLabel';
         $field[] = 'item.description';
+
         $field = implode(',', $field);
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
     }
 }

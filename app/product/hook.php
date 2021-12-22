@@ -68,7 +68,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_carton_packing', ' نوع بسته بندی کارتون ها', app::getBaseAppLink('product_carton_packing', 'admin'), 'fa fa-cube', '', 'admin/product_carton_packing/index/product');
         $this->menu->addChild('configurationLine', 'product_pallet_packing', ' نوع بسته بندی پالت ها', app::getBaseAppLink('product_pallet_packing', 'admin'), 'fa fa-cube', '', 'admin/product_pallet_packing/index/product');
         $this->menu->addChild('configurationLine', 'product_packing', 'بسته بندی', app::getBaseAppLink('product_packing', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
-        $this->menu->addChild('configurationManufactor', 'QC_export', 'گزارش تولید 1400', app::getBaseAppLink('product_export', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
+        $this->menu->addChild('Reports', 'QC_export', 'گزارش تولید 1400', app::getBaseAppLink('product_export', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array

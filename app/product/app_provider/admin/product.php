@@ -22,7 +22,7 @@ class product extends controller
     private $ChangeURL = "product";
     private $PDFURL = "product/getPDF";
     private $listChangeURL = "product/list";
-    private $QC_download = "product/export";
+    private $QC_download = "product_export";
     private $log_name = 'product';
     private $model_name = 'product';
     private $app_name = 'product';
@@ -68,6 +68,8 @@ class product extends controller
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
+        $this->mold->set('QC_download', $this->QC_download);
+
         return false;
     }
 
@@ -165,7 +167,6 @@ class product extends controller
             $this->mold->setPageTitle(rlang('Edit') . " " . $this->item_label);
 
         $this->mold->set('ChangeURL', $this->listChangeURL);
-        $this->mold->set('QC_download', $this->QC_download);
         $this->mold->set('item_label', $this->item_label);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'list', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);

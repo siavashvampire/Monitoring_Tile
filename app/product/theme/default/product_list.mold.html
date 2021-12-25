@@ -19,6 +19,9 @@
                                         <th style="width: 4%"></th>
                                         <th style="width: 4%"></th>
                                     {/if}
+                                    {if $addQcReport == 'true'}
+                                        <th style="width: 4%"></th>
+                                    {/if}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -35,6 +38,14 @@
                                         <button class="btn btn-link text-info"
                                                 onclick="location.href='{url}{$PDFURL}/{$item.id}'">
                                             <i class="fa fa-address-card-o"></i></button>
+                                    </td>
+                                    {/if}
+
+                                    {if $addQcReport == 'true'}
+                                    <td>
+                                        <button class="btn btn-link text-info"
+                                                onclick="location.href='{url}{$QCURL}/{$item.id}'">
+                                            <i class="fa fa-list-alt"></i></button>
                                     </td>
                                     {/if}
                                 </tr>

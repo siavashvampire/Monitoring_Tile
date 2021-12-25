@@ -21,6 +21,7 @@ class product extends controller
     private $item_label = "کاشی";
     private $ChangeURL = "product";
     private $PDFURL = "product/getPDF";
+    private $QCURL = "product_qc/list";
     private $listChangeURL = "product/list";
     private $QC_download = "product_export";
     private $log_name = 'product';
@@ -56,7 +57,7 @@ class product extends controller
         $model = parent::model($this->model_name);
         $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), null, 'COUNT(id) as co')) [0]['co'];
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'label', 'type' => 'asc'], [$pagination['start'], $pagination['limit']]);
+        $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'register_date', 'type' => 'DESC'], [$pagination['start'], $pagination['limit']]);
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
@@ -64,10 +65,14 @@ class product extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
+        $this->mold->set('QCURL', $this->QCURL);
         $this->mold->set('PDFURL', $this->PDFURL);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
+        $addQcReport = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'product_qc',
+            'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
+        $this->mold->set('addQcReport', $addQcReport);
         $this->mold->set('QC_download', $this->QC_download);
 
         return false;
@@ -120,17 +125,13 @@ class product extends controller
             $model->setEngobeWeight($get['engobe_weight']);
             $model->setGlaze($get['glaze']);
             $model->setGlazeWeight($get['glaze_weight']);
-            $model->setCylinderBefore(1);
-            $model->setCylinderAfter(1);
+            $model->setCylinderBefore($get['cylinder_before']);
+            $model->setCylinderAfter($get['cylinder_after']);
             $model->setComplementaryPrintingBeforeDigital($get['complementary_printing_before_digital']);
             $model->setComplementaryPrintingBeforeDigitalWeight($get['complementary_printing_before_digital_weight']);
             $model->setComplementaryPrintingAfterDigital($get['complementary_printing_after_digital']);
             $model->setComplementaryPrintingAfterDigitalWeight($get['complementary_printing_after_digital_weight']);
-            $model->setNovanc($get['novanc']);
-            $model->setSubEngobe($get['sub_engobe']);
-            $model->setFileCode($get['file_code']);
-            $model->setDescription($get['description']);
-            $model->setController(user::getUserLogin(true));
+            $model->setCreator(user::getUserLogin(true));
 
             if ($id != null) {
                 if ($model->upDateDataBase()) {
@@ -142,7 +143,7 @@ class product extends controller
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
-                    $this->alert('danger', '', model::getLastQuery());
+                    $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }
 
             } else {
@@ -154,7 +155,7 @@ class product extends controller
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
-                    $this->alert('danger', '', model::getLastQuery());
+                    $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }
             }
 
@@ -188,8 +189,6 @@ class product extends controller
         $this->mold->set('cylinder', App\product\app_provider\api\product::cylinder()["result"]);
         $this->mold->set('complementary_printing_before_digital', App\product\app_provider\api\product::complementary_printing_before_digital()["result"]);
         $this->mold->set('complementary_printing_after_digital', App\product\app_provider\api\product::complementary_printing_after_digital()["result"]);
-        $this->mold->set('novanc', App\product\app_provider\api\product::novanc()["result"]);
-        $this->mold->set('sub_engobe', App\product\app_provider\api\product::sub_engobe()["result"]);
 
         return false;
     }

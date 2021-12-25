@@ -38,6 +38,12 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class product extends innerController
 {
+    public static function index($id = null): array
+    {
+        /** @var \App\product\model\product $model */
+        $model = parent::model(['product', 'product'],$id);
+        return self::json($model->getItems());
+    }
     public static function size($id = null): array
     {
         $get = request::postOne('id');

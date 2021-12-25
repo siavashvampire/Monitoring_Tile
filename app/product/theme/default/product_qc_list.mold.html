@@ -1,0 +1,89 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-delicious fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label} {$productLabel}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tableExport">
+                                <thead>
+                                <tr>
+                                    <th style="width: 9%">{_ "date"}</th>
+                                    <th style="width: 9%">{_ "body"}</th>
+                                    <th style="width: 9%">{_ "thickness"}</th>
+                                    <th style="width: 9%">{_ "novanc"}</th>
+                                    <th style="width: 9%">{_ "code"}</th>
+                                    <th style="width: 9%">کد فایل</th>
+                                    <th style="width: 9%">کنترلر</th>
+                                    <th style="width: 9%">{_ "engobe"}</th>
+                                    <th style="width: 9%">{_ "glaze"}</th>
+                                    <th style="width: 9%">زیر {_ "engobe"}</th>
+                                    <th style="width: 24%">{_ "description"}</th>
+                                    {if $editAccess == 'true'}
+                                        <th style="width: 4%"></th>
+                                    {/if}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$items key=key value=item}
+                                <tr>
+                                    <td>{$item.date}</td>
+                                    <td>{$item.bodyLabel}</td>
+                                    <td>{$item.thickness}</td>
+                                    <td>{$item.novancLabel}</td>
+                                    <td>{$item.code}</td>
+                                    <td>{$item.file_code}</td>
+                                    <td>{$item.controllerUser}</td>
+                                    <td>{$item.engobeLabel}</td>
+                                    <td>{$item.glazeLabel}</td>
+                                    <td>{$item.sub_engobeLabel}</td>
+                                    <td>{if $item.description == Null} --- {else} {$item.description} {/if}</td>
+                                    {if $editAccess == 'true'}
+                                        <td>
+                                            <button class="btn btn-link text-info"
+                                                    onclick="location.href='{url}{$ChangeURL}/{$product}/{$item.id}'">
+                                                <i class="fa fa-pencil"></i></button>
+                                        </td>
+                                    {/if}
+                                </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="12">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <a class="btn btn-info"  href="{url admin}{$ChangeURL}/{$product}">
+                              <span class="btn-label">
+                                <i class="fa fa-plus"></i>
+                              </span>
+            {_ "add"} {$item_label} {_ "new"}
+        </a>
+    {/if}
+<a class="btn btn-info"  href="{url admin}{$QC_download}">
+                                  <span class="btn-label">
+                                    <i class="fa fa-cloud-download"></i>
+                                  </span>
+    دانلود کل تولیدات{$productLabel}
+</a>
+{/map}
+
+{map footerjs}
+{/map}

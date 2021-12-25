@@ -1,0 +1,205 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon" >
+                    <i class="fa fa-file-excel-o fa-2x"></i>
+                </div>
+                <h4 class="card-title float-{$float} m-3">{_ "configuration"} {$item_label}</h4>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" method="post">
+                    <div class="row">
+                        <div class="col-md-4 float-right form-group">
+                            <label class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:</label>
+                            <label class="col-form-label col-md-9 float-right">{$productLabel}</label>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="code" class="col-form-label col-md-3 float-right">{_ "code"} :</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" class="form-control" step="0.1"  id="code" name="code" value="{if isset($Mold.post.code)}{$Mold.post.code}{elseif isset($model)}{$model->getCode()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="file_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "file"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" class="form-control" step="0.1"  id="file_code" name="file_code" value="{if isset($Mold.post.file_code)}{$Mold.post.file_code}{elseif isset($model)}{$model->getFileCode()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="thickness" class="col-form-label col-md-3 float-right">{_ "thickness"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control"  id="thickness" name="thickness" value="{if isset($Mold.post.thickness)}{$Mold.post.thickness}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="novanc" class="col-form-label col-md-3 float-right">{_ "novanc"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="novanc" name="novanc" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "novanc"}">
+                                    {foreach from=$novanc key=key value=item }
+                                        <option value="{$item.id}" {if isset($Mold.post.novanc)}{if $item.id == $Mold.post.novanc }selected{/if}{elseif isset($model) and $item.id == $model->getNovanc()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="sub_engobe" class="col-form-label col-md-3 float-right">{_ "sub_engobe"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="sub_engobe" name="sub_engobe" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "sub_engobe"}">
+                                    {foreach from=$sub_engobe key=key value=item }
+                                        <option value="{$item.id}" {if isset($Mold.post.sub_engobe)}{if $item.id == $Mold.post.sub_engobe }selected{/if}{elseif isset($model) and $item.id == $model->getSubEngobe()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="glaze" class="col-form-label col-md-3 float-right">{_ "glaze"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="glaze" name="glaze" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
+                                    {foreach from=$glazes key=key value=item }
+                                        <option value="{$item.id}" {if isset($Mold.post.glaze)}{if $item.id == $Mold.post.glaze }selected{/if}{elseif isset($model) and $item.id == $model->getGlaze()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="body" class="col-form-label col-md-3 float-right">{_ "code"} {_ "body"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker"  id="body" name="body" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "body"}">
+                                        {foreach from=$bodys key=key value=item }
+                                        <option value="{$item.id}" {if isset($Mold.post.body)}{if $item.id == $Mold.post.body}selected{/if}{elseif isset($model) and $item.id == $model->getBody()}selected{/if} >{$item.label}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="engobe" class="col-form-label col-md-3 float-right">{_ "code"} {_ "engobe"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="engobe" name="engobe" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "engobe"}">
+                                        {foreach from=$engobes key=key value=item }
+                                        <option value="{$item.id}" {if isset($Mold.post.engobe)}{if $item.id == $Mold.post.engobe}selected{/if}{elseif isset($model) and $item.id == $model->getEngobe()}selected{/if} >{$item.label}</option>
+                                        {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12 form-group">
+                            <label for="file_code" class="col-form-label col-md-3 float-right">{_ "description"} :</label>
+                            <div class="col-md-12">
+                                <div class="form-group has-default">
+                                    <input type="text"  class="form-control"  id="description" name="description" value="{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i>{_ "insert"}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+                                      <span class="btn-label">
+                                        <i class="fa fa-plus"></i>
+                                      </span>
+            {_ "backTo"} {_ "list"} {$item_label}
+        </a>
+    {/if}
+
+
+{/map}
+
+{map footerjs}
+<script>
+    let urlapi = '{url api}' ;
+    function get_size_thickness(id){
+        $.ajax({
+            url: urlapi+'product/size',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                id : id
+            } ,
+            success: function (result) {
+                $('#thickness').val(result[0].thickness)
+            }
+
+        });
+    }
+
+    function getItem(url,select_name,selected_id){
+        $.ajax({
+            url: urlapi+url,
+            type: 'post',
+            dataType: 'json',
+            data: {
+            } ,
+            success: function (result) {
+                let select = $(select_name);
+
+                select.html("");
+                if(result !== true) {
+                    result.forEach(function (_ref) {
+                        let selected = "";
+                        if (_ref['id'] ===  selected_id) {
+                            selected = "selected" ;
+                        }
+                        select.append('<option value="'+_ref['id']+'" '+selected+' >'+_ref['label']+'</option>');
+                        $(select_name).selectpicker('refresh');
+                    });
+                    select.addClass('temp_'+ tempi);
+                    $('temp_'+ tempi).selectpicker('refresh');
+
+                }else{
+                    select.append('<option value="' + 0 + '" ' + ' >' + 'موردی ثبت نشده' + '</option>');
+                }
+                //$(select_name).selectpicker('refresh');
+                $( 'temp_'+ tempi).selectpicker('refresh');
+                tempi = tempi + 1 ;
+                setTimeout(function(){ $( 'temp_'+ tempi).selectpicker('refresh');}, 3000);
+            }
+
+        });
+    }
+
+    // getItem('product/body','#body',body_select);
+    // getItem('product/engobe','#engobe',engobe_select);
+    // getItem('product/glazeGroupList/'+glaze_select,'#glaze',glaze_select);
+
+</script>
+{/map}

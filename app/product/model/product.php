@@ -16,14 +16,13 @@ class product extends model implements modelInterFace
     private $id;
     private $label;
     private $register_date;
+    private $creator;
     private $example_code;
-    private $code;
     private $production_design_code;
     private $kind;
     private $size;
     private $phase;
     private $color;
-    private $novanc;
     private $punch;
     private $degree;
     private $weight;
@@ -46,25 +45,19 @@ class product extends model implements modelInterFace
     private $packing;
     private $carton_packing;
     private $pallet_packing;
-    private $file_code;
-    private $description;
-    private $sub_engobe;
-    private $controller;
-    private $thickness;
 
     public function setFromArray($result)
     {
         $this->id = $result['id'];
         $this->label = $result['label'];
         $this->register_date = $result['register_date'];
+        $this->creator = $result['creator'];
         $this->example_code = $result['example_code'];
-        $this->code = $result['code'];
         $this->production_design_code = $result['production_design_code'];
         $this->kind = $result['kind'];
         $this->size = $result['size'];
         $this->phase = $result['phase'];
         $this->color = $result['color'];
-        $this->novanc = $result['novanc'];
         $this->punch = $result['punch'];
         $this->degree = $result['degree'];
         $this->weight = $result['weight'];
@@ -87,11 +80,6 @@ class product extends model implements modelInterFace
         $this->packing = $result['packing'];
         $this->carton_packing = $result['carton_packing'];
         $this->pallet_packing = $result['pallet_packing'];
-        $this->file_code = $result['file_code'];
-        $this->description = $result['description'];
-        $this->sub_engobe = $result['sub_engobe'];
-        $this->controller = $result['controller'];
-        $this->thickness = $result['thickness'];
     }
 
     public function returnAsArray()
@@ -99,14 +87,13 @@ class product extends model implements modelInterFace
         $array['id'] = $this->id;
         $array['label'] = $this->label;
         $array['register_date'] = $this->register_date;
+        $array['creator'] = $this->creator;
         $array['example_code'] = $this->example_code;
-        $array['code'] = $this->code;
         $array['production_design_code'] = $this->production_design_code;
         $array['kind'] = $this->kind;
         $array['size'] = $this->size;
         $array['phase'] = $this->phase;
         $array['color'] = $this->color;
-        $array['novanc'] = $this->novanc;
         $array['punch'] = $this->punch;
         $array['degree'] = $this->degree;
         $array['weight'] = $this->weight;
@@ -129,11 +116,6 @@ class product extends model implements modelInterFace
         $array['packing'] = $this->packing;
         $array['carton_packing'] = $this->carton_packing;
         $array['pallet_packing'] = $this->pallet_packing;
-        $array['file_code'] = $this->file_code;
-        $array['description'] = $this->description;
-        $array['sub_engobe'] = $this->sub_engobe;
-        $array['controller'] = $this->controller;
-        $array['thickness'] = $this->thickness;
         return $array;
     }
 
@@ -204,6 +186,23 @@ class product extends model implements modelInterFace
     /**
      * @return mixed
      */
+    public function getCreator()
+    {
+        return $this->creator;
+    }
+
+    /**
+     * @param mixed $creator
+     */
+    public function setCreator($creator): void
+    {
+        $this->creator = $creator;
+    }
+
+
+    /**
+     * @return mixed
+     */
     public function getExampleCode()
     {
         return $this->example_code;
@@ -217,24 +216,6 @@ class product extends model implements modelInterFace
         if ($example_code == '')
             $example_code = null;
         $this->example_code = $example_code;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * @param mixed $code
-     */
-    public function setCode($code): void
-    {
-        if ($code == '')
-            $code = null;
-        $this->code = $code;
     }
 
     /**
@@ -466,22 +447,6 @@ class product extends model implements modelInterFace
     public function getColor()
     {
         return $this->color;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getNovanc()
-    {
-        return $this->novanc;
-    }
-
-    /**
-     * @param mixed $novanc
-     */
-    public function setNovanc($novanc): void
-    {
-        $this->novanc = $novanc;
     }
 
     /**
@@ -870,92 +835,6 @@ class product extends model implements modelInterFace
         $this->pallet_packing = $pallet_packing;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFileCode()
-    {
-        return $this->file_code;
-    }
-
-    /**
-     * @param mixed $file_code
-     */
-    public function setFileCode($file_code): void
-    {
-        if ($file_code == '')
-            $file_code = null;
-        $this->file_code = $file_code;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param mixed $description
-     */
-    public function setDescription($description): void
-    {
-        if ($description == '')
-            $description = null;
-        $this->description = $description;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getSubEngobe()
-    {
-        return $this->sub_engobe;
-    }
-
-    /**
-     * @param mixed $sub_engobe
-     */
-    public function setSubEngobe($sub_engobe): void
-    {
-        if ($sub_engobe == '')
-            $sub_engobe = null;
-        $this->sub_engobe = $sub_engobe;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getController()
-    {
-        return $this->controller;
-    }
-
-    /**
-     * @param mixed $controller
-     */
-    public function setController($controller): void
-    {
-        $this->controller = $controller;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getThickness()
-    {
-        return $this->thickness;
-    }
-
-    /**
-     * @param mixed $thickness
-     */
-    public function setThickness($thickness): void
-    {
-        $this->thickness = $thickness;
-    }
-
     public function getCount($value = array(), $variable = array())
     {
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.id) as co')) [0]['co'];
@@ -963,41 +842,10 @@ class product extends model implements modelInterFace
 
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $pagination = [0, 9999])
     {
+        if ($this->id) {
+            $value[] = $this->id;
+            $variable[] = 'id = ?';
+        }
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
-    }
-    public function getItemsForQC($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $pagination = [0, 9999])
-    {
-        model::join('phases  phase','phase.id = item.phase');
-        model::join('product_size  size','size.id = item.size');
-        model::join('product_body  body','body.id = item.body');
-        model::join('product_novanc  novanc','novanc.id = item.novanc');
-        model::join('product_engobe  engobe','engobe.id = item.engobe');
-        model::join('product_sub_engobe  sub_engobe','sub_engobe.id = item.sub_engobe');
-        model::join('product_glaze  glaze','glaze.id = item.glaze');
-
-        model::join('user controller', 'item.controller = controller.userId');
-
-        $field = array();
-        $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(jdate(item.register_date), "%d")';
-        $field[] = 'DATE_FORMAT(jdate(item.register_date), "%m")';
-        $field[] = 'DATE_FORMAT(jdate(item.register_date), "%Y")';
-        $field[] = 'phase.label as phaseLabel';
-        $field[] = 'size.label as sizeLabel';
-        $field[] = 'body.label as bodyeLabel';
-        $field[] = 'item.thickness';
-        $field[] = 'item.label';
-        $field[] = 'novanc.label as novancLabel';
-        $field[] = 'item.code';
-        $field[] = 'item.file_code';
-        $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
-        $field[] = 'engobe.label as engobeLabel';
-        $field[] = 'glaze.label as glazeLabel';
-        $field[] = 'sub_engobe.label as sub_engobeLabel';
-        $field[] = 'item.description';
-
-        $field = implode(',', $field);
-
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
     }
 }

@@ -10,7 +10,7 @@
             <div class="card-body">
                 <form class="form-horizontal" method="post">
                     <div class="row">
-                        <div class="col-md-6 float-right form-group">
+                        <div class="col-md-4 float-right form-group">
                             <label for="label" class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
@@ -19,32 +19,24 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6 form-group">
-                            <label for="color" class="col-form-label col-md-3 float-right">{_ "color"}:</label>
+                        <div class="col-md-4 form-group">
+                            <label for="color" class="col-form-label col-md-3 float-right">{_ "color"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"   id="color" name="color" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "color"}">
-                                        {foreach from=$colors key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.color)}{if $item.id == $Mold.post.color}selected{/if}{elseif isset($model) and $item.id == $model->getColor()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="color" name="color" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "color"}">
+                                    {foreach from=$colors key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.color)}{if $item.id == $Mold.post.color}selected{/if}{elseif isset($model) and $item.id == $model->getColor()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="col-md-6 form-group">
-                            <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:</label>
+                        <div class="col-md-4 form-group">
+                            <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control"  id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{/if}">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 form-group">
-                            <label for="file_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "file"}:</label>
-                            <div class="col-md-9">
-                                <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control"  id="file_code" name="file_code" value="{if isset($Mold.post.file_code)}{$Mold.post.file_code}{elseif isset($model)}{$model->getFileCode()}{/if}">
+                                    <input type="number" min="1" class="form-control" required id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -56,9 +48,9 @@
                             <div class="col-md-9">
                                 <div class="form-group has-default">
                                     <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="phase" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "phase"}">
-                                        {foreach from=$phases key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.phase)}{if $item.id == $Mold.post.phase }selected{/if}{elseif isset($model) and $item.id == $model->getPhase()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    {foreach from=$phases key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.phase)}{if $item.id == $Mold.post.phase }selected{/if}{elseif isset($model) and $item.id == $model->getPhase()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
@@ -68,53 +60,22 @@
                             <label for="size" class="col-form-label col-md-3 float-right">{_ "size"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" onchange="get_size_thickness($(this ,':selected').val())" required id="size" name="size" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "size"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="size" name="size" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "size"}">
                                     {foreach from=$sizes key=key value=item }
-                                        <option value="{$item.id}" {if isset($Mold.post.size)}{if $item.id == $Mold.post.size }selected{/if}{elseif isset($model) and $item.id == $model->getSize()}selected{/if} >{$item.label}</option>
+                                    <option value="{$item.id}" {if isset($Mold.post.size)}{if $item.id == $Mold.post.size }selected{/if}{elseif isset($model) and $item.id == $model->getSize()}selected{/if} >{$item.label}</option>
                                     {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4 form-group">
-                            <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "thickness"}:</label>
+                            <label for="template" class="col-form-label col-md-3 float-right">{_ "template"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control"  id="thickness" name="thickness" value="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 form-group">
-                            <label for="template" class="col-form-label col-md-3 float-right">{_ "template"}:</label>
-                            <div class="col-md-9">
-                                <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="template" name="template" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "template"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="template" name="template" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "template"}">
                                     {foreach from=$templates key=key value=item }
-                                        <option value="{$item.id}" {if isset($Mold.post.template)}{if $item.id == $Mold.post.template }selected{/if}{elseif isset($model) and $item.id == $model->getTemplate()}selected{/if} >{$item.label}</option>
-                                    {/foreach}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 form-group">
-                            <label for="novanc" class="col-form-label col-md-3 float-right">{_ "novanc"}:</label>
-                            <div class="col-md-9">
-                                <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="novanc" name="novanc" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "novanc"}">
-                                    {foreach from=$novanc key=key value=item }
-                                        <option value="{$item.id}" {if isset($Mold.post.novanc)}{if $item.id == $Mold.post.novanc }selected{/if}{elseif isset($model) and $item.id == $model->getNovanc()}selected{/if} >{$item.label}</option>
-                                    {/foreach}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 form-group">
-                            <label for="sub_engobe" class="col-form-label col-md-3 float-right">{_ "sub_engobe"}:</label>
-                            <div class="col-md-9">
-                                <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="sub_engobe" name="sub_engobe" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "sub_engobe"}">
-                                    {foreach from=$sub_engobe key=key value=item }
-                                        <option value="{$item.id}" {if isset($Mold.post.sub_engobe)}{if $item.id == $Mold.post.sub_engobe }selected{/if}{elseif isset($model) and $item.id == $model->getSubEngobe()}selected{/if} >{$item.label}</option>
+                                    <option value="{$item.id}" {if isset($Mold.post.template)}{if $item.id == $Mold.post.template }selected{/if}{elseif isset($model) and $item.id == $model->getTemplate()}selected{/if} >{$item.label}</option>
                                     {/foreach}
                                     </select>
                                 </div>
@@ -128,32 +89,34 @@
                             <div class="col-md-9">
                                 <div class="form-group has-default">
                                     <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="kind" name="kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "kind"}">
-                                        {foreach from=$kinds key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.kind)}{if $item.id == $Mold.post.kind }selected{/if}{elseif isset($model) and $item.id == $model->getKind()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    {foreach from=$kinds key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.kind)}{if $item.id == $Mold.post.kind }selected{/if}{elseif isset($model) and $item.id == $model->getKind()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4 form-group">
-                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "technique"} {_ "production"}:</label>
+                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "technique"} {_ "production"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="technique" name="technique" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "technique"}">
-                                        {foreach from=$techniques key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.technique)}{if $item.id == $Mold.post.technique }selected{/if}{elseif isset($model) and $item.id == $model->getTechnique()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="technique" name="technique" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "technique"}">
+                                    {foreach from=$techniques key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.technique)}{if $item.id == $Mold.post.technique }selected{/if}{elseif isset($model) and $item.id == $model->getTechnique()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4 form-group">
-                            <label for="glazeParent" class="col-form-label col-md-3 float-right">{_ "glaze"}:</label>
+                            <label for="glazeParent" class="col-form-label col-md-3 float-right">{_ "glaze"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" onchange="getItem('product/glazeByParent/'+$(this).find(':selected').val(),'#glaze',0);"  id="glazeParent" name="glazeParent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" onchange="getItem('product/glazeByParent/'+$(this).find(':selected').val(),'#glaze',0);" required id="glazeParent" name="glazeParent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
                                     {foreach from=$glazeParents key=key value=item }
-                                        <option value="{$item.id}" {if isset($Mold.post.glazeParent)}{if $item.id == $Mold.post.glazeParent }selected{/if}{elseif isset($model) and $item.id == $model->getGlazeParent()}selected{/if} >{$item.label}</option>
+                                    <option value="{$item.id}" {if isset($Mold.post.glazeParent)}{if $item.id == $Mold.post.glazeParent }selected{/if}{elseif isset($model) and $item.id == $model->getGlazeParent()}selected{/if} >{$item.label}</option>
                                     {/foreach}
                                     </select>
                                 </div>
@@ -163,109 +126,111 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-4 form-group">
-                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "effect"}:</label>
+                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "effect"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="effect" name="effect" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "effect"}">
-                                        {foreach from=$effects key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.effect)}{if $item.id == $Mold.post.effect }selected{/if}{elseif isset($model) and $item.id == $model->getEffect()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="effect" name="effect" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "effect"}">
+                                    {foreach from=$effects key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.effect)}{if $item.id == $Mold.post.effect }selected{/if}{elseif isset($model) and $item.id == $model->getEffect()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
 
                         <div class="col-md-4 form-group">
-                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "decor"}:</label>
+                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "decor"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="decor" name="decor" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "decor"}">
-                                        {foreach from=$decors key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.decor)}{if $item.id == $Mold.post.decor }selected{/if}{elseif isset($model) and $item.id == $model->getDecor()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="decor" name="decor" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "decor"}">
+                                    {foreach from=$decors key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.decor)}{if $item.id == $Mold.post.decor }selected{/if}{elseif isset($model) and $item.id == $model->getDecor()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-md-4 form-group">
-                            <label for="production_design_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "design"} {_ "production"}:</label>
+                            <label for="production_design_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "design"} {_ "production"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control"  id="production_design_code" name="production_design_code" value="{if isset($Mold.post.production_design_code)}{$Mold.post.production_design_code}{elseif isset($model)}{$model->getProductionDesignCode()}{/if}">
+                                    <input type="number" min="1" class="form-control" required id="production_design_code" name="production_design_code" value="{if isset($Mold.post.production_design_code)}{$Mold.post.production_design_code}{elseif isset($model)}{$model->getProductionDesignCode()}{/if}">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <hr>
                     <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="body" class="col-form-label col-md-3 float-right">{_ "code"} {_ "body"}:</label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                        <select class="selectpicker"  id="body" name="body" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "body"}">
-                                            {foreach from=$bodys key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.body)}{if $item.id == $Mold.post.body}selected{/if}{elseif isset($model) and $item.id == $model->getBody()}selected{/if} >{$item.label}</option>
-                                            {/foreach}
-                                        </select>
-                                    </div>
+                        <div class="col-md-4 form-group">
+                            <label for="body" class="col-form-label col-md-3 float-right">{_ "code"} {_ "body"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker" required id="body" name="body" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "body"}">
+                                    {foreach from=$bodys key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.body)}{if $item.id == $Mold.post.body}selected{/if}{elseif isset($model) and $item.id == $model->getBody()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-md-4 form-group">
-                                <label for="body_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                        <input type="number" min="0" class="form-control"  id="body_weight" name="body_weight" value="{if isset($Mold.post.body_weight)}{$Mold.post.body_weight}{elseif isset($model)}{$model->getBodyWeight()}{else}0{/if}" style="text-align: center">
-                                    </div>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="body_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" class="form-control" required id="body_weight" name="body_weight" value="{if isset($Mold.post.body_weight)}{$Mold.post.body_weight}{elseif isset($model)}{$model->getBodyWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="engobe" class="col-form-label col-md-3 float-right">{_ "code"} {_ "engobe"}:</label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="engobe" name="engobe" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "engobe"}">
-                                            {foreach from=$engobes key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.engobe)}{if $item.id == $Mold.post.engobe}selected{/if}{elseif isset($model) and $item.id == $model->getEngobe()}selected{/if} >{$item.label}</option>
-                                            {/foreach}
-                                        </select>
-                                    </div>
+                        <div class="col-md-4 form-group">
+                            <label for="engobe" class="col-form-label col-md-3 float-right">{_ "code"} {_ "engobe"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="engobe" name="engobe" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "engobe"}">
+                                    {foreach from=$engobes key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.engobe)}{if $item.id == $Mold.post.engobe}selected{/if}{elseif isset($model) and $item.id == $model->getEngobe()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-4 form-group">
-                                <label for="engobe_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                        <input type="number" min="0" class="form-control"  id="engobe_weight" name="engobe_weight" value="{if isset($Mold.post.engobe_weight)}{$Mold.post.engobe_weight}{elseif isset($model)}{$model->getEngobeWeight()}{else}0{/if}" style="text-align: center">
-                                    </div>
+                        <div class="col-md-4 form-group">
+                            <label for="engobe_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" class="form-control" required id="engobe_weight" name="engobe_weight" value="{if isset($Mold.post.engobe_weight)}{$Mold.post.engobe_weight}{elseif isset($model)}{$model->getEngobeWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label for="glaze" class="col-form-label col-md-3 float-right">{_ "code"} {_ "glaze"}:</label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                        <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="glaze" name="glaze" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
-                                            {foreach from=$glazes key=key value=item }
-                                                <option value="{$item.id}" {if isset($Mold.post.glaze)}{if $item.id == $Mold.post.glaze}selected{/if}{elseif isset($model) and $item.id == $model->getGlaze()}selected{/if} >{$item.label}</option>
-                                            {/foreach}
-                                        </select>
-                                    </div>
+                        <div class="col-md-4 form-group">
+                            <label for="glaze" class="col-form-label col-md-3 float-right">{_ "code"} {_ "glaze"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="glaze" name="glaze" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
+                                    {foreach from=$glazes key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.glaze)}{if $item.id == $Mold.post.glaze}selected{/if}{elseif isset($model) and $item.id == $model->getGlaze()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
+                                    </select>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="col-md-4 form-group">
-                                <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
-                                <div class="col-md-9">
-                                    <div class="form-group has-default">
-                                        <input type="number" min="0" class="form-control"  id="glaze_weight" name="glaze_weight" value="{if isset($Mold.post.glaze_weight)}{$Mold.post.glaze_weight}{elseif isset($model)}{$model->getGlazeWeight()}{else}0{/if}" style="text-align: center">
-                                    </div>
+                        <div class="col-md-4 form-group">
+                            <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" class="form-control" required id="glaze_weight" name="glaze_weight" value="{if isset($Mold.post.glaze_weight)}{$Mold.post.glaze_weight}{elseif isset($model)}{$model->getGlazeWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
+                        </div>
                     </div>
                     <hr>
                     <div class="row">
@@ -273,20 +238,19 @@
                             <label for="glaze" class="col-form-label col-md-3 float-right">{_ "complementary_printing_before_digital"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="complementary_printing_before_digital" name="complementary_printing_before_digital" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "complementary_printing"}">
-                                        {foreach from=$complementary_printing_before_digital key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.complementary_printing_before_digital)}{if $item.id == $Mold.post.complementary_printing_before_digital}selected{/if}{elseif isset($model) and $item.id == $model->getComplementaryPrintingBeforeDigital()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="complementary_printing_before_digital" name="complementary_printing_before_digital" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "complementary_printing"}">
+                                    {foreach from=$complementary_printing_before_digital key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.complementary_printing_before_digital)}{if $item.id == $Mold.post.complementary_printing_before_digital}selected{/if}{elseif isset($model) and $item.id == $model->getComplementaryPrintingBeforeDigital()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-4 form-group">
                             <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0" class="form-control"  id="complementary_printing_before_digital_weight" name="complementary_printing_before_digital_weight" value="{if isset($Mold.post.complementary_printing_before_digital_weight)}{$Mold.post.complementary_printing_before_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingBeforeDigitalWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" min="0" class="form-control" id="complementary_printing_before_digital_weight" name="complementary_printing_before_digital_weight" value="{if isset($Mold.post.complementary_printing_before_digital_weight)}{$Mold.post.complementary_printing_before_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingBeforeDigitalWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -294,7 +258,7 @@
                             <label for="glaze" class="col-form-label col-md-3 float-right">{_ "cylinder"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"   name="cylinder_before" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "cylinder"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  name="cylinder_before" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "cylinder"}">
                                     {foreach from=$cylinder key=key value=item }
                                     <option value="{$item.id}" {if isset($Mold.post.cylinder_before)}{if $item.id == $Mold.post.cylinder_before}selected{/if}{elseif isset($model) and $item.id == $model->getCylinderBefore()}selected{/if} >{$item.label}</option>
                                     {/foreach}
@@ -310,19 +274,18 @@
                             <div class="col-md-9">
                                 <div class="form-group has-default">
                                     <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="complementary_printing_after_digital" name="complementary_printing_after_digital" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "complementary_printing"}">
-                                        {foreach from=$complementary_printing_after_digital key=key value=item }
-                                            <option value="{$item.id}" {if isset($Mold.post.complementary_printing_after_digital)}{if $item.id == $Mold.post.complementary_printing_after_digital}selected{/if}{elseif isset($model) and $item.id == $model->getComplementaryPrintingAfterDigital()}selected{/if} >{$item.label}</option>
-                                        {/foreach}
+                                    {foreach from=$complementary_printing_after_digital key=key value=item }
+                                    <option value="{$item.id}" {if isset($Mold.post.complementary_printing_after_digital)}{if $item.id == $Mold.post.complementary_printing_after_digital}selected{/if}{elseif isset($model) and $item.id == $model->getComplementaryPrintingAfterDigital()}selected{/if} >{$item.label}</option>
+                                    {/foreach}
                                     </select>
                                 </div>
                             </div>
                         </div>
-
                         <div class="col-md-4 form-group">
                             <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                        <input type="number" min="0" class="form-control"  id="complementary_printing_after_digital_weight" name="complementary_printing_after_digital_weight" value="{if isset($Mold.post.complementary_printing_after_digital_weight)}{$Mold.post.complementary_printing_after_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingAfterDigitalWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" min="0" class="form-control" id="complementary_printing_after_digital_weight" name="complementary_printing_after_digital_weight" value="{if isset($Mold.post.complementary_printing_after_digital_weight)}{$Mold.post.complementary_printing_after_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingAfterDigitalWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -330,7 +293,7 @@
                             <label for="glaze" class="col-form-label col-md-3 float-right">{_ "cylinder"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"   name="cylinder_after" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "cylinder"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  name="cylinder_after" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "cylinder"}">
                                     {foreach from=$cylinder key=key value=item }
                                     <option value="{$item.id}" {if isset($Mold.post.cylinder_after)}{if $item.id == $Mold.post.cylinder_after}selected{/if}{elseif isset($model) and $item.id == $model->getCylinderAfter()}selected{/if} >{$item.label}</option>
                                     {/foreach}
@@ -341,20 +304,9 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-12 form-group">
-                            <label for="file_code" class="col-form-label col-md-3 float-right">{_ "description"} :</label>
-                            <div class="col-md-12">
-                                <div class="form-group has-default">
-                                    <input type="text"  class="form-control"  id="description" name="description" value="{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="row">
                         <div class="col-md-8 form-group">
                             <div class="col-md-4" style="display: flex;align-items: center;height: 100%;">
-                                <label class="float-right">{_ "print"} {_ "digital"}:</label>
+                                <label class="float-right">{_ "print"} {_ "digital"}:<span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-8">
                                 <table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
@@ -366,16 +318,16 @@
                                     </thead>
                                     <tbody style="border-bottom: 2px solid darkcyan;">
                                     {foreach from=$digitalPrint_colors key=key value=item }
-                                        <tr>
-                                            <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
-                                                <label style="font-size: 14px;color:gray;" for="digitalPrint_color_{$key}">
-                                                    {_ "color"} {$item.label}
-                                                </label>
-                                            </td>
-                                            <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
-                                                <input type="number" min="0" step=".01" class="form-control"  id="digitalPrint_color_{$key}" name="digitalPrint_color[]" value="{$item.value}" style="text-align: center">
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                            <label style="font-size: 14px;color:gray;" for="digitalPrint_color_{$key}">
+                                                {_ "color"} {$item.label}
+                                            </label>
+                                        </td>
+                                        <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                            <input type="number" min="0" step=".01" class="form-control" required id="digitalPrint_color_{$key}" name="digitalPrint_color[]" value="{$item.value}" style="text-align: center">
+                                        </td>
+                                    </tr>
                                     {/foreach}
                                     </tbody>
                                 </table>
@@ -386,7 +338,7 @@
                     <div class="row">
                         <div class="col-md-8 form-group">
                             <div class="col-md-4" style="display: flex;align-items: center;height: 100%;">
-                                <label class="float-right">{_ "degree"}:</label>
+                                <label class="float-right">{_ "degree"}:<span class="text-danger">*</span></label>
                             </div>
                             <div class="col-md-8">
                                 <table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
@@ -398,16 +350,16 @@
                                     </thead>
                                     <tbody style="border-bottom: 2px solid darkcyan;">
                                     {foreach from=$degrees key=key value=item }
-                                        <tr>
-                                            <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
-                                                <label style="font-size: 14px;color:gray;" for="degree_{$key}">
-                                                    {_ "degree"} {$item.label}
-                                                </label>
-                                            </td>
-                                            <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
-                                                <input type="number" min="0" step=".01" class="form-control"  id="degree_{$key}" name="degree[]" value="{$item.value}" style="text-align: center">
-                                            </td>
-                                        </tr>
+                                    <tr>
+                                        <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                            <label style="font-size: 14px;color:gray;" for="degree_{$key}">
+                                                {_ "degree"} {$item.label}
+                                            </label>
+                                        </td>
+                                        <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
+                                            <input type="number" min="0" step=".01" class="form-control" required id="degree_{$key}" name="degree[]" value="{$item.value}" style="text-align: center">
+                                        </td>
+                                    </tr>
                                     {/foreach}
                                     </tbody>
                                 </table>
@@ -427,36 +379,19 @@
 </div>
 
 {map navBarButton}
-    {if $editAccess == 'true'}
-        <a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+{if $editAccess == 'true'}
+<a class="btn btn-info"  href="{url admin}{$ChangeURL}">
                                       <span class="btn-label">
                                         <i class="fa fa-plus"></i>
                                       </span>
-            {_ "backTo"} {_ "list"} {$item_label}
-        </a>
-    {/if}
-
-
+    {_ "backTo"} {_ "list"} {$item_label}
+</a>
+{/if}
 {/map}
 
 {map footerjs}
 <script>
     let urlapi = '{url api}' ;
-    function get_size_thickness(id){
-        $.ajax({
-            url: urlapi+'product/size',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                id : id
-            } ,
-            success: function (result) {
-                $('#thickness').val(result[0].thickness)
-            }
-
-        });
-    }
-
     function getItem(url,select_name,selected_id){
         $.ajax({
             url: urlapi+url,
@@ -488,13 +423,11 @@
                 tempi = tempi + 1 ;
                 setTimeout(function(){ $( 'temp_'+ tempi).selectpicker('refresh');}, 3000);
             }
-
         });
     }
 
     // getItem('product/body','#body',body_select);
     // getItem('product/engobe','#engobe',engobe_select);
     // getItem('product/glazeGroupList/'+glaze_select,'#glaze',glaze_select);
-
 </script>
 {/map}

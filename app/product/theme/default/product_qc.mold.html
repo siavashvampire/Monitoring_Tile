@@ -147,59 +147,6 @@
 {map footerjs}
 <script>
     let urlapi = '{url api}' ;
-    function get_size_thickness(id){
-        $.ajax({
-            url: urlapi+'product/size',
-            type: 'post',
-            dataType: 'json',
-            data: {
-                id : id
-            } ,
-            success: function (result) {
-                $('#thickness').val(result[0].thickness)
-            }
-
-        });
-    }
-
-    function getItem(url,select_name,selected_id){
-        $.ajax({
-            url: urlapi+url,
-            type: 'post',
-            dataType: 'json',
-            data: {
-            } ,
-            success: function (result) {
-                let select = $(select_name);
-
-                select.html("");
-                if(result !== true) {
-                    result.forEach(function (_ref) {
-                        let selected = "";
-                        if (_ref['id'] ===  selected_id) {
-                            selected = "selected" ;
-                        }
-                        select.append('<option value="'+_ref['id']+'" '+selected+' >'+_ref['label']+'</option>');
-                        $(select_name).selectpicker('refresh');
-                    });
-                    select.addClass('temp_'+ tempi);
-                    $('temp_'+ tempi).selectpicker('refresh');
-
-                }else{
-                    select.append('<option value="' + 0 + '" ' + ' >' + 'موردی ثبت نشده' + '</option>');
-                }
-                //$(select_name).selectpicker('refresh');
-                $( 'temp_'+ tempi).selectpicker('refresh');
-                tempi = tempi + 1 ;
-                setTimeout(function(){ $( 'temp_'+ tempi).selectpicker('refresh');}, 3000);
-            }
-
-        });
-    }
-
-    // getItem('product/body','#body',body_select);
-    // getItem('product/engobe','#engobe',engobe_select);
-    // getItem('product/glazeGroupList/'+glaze_select,'#glaze',glaze_select);
 
 </script>
 {/map}

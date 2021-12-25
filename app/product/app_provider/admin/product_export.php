@@ -2,35 +2,32 @@
 
 namespace App\product\app_provider\admin;
 
-use App\product\model\product;
-use App\Sections\app_provider\admin\Sections;
-use App\user\app_provider\api\checkAccess;
-use App\user\app_provider\api\user;
+
+use App\product\model\product_qc as product_qcAlias;
 use controller;
 use paymentCms\component\JDate;
-use paymentCms\component\request;
-use paymentCms\component\Response;
-use paymentCms\component\validate;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
 class product_export extends controller
 {
-    private $item_label = "برند";
-    private $log_name = 'product_brand';
-    private $controller_name = 'product_brand';
-    private $model_name = 'product';
-    private $app_name = 'product';
-    private $active_menu = 'product_brand';
-    private $html_file_path = 'product_brand.mold.html';
+    private $model_name = 'product_qc';
 
-    public function index(): bool
+    public function index($product = null): bool
     {
-
-        /* @var product $model */
+        /* @var product_qcAlias $model */
         $model = parent::model($this->model_name);
+
+        $value = array();
+        $variable = array();
+
+        if ($product != null){
+            $value[] = $product;
+            $variable[] = 'item.product = ?';
+        }
+
         $get['getPDF'] = 1;
-        $search = $model->getItemsForQC();
+        $search = $model->getItemsForExport($value,$variable);
         $header = [];
         $header[] = 'شماره';
         $header[] = 'روز';
@@ -50,8 +47,6 @@ class product_export extends controller
         $header[] = 'فرمول انگوب زیر';
         $header[] = 'توضیحات';
 
-
-
         if (is_array($search) and count($search) > 0) {
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
@@ -69,6 +64,10 @@ class product_export extends controller
                 $file_name = "تولیدات";
                 $file_name .= " - ";
                 $file_name .= JDate::jdate(' Y');
+                if ($product != null){
+                    $file_name .= " - ";
+                    $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
+                }
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');

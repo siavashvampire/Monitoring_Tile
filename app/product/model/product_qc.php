@@ -384,4 +384,42 @@ class product_qc extends model implements modelInterFace
 
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
     }
+
+    public function getItemsForExport($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $pagination = [0, 9999])
+    {
+
+        model::join('product product','product.id = item.product');
+        model::join('phases  phase','phase.id = product.phase');
+        model::join('product_size  size','size.id = product.size');
+        model::join('product_body  body','body.id = item.body');
+        model::join('product_novanc  novanc','novanc.id = item.novanc');
+        model::join('product_engobe  engobe','engobe.id = item.engobe');
+        model::join('product_sub_engobe  sub_engobe','sub_engobe.id = item.sub_engobe');
+        model::join('product_glaze  glaze','glaze.id = item.glaze');
+
+        model::join('user controller', 'item.controller = controller.userId');
+
+        $field = array();
+        $field[] = 'item.id';
+        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%d")';
+        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%m")';
+        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y")';
+        $field[] = 'phase.label as phaseLabel';
+        $field[] = 'size.label as sizeLabel';
+        $field[] = 'body.label as bodyeLabel';
+        $field[] = 'item.thickness';
+        $field[] = 'product.label';
+        $field[] = 'novanc.label as novancLabel';
+        $field[] = 'item.code';
+        $field[] = 'item.file_code';
+        $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
+        $field[] = 'engobe.label as engobeLabel';
+        $field[] = 'glaze.label as glazeLabel';
+        $field[] = 'sub_engobe.label as sub_engobeLabel';
+        $field[] = 'item.description';
+
+        $field = implode(',', $field);
+
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
+    }
 }

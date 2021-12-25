@@ -4,12 +4,9 @@ namespace App\product\app_provider\admin;
 
 use App;
 use App\core\controller\httpErrorHandler;
-use App\LineMonitoring\app_provider\api\phases;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
-use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -20,6 +17,7 @@ class product_qc extends controller
 {
     private $item_label = "کنترل کیفی";
     private $ChangeURL = "product_qc";
+    private $QC_download = "product_export";
     private $listChangeURL = "product/list";
     private $log_name = 'product_qc';
     private $model_name = 'product_qc';
@@ -68,6 +66,7 @@ class product_qc extends controller
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
+        $this->mold->set('QC_download', $this->QC_download);
 
         return false;
     }

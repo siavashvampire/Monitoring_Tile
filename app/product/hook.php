@@ -42,6 +42,7 @@ class hook extends pluginController
     public function _adminHeaderNavbar($vars2)
     {
         $this->menu->addChild('configurationLine', 'product', 'کاشی‌ها', app::getBaseAppLink('product/list', 'admin'), 'fa fa-delicious', '', 'admin/product/list/product');
+        $this->menu->addChild('configurationLine', 'product_qc_list', 'لاگ فرآیند کنترل', app::getBaseAppLink('product_qc/list', 'admin'), 'fa fa-cube', '', 'admin/product_qc/list/product');
         $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-compress', '', 'admin/product_size/index/product');
         $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-file-image-o', '', 'admin/product_glaze/index/product');
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-bold', '', 'admin/product_brand/index/product');
@@ -70,7 +71,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_carton_packing', ' نوع بسته بندی کارتون ها', app::getBaseAppLink('product_carton_packing', 'admin'), 'fa fa-cube', '', 'admin/product_carton_packing/index/product');
         $this->menu->addChild('configurationLine', 'product_pallet_packing', ' نوع بسته بندی پالت ها', app::getBaseAppLink('product_pallet_packing', 'admin'), 'fa fa-cube', '', 'admin/product_pallet_packing/index/product');
         $this->menu->addChild('configurationLine', 'product_packing', 'بسته بندی', app::getBaseAppLink('product_packing', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
-        $this->menu->addChild('configurationLine', 'product_sub_engobe', 'زیر انگوب', app::getBaseAppLink('product_sub_engobe', 'admin'), 'fa fa-cube', '', 'admin/product_sub_engobe/index/product');
+        $this->menu->addChild('configurationLine', 'product_sub_engobe', rlang('sub_engobe'), app::getBaseAppLink('product_sub_engobe', 'admin'), 'fa fa-cube', '', 'admin/product_sub_engobe/index/product');
         $this->menu->addChild('configurationLine', 'product_novanc', 'نوانس', app::getBaseAppLink('product_novanc', 'admin'), 'fa fa-cube', '', 'admin/product_novanc/index/product');
 //        $this->menu->addChild('Reports', 'QC_export', 'گزارش تولید 1400', app::getBaseAppLink('product_export', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
     }

@@ -1,0 +1,276 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon" >
+                    <i class="fa fa-file-excel-o fa-2x"></i>
+                </div>
+                <h4 class="card-title float-{$float} m-3">{_ "configuration"} {$item_label}</h4>
+            </div>
+            <div class="card-body">
+                <form class="form-horizontal" method="post">
+                    <div class="row">
+                        <div class="col-md-4 float-right form-group">
+                            <label class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:</label>
+                            <label class="col-form-label col-md-9 float-right">{$productLabel}</label>
+                        </div>
+
+                        <div class="col-md-4 float-right form-group">
+                            <label class="col-form-label col-md-6 float-right">{_ "size"} {_ "product"} (mm):</label>
+                            <label class="col-form-label col-md-6 float-right">{$sizeLabel}</label>
+                        </div>
+
+                        <div class="col-md-4 form-group">
+                            <label for="shift" class="col-form-label col-md-3 float-right">{_ "shift"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="shift" name="shift" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "shift"}">
+                                    {foreach from=$shifts key=key value=item }
+                                    <option value="{$item.shift_id}" {if isset($Mold.post.shift)}{if $item.shift_id == $Mold.post.shift }selected{/if}{elseif isset($model) and $item.shift_id == $model->getShift()}selected{/if} >{$item.shift_name}</option>
+                                    {/foreach}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="max_length" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "length"} (mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_length" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_length" name="max_length" value="{if isset($Mold.post.max_length)}{$Mold.post.max_length}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_length" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_length" name="min_length" value="{if isset($Mold.post.min_length)}{$Mold.post.min_length}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="max_width" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "width"} (mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_width" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_width" name="max_width" value="{if isset($Mold.post.max_width)}{$Mold.post.max_width}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_width" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_width" name="min_width" value="{if isset($Mold.post.min_width)}{$Mold.post.min_width}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="max_thickness" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "thickness"} (mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_thickness" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_thickness" name="max_thickness" value="{if isset($Mold.post.max_thickness)}{$Mold.post.max_thickness}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_thickness" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_thickness" name="min_thickness" value="{if isset($Mold.post.min_thickness)}{$Mold.post.min_thickness}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="resistance" class="col-form-label col-md-3 float-right">{_ "resistance"} (Kg/cm2):</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="resistance" name="resistance" value="{if isset($Mold.post.resistance)}{$Mold.post.resistance}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="oblique" class="col-form-label col-md-3 float-right">{_ "oblique"} (mm):</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="oblique" name="oblique" value="{if isset($Mold.post.oblique)}{$Mold.post.oblique}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="max_wrap_diameter" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "wrap"} {_ "diameter"} (mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_wrap_diameter" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_wrap_diameter" name="max_wrap_diameter" value="{if isset($Mold.post.max_wrap_diameter)}{$Mold.post.max_wrap_diameter}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_wrap_diameter" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_wrap_diameter" name="min_wrap_diameter" value="{if isset($Mold.post.min_wrap_diameter)}{$Mold.post.min_wrap_diameter}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="max_wrap_center" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "wrap"} {_ "center"} (mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_wrap_center" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_wrap_center" name="max_wrap_center" value="{if isset($Mold.post.max_wrap_center)}{$Mold.post.max_wrap_center}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_wrap_center" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_wrap_center" name="min_wrap_center" value="{if isset($Mold.post.min_wrap_center)}{$Mold.post.min_wrap_center}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="max_wrap_edge" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "wrap"} {_ "edge"}(mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_wrap_edge" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_wrap_edge" name="max_wrap_edge" value="{if isset($Mold.post.max_wrap_edge)}{$Mold.post.max_wrap_edge}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_wrap_edge" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_wrap_edge" name="min_wrap_edge" value="{if isset($Mold.post.min_wrap_edge)}{$Mold.post.min_wrap_edge}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="straight" class="col-form-label col-md-3 float-right">{_ "straight"} (mm):</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="straight" name="straight" value="{if isset($Mold.post.straight)}{$Mold.post.straight}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="mean_water_attraction" class="col-form-label col-md-3 float-right">{_ "mean"} {_ "attraction"} {_ "water"}:</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="mean_water_attraction" name="mean_water_attraction" value="{if isset($Mold.post.mean_water_attraction)}{$Mold.post.mean_water_attraction}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label for="max_temperature" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "temperature"} (mm):</label>
+                            <div class="col-md-8">
+                                <div class="col-md-12 form-group">
+                                    <label for="max_temperature" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_temperature" name="max_temperature" value="{if isset($Mold.post.max_temperature)}{$Mold.post.max_temperature}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 form-group">
+                                    <label for="min_temperature" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <div class="col-md-9">
+                                        <div class="form-group has-default">
+                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_temperature" name="min_temperature" value="{if isset($Mold.post.min_temperature)}{$Mold.post.min_temperature}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group" style="transform: translate(0%, 25%);">
+                            <label for="cycle" class="col-form-label col-md-3 float-right">{_ "cycle"} (min):</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="cycle" name="cycle" value="{if isset($Mold.post.cycle)}{$Mold.post.cycle}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 form-group" style="transform: translate(0%, 25%);">
+                            <label for="specific_pressure" class="col-form-label col-md-3 float-right">{_ "pressure"} {_ "specific"} (Kg/cm2):</label>
+                            <div class="col-md-9">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="specific_pressure" name="specific_pressure" value="{if isset($Mold.post.specific_pressure)}{$Mold.post.specific_pressure}{elseif isset($model)}{$model->getThickness()}{/if}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i>{_ "insert"}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+    {if $editAccess == 'true'}
+        <a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+                                      <span class="btn-label">
+                                        <i class="fa fa-plus"></i>
+                                      </span>
+            {_ "backTo"} {_ "list"} {$item_label}
+        </a>
+    {/if}
+
+
+{/map}
+
+{map footerjs}
+<script>
+    let urlapi = '{url api}' ;
+
+</script>
+{/map}

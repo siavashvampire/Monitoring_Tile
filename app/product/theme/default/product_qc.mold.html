@@ -10,12 +10,19 @@
             <div class="card-body">
                 <form class="form-horizontal" method="post">
                     <div class="row">
-                        <div class="col-md-4 float-right form-group">
+                        <div class="col-md-6 float-right form-group">
                             <label class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:</label>
                             <label class="col-form-label col-md-9 float-right">{$productLabel}</label>
                         </div>
 
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-6 float-right form-group">
+                            <label class="col-form-label col-md-3 float-right">{_ "size"} {_ "design"}:</label>
+                            <label class="col-form-label col-md-9 float-right">{$sizeLabel}</label>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
                             <label for="code" class="col-form-label col-md-3 float-right">{_ "code"} :</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
@@ -24,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-6 form-group">
                             <label for="file_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "file"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
@@ -111,7 +118,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-12 form-group">
-                            <label for="file_code" class="col-form-label col-md-3 float-right">{_ "description"} :</label>
+                            <label for="description" class="col-form-label col-md-3 float-right">{_ "description"} :</label>
                             <div class="col-md-12">
                                 <div class="form-group has-default">
                                     <input type="text"  class="form-control"  id="description" name="description" value="{if isset($Mold.post.description)}{$Mold.post.description}{elseif isset($model)}{$model->getDescription()}{/if}">

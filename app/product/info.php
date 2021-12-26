@@ -506,42 +506,6 @@ return [
                 'carton_packing' => ['table' => 'product_carton_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
-        'product_qc' => [
-            'fields' => [
-                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
-                'product' => 'INT(11) NOT NULL',
-                'qc_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
-                'body' => "INT(11)",
-                'engobe' => "INT(11)",
-                'glaze' => "INT(11)",
-                'sub_engobe' => "INT(11)",
-                'thickness' => "FLOAT",
-                'novanc' => "INT(11)",
-                'code' => "FLOAT",
-                'file_code' => "FLOAT",
-                'controller' => "INT(11)",
-                'description' => "varchar(65) COLLATE utf8_persian_ci",
-            ],
-            'KEY' => [
-                'body',
-                'engobe',
-                'glaze',
-                'sub_engobe',
-                'novanc',
-                'controller',
-            ],
-            'PRIMARY KEY' => [
-                'id'
-            ],
-            'REFERENCES' => [
-                'body' => ['table' => 'product_body', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'engobe' => ['table' => 'product_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'glaze' => ['table' => 'product_glaze', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'sub_engobe' => ['table' => 'product_sub_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'novanc' => ['table' => 'product_novanc', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'controller' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-            ]
-        ],
         'product' => [
             'fields' => [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
@@ -623,6 +587,86 @@ return [
                 'carton_packing' => ['table' => 'product_carton_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'pallet_packing' => ['table' => 'product_pallet_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
                 'packing' => ['table' => 'product_packing', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+            ]
+        ],
+        'product_qc' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'product' => 'INT(11) NOT NULL',
+                'qc_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'body' => "INT(11)",
+                'engobe' => "INT(11)",
+                'glaze' => "INT(11)",
+                'sub_engobe' => "INT(11)",
+                'thickness' => "FLOAT",
+                'novanc' => "INT(11)",
+                'code' => "FLOAT",
+                'file_code' => "FLOAT",
+                'controller' => "INT(11)",
+                'description' => "varchar(65) COLLATE utf8_persian_ci",
+            ],
+            'KEY' => [
+                'product',
+                'body',
+                'engobe',
+                'glaze',
+                'sub_engobe',
+                'novanc',
+                'controller',
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'product' => ['table' => 'product', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'body' => ['table' => 'product_body', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'engobe' => ['table' => 'product_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'glaze' => ['table' => 'product_glaze', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'sub_engobe' => ['table' => 'product_sub_engobe', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'novanc' => ['table' => 'product_novanc', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'controller' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+            ]
+        ],
+        'product_routine' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'product' => 'INT(11) NOT NULL',
+                'routine_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'shift' => "INT(11) NOT NULL",
+                'length_min' => "FLOAT",
+                'length_max' => "FLOAT",
+                'width_min' => "FLOAT",
+                'width_max' => "FLOAT",
+                'thickness_min' => "FLOAT",
+                'thickness_max' => "FLOAT",
+                'resistance' => "FLOAT",
+                'wrap_diameter_min' => "FLOAT",
+                'wrap_diameter_max' => "FLOAT",
+                'wrap_center_min' => "FLOAT",
+                'wrap_center_max' => "FLOAT",
+                'wrap_edge_min' => "FLOAT",
+                'wrap_edge_max' => "FLOAT",
+                'oblique' => "FLOAT",
+                'straight' => "FLOAT",
+                'mean_water_attraction' => "FLOAT",
+                'temperature_min' => "FLOAT",
+                'temperature_max' => "FLOAT",
+                'cycle' => "INT(11)",
+                'specific_pressure' => "INT(11)",
+                'controller' => "INT(11)",
+            ],
+            'KEY' => [
+                'product',
+                'shift',
+                'controller',
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'product' => ['table' => 'product', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'shift' => ['table' => 'shift_work', 'column' => 'shift_id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'controller' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
     ],

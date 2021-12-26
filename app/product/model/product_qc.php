@@ -109,6 +109,12 @@ class product_qc extends model implements modelInterFace
         return parent::search([$this->product], 'item.id = ?', 'product' . ' item', 'item.label')[0]['label'];
     }
 
+    public function getSizeLabel()
+    {
+        model::join('product_size  size', 'item.size = size.id');
+        return parent::search([$this->product], 'item.id = ?', 'product' . ' item', 'CONCAT(size.length,"×", size.width) as size')[0]['size'];
+    }
+
     /**
      * @param mixed $product
      */
@@ -354,7 +360,7 @@ class product_qc extends model implements modelInterFace
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.product) as co')) [0]['co'];
     }
 
-    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.product', 'type' => 'asc'], $pagination = [0, 9999])
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.qc_date', 'type' => 'DESC'], $pagination = [0, 9999])
     {
 
         model::join('product_body  body', 'body.id = item.body');

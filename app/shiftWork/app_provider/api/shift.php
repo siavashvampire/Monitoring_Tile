@@ -3,6 +3,7 @@ namespace App\shiftWork\app_provider\api;
 
 use App\api\controller\innerController;
 use App\shiftWork\model\shift_time;
+use App\shiftWork\model\shift_work;
 use paymentCms\component\JDate;
 
 
@@ -53,5 +54,14 @@ class shift extends innerController {
 			'startTimeStampX1000' => strtotime($startDateTime) * 1000 ,
 			'endTimeStampX1000' => strtotime($endDateTime)* 1000,
 		]);
+	}
+	public  static function shift (): array
+    {
+        /** @var shift_work $model */
+        $model = parent::model(['shiftWork', 'shift_work']);
+		$shifts = $model->search([-1], 'shift_id <> ?', 'shift_work shift_work', 'shift_work.*');
+
+
+		return self::json($shifts);
 	}
 }

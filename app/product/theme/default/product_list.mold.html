@@ -22,6 +22,9 @@
                                     {if $addQcReport == 'true'}
                                         <th style="width: 4%"></th>
                                     {/if}
+                                    {if $addQcReport == 'true'}
+                                        <th style="width: 4%"></th>
+                                    {/if}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -48,10 +51,18 @@
                                             <i class="fa fa-list-alt"></i></button>
                                     </td>
                                     {/if}
+
+                                    {if $addRoutineReport == 'true'}
+                                        <td>
+                                            <button class="btn btn-link text-info"
+                                                    onclick="location.href='{url}{$RoutineURL}/{$item.id}'">
+                                                <i class="fa fa-list-alt"></i></button>
+                                        </td>
+                                    {/if}
                                 </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="4">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="5">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>

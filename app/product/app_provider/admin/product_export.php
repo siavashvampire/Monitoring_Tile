@@ -44,7 +44,7 @@ class product_export extends controller
         $header[] = 'کنترلر';
         $header[] = 'فرمول انگوب';
         $header[] = 'فرمول لعاب';
-        $header[] = 'فرمول انگوب زیر';
+        $header[] = 'فرمول زیر انگوب';
         $header[] = 'توضیحات';
 
         if (is_array($search) and count($search) > 0) {

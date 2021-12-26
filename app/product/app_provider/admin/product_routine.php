@@ -4,6 +4,7 @@ namespace App\product\app_provider\admin;
 
 use App;
 use App\core\controller\httpErrorHandler;
+use App\shiftWork\app_provider\api\shift;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
@@ -13,23 +14,23 @@ use paymentCms\component\validate;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
 
-class product_qc extends controller
+class product_routine extends controller
 {
-    private $item_label = "کنترل کیفی";
-    private $ChangeURL = "product_qc";
-    private $QC_download = "product_export";
-    private $listChangeURL = "product_qc/list";
-    private $log_name = 'product_qc';
-    private $model_name = 'product_qc';
+    private $item_label = "کنترل روتین";
+    private $ChangeURL = "product_routine";
+    private $QC_download = "product_export/routine";
+    private $listChangeURL = "product/list";
+    private $log_name = 'product_routine';
+    private $model_name = 'product_routine';
     private $app_name = 'product';
-    private $class_name = 'product_qc';
+    private $class_name = 'product_routine';
     private $active_menu = 'product';
-    private $list_html_file_path = 'product_qc_list.mold.html';
-    private $html_file_path = 'product_qc.mold.html';
+    private $list_html_file_path = 'product_routine_list.mold.html';
+    private $html_file_path = 'product_routine.mold.html';
 
     public function list($product = null): bool
     {
-        /* @var App\product\model\product_qc $model */
+        /* @var App\product\model\product_routine $model */
         $get = request::post('page=1,perEachPage=25');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -62,20 +63,18 @@ class product_qc extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
-        $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
         $this->mold->set('product', $product);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('QC_download', $this->QC_download);
-        $this->mold->set('sizeLabel', $model->getSizeLabel());
 
         return false;
     }
 
     public function index($product, $id = null): bool
     {
-        /* @var App\product\model\product_qc $model */
+        /* @var App\product\model\product_routine $model */
         if ($id != null) {
             $model = parent::model($this->model_name, $id);
             if ($model->getId() != $id or $model->getProduct() != $product) {
@@ -89,28 +88,42 @@ class product_qc extends controller
         }
 
         if (request::ispost()) {
-            $get = request::post('thickness,body,engobe,glaze,novanc,sub_engobe,description,code,file_code');
-
+            $get = request::post('shift,max_length,min_length,max_width,min_width,max_thickness,min_thickness,resistance,oblique,max_wrap_diameter,min_wrap_diameter,max_wrap_center,min_wrap_center,max_wrap_edge,min_wrap_edge,straight,mean_water_attraction,max_temperature,min_temperature,cycle,specific_pressure');
             $rules = [
             ];
             $valid = validate::check($get, $rules);
             $GLOBALS['timeStart'] = '';
             if ($valid->isFail()) {
-                Response::jsonMessage($valid->errorsIn(), false);
+                $this->alert('danger', '', $valid->errorsIn());
+//                Response::jsonMessage($valid->errorsIn(), false);
                 return false;
             }
+            show($get);
             $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getProductLabel() . " ";
-            $model->setQcDate(date('Y-m-d H:i:s'));
-            $model->setBody($get['body']);
-            $model->setEngobe($get['engobe']);
-            $model->setThickness($get['thickness']);
-            $model->setGlaze($get['glaze']);
-            $model->setNovanc($get['novanc']);
-            $model->setSubEngobe($get['sub_engobe']);
-            $model->setFileCode($get['file_code']);
-            $model->setCode($get['code']);
-            $model->setDescription($get['description']);
+            $model->setProduct($product);
+            $model->setRoutineDate(date('Y-m-d H:i:s'));
+            $model->setShift($get['shift']);
+            $model->setLengthMax($get['max_length']);
+            $model->setLengthMin($get['min_length']);
+            $model->setWidthMax($get['max_width']);
+            $model->setWidthMin($get['min_width']);
+            $model->setThicknessMax($get['max_thickness']);
+            $model->setThicknessMin($get['min_thickness']);
+            $model->setResistance($get['resistance']);
+            $model->setOblique($get['oblique']);
+            $model->setWrapDiameterMax($get['max_wrap_diameter']);
+            $model->setWrapDiameterMin( $get['min_wrap_diameter']);
+            $model->setDescription($get['max_wrap_center']);
+            $model->setDescription($get['min_wrap_center']);
+            $model->setDescription($get['max_wrap_edge']);
+            $model->setDescription($get['min_wrap_edge']);
+            $model->setDescription($get['straight']);
+            $model->setDescription($get['mean_water_attraction']);
+            $model->setDescription($get['max_temperature']);
+            $model->setDescription($get['min_temperature']);
+            $model->setDescription($get['cycle']);
+            $model->setDescription($get['specific_pressure']);
             $model->setController(user::getUserLogin(true));
 
             if ($id != null) {
@@ -124,7 +137,6 @@ class product_qc extends controller
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
-
                 }
 
             } else {
@@ -148,19 +160,14 @@ class product_qc extends controller
         else
             $this->mold->setPageTitle(rlang('Edit') . " " . $this->item_label);
 
-        $this->mold->set('ChangeURL', $this->listChangeURL . "/" . $product);
+        $this->mold->set('ChangeURL', $this->listChangeURL);
         $this->mold->set('item_label', $this->item_label);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name, 'list', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('activeMenu', $this->active_menu);
-        $this->mold->set('glazes', App\product\app_provider\api\product::glazeChild()["result"]);
-        $this->mold->set('engobes', App\product\app_provider\api\product::engobe()["result"]);
-        $this->mold->set('bodys', App\product\app_provider\api\product::body()["result"]);
-        $this->mold->set('novanc', App\product\app_provider\api\product::novanc()["result"]);
-        $this->mold->set('sub_engobe', App\product\app_provider\api\product::sub_engobe()["result"]);
-        $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
+        $this->mold->set('productLabel', $model->getProductLabel());
         $this->mold->set('sizeLabel', $model->getSizeLabel());
-
+        $this->mold->set('shifts', shift::shift()["result"]);
         return false;
     }
 

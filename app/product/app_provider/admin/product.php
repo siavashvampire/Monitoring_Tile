@@ -22,6 +22,7 @@ class product extends controller
     private $ChangeURL = "product";
     private $PDFURL = "product/getPDF";
     private $QCURL = "product_qc/list";
+    private $RoutineURL = "product_routine/list";
     private $listChangeURL = "product/list";
     private $QC_download = "product_export";
     private $log_name = 'product';
@@ -66,13 +67,17 @@ class product extends controller
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
         $this->mold->set('QCURL', $this->QCURL);
+        $this->mold->set('RoutineURL', $this->RoutineURL);
         $this->mold->set('PDFURL', $this->PDFURL);
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $addQcReport = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'product_qc',
             'index', $this->app_name)["status"];
+        $addRoutineReport = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', 'product_routine',
+            'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('addQcReport', $addQcReport);
+        $this->mold->set('addRoutineReport', $addRoutineReport);
         $this->mold->set('QC_download', $this->QC_download);
 
         return false;

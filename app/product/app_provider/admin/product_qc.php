@@ -67,7 +67,6 @@ class product_qc extends controller
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
-//        show($search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
 

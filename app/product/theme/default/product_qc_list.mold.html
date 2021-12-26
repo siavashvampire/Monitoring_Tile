@@ -75,7 +75,7 @@
 </div>
 
 {map navBarButton}
-    {if $editAccess == 'true'}
+    {if $editAccess == 'true' and isset($productLabel)}
         <a class="btn btn-info"  href="{url admin}{$ChangeURL}/{$product}">
                               <span class="btn-label">
                                 <i class="fa fa-plus"></i>
@@ -83,12 +83,22 @@
             {_ "add"} {$item_label} {_ "new"}
         </a>
     {/if}
+
+{if isset($productLabel)}
 <a class="btn btn-info"  href="{url admin}{$QC_download}/{$product}">
                                   <span class="btn-label">
                                     <i class="fa fa-cloud-download"></i>
                                   </span>
     دانلود کل تولیدات {$productLabel}
 </a>
+{else}
+<a class="btn btn-info"  href="{url admin}{$QC_download}">
+                                  <span class="btn-label">
+                                    <i class="fa fa-cloud-download"></i>
+                                  </span>
+    دانلود کل تولیدات
+</a>
+{/if}
 {/map}
 
 {map footerjs}

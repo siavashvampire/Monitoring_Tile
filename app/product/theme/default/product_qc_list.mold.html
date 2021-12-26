@@ -7,7 +7,7 @@
                         <div class="card-icon">
                             <i class="fa fa-delicious fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label} {$productLabel} {_ "with"} {_ "size"} {$sizeLabel}</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}{if isset($productLabel)} {$productLabel} {_ "with"} {_ "size"} {$sizeLabel}{/if}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -15,6 +15,9 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 9%">{_ "date"}</th>
+                                    {if !isset($productLabel)}
+                                        <th style="width: 9%">{_ "name"} {_ "design"}</th>
+                                    {/if}
                                     <th style="width: 9%">{_ "body"}</th>
                                     <th style="width: 9%">{_ "thickness"}</th>
                                     <th style="width: 9%">{_ "novanc"}</th>
@@ -34,6 +37,9 @@
                                 {foreach from=$items key=key value=item}
                                 <tr>
                                     <td>{$item.date}</td>
+                                    {if !isset($productLabel)}
+                                        <td>{$item.productLabel}</td>
+                                    {/if}
                                     <td>{$item.bodyLabel}</td>
                                     <td>{$item.thickness}</td>
                                     <td>{$item.novancLabel}</td>

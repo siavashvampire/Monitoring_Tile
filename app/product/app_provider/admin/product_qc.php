@@ -23,7 +23,7 @@ class product_qc extends controller
     private $model_name = 'product_qc';
     private $app_name = 'product';
     private $class_name = 'product_qc';
-    private $active_menu = 'product';
+    private $active_menu = 'product_qc_list';
     private $list_html_file_path = 'product_qc_list.mold.html';
     private $html_file_path = 'product_qc.mold.html';
 
@@ -47,28 +47,34 @@ class product_qc extends controller
                 $variable[] = 'item.label Like ? ';
             }
         }
+        $model = parent::model($this->model_name);
+        $model->setProduct($product);
+
         if ($product != null) {
             $value[] = $product;
             $variable[] = 'item.product = ? ';
+
+            $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
+
+            $this->mold->set('sizeLabel', $model->getSizeLabel());
+            $this->mold->set('product', $product);
         }
 
-        $model = parent::model($this->model_name);
-        $model->setProduct($product);
+
         $search = $model->getItems($value, $variable);
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('items', $search);
+//        show($search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
-        $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
-        $this->mold->set('product', $product);
+
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('QC_download', $this->QC_download);
-        $this->mold->set('sizeLabel', $model->getSizeLabel());
 
         return false;
     }

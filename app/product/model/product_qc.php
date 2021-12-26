@@ -368,12 +368,14 @@ class product_qc extends model implements modelInterFace
         model::join('product_engobe  engobe', 'engobe.id = item.engobe');
         model::join('product_sub_engobe  sub_engobe', 'sub_engobe.id = item.sub_engobe');
         model::join('product_glaze  glaze', 'glaze.id = item.glaze');
+        model::join('product  product', 'product.id = item.product');
 
         model::join('user controller', 'item.controller = controller.userId');
 
         $field = array();
         $field[] = 'item.id';
         $field[] = 'item.product';
+        $field[] = 'product.label as productLabel';
         $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y-%m-%d") as date';
         $field[] = 'body.label as bodyLabel';
         $field[] = 'item.thickness';

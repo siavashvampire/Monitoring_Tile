@@ -8,6 +8,7 @@ use App\shiftWork\app_provider\api\shift;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -64,10 +65,14 @@ class product_routine extends controller
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
         $this->mold->set('product', $product);
+        $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
+
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('QC_download', $this->QC_download);
+        $this->mold->set('sizeLabel', $model->getSizeLabel());
+//        show($search);
 
         return false;
     }
@@ -90,15 +95,15 @@ class product_routine extends controller
         if (request::ispost()) {
             $get = request::post('shift,max_length,min_length,max_width,min_width,max_thickness,min_thickness,resistance,oblique,max_wrap_diameter,min_wrap_diameter,max_wrap_center,min_wrap_center,max_wrap_edge,min_wrap_edge,straight,mean_water_attraction,max_temperature,min_temperature,cycle,specific_pressure');
             $rules = [
+                "shift" => ["required", rlang('shift')],
             ];
             $valid = validate::check($get, $rules);
             $GLOBALS['timeStart'] = '';
             if ($valid->isFail()) {
                 $this->alert('danger', '', $valid->errorsIn());
 //                Response::jsonMessage($valid->errorsIn(), false);
-                return false;
+//                return false;
             }
-            show($get);
             $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getProductLabel() . " ";
             $model->setProduct($product);
@@ -114,16 +119,16 @@ class product_routine extends controller
             $model->setOblique($get['oblique']);
             $model->setWrapDiameterMax($get['max_wrap_diameter']);
             $model->setWrapDiameterMin( $get['min_wrap_diameter']);
-            $model->setDescription($get['max_wrap_center']);
-            $model->setDescription($get['min_wrap_center']);
-            $model->setDescription($get['max_wrap_edge']);
-            $model->setDescription($get['min_wrap_edge']);
-            $model->setDescription($get['straight']);
-            $model->setDescription($get['mean_water_attraction']);
-            $model->setDescription($get['max_temperature']);
-            $model->setDescription($get['min_temperature']);
-            $model->setDescription($get['cycle']);
-            $model->setDescription($get['specific_pressure']);
+            $model->setWrapCenterMax($get['max_wrap_center']);
+            $model->setWrapCenterMin($get['min_wrap_center']);
+            $model->setWrapEdgeMax($get['max_wrap_edge']);
+            $model->setWrapEdgeMin($get['min_wrap_edge']);
+            $model->setStraight($get['straight']);
+            $model->setMeanWaterAttraction($get['mean_water_attraction']);
+            $model->setTemperatureMax($get['max_temperature']);
+            $model->setTemperatureMin($get['min_temperature']);
+            $model->setCycle($get['cycle']);
+            $model->setSpecificPressure($get['specific_pressure']);
             $model->setController(user::getUserLogin(true));
 
             if ($id != null) {
@@ -131,8 +136,7 @@ class product_routine extends controller
                     $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis .= rlang('changed');
-                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
-                    app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
+
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
@@ -144,10 +148,10 @@ class product_routine extends controller
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 
-                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
+//                    show(model::getLastQuery());
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }
             }
@@ -167,6 +171,7 @@ class product_routine extends controller
         $this->mold->set('activeMenu', $this->active_menu);
         $this->mold->set('productLabel', $model->getProductLabel());
         $this->mold->set('sizeLabel', $model->getSizeLabel());
+        $this->mold->set('size', $model->getSizeModel());
         $this->mold->set('shifts', shift::shift()["result"]);
         return false;
     }

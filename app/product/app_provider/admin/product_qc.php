@@ -118,8 +118,6 @@ class product_qc extends controller
                     $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis .= rlang('changed');
-                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
-                    app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {
@@ -132,7 +130,6 @@ class product_qc extends controller
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 
-                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
                     Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
                 } else {

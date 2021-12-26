@@ -82,10 +82,10 @@ class product_routine extends model implements modelInterFace
         $array['thickness_min'] = $this->thickness_min;
         $array['thickness_max'] = $this->thickness_max;
         $array['resistance'] = $this->resistance;
-        $array['wrap_diameter_min'] = $this->resistance;
-        $array['wrap_diameter_max'] = $this->resistance;
-        $array['wrap_center_min'] = $this->resistance;
-        $array['wrap_center_max'] = $this->resistance;
+        $array['wrap_diameter_min'] = $this->wrap_diameter_min;
+        $array['wrap_diameter_max'] = $this->wrap_diameter_max;
+        $array['wrap_center_min'] = $this->wrap_center_min;
+        $array['wrap_center_max'] = $this->wrap_center_max;
         $array['wrap_edge_min'] = $this->wrap_edge_min;
         $array['wrap_edge_max'] = $this->wrap_edge_max;
         $array['oblique'] = $this->oblique;
@@ -150,6 +150,11 @@ class product_routine extends model implements modelInterFace
     {
         model::join('product_size  size', 'item.size = size.id');
         return parent::search([$this->product], 'item.id = ?', 'product' . ' item', 'CONCAT(size.length,"×", size.width) as size')[0]['size'];
+    }
+    public function getSizeModel()
+    {
+        model::join('product_size  size', 'item.size = size.id');
+        return parent::search([$this->product], 'item.id = ?', 'product' . ' item', 'size.* ')[0];
     }
 
     /**
@@ -221,6 +226,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setLengthMin($length_min): void
     {
+        if ($length_min == '')
+            $length_min = null;
         $this->length_min = $length_min;
     }
 
@@ -237,6 +244,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setLengthMax($length_max): void
     {
+        if ($length_max == '')
+            $length_max = null;
         $this->length_max = $length_max;
     }
 
@@ -253,6 +262,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWidthMin($width_min): void
     {
+        if ($width_min == '')
+            $width_min = null;
         $this->width_min = $width_min;
     }
 
@@ -269,6 +280,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWidthMax($width_max): void
     {
+        if ($width_max == '')
+            $width_max = null;
         $this->width_max = $width_max;
     }
 
@@ -285,6 +298,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setThicknessMin($thickness_min): void
     {
+        if ($thickness_min == '')
+            $thickness_min = null;
         $this->thickness_min = $thickness_min;
     }
 
@@ -301,6 +316,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setThicknessMax($thickness_max): void
     {
+        if ($thickness_max == '')
+            $thickness_max = null;
         $this->thickness_max = $thickness_max;
     }
 
@@ -317,6 +334,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setResistance($Resistance): void
     {
+        if ($Resistance == '')
+            $Resistance = null;
         $this->resistance = $Resistance;
     }
 
@@ -333,6 +352,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWrapDiameterMin($wrap_diameter_min): void
     {
+        if ($wrap_diameter_min == '')
+            $wrap_diameter_min = null;
         $this->wrap_diameter_min = $wrap_diameter_min;
     }
 
@@ -349,6 +370,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWrapDiameterMax($wrap_diameter_max): void
     {
+        if ($wrap_diameter_max == '')
+            $wrap_diameter_max = null;
         $this->wrap_diameter_max = $wrap_diameter_max;
     }
 
@@ -365,6 +388,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWrapCenterMin($wrap_center_min): void
     {
+        if ($wrap_center_min == '')
+            $wrap_center_min = null;
         $this->wrap_center_min = $wrap_center_min;
     }
 
@@ -381,6 +406,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWrapCenterMax($wrap_center_max): void
     {
+        if ($wrap_center_max == '')
+            $wrap_center_max = null;
         $this->wrap_center_max = $wrap_center_max;
     }
 
@@ -397,6 +424,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWrapEdgeMin($wrap_edge_min): void
     {
+        if ($wrap_edge_min == '')
+            $wrap_edge_min = null;
         $this->wrap_edge_min = $wrap_edge_min;
     }
 
@@ -413,6 +442,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setWrapEdgeMax($wrap_edge_max): void
     {
+        if ($wrap_edge_max == '')
+            $wrap_edge_max = null;
         $this->wrap_edge_max = $wrap_edge_max;
     }
 
@@ -429,6 +460,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setOblique($oblique): void
     {
+        if ($oblique == '')
+            $oblique = null;
         $this->oblique = $oblique;
     }
 
@@ -445,6 +478,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setStraight($straight): void
     {
+        if ($straight == '')
+            $straight = null;
         $this->straight = $straight;
     }
 
@@ -461,6 +496,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setMeanWaterAttraction($mean_water_attraction): void
     {
+        if ($mean_water_attraction == '')
+            $mean_water_attraction = null;
         $this->mean_water_attraction = $mean_water_attraction;
     }
 
@@ -477,6 +514,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setTemperatureMin($temperature_min): void
     {
+        if ($temperature_min == '')
+            $temperature_min = null;
         $this->temperature_min = $temperature_min;
     }
 
@@ -493,6 +532,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setTemperatureMax($temperature_max): void
     {
+        if ($temperature_max == '')
+            $temperature_max = null;
         $this->temperature_max = $temperature_max;
     }
 
@@ -509,6 +550,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setCycle($cycle): void
     {
+        if ($cycle == '')
+            $cycle = null;
         $this->cycle = $cycle;
     }
 
@@ -525,6 +568,8 @@ class product_routine extends model implements modelInterFace
      */
     public function setSpecificPressure($specific_pressure): void
     {
+        if ($specific_pressure == '')
+            $specific_pressure = null;
         $this->specific_pressure = $specific_pressure;
     }
 
@@ -537,18 +582,34 @@ class product_routine extends model implements modelInterFace
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.product', 'type' => 'asc'], $pagination = [0, 9999])
     {
         model::join('user controller', 'item.controller = controller.userId');
+        model::join('shift_work shift', 'item.shift = shift.shift_id');
 
         $field = array();
         $field[] = 'item.id';
         $field[] = 'item.product';
         $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%Y-%m-%d") as date';
-//        $field[] = 'item.code';
-//        $field[] = 'item.file_code';
+        $field[] = 'shift.shift_name as shift';
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
-//        $field[] = 'engobe.label as engobeLabel';
-//        $field[] = 'glaze.label as glazeLabel';
-//        $field[] = 'sub_engobe.label as sub_engobeLabel';
-//        $field[] = 'item.description';
+        $field[] = 'item.length_max';
+        $field[] = 'item.length_min';
+        $field[] = 'item.width_max';
+        $field[] = 'item.width_min';
+        $field[] = 'item.thickness_max';
+        $field[] = 'item.thickness_min';
+        $field[] = 'item.resistance';
+        $field[] = 'item.wrap_diameter_max';
+        $field[] = 'item.wrap_diameter_min';
+        $field[] = 'item.wrap_center_max';
+        $field[] = 'item.wrap_center_min';
+        $field[] = 'item.wrap_edge_max';
+        $field[] = 'item.wrap_edge_min';
+        $field[] = 'item.oblique';
+        $field[] = 'item.straight';
+        $field[] = 'item.mean_water_attraction';
+        $field[] = 'item.temperature_min';
+        $field[] = 'item.temperature_max';
+        $field[] = 'item.cycle';
+        $field[] = 'item.specific_pressure';
 
         $field = implode(',', $field);
 
@@ -561,35 +622,44 @@ class product_routine extends model implements modelInterFace
         model::join('product product', 'product.id = item.product');
         model::join('phases  phase', 'phase.id = product.phase');
         model::join('product_size  size', 'size.id = product.size');
-        model::join('product_body  body', 'body.id = item.body');
-        model::join('product_novanc  novanc', 'novanc.id = item.novanc');
-        model::join('product_engobe  engobe', 'engobe.id = item.engobe');
-        model::join('product_sub_engobe  sub_engobe', 'sub_engobe.id = item.sub_engobe');
-        model::join('product_glaze  glaze', 'glaze.id = item.glaze');
+
+        model::join('shift_work shift', 'item.shift = shift.shift_id');
 
         model::join('user controller', 'item.controller = controller.userId');
 
         $field = array();
         $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%d")';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%m")';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y")';
+        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%d") as day';
+        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%m") as month';
+        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%Y") as year';
         $field[] = 'phase.label as phaseLabel';
         $field[] = 'size.label as sizeLabel';
-        $field[] = 'body.label as bodyeLabel';
-        $field[] = 'item.thickness';
-        $field[] = 'product.label';
-        $field[] = 'novanc.label as novancLabel';
-        $field[] = 'item.code';
-        $field[] = 'item.file_code';
+        $field[] = 'shift.shift_name as shift';
+        $field[] = 'product.label as productLabel';
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
-        $field[] = 'engobe.label as engobeLabel';
-        $field[] = 'glaze.label as glazeLabel';
-        $field[] = 'sub_engobe.label as sub_engobeLabel';
-        $field[] = 'item.description';
+        $field[] = 'item.length_max';
+        $field[] = 'item.length_min';
+        $field[] = 'item.width_max';
+        $field[] = 'item.width_min';
+        $field[] = 'item.thickness_max';
+        $field[] = 'item.thickness_min';
+        $field[] = 'item.resistance';
+        $field[] = 'item.wrap_diameter_max';
+        $field[] = 'item.wrap_diameter_min';
+        $field[] = 'item.wrap_center_max';
+        $field[] = 'item.wrap_center_min';
+        $field[] = 'item.wrap_edge_max';
+        $field[] = 'item.wrap_edge_min';
+        $field[] = 'item.oblique';
+        $field[] = 'item.straight';
+        $field[] = 'item.mean_water_attraction';
+        $field[] = 'item.temperature_min';
+        $field[] = 'item.temperature_max';
+        $field[] = 'item.cycle';
+        $field[] = 'item.specific_pressure';
 
         $field = implode(',', $field);
-
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
+        $variable = ((count($variable) == 0) ? null : implode(' and ', $variable));
+        return parent::search($value, $variable, $this->tableName . ' item', $field, $sortWith, $pagination);
     }
 }

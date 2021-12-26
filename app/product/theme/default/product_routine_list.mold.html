@@ -15,16 +15,20 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 9%">{_ "date"}</th>
-                                    <th style="width: 9%">{_ "body"}</th>
-                                    <th style="width: 9%">{_ "thickness"}</th>
-                                    <th style="width: 9%">{_ "novanc"}</th>
-                                    <th style="width: 9%">{_ "code"}</th>
-                                    <th style="width: 9%">کد فایل</th>
-                                    <th style="width: 9%">کنترلر</th>
-                                    <th style="width: 9%">{_ "engobe"}</th>
-                                    <th style="width: 9%">{_ "glaze"}</th>
-                                    <th style="width: 9%">زیر {_ "engobe"}</th>
-                                    <th style="width: 24%">{_ "description"}</th>
+                                    <th style="width: 9%">{_ "shift"}</th>
+                                    <th style="width: 9%">{_ "length"} (mm)</th>
+                                    <th style="width: 9%">{_ "width"} (mm)</th>
+                                    <th style="width: 9%">{_ "thickness"} (mm)</th>
+                                    <th style="width: 9%">{_ "resistance"}</th>
+                                    <th style="width: 9%">{_ "wrap"} {_ "diameter"}</th>
+                                    <th style="width: 9%">{_ "wrap"} {_ "center"}</th>
+                                    <th style="width: 9%">{_ "wrap"} {_ "edge"}</th>
+                                    <th style="width: 9%">{_ "oblique"} (mm)</th>
+                                    <th style="width: 9%">{_ "straight"} (mm)</th>
+                                    <th style="width: 9%">{_ "mean"} {_ "attraction"} {_ "water"}</th>
+                                    <th style="width: 9%">{_ "temperature"} (C)</th>
+                                    <th style="width: 9%">{_ "cycle"} (min)</th>
+                                    <th style="width: 9%">{_ "pressure"} {_ "specific"} (Kg/Cm2)</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 4%"></th>
                                     {/if}
@@ -34,16 +38,20 @@
                                 {foreach from=$items key=key value=item}
                                 <tr>
                                     <td>{$item.date}</td>
-                                    <td>{$item.bodyLabel}</td>
-                                    <td>{$item.thickness}</td>
-                                    <td>{$item.novancLabel}</td>
-                                    <td>{$item.code}</td>
-                                    <td>{$item.file_code}</td>
-                                    <td>{$item.controllerUser}</td>
-                                    <td>{$item.engobeLabel}</td>
-                                    <td>{$item.glazeLabel}</td>
-                                    <td>{$item.sub_engobeLabel}</td>
-                                    <td>{if $item.description == Null} --- {else} {$item.description} {/if}</td>
+                                    <td>{$item.shift}</td>
+                                    <td>{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
+                                    <td>{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
+                                    <td>{_ "max"} : {$item.thickness_max} <br>{_ "min"} : {$item.thickness_min}</td>
+                                    <td>{$item.resistance}</td>
+                                    <td>{_ "max"} : {$item.wrap_diameter_max} <br>{_ "min"} : {$item.wrap_diameter_min}</td>
+                                    <td>{_ "max"} : {$item.wrap_center_max} <br>{_ "min"} : {$item.wrap_center_min}</td>
+                                    <td>{_ "max"} : {$item.wrap_edge_max} <br>{_ "min"} : {$item.wrap_edge_min}</td>
+                                    <td>{$item.oblique}</td>
+                                    <td>{$item.straight}</td>
+                                    <td>{$item.mean_water_attraction}</td>
+                                    <td>{_ "max"} : {$item.temperature_max} <br>{_ "min"} : {$item.temperature_min}</td>
+                                    <td>{$item.cycle}</td>
+                                    <td>{$item.specific_pressure}</td>
                                     {if $editAccess == 'true'}
                                         <td>
                                             <button class="btn btn-link text-info"
@@ -81,7 +89,7 @@
                                   <span class="btn-label">
                                     <i class="fa fa-cloud-download"></i>
                                   </span>
-    دانلود کل تولیدات{$productLabel}
+    دانلود کل تولیدات {$productLabel}
 </a>
 {/map}
 

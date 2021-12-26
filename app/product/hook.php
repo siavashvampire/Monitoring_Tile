@@ -43,6 +43,7 @@ class hook extends pluginController
     {
         $this->menu->addChild('configurationLine', 'product', 'کاشی‌ها', app::getBaseAppLink('product/list', 'admin'), 'fa fa-delicious', '', 'admin/product/list/product');
         $this->menu->addChild('configurationLine', 'product_qc_list', 'لاگ فرآیند کنترل', app::getBaseAppLink('product_qc/list', 'admin'), 'fa fa-cube', '', 'admin/product_qc/list/product');
+        $this->menu->addChild('configurationLine', 'product_routine_list', 'لاگ فرآیند کنترل روتین', app::getBaseAppLink('product_routine/list', 'admin'), 'fa fa-cube', '', 'admin/product_routine/list/product');
         $this->menu->addChild('configurationLine', 'product_size', 'سایز کاشی‌ها', app::getBaseAppLink('product_size', 'admin'), 'fa fa-compress', '', 'admin/product_size/index/product');
         $this->menu->addChild('configurationLine', 'product_glaze', 'لعاب ‌ها', app::getBaseAppLink('product_glaze', 'admin'), 'fa fa-file-image-o', '', 'admin/product_glaze/index/product');
         $this->menu->addChild('configurationLine', 'product_brand', 'برند ‌ها', app::getBaseAppLink('product_brand', 'admin'), 'fa fa-bold', '', 'admin/product_brand/index/product');

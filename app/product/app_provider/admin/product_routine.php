@@ -25,7 +25,7 @@ class product_routine extends controller
     private $model_name = 'product_routine';
     private $app_name = 'product';
     private $class_name = 'product_routine';
-    private $active_menu = 'product';
+    private $active_menu = 'product_routine_list';
     private $list_html_file_path = 'product_routine_list.mold.html';
     private $html_file_path = 'product_routine.mold.html';
 
@@ -52,6 +52,9 @@ class product_routine extends controller
         if ($product != null) {
             $value[] = $product;
             $variable[] = 'item.product = ? ';
+
+            $this->mold->set('product', $product);
+            $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
         }
 
         $model = parent::model($this->model_name);
@@ -64,15 +67,12 @@ class product_routine extends controller
         $this->mold->set('items', $search);
         $this->mold->set('item_label', $this->item_label);
         $this->mold->set('ChangeURL', $this->ChangeURL);
-        $this->mold->set('product', $product);
-        $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
 
         $editAccess = checkAccess::index(user::getUserLogin()['user_group_id'], 'admin', $this->class_name,
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('QC_download', $this->QC_download);
         $this->mold->set('sizeLabel', $model->getSizeLabel());
-//        show($search);
 
         return false;
     }
@@ -93,7 +93,7 @@ class product_routine extends controller
         }
 
         if (request::ispost()) {
-            $get = request::post('shift,max_length,min_length,max_width,min_width,max_thickness,min_thickness,resistance,oblique,max_wrap_diameter,min_wrap_diameter,max_wrap_center,min_wrap_center,max_wrap_edge,min_wrap_edge,straight,mean_water_attraction,max_temperature,min_temperature,cycle,specific_pressure');
+            $get = request::post('shift,max_length,min_length,max_width,min_width,max_thickness,min_thickness,resistance,oblique,max_wrap_diameter,min_wrap_diameter,max_wrap_center,min_wrap_center,max_wrap_edge,min_wrap_edge,straight,max_water_attraction,min_water_attraction,max_temperature,min_temperature,cycle,specific_pressure,description');
             $rules = [
                 "shift" => ["required", rlang('shift')],
             ];
@@ -106,6 +106,7 @@ class product_routine extends controller
             }
             $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getProductLabel() . " ";
+
             $model->setProduct($product);
             $model->setRoutineDate(date('Y-m-d H:i:s'));
             $model->setShift($get['shift']);
@@ -124,11 +125,14 @@ class product_routine extends controller
             $model->setWrapEdgeMax($get['max_wrap_edge']);
             $model->setWrapEdgeMin($get['min_wrap_edge']);
             $model->setStraight($get['straight']);
-            $model->setMeanWaterAttraction($get['mean_water_attraction']);
+            $model->setWaterAttractionMax($get['max_water_attraction']);
+            $model->setWaterAttractionMin($get['min_water_attraction']);
             $model->setTemperatureMax($get['max_temperature']);
             $model->setTemperatureMin($get['min_temperature']);
             $model->setCycle($get['cycle']);
             $model->setSpecificPressure($get['specific_pressure']);
+            $model->setDescription($get['description']);
+
             $model->setController(user::getUserLogin(true));
 
             if ($id != null) {

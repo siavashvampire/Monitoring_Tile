@@ -33,11 +33,13 @@ class product_routine extends model implements modelInterFace
     private $wrap_edge_max;
     private $oblique;
     private $straight;
-    private $mean_water_attraction;
+    private $water_attraction_max;
+    private $water_attraction_min;
     private $temperature_min;
     private $temperature_max;
     private $cycle;
     private $specific_pressure;
+    private $description;
 
     public function setFromArray($result)
     {
@@ -61,11 +63,13 @@ class product_routine extends model implements modelInterFace
         $this->wrap_edge_max = $result['wrap_edge_max'];
         $this->oblique = $result['oblique'];
         $this->straight = $result['straight'];
-        $this->mean_water_attraction = $result['mean_water_attraction'];
+        $this->water_attraction_max = $result['water_attraction_max'];
+        $this->water_attraction_min = $result['water_attraction_min'];
         $this->temperature_min = $result['temperature_min'];
         $this->temperature_max = $result['temperature_max'];
         $this->cycle = $result['cycle'];
         $this->specific_pressure = $result['specific_pressure'];
+        $this->description = $result['description'];
     }
 
     public function returnAsArray()
@@ -90,11 +94,13 @@ class product_routine extends model implements modelInterFace
         $array['wrap_edge_max'] = $this->wrap_edge_max;
         $array['oblique'] = $this->oblique;
         $array['straight'] = $this->straight;
-        $array['mean_water_attraction'] = $this->mean_water_attraction;
+        $array['water_attraction_max'] = $this->water_attraction_max;
+        $array['water_attraction_min'] = $this->water_attraction_min;
         $array['temperature_min'] = $this->temperature_min;
         $array['temperature_max'] = $this->temperature_max;
         $array['cycle'] = $this->cycle;
         $array['specific_pressure'] = $this->specific_pressure;
+        $array['description'] = $this->description;
         return $array;
     }
 
@@ -486,20 +492,35 @@ class product_routine extends model implements modelInterFace
     /**
      * @return mixed
      */
-    public function getMeanWaterAttraction()
+    public function getWaterAttractionMax()
     {
-        return $this->mean_water_attraction;
+        return $this->water_attraction_max;
     }
 
     /**
-     * @param mixed $mean_water_attraction
+     * @param mixed $water_attraction_max
      */
-    public function setMeanWaterAttraction($mean_water_attraction): void
+    public function setWaterAttractionMax($water_attraction_max): void
     {
-        if ($mean_water_attraction == '')
-            $mean_water_attraction = null;
-        $this->mean_water_attraction = $mean_water_attraction;
+        $this->water_attraction_max = $water_attraction_max;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getWaterAttractionMin()
+    {
+        return $this->water_attraction_min;
+    }
+
+    /**
+     * @param mixed $water_attraction_min
+     */
+    public function setWaterAttractionMin($water_attraction_min): void
+    {
+        $this->water_attraction_min = $water_attraction_min;
+    }
+
 
     /**
      * @return mixed
@@ -573,6 +594,23 @@ class product_routine extends model implements modelInterFace
         $this->specific_pressure = $specific_pressure;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+
 
     public function getCount($value = array(), $variable = array())
     {
@@ -583,10 +621,12 @@ class product_routine extends model implements modelInterFace
     {
         model::join('user controller', 'item.controller = controller.userId');
         model::join('shift_work shift', 'item.shift = shift.shift_id');
+        model::join('product  product', 'product.id = item.product');
 
         $field = array();
         $field[] = 'item.id';
         $field[] = 'item.product';
+        $field[] = 'product.label as productLabel';
         $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%Y-%m-%d") as date';
         $field[] = 'shift.shift_name as shift';
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
@@ -605,11 +645,14 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.wrap_edge_min';
         $field[] = 'item.oblique';
         $field[] = 'item.straight';
-        $field[] = 'item.mean_water_attraction';
+        $field[] = 'item.water_attraction_max';
+        $field[] = 'item.water_attraction_min';
+        $field[] = '(item.water_attraction_max + item.water_attraction_min)/2 AS mean_water_attraction';
         $field[] = 'item.temperature_min';
         $field[] = 'item.temperature_max';
         $field[] = 'item.cycle';
         $field[] = 'item.specific_pressure';
+        $field[] = 'item.description';
 
         $field = implode(',', $field);
 
@@ -652,11 +695,14 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.wrap_edge_min';
         $field[] = 'item.oblique';
         $field[] = 'item.straight';
-        $field[] = 'item.mean_water_attraction';
+        $field[] = 'item.water_attraction_min';
+        $field[] = 'item.water_attraction_max';
+        $field[] = '(item.water_attraction_max + item.water_attraction_min)/2 AS mean_water_attraction';
         $field[] = 'item.temperature_min';
         $field[] = 'item.temperature_max';
         $field[] = 'item.cycle';
         $field[] = 'item.specific_pressure';
+        $field[] = 'item.description';
 
         $field = implode(',', $field);
         $variable = ((count($variable) == 0) ? null : implode(' and ', $variable));

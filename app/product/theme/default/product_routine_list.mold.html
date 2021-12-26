@@ -7,7 +7,7 @@
                         <div class="card-icon">
                             <i class="fa fa-delicious fa-2x"></i>
                         </div>
-                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label} {$productLabel}</h4>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}{if isset($productLabel)} {$productLabel}{/if}</h4>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -15,6 +15,9 @@
                                 <thead>
                                 <tr>
                                     <th style="width: 9%">{_ "date"}</th>
+                                    {if !isset($productLabel)}
+                                        <th style="width: 9%">{_ "name"} {_ "design"}</th>
+                                    {/if}
                                     <th style="width: 9%">{_ "shift"}</th>
                                     <th style="width: 9%">{_ "length"} (mm)</th>
                                     <th style="width: 9%">{_ "width"} (mm)</th>
@@ -25,10 +28,12 @@
                                     <th style="width: 9%">{_ "wrap"} {_ "edge"}</th>
                                     <th style="width: 9%">{_ "oblique"} (mm)</th>
                                     <th style="width: 9%">{_ "straight"} (mm)</th>
+                                    <th style="width: 9%">{_ "attraction"} {_ "water"}</th>
                                     <th style="width: 9%">{_ "mean"} {_ "attraction"} {_ "water"}</th>
                                     <th style="width: 9%">{_ "temperature"} (C)</th>
                                     <th style="width: 9%">{_ "cycle"} (min)</th>
                                     <th style="width: 9%">{_ "pressure"} {_ "specific"} (Kg/Cm2)</th>
+                                    <th style="width: 9%">{_ "description"}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 4%"></th>
                                     {/if}
@@ -38,6 +43,9 @@
                                 {foreach from=$items key=key value=item}
                                 <tr>
                                     <td>{$item.date}</td>
+                                    {if !isset($productLabel)}
+                                        <td>{$item.productLabel}</td>
+                                    {/if}
                                     <td>{$item.shift}</td>
                                     <td>{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
                                     <td>{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
@@ -48,10 +56,12 @@
                                     <td>{_ "max"} : {$item.wrap_edge_max} <br>{_ "min"} : {$item.wrap_edge_min}</td>
                                     <td>{$item.oblique}</td>
                                     <td>{$item.straight}</td>
+                                    <td>{_ "max"} : {$item.water_attraction_max} <br>{_ "min"} : {$item.water_attraction_min}</td>
                                     <td>{$item.mean_water_attraction}</td>
                                     <td>{_ "max"} : {$item.temperature_max} <br>{_ "min"} : {$item.temperature_min}</td>
                                     <td>{$item.cycle}</td>
                                     <td>{$item.specific_pressure}</td>
+                                    <td>{$item.description}</td>
                                     {if $editAccess == 'true'}
                                         <td>
                                             <button class="btn btn-link text-info"
@@ -62,7 +72,7 @@
                                 </tr>
                                 {foreachelse}
                                 <tr>
-                                    <td class="text-center" colspan="12">{_ "hasNotDataYet"}</td>
+                                    <td class="text-center" colspan="18">{_ "hasNotDataYet"}</td>
                                 </tr>
                                 {/foreach}
                                 </tbody>
@@ -77,7 +87,7 @@
 </div>
 
 {map navBarButton}
-    {if $editAccess == 'true'}
+    {if $editAccess == 'true' and isset($productLabel)}
         <a class="btn btn-info"  href="{url admin}{$ChangeURL}/{$product}">
                               <span class="btn-label">
                                 <i class="fa fa-plus"></i>
@@ -85,12 +95,21 @@
             {_ "add"} {$item_label} {_ "new"}
         </a>
     {/if}
+{if isset($productLabel)}
 <a class="btn btn-info"  href="{url admin}{$QC_download}/{$product}">
                                   <span class="btn-label">
                                     <i class="fa fa-cloud-download"></i>
                                   </span>
     دانلود کل تولیدات {$productLabel}
 </a>
+{else}
+<a class="btn btn-info"  href="{url admin}{$QC_download}">
+                                  <span class="btn-label">
+                                    <i class="fa fa-cloud-download"></i>
+                                  </span>
+    دانلود کل تولیدات
+</a>
+{/if}
 {/map}
 
 {map footerjs}

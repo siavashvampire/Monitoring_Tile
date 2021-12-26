@@ -54,10 +54,9 @@ class product_qc extends controller
             $value[] = $product;
             $variable[] = 'item.product = ? ';
 
-            $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
-
             $this->mold->set('sizeLabel', $model->getSizeLabel());
             $this->mold->set('product', $product);
+            $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
         }
 
 

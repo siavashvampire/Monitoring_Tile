@@ -166,7 +166,7 @@ class export extends controller {
 
 	}
     public function  Merge() {
-		$get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1,Shift,Day' ,null);
+		$get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1,Shift,Day');
         
         $_SERVER['JsonOff'] = true;
         if ($get['StartTime'] != null){
@@ -196,8 +196,8 @@ class export extends controller {
             $get['EndTime']   = $DayData["result"]["dayEnd"];
         }
         unset($_SERVER['JsonOff']);
-        
-        $variableble = array( );
+
+        $variable = array( );
 		/* @var data_merge $model */
 		$model = parent::model('data_merge');
 		if (request::isPost() and is_array($get['showField']) and count($get['showField']) > 0 ) {

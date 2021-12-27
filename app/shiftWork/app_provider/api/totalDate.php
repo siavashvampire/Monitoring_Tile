@@ -36,8 +36,10 @@ class totalDate extends innerController
         return self::json([
             'dayStart' => $shiftStart,
             'jdayStart' => JDate::jdate('Y/m/d H:i:s', strtotime($shiftStart)),
+//            'dayStartTime' => strtotime($shiftStart),
             'dayEnd' => $shiftEnd,
             'jdayEnd' => JDate::jdate('Y/m/d H:i:s', strtotime($shiftEnd)),
+//            'dayEndTime' => strtotime($shiftEnd),
         ]);
     }
 

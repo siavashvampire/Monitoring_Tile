@@ -409,9 +409,9 @@ class product_qc extends model implements modelInterFace
 
         $field = array();
         $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%d")';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%m")';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y")';
+        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%d") as day';
+        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%m") as month';
+        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y") as year';
         $field[] = 'phase.label as phaseLabel';
         $field[] = 'size.label as sizeLabel';
         $field[] = 'body.label as bodyeLabel';

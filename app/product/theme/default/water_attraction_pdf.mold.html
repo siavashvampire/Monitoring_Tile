@@ -1,0 +1,61 @@
+<table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;">
+    <thead style="">
+    <tr>
+        <th style="width: 34%;"></th>
+        <th style="width: 33%;"></th>
+        <th style="width: 34%;"></th>
+    </tr>
+    </thead>
+    <tbody>
+        <tr style="border: 2px solid!important;color:  black;">
+            <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+                <label style='font-weight:bold;font-size: 18px;text-align:center'>
+                    Hafez Tile
+                    <br>
+                    کاشی حافظ
+                </label>
+            </td>
+            <td style="border: 1px solid darkcyan;text-align: center;height:30px;"><label
+                    style='font-weight:bold;font-size: 18px;text-align:center'><br>جذب آب</label></td>
+            <td style="border: 1px solid darkcyan;text-align: center;height:30px;">
+                <label style='font-weight:bold;font-size: 18px;text-align:center'>تاریخ:{$date}</label></td>
+        </tr>
+    </tbody>
+</table>
+
+<div style="text-align: center;font-size: 18px;">
+
+</div>
+
+<br>
+
+<table style="border-collapse: collapse;width: 100%;">
+    <thead>
+    <tr>
+        {foreach from=$headersTable key=key value=headerTable }
+        <th style="border: 1px solid #ddd;padding: 8px;padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #4CAF50;color: white;">{$headerTable}</th>
+        {/foreach}
+    </tr>
+    </thead>
+    <tbody>
+    {foreach from=$datasTable key=key1 value=item }
+    <tr>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.id}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.day}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.month}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.year}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.temperature_max}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.temperature_min}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.cycle}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.water_attraction_max}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.water_attraction_min}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.mean_water_attraction}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.specific_pressure}</td>
+        <td style="border: 1px solid #ddd;padding: 8px;">{$item.description}</td>
+    </tr>
+    {/foreach}
+    </tbody>
+</table>

@@ -74,7 +74,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_packing', 'بسته بندی', app::getBaseAppLink('product_packing', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
         $this->menu->addChild('configurationLine', 'product_sub_engobe', rlang('sub_engobe'), app::getBaseAppLink('product_sub_engobe', 'admin'), 'fa fa-cube', '', 'admin/product_sub_engobe/index/product');
         $this->menu->addChild('configurationLine', 'product_novanc', 'نوانس', app::getBaseAppLink('product_novanc', 'admin'), 'fa fa-cube', '', 'admin/product_novanc/index/product');
-//        $this->menu->addChild('Reports', 'QC_export', 'گزارش تولید 1400', app::getBaseAppLink('product_export', 'admin'), 'fa fa-cube', '', 'admin/product_packing/index/product');
+        $this->menu->addChild('Reports', 'QC_export', 'گزارش واحد کنترل کیفی', app::getBaseAppLink('product_export/main', 'admin'), 'fa fa-cube', '', 'admin/product_export/main/product');
     }
 
     public function _fieldService_listOfTypes($vars2): array

@@ -95,12 +95,18 @@
             {_ "add"} {$item_label} {_ "new"}
         </a>
     {/if}
-{if isset($productLabel)}
+{if isset($product)}
 <a class="btn btn-info"  href="{url admin}{$QC_download}/{$product}">
                                   <span class="btn-label">
                                     <i class="fa fa-cloud-download"></i>
                                   </span>
     دانلود کل روتین {$productLabel}
+</a>
+<a class="btn btn-info"  href="{url admin}{$water_attraction_download}/{$product}">
+                                  <span class="btn-label">
+                                    <i class="fa fa-cloud-download"></i>
+                                  </span>
+    دانلود کل جذب آب {$productLabel}
 </a>
 {else}
 <a class="btn btn-info"  href="{url admin}{$QC_download}">
@@ -108,6 +114,12 @@
                                     <i class="fa fa-cloud-download"></i>
                                   </span>
     دانلود کل روتین
+</a>
+<a class="btn btn-info"  href="{url admin}{$water_attraction_download}">
+                                  <span class="btn-label">
+                                    <i class="fa fa-cloud-download"></i>
+                                  </span>
+    دانلود کل جذب آب
 </a>
 {/if}
 {/map}

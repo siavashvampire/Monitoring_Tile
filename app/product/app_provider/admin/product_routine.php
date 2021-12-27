@@ -20,6 +20,7 @@ class product_routine extends controller
     private $item_label = "کنترل روتین";
     private $ChangeURL = "product_routine";
     private $QC_download = "product_export/routine";
+    private $water_attraction_download = "product_export/water_attraction";
     private $listChangeURL = "product/list";
     private $log_name = 'product_routine';
     private $model_name = 'product_routine';
@@ -72,6 +73,7 @@ class product_routine extends controller
             'index', $this->app_name)["status"];
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('QC_download', $this->QC_download);
+        $this->mold->set('water_attraction_download', $this->water_attraction_download);
         $this->mold->set('sizeLabel', $model->getSizeLabel());
 
         return false;

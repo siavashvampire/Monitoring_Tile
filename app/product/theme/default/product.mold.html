@@ -36,7 +36,7 @@
                             <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control" id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{else}0{/if}">
+                                    <input type="number" min="0" class="form-control" id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{else}0{/if}">
                                 </div>
                             </div>
                         </div>
@@ -114,7 +114,7 @@
                             <label for="glazeParent" class="col-form-label col-md-3 float-right">{_ "glaze"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" onchange="getItem('product/glazeByParent/'+$(this).find(':selected').val(),'#glaze',0);" required id="glazeParent" name="glazeParent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  required id="glazeParent" name="glazeParent" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "glaze"}">
                                     {foreach from=$glazeParents key=key value=item }
                                     <option value="{$item.id}" {if isset($Mold.post.glazeParent)}{if $item.id == $Mold.post.glazeParent }selected{/if}{elseif isset($model) and $item.id == $model->getGlazeParent()}selected{/if} >{$item.label}</option>
                                     {/foreach}

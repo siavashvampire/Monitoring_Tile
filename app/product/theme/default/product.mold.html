@@ -36,7 +36,7 @@
                             <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control" id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{/if}">
+                                    <input type="number" min="1" class="form-control" id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{else}0{/if}">
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
                             <label for="phase" class="col-form-label col-md-3 float-right">{_ "effect"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="effect" name="effect" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "effect"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="effect" name="effect" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "effect"}">
                                     {foreach from=$effects key=key value=item }
                                     <option value="{$item.id}" {if isset($Mold.post.effect)}{if $item.id == $Mold.post.effect }selected{/if}{elseif isset($model) and $item.id == $model->getEffect()}selected{/if} >{$item.label}</option>
                                     {/foreach}

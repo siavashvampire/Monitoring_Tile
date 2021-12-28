@@ -33,10 +33,10 @@
                         </div>
 
                         <div class="col-md-4 form-group">
-                            <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:<span class="text-danger">*</span></label>
+                            <label for="exampleCode" class="col-form-label col-md-3 float-right">{_ "code"} {_ "example"} {_ "experiment"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control" required id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{/if}">
+                                    <input type="number" min="1" class="form-control" id="exampleCode" name="exampleCode" value="{if isset($Mold.post.exampleCode)}{$Mold.post.exampleCode}{elseif isset($model)}{$model->getExampleCode()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -98,10 +98,10 @@
                         </div>
 
                         <div class="col-md-4 form-group">
-                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "technique"} {_ "production"}:<span class="text-danger">*</span></label>
+                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "technique"} {_ "production"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="technique" name="technique" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "technique"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="technique" name="technique" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "technique"}">
                                     {foreach from=$techniques key=key value=item }
                                     <option value="{$item.id}" {if isset($Mold.post.technique)}{if $item.id == $Mold.post.technique }selected{/if}{elseif isset($model) and $item.id == $model->getTechnique()}selected{/if} >{$item.label}</option>
                                     {/foreach}
@@ -126,7 +126,7 @@
                     <hr>
                     <div class="row">
                         <div class="col-md-4 form-group">
-                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "effect"}:<span class="text-danger">*</span></label>
+                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "effect"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
                                     <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="effect" name="effect" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "effect"}">
@@ -139,10 +139,10 @@
                         </div>
 
                         <div class="col-md-4 form-group">
-                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "decor"}:<span class="text-danger">*</span></label>
+                            <label for="phase" class="col-form-label col-md-3 float-right">{_ "decor"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" required id="decor" name="decor" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "decor"}">
+                                    <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="decor" name="decor" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "decor"}">
                                     {foreach from=$decors key=key value=item }
                                     <option value="{$item.id}" {if isset($Mold.post.decor)}{if $item.id == $Mold.post.decor }selected{/if}{elseif isset($model) and $item.id == $model->getDecor()}selected{/if} >{$item.label}</option>
                                     {/foreach}

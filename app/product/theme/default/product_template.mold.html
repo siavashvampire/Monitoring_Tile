@@ -80,15 +80,15 @@
                     </div>
                     <div class="col-md-6 form-group">
                         <label for="bumper_glue" class="  float-right">{_ "bumper_glue"}:</label>
-                        <input type="number" min="0" class="form-control "   id="bumper_glue" name="bumper_glue" value="">
+                        <input type="number" min="0" class="form-control "   id="bumper_glue" name="bumper_glue" value="0">
                     </div>
                     <div class="col-md-4 form-group">
                         <label for="selfon" class="  float-right">{_ "selfon"}:</label>
-                        <input type="number" min="0" class="form-control "   id="selfon" name="selfon" value="">
+                        <input type="number" min="0" class="form-control "   id="selfon" name="selfon" value="0">
                     </div>
                     <div class="col-md-8 form-group">
                         <label for="weight_after_chamfer" class="  float-right">{_ "weight_after_chamfer"}:</label>
-                        <input type="number" min="0"  class="form-control "   id="weight_after_chamfer" name="weight_after_chamfer" value="">
+                        <input type="number" min="0"  class="form-control "   id="weight_after_chamfer" name="weight_after_chamfer" value="0">
                     </div>
                 </form>
             </div>
@@ -124,9 +124,9 @@ function openItemEditor(id,name,bumper_glue,selfon,weight_after_chamfer){
         $("#exampleModalLabel").html(add_new_item);
         $("#name").val("");
         $("#id").val("");
-        $("#bumper_glue").val("");
-        $("#selfon").val("");
-        $("#weight_after_chamfer").val("");
+        $("#bumper_glue").val(0);
+        $("#selfon").val(0);
+        $("#weight_after_chamfer").val(0);
         $('.selectPickerShouldRefresh').selectpicker('refresh');
     } else {
         $("#exampleModalLabel").html(edit_item + " " + name);

@@ -844,7 +844,7 @@ class product extends model implements modelInterFace
     {
         if ($this->id) {
             $value[] = $this->id;
-            $variable[] = 'id = ?';
+            $variable[] = 'item.id = ?';
         }
         model::join('phases phase' , 'phase.id = item.phase');
         model::join('product_size size' , 'size.id = item.size');

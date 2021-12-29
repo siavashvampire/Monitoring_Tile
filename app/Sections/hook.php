@@ -9,8 +9,7 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class hook extends pluginController {
 	public function _adminHeaderNavbar($vars2){
-        $this->menu->after('users', 'Sections', 'بخش‌های کارخانه', app::getBaseAppLink('Sections', 'admin'), 'fa fa-columns', '',  null ,'admin/Sections/index/Sections');
-
+        $this->menu->addChild('configurationManufactor', 'Sections', 'بخش‌های کارخانه', app::getBaseAppLink('Sections', 'admin'), 'fa fa-columns', '' ,'admin/Sections/index/Sections');
     }
 
     public function _fieldService_listOfTypes($vars2)

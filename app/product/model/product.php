@@ -846,6 +846,13 @@ class product extends model implements modelInterFace
             $value[] = $this->id;
             $variable[] = 'id = ?';
         }
-        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', 'item.*', $sortWith, $pagination);
+        model::join('phases phase' , 'phase.id = item.phase');
+        model::join('product_size size' , 'size.id = item.size');
+        $fields = array();
+        $fields[] = 'item.*';
+        $fields[] = 'size.label as sizeLabel';
+        $fields[] = 'phase.label as phaseLabel';
+        $fields = implode(' , ',$fields);
+        return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $fields, $sortWith, $pagination);
     }
 }

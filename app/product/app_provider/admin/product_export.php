@@ -16,66 +16,13 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.boo
 
 class product_export extends controller
 {
+    private $item_label = "کاشی";
     private $model_name = 'product_qc';
     private $app_name = 'product';
     private $model_name_routine = 'product_routine';
 
     public function main(): bool
     {
-//        $get = request::post('unitId,phase,StartTime,EndTime,tile_kind,showField,shifts,getPDF=1,Shift,Day');
-//
-//        $_SERVER['JsonOff'] = true;
-//        if ($get['StartTime'] != null) {
-//            $shamsi = explode('/', $get['StartTime']);
-//
-//            $DayData = totalDate::Day(0, strtotime(JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '-')) + 43200);
-//            $get['StartTime'] = $DayData["result"]["dayStart"];
-//        }
-//
-//        if ($get['EndTime'] != null) {
-//            $shamsi = explode('/', $get['EndTime']);
-//            $DayData = totalDate::Day(0, strtotime(JDate::jalali_to_gregorian($shamsi[0], $shamsi[1], $shamsi[2], '-')) + 43200);
-//            $get['EndTime'] = $DayData["result"]["dayEnd"];
-//        }
-//
-//
-//        if ($get['Shift'] != null) {
-//            $shiftData = shift::index(time() - $get['Shift'] * 43200);
-//
-//            $get['StartTime'] = $shiftData["result"]["startTime"];
-//            $get['EndTime'] = $shiftData["result"]["endTime"];
-//        }
-//        if ($get['Day'] != null) {
-//
-//            $DayData = totalDate::Day($get['Day']);
-//
-//            $get['StartTime'] = $DayData["result"]["dayStart"];
-//            $get['EndTime'] = $DayData["result"]["dayEnd"];
-//        }
-//        unset($_SERVER['JsonOff']);
-//
-//        if (request::isPost() and is_array($get['showField']) and count($get['showField']) > 0) {
-//            if (is_array($get['phase']) and count($get['phase']) > 0) {
-//                $variable[] = ' arch1.phase IN( ' . implode(' , ', $get['phase']) . ' ) ';
-//            }
-//            if (is_array($get['unitId']) and count($get['unitId']) > 0) {
-//                $variable[] = ' arch1.unit IN( ' . implode(' , ', $get['unitId']) . ' ) ';
-//            }
-//            if (is_array($get['tile_kind']) and count($get['tile_kind']) > 0) {
-//                $variable[] = ' arch1.Tile_Kind IN( ' . implode(' , ', $get['tile_kind']) . ' ) ';
-//            }
-//            if (is_array($get['shifts']) and count($get['shifts']) > 0) {
-//                $variable[] = ' arch1.Shift_id IN( ' . implode(' , ', $get['shifts']) . ' ) ';
-//            }
-//            if ($get['StartTime'] != null and $get['EndTime'] == null) {
-//                $variable[] = ' arch1.Start_time > "' . date('Y-m-d H:i:s', $get['StartTime'] / 1000) . '"';
-//            } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-//                $variable[] = ' arch1.Start_time < "' . date('Y-m-d H:i:s', $get['EndTime'] / 1000) . '"';
-//            } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-//                $variable[] = ' (arch1.Start_time BETWEEN "' . date('Y-m-d H:i:s', $get['StartTime'] / 1000) . '" AND "' . date('Y-m-d H:i:s', $get['EndTime'] / 1000) . '") ';
-//            }
-//        }
-
         $this->mold->path('default', $this->app_name);
         $this->mold->view('export_qc.mold.html');
         $this->mold->setPageTitle('گزارش گیری');
@@ -83,7 +30,10 @@ class product_export extends controller
 
         $this->mold->set('units', units::index()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
-        $this->mold->set('shifts', parent::model(['shiftWork', 'shift_work'])->getShiftWork());
+        $this->mold->set('product', \App\product\app_provider\api\product::index()["result"]);
+        $this->mold->set('sizes', \App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('item_label', $this->item_label);
+
         return false;
     }
 
@@ -100,7 +50,7 @@ class product_export extends controller
             $variable[] = 'item.product = ?';
         }
 
-        $get = request::post('getPDF=1,Day');
+        $get = request::post('getPDF=1,Day,StartTime,EndTime,phase,product,size,month');
 
         $_SERVER['JsonOff'] = true;
         if ($get['Day'] != null){
@@ -109,6 +59,12 @@ class product_export extends controller
 
             $get['StartTime'] = $DayData["dayStart"];
             $get['EndTime']   = $DayData["dayEnd"];
+        }
+        if ($get['month'] != null) {
+            $monthData = totalDate::Month($get['month'])["result"];
+
+            $get['StartTime'] = $monthData["monthStart"];
+            $get['EndTime'] = $monthData["monthEnd"];
         }
         unset($_SERVER['JsonOff']);
 
@@ -123,9 +79,20 @@ class product_export extends controller
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
+        if ($get['phase'] != null) {
+            $variable[] = ' product.phase = ?' ;
+            $value[] = $get['phase'];
+        }
+        if ($get['size'] != null) {
+            $variable[] = ' product.size = ?' ;
+            $value[] = $get['size'];
+        }
+        if ($get['product'] != null) {
+            $variable[] = ' item.product = ?' ;
+            $value[] = $get['product'];
+        }
 
         $search = $model->getItemsForExport($value, $variable);
-
         $header = [];
         $header[] = 'شماره';
         $header[] = 'روز';
@@ -198,7 +165,9 @@ class product_export extends controller
 
         $this->mold->set('units', units::index()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
-        $this->mold->set('shifts', parent::model(['shiftWork', 'shift_work'])->getShiftWork());
+        $this->mold->set('product', \App\product\app_provider\api\product::index()["result"]);
+        $this->mold->set('sizes', \App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('item_label', $this->item_label);
         return false;
     }
 
@@ -214,7 +183,7 @@ class product_export extends controller
             $value[] = $product;
             $variable[] = 'item.product = ?';
         }
-        $get = request::post('getPDF=1,Day');
+        $get = request::post('getPDF=1,Day,StartTime,EndTime,phase,product,size,month');
 
         $_SERVER['JsonOff'] = true;
         if ($get['Day'] != null){
@@ -223,6 +192,12 @@ class product_export extends controller
 
             $get['StartTime'] = $DayData["dayStart"];
             $get['EndTime']   = $DayData["dayEnd"];
+        }
+        if ($get['month'] != null) {
+            $monthData = totalDate::Month($get['month'])["result"];
+
+            $get['StartTime'] = $monthData["monthStart"];
+            $get['EndTime'] = $monthData["monthEnd"];
         }
         unset($_SERVER['JsonOff']);
 
@@ -315,7 +290,9 @@ class product_export extends controller
 
         $this->mold->set('units', units::index()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
-        $this->mold->set('shifts', parent::model(['shiftWork', 'shift_work'])->getShiftWork());
+        $this->mold->set('product', \App\product\app_provider\api\product::index()["result"]);
+        $this->mold->set('sizes', \App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('item_label', $this->item_label);
         return false;
     }
 
@@ -332,7 +309,8 @@ class product_export extends controller
             $variable[] = 'item.product = ?';
         }
 
-        $get = request::post('getPDF=1,Day');
+        $get = request::post('getPDF=1,Day,StartTime,EndTime,phase,product,size,month');
+
         $_SERVER['JsonOff'] = true;
         if ($get['Day'] != null){
 
@@ -340,6 +318,12 @@ class product_export extends controller
 
             $get['StartTime'] = $DayData["dayStart"];
             $get['EndTime']   = $DayData["dayEnd"];
+        }
+        if ($get['month'] != null) {
+            $monthData = totalDate::Month($get['month'])["result"];
+
+            $get['StartTime'] = $monthData["monthStart"];
+            $get['EndTime'] = $monthData["monthEnd"];
         }
         unset($_SERVER['JsonOff']);
 
@@ -428,7 +412,9 @@ class product_export extends controller
 
         $this->mold->set('units', units::index()["result"]);
         $this->mold->set('phases', phases::index()["result"]);
-        $this->mold->set('shifts', parent::model(['shiftWork', 'shift_work'])->getShiftWork());
+        $this->mold->set('product', \App\product\app_provider\api\product::index()["result"]);
+        $this->mold->set('sizes', \App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('item_label', $this->item_label);
         return false;
     }
 }

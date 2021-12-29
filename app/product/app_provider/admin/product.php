@@ -9,7 +9,6 @@ use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -37,7 +36,7 @@ class product extends controller
     public function list(): bool
     {
         /* @var App\product\model\product $model */
-        $get = request::post('page=1,perEachPage=25');
+        $get = request::post('page=1,perEachPage=25,label,phase,size');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -48,17 +47,27 @@ class product extends controller
         if ($valid->isFail()) {
             Response::jsonMessage($valid->errorsIn(), false);
             return false;
-        } else {
-            if ($get['label'] != null) {
-                $value[] = '%' . $get['name'] . '%';
-                $variable[] = 'item.label Like ? ';
-            }
+        }
+        if ($get['label'] != null) {
+            $value[] = '%' . $get['label'] . '%';
+            $variable[] = 'item.label Like ? ';
+        }
+        if ($get['phase'] != null) {
+            $value[] = $get['phase'];
+            $variable[] = 'item.phase = ? ';
+        }
+        if ($get['size'] != null) {
+            $value[] = $get['size'];
+            $variable[] = 'item.size = ? ';
         }
 
         $model = parent::model($this->model_name);
-        $numberOfAll = ($model->search($value, (count($variable) == 0) ? null : implode(' and ', $variable), null, 'COUNT(id) as co')) [0]['co'];
+        $numberOfAll = ($model->getCount($value,$variable));
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
-        $search = $model->search($value, ((count($variable) == 0) ? null : implode(' and ', $variable)), null, '*', ['column' => 'register_date', 'type' => 'DESC'], [$pagination['start'], $pagination['limit']]);
+        $pagination = [$pagination['start'], $pagination['limit']];
+        $sort = ['column' => 'register_date', 'type' => 'DESC'];
+        $search = $model->getItems($value, $variable, $sort, $pagination );
+
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
@@ -79,6 +88,8 @@ class product extends controller
         $this->mold->set('addQcReport', $addQcReport);
         $this->mold->set('addRoutineReport', $addRoutineReport);
         $this->mold->set('QC_download', $this->QC_download);
+        $this->mold->set('phases', phases::index()["result"]);
+        $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
 
         return false;
     }

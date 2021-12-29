@@ -78,7 +78,7 @@ class sensor extends controller
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
         $search = $model->getItems($value, $variable, $sortWith, $pagination);
-
+//show($search);
         $this->mold->path('default', 'LineMonitoring');
         $this->mold->view('sensorList.mold.html');
         $this->mold->setPageTitle('لیست سنسور ها');

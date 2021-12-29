@@ -88,8 +88,8 @@
                                                 <select class="selectpicker" multiple name="sortWith[]" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="مرتب سازی">
                                                     <option value="sensors.label|desc" >نام سنسور | نزولی</option>
                                                     <option value="sensors.label|asc" >نام سنسور | صعودی</option>
-                                                    <option value="sensors.Sensor_plc_id|desc"  >شماره پورت | نزولی</option>
-                                                    <option value="sensors.Sensor_plc_id|asc" selected >شماره پورت | صعودی</option>
+                                                    <option value="sensors.PLC_id|desc"  >شماره پورت | نزولی</option>
+                                                    <option value="sensors.PLC_id|asc" selected >شماره پورت | صعودی</option>
                                                     <option value="tile_kind.label|desc" >نوع کاشی | نزولی</option>
                                                     <option value="tile_kind.label|asc" >نوع کاشی | صعودی</option>
                                                     <option value="sensors.tileDegree|desc" >درجه کاشی | نزولی</option>
@@ -150,18 +150,18 @@
                                 <tbody>
                                 {foreach from=$sensors key=key value=sensor}
                                 <tr>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.label}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.PLC_id}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tile_label}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tileDegree}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tile_Count}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_Bale}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_SMS}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.phaseLabel}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.unitLabel}</td>
-                                    <td class="text-{if $sensor.Sensor_plc_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{if $sensor.PLC_id == 0}خارج از سیستم{elseif $sensor.Active == 1}فعال{elseif $sensor.Active == 0}غیر فعال{else}خارج از سیستم{/if}</td>
-                                    <td><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.Sensor_plc_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.label}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.PLC_id}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tile_label}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tileDegree}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.tile_Count}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_Bale}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.OffTime_SMS}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.phaseLabel}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{$sensor.unitLabel}</td>
+                                    <td class="text-{if $sensor.PLC_id == 0}muted{elseif $sensor.Active == 1}success{elseif $sensor.Active == 0}danger{else}muted{/if}">{if $sensor.PLC_id == 0}خارج از سیستم{elseif $sensor.Active == 1}فعال{elseif $sensor.Active == 0}غیر فعال{else}خارج از سیستم{/if}</td>
+                                    <td><button class="btn btn-link text-info" onclick="openSensorEditor('{$sensor.id}','{$sensor.showSort}','{$sensor.label}','{$sensor.PLC_id}','{$sensor.tile_id}','{$sensor.tile_Count}','{$sensor.OffTime}','{$sensor.OffTime_Bale}','{$sensor.OffTime_SMS}','{$sensor.Active}','{$sensor.phase}','{$sensor.tileDegree}','{$sensor.unit}','{$sensor.Export}')"><i class="fa fa-pencil"></i></button> </td>
                                 </tr>
                                 {foreachelse}
                                 <tr>

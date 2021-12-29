@@ -40,7 +40,7 @@
                                     <label for="max_length" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  class="form-control text-center"  id="max_length" name="max_length" value="{if isset($Mold.post.max_length)}{$Mold.post.max_length}{elseif isset($model)}{$model->getLengthMax()}{/if}">
+                                            <input type="number" min="0" step="0.5" class="form-control text-center"  id="max_length" name="max_length" value="{if isset($Mold.post.max_length)}{$Mold.post.max_length}{elseif isset($model)}{$model->getLengthMax()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@
                                     <label for="min_length" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  class="form-control text-center"  id="min_length" name="min_length" value="{if isset($Mold.post.min_length)}{$Mold.post.min_length}{elseif isset($model)}{$model->getLengthMin()}{/if}">
+                                            <input type="number" min="0"  step="0.5" class="form-control text-center"  id="min_length" name="min_length" value="{if isset($Mold.post.min_length)}{$Mold.post.min_length}{elseif isset($model)}{$model->getLengthMin()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -61,7 +61,7 @@
                                     <label for="max_width" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  class="form-control text-center"  id="max_width" name="max_width" value="{if isset($Mold.post.max_width)}{$Mold.post.max_width}{elseif isset($model)}{$model->getWidthMax()}{/if}">
+                                            <input type="number" min="0"  step="0.5" class="form-control text-center"  id="max_width" name="max_width" value="{if isset($Mold.post.max_width)}{$Mold.post.max_width}{elseif isset($model)}{$model->getWidthMax()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -69,7 +69,7 @@
                                     <label for="min_width" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  class="form-control text-center"  id="min_width" name="min_width" value="{if isset($Mold.post.min_width)}{$Mold.post.min_width}{elseif isset($model)}{$model->getWidthMin()}{/if}">
+                                            <input type="number" min="0"  step="0.5" class="form-control text-center"  id="min_width" name="min_width" value="{if isset($Mold.post.min_width)}{$Mold.post.min_width}{elseif isset($model)}{$model->getWidthMin()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -111,7 +111,7 @@
                             <label for="oblique" class="col-form-label col-md-3 float-right">{_ "oblique"} (mm):</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0"  class="form-control text-center"  id="oblique" name="oblique" value="{if isset($Mold.post.oblique)}{$Mold.post.oblique}{elseif isset($model)}{$model->getOblique()}{/if}">
+                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="oblique" name="oblique" value="{if isset($Mold.post.oblique)}{$Mold.post.oblique}{elseif isset($model)}{$model->getOblique()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                                     <label for="max_wrap_diameter" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_wrap_diameter" name="max_wrap_diameter" value="{if isset($Mold.post.max_wrap_diameter)}{$Mold.post.max_wrap_diameter}{elseif isset($model)}{$model->getWrapDiameterMax()}{/if}">
+                                            <input type="number" min="-5" max="5" step="0.01" class="form-control text-center"  id="max_wrap_diameter" name="max_wrap_diameter" value="{if isset($Mold.post.max_wrap_diameter)}{$Mold.post.max_wrap_diameter}{elseif isset($model)}{$model->getWrapDiameterMax()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -133,7 +133,7 @@
                                     <label for="min_wrap_diameter" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_wrap_diameter" name="min_wrap_diameter" value="{if isset($Mold.post.min_wrap_diameter)}{$Mold.post.min_wrap_diameter}{elseif isset($model)}{$model->getWrapDiameterMin()}{/if}">
+                                            <input type="number" min="-5" max="5"  step="0.01" class="form-control text-center"  id="min_wrap_diameter" name="min_wrap_diameter" value="{if isset($Mold.post.min_wrap_diameter)}{$Mold.post.min_wrap_diameter}{elseif isset($model)}{$model->getWrapDiameterMin()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@
                                     <label for="max_wrap_center" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_wrap_center" name="max_wrap_center" value="{if isset($Mold.post.max_wrap_center)}{$Mold.post.max_wrap_center}{elseif isset($model)}{$model->getWrapCenterMax()}{/if}">
+                                            <input type="number" min="-5" max="5" step="0.01" class="form-control text-center"  id="max_wrap_center" name="max_wrap_center" value="{if isset($Mold.post.max_wrap_center)}{$Mold.post.max_wrap_center}{elseif isset($model)}{$model->getWrapCenterMax()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -154,7 +154,7 @@
                                     <label for="min_wrap_center" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_wrap_center" name="min_wrap_center" value="{if isset($Mold.post.min_wrap_center)}{$Mold.post.min_wrap_center}{elseif isset($model)}{$model->getWrapCenterMin()}{/if}">
+                                            <input type="number" min="-5" max="5" step="0.01" class="form-control text-center"  id="min_wrap_center" name="min_wrap_center" value="{if isset($Mold.post.min_wrap_center)}{$Mold.post.min_wrap_center}{elseif isset($model)}{$model->getWrapCenterMin()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -167,7 +167,7 @@
                                     <label for="max_wrap_edge" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_wrap_edge" name="max_wrap_edge" value="{if isset($Mold.post.max_wrap_edge)}{$Mold.post.max_wrap_edge}{elseif isset($model)}{$model->getWrapEdgeMax()}{/if}">
+                                            <input type="number" min="-5" max="5" step="0.01" class="form-control text-center"  id="max_wrap_edge" name="max_wrap_edge" value="{if isset($Mold.post.max_wrap_edge)}{$Mold.post.max_wrap_edge}{elseif isset($model)}{$model->getWrapEdgeMax()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -175,7 +175,7 @@
                                     <label for="min_wrap_edge" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="min_wrap_edge" name="min_wrap_edge" value="{if isset($Mold.post.min_wrap_edge)}{$Mold.post.min_wrap_edge}{elseif isset($model)}{$model->getWrapEdgeMin()}{/if}">
+                                            <input type="number" min="-5" max="5" step="0.01" class="form-control text-center"  id="min_wrap_edge" name="min_wrap_edge" value="{if isset($Mold.post.min_wrap_edge)}{$Mold.post.min_wrap_edge}{elseif isset($model)}{$model->getWrapEdgeMin()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@
                             <label for="straight" class="col-form-label col-md-3 float-right">{_ "straight"} (mm):</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0"  class="form-control text-center"  id="straight" name="straight" value="{if isset($Mold.post.straight)}{$Mold.post.straight}{elseif isset($model)}{$model->getStraight()}{/if}">
+                                    <input type="number" min="-1" max="1" step="0.01" class="form-control text-center"  id="straight" name="straight" value="{if isset($Mold.post.straight)}{$Mold.post.straight}{elseif isset($model)}{$model->getStraight()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
                                     <label for="max_water_attraction" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
-                                            <input type="number" min="0"  step="0.01" class="form-control text-center"  id="max_water_attraction" name="max_water_attraction" value="{if isset($Mold.post.max_water_attraction)}{$Mold.post.max_water_attraction}{elseif isset($model)}{$model->getWaterAttractionMax()}{/if}">
+                                            <input type="number" min="0" step="0.01" class="form-control text-center"  id="max_water_attraction" name="max_water_attraction" value="{if isset($Mold.post.max_water_attraction)}{$Mold.post.max_water_attraction}{elseif isset($model)}{$model->getWaterAttractionMax()}{/if}">
                                         </div>
                                     </div>
                                 </div>
@@ -220,7 +220,7 @@
                             <label for="max_temperature" class="col-form-label col-md-4 float-right" style="transform: translate(0%, 100%);">{_ "temperature"} (C):</label>
                             <div class="col-md-8">
                                 <div class="col-md-12 form-group">
-                                    <label for="max_temperature" class="col-form-label col-md-3 float-right">{_ "max"}:</label>
+                                    <label for="max_temperature" class="col-form-label col-md-3 float-right">{_ "up"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <input type="number" min="0"  class="form-control text-center"  id="max_temperature" name="max_temperature" value="{if isset($Mold.post.max_temperature)}{$Mold.post.max_temperature}{elseif isset($model)}{$model->getTemperatureMax()}{/if}">
@@ -228,7 +228,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    <label for="min_temperature" class="col-form-label col-md-3 float-right">{_ "min"}:</label>
+                                    <label for="min_temperature" class="col-form-label col-md-3 float-right">{_ "down"}:</label>
                                     <div class="col-md-9">
                                         <div class="form-group has-default">
                                             <input type="number" min="0"  class="form-control text-center"  id="min_temperature" name="min_temperature" value="{if isset($Mold.post.min_temperature)}{$Mold.post.min_temperature}{elseif isset($model)}{$model->getTemperatureMin()}{/if}">

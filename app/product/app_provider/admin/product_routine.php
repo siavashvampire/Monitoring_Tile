@@ -4,6 +4,7 @@ namespace App\product\app_provider\admin;
 
 use App;
 use App\core\controller\httpErrorHandler;
+use App\LineMonitoring\app_provider\api\phases;
 use App\shiftWork\app_provider\api\shift;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
@@ -33,7 +34,7 @@ class product_routine extends controller
     public function list($product = null): bool
     {
         /* @var App\product\model\product_routine $model */
-        $get = request::post('page=1,perEachPage=25');
+        $get = request::post('page=1,perEachPage=25,label,phase,size,product');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -46,10 +47,23 @@ class product_routine extends controller
             return false;
         } else {
             if ($get['label'] != null) {
-                $value[] = '%' . $get['name'] . '%';
+                $value[] = '%' . $get['label'] . '%';
                 $variable[] = 'item.label Like ? ';
             }
         }
+        if ($get['phase'] != null) {
+            $variable[] = ' product.phase = ?' ;
+            $value[] = $get['phase'];
+        }
+        if ($get['size'] != null) {
+            $variable[] = ' product.size = ?' ;
+            $value[] = $get['size'];
+        }
+        if ($get['product'] != null) {
+            $variable[] = ' item.product = ?' ;
+            $value[] = $get['product'];
+        }
+
         if ($product != null) {
             $value[] = $product;
             $variable[] = 'item.product = ? ';
@@ -76,6 +90,9 @@ class product_routine extends controller
         $this->mold->set('water_attraction_download', $this->water_attraction_download);
         $this->mold->set('sizeLabel', $model->getSizeLabel());
 
+        $this->mold->set('phases', phases::index()["result"]);
+        $this->mold->set('products', App\product\app_provider\api\product::index()["result"]);
+        $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
         return false;
     }
 

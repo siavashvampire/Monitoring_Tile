@@ -357,12 +357,13 @@ class product_qc extends model implements modelInterFace
 
     public function getCount($value = array(), $variable = array())
     {
+
+        model::join('product  product', 'product.id = item.product');
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.product) as co')) [0]['co'];
     }
 
     public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.qc_date', 'type' => 'DESC'], $pagination = [0, 9999])
     {
-
         model::join('product_body  body', 'body.id = item.body');
         model::join('product_novanc  novanc', 'novanc.id = item.novanc');
         model::join('product_engobe  engobe', 'engobe.id = item.engobe');

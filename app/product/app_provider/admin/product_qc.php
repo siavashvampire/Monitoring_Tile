@@ -4,6 +4,7 @@ namespace App\product\app_provider\admin;
 
 use App;
 use App\core\controller\httpErrorHandler;
+use App\LineMonitoring\app_provider\api\phases;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
@@ -30,7 +31,8 @@ class product_qc extends controller
     public function list($product = null): bool
     {
         /* @var App\product\model\product_qc $model */
-        $get = request::post('page=1,perEachPage=25');
+        $get = request::post('page=1,perEachPage=25,label,phase,code,file_code,size');
+
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -43,10 +45,31 @@ class product_qc extends controller
             return false;
         } else {
             if ($get['label'] != null) {
-                $value[] = '%' . $get['name'] . '%';
-                $variable[] = 'item.label Like ? ';
+                $value[] = '%' . $get['label'] . '%';
+                $variable[] = 'product.label Like ? ';
             }
         }
+        if ($get['phase'] != null) {
+            $variable[] = ' product.phase = ?' ;
+            $value[] = $get['phase'];
+        }
+        if ($get['size'] != null) {
+            $variable[] = ' product.size = ?' ;
+            $value[] = $get['size'];
+        }
+        if ($get['product'] != null) {
+            $variable[] = ' item.product = ?' ;
+            $value[] = $get['product'];
+        }
+        if ($get['code'] != null) {
+            $variable[] = ' item.code = ?' ;
+            $value[] = $get['code'];
+        }
+        if ($get['file_code'] != null) {
+            $variable[] = 'ABS(item.file_code - ?) < 0.001' ;
+            $value[] = $get['file_code'];
+        }
+
         $model = parent::model($this->model_name);
         $model->setProduct($product);
 
@@ -59,8 +82,13 @@ class product_qc extends controller
             $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
         }
 
+        $numberOfAll = ($model->getCount($value,$variable));
+        $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
+        $pagination = [$pagination['start'], $pagination['limit']];
+        $sort = ['column' => 'register_date', 'type' => 'DESC'];
 
-        $search = $model->getItems($value, $variable);
+        $search = $model->getItems($value, $variable,$sort,$pagination);
+
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);
@@ -74,6 +102,8 @@ class product_qc extends controller
         $this->mold->set('editAccess', $editAccess);
         $this->mold->set('QC_download', $this->QC_download);
 
+        $this->mold->set('phases', phases::index()["result"]);
+        $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
         return false;
     }
 

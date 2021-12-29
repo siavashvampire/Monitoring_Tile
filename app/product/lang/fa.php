@@ -64,4 +64,5 @@ return [
     'specific'                                      => 'ویژه',
     'pressure'                                      => 'فشار',
     'temperature'                                   => 'دما',
+    'file_code'                                     => 'کد فایل',
 ];

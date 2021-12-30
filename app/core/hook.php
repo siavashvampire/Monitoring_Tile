@@ -26,17 +26,23 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 
 class hook extends pluginController {
-
 	private function __adminHeaderNavbar(){
 		$this->mold->set('adminArea' , true);
-		$this->menu->add('plugins' , rlang('plugins' ) , app::getBaseAppLink('plugins/lists') , 'fa fa-puzzle-piece' ,'',null,'admin/plugins/lists');
+
+        $this->menu->add('Reports', 'گزارش ها', "#", 'fa fa-file-excel-o', '', null, 'admin/export/Merge/LineMonitoring');
+        $this->menu->after('Reports', 'alllogs', 'لاگ ها', "#", 'fa fa-history', '', null, 'admin/sensorlog/index/LineMonitoring');
+        $this->menu->after('alllogs', 'configurationLine', 'تنظیمات خط تولید', "#", 'fa fa-cogs', '', null, 'admin/sensor/index/LineMonitoring');
+        $this->menu->after('configurationLine', 'configurationManufactor', 'تنظیمات کارخانه', "#", 'fa fa-building-o ', '', null, 'admin/off_sensor_reasons/lists/LineMonitoring');
+
+        $this->menu->add('plugins' , rlang('plugins' ) , app::getBaseAppLink('plugins/lists') , 'fa fa-puzzle-piece' ,'',null,'admin/plugins/lists');
 		$this->menu->add('configuration' , rlang('configuration' ) , app::getBaseAppLink('configuration') , 'fa fa-cogs' ,'',null,'admin/configuration/index/core');
 		if ( ! copyRightHidden )
 			$this->menu->add('developer' , rlang('developer' ) , app::getBaseAppLink('developer') , 'fa fa-code');
 		$this->menu->addChild('configuration' ,'configurations', rlang('configuration' ) , app::getBaseAppLink('configuration/core','admin') , 'fa fa-cogs' ,'','admin/configuration/core/core');
 		$this->menu->addChild('configuration' ,'uniqueLinks', rlang('uniqueLinks' ) , app::getBaseAppLink('linksConfiguration','admin') , 'fa fa-link' ,'','admin/linksConfiguration/index/core');
-		//$this->menu->addChild('configuration' ,'languages', rlang('languages' ) , \app::getBaseAppLink('languages','admin') , 'fa fa-language' ,'','admin/languages/index/core');
-	}
+//		$this->menu->addChild('configuration' ,'languages', rlang('languages' ) , \app::getBaseAppLink('languages','admin') , 'fa fa-language' ,'','admin/languages/index/core');
+
+    }
 
 	public function _controllerStartToRun(){
 		if ( request::isGet('comeFromPuzzleyApp')){

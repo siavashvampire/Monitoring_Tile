@@ -112,6 +112,19 @@ class product_export extends controller
         $header[] = 'فرمول انگوب زیر';
         $header[] = 'توضیحات';
 
+        $file_name = "تولیدات";
+        $file_name .= " - ";
+
+        if ($get['Day'] != null){
+            $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
+        }
+        else
+            $file_name .= JDate::jdate(' Y');
+        if ($product != null) {
+            $file_name .= " - ";
+            $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
+        }
+
         if (is_array($search) and count($search) > 0) {
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
@@ -126,23 +139,12 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-                $file_name = "تولیدات";
-                $file_name .= " - ";
 
-                if ($get['Day'] != null){
-                    $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
-                }
-                else
-                    $file_name .= JDate::jdate(' Y');
-                if ($product != null) {
-                    $file_name .= " - ";
-                    $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
-                }
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
                 header('Content-type: text/csv; charset=UTF-8');
-                header("Content-Disposition: attachment; filename=" . 'Export Log (' . date('Y-M-d H-i') . ').csv');
+                header("Content-Disposition: attachment; filename=" . $file_name . '.csv');
                 header("Pragma: no-cache");
                 header("Expires: 0");
                 header('Content-Transfer-Encoding: binary');
@@ -237,6 +239,20 @@ class product_export extends controller
         $header[] = 'دما (c)';
         $header[] = 'سیکل (min)';
         $header[] = 'فشار ویژه (Kg/Cm2)';
+
+        $file_name = "روتین";
+        $file_name .= " - ";
+
+        if ($get['Day'] != null){
+            $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
+        }
+        else
+            $file_name .= JDate::jdate(' Y');
+        if ($product != null) {
+            $file_name .= " - ";
+            $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
+        }
+
         if (is_array($search) and count($search) > 0) {
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
@@ -251,23 +267,12 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-                $file_name = "روتین";
-                $file_name .= " - ";
 
-                if ($get['Day'] != null){
-                    $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
-                }
-                else
-                    $file_name .= JDate::jdate(' Y');
-                if ($product != null) {
-                    $file_name .= " - ";
-                    $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
-                }
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
                 header('Content-type: text/csv; charset=UTF-8');
-                header("Content-Disposition: attachment; filename=" . 'Export Log (' . date('Y-M-d H-i') . ').csv');
+                header("Content-Disposition: attachment; filename=" . $file_name . '.csv');
                 header("Pragma: no-cache");
                 header("Expires: 0");
                 header('Content-Transfer-Encoding: binary');
@@ -357,6 +362,19 @@ class product_export extends controller
         $header[] = 'فشار ویژه';
         $header[] = 'توضیحات';
 
+        $file_name = "جذب آب";
+        $file_name .= " - ";
+
+        if ($get['Day'] != null){
+            $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
+        }
+        else
+            $file_name .= JDate::jdate(' Y');
+        if ($product != null) {
+            $file_name .= " - ";
+            $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
+        }
+
         if (is_array($search) and count($search) > 0) {
             $this->mold->offAutoCompile();
             $GLOBALS['timeStart'] = '';
@@ -371,24 +389,12 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-                $file_name = "جذب آب";
-                $file_name .= " - ";
-
-                if ($get['Day'] != null){
-                    $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
-                }
-                else
-                    $file_name .= JDate::jdate(' Y');
-                if ($product != null) {
-                    $file_name .= " - ";
-                    $file_name .= \App\product\app_provider\api\product::index($product)["result"][0]["label"];
-                }
 
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
                 header('Content-type: text/csv; charset=UTF-8');
-                header("Content-Disposition: attachment; filename=" . 'Export Log (' . date('Y-M-d H-i') . ').csv');
+                header("Content-Disposition: attachment; filename=" . $file_name . '.csv');
                 header("Pragma: no-cache");
                 header("Expires: 0");
                 header('Content-Transfer-Encoding: binary');

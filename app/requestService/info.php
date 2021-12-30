@@ -30,7 +30,7 @@ return [
                 'section' => "INT(11) NOT NULL",
                 'Line' => "INT(11) NOT NULL",
                 'Cost' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
-                'WorkerSection' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
+                'WorkerSection' => "INT(11) NOT NULL",
                 'offTime' => "INT(11) NOT NULL",
                 'System_Status' => "INT(11) NOT NULL",
                 'WorkTitle' => "varchar(65) COLLATE utf8_persian_ci NOT NULL",
@@ -64,7 +64,6 @@ return [
                 'WorkerSection' => [ 'table' => 'sections' , 'column' => 'id' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
                 'unitPerson_id' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
                 'workerPerson_id' => [ 'table' => 'user' , 'column' => 'userId' , 'on_delete' => 'RESTRICT' , 'on_update' => 'CASCADE' ],
-
             ]
         ],
         'requestService_buginfluence' => [

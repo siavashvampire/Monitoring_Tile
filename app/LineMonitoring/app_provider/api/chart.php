@@ -387,6 +387,7 @@ class chart extends innerController
         if (is_array($search)) {
             $series = self::extractData($search, $BudgetPishFlag, $Budgets, $BudgetFlag, $movAvgFlag, $date, $labels);
         }
+
         return $series;
     }
 

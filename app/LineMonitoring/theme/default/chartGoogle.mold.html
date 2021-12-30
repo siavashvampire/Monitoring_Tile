@@ -86,6 +86,8 @@
                         </div>
                     </div>
                 </form>
+                <div class="alert alert-warning text-right" id="dataNullAlert" style="display: none">
+                </div>
                 <div class="ct-chart" id="Chart0"
                      style="height: 500px;width:100%;display: inline-block;direction:ltr"></div>
             </div>
@@ -383,8 +385,14 @@
             dataType: 'json',
             data: $("#typeOfChart" + number).serializeArray(),
             success: function (result) {
-                updateChartData(result['data'], result['MovAvg'], number);
-                $("#jTimeOfChart" + number).html("اخرین بروزرسانی: " + result['jtime'] + " | نمودار مربوط به تاریخ : " + result['jdayStart'] + " الی " + result['jdayEnd']);
+                if (result['data'][0].length == 1)
+                {
+                    $("#dataNullAlert").html("با این تنظیمات داده ای یافت نشده").show();
+                }else {
+                    $("#dataNullAlert").hide();
+                    updateChartData(result['data'], result['MovAvg'], number);
+                    $("#jTimeOfChart" + number).html("اخرین بروزرسانی: " + result['jtime'] + " | نمودار مربوط به تاریخ : " + result['jdayStart'] + " الی " + result['jdayEnd']);
+                }
             },
             error: function (jqXHR, exception) {
             },

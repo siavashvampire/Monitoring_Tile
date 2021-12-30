@@ -160,8 +160,9 @@ class product_routine extends controller
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis .= rlang('changed');
 
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
+
                 } else {
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }
@@ -171,10 +172,10 @@ class product_routine extends controller
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
+
                 } else {
-//                    show(model::getLastQuery());
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }
             }

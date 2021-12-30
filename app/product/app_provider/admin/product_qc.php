@@ -152,8 +152,9 @@ class product_qc extends controller
                     $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis .= rlang('changed');
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
+
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                 } else {
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
 
@@ -164,8 +165,8 @@ class product_qc extends controller
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/' . $product, 'admin'));
                 } else {
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }

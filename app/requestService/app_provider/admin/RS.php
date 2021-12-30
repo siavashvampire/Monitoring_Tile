@@ -105,9 +105,10 @@ class RS extends controller
                     $Dis = $Dis . ' برای واحد  ';
                     $Dis = $Dis . $Workersection->getLabel();
                     if ($requestService->insertToDataBase()) {
-                        Response::redirect(App::getBaseAppLink('RS/Send_lists', 'admin'));
                         $Dis = $Dis . ' ثبت شد';
                         $this->callHooks('addLog', [$Dis, 'RequestService']);
+
+                        Response::redirect(App::getBaseAppLink('RS/Send_lists', 'admin'));
                         $this->alert('success', '', "ثبت درخواست با موفقیت انجام شد");
                     } else {
                         $this->alert('danger', '', "ثبت درخواست با مشکلی مواجه شده است");

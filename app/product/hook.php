@@ -86,7 +86,7 @@ class hook extends pluginController
             ['type' => 'productBrand', 'name' => 'برند کاشی'],
             ['type' => 'productColor', 'name' => 'رنگ کاشی'],
             ['type' => 'productKind', 'name' => 'نوع محصول'],
-            ['type' => 'productTemplate', 'name' => 'نوع محصول'],
+            ['type' => 'productTemplate', 'name' => 'نوع قالب'],
         ];
     }
 
@@ -1287,7 +1287,8 @@ class hook extends pluginController
     public function _logField(): array
     {
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
-            ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
+            ["value" => "product_qc", "label" => "فرآیند کنترل"],
+            ["value" => "product_routine", "label" => "فرآیند کنترل روتین"],
             ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
             ["value" => "product_glaze", "label" => "تغییرات لعاب ها"],
             ["value" => "product_brand", "label" => "تغییرات برند ها"],

@@ -9,7 +9,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            <div class="card-header d-print-none card-header-warning">
+            <div class="card-header d-print-none card-header-success">
                 <h4 class="card-title text-center">عملکرد تولید</h4>
                 <p class="card-category"></p>
             </div>
@@ -86,7 +86,7 @@
                         </div>
                     </div>
                 </form>
-                <div class="alert alert-warning text-right" id="dataNullAlert" style="display: none">
+                <div class="alert alert-warning text-right text-center" id="dataNullAlert" style="display:none;">
                 </div>
                 <div class="ct-chart" id="Chart0"
                      style="height: 500px;width:100%;display: inline-block;direction:ltr"></div>
@@ -379,6 +379,8 @@
     }
 
     function getChart(number = 0) {
+        $("#dataNullAlert").removeClass("alert-danger").addClass("alert-rose").html("در حال پردازش داده ها").show();
+
         $.ajax({
             url: urlApi + 'chart/' + URLS[number],
             type: 'post',
@@ -387,7 +389,7 @@
             success: function (result) {
                 if (result['data'][0].length == 1)
                 {
-                    $("#dataNullAlert").html("با این تنظیمات داده ای یافت نشده").show();
+                    $("#dataNullAlert").removeClass("alert-rose").addClass("alert-danger").html("با این تنظیمات داده ای یافت نشده").show();
                 }else {
                     $("#dataNullAlert").hide();
                     updateChartData(result['data'], result['MovAvg'], number);

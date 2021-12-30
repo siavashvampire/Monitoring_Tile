@@ -3,7 +3,7 @@ namespace App\LineMonitoring\app_provider\admin;
 
 use App\LineMonitoring\app_provider\api\phases;
 use App\LineMonitoring\app_provider\api\tiles;
-use App\requestService\model\requestService;
+use App\LineMonitoring\app_provider\api\sensor;
 use App\shiftWork\app_provider\api\totalDate;
 use App\shiftWork\app_provider\api\shift;
 use App\LineMonitoring\model\data_archive;
@@ -693,14 +693,12 @@ class export extends controller {
 
 	}
     public function  chart() {
-        $search = model::searching( array()  ,  null  , 'sensors', '*'  , ['column' => 'showSort' , 'type' =>'asc'] );
+        $search = sensor::index()["result"];
         $this->mold->set('sensorsChart' , $search);
         
 		$this->mold->path('default', 'LineMonitoring');
         $this->mold->view('chartGoogle.mold.html');
 		$this->mold->setPageTitle('نمودار');
 		$this->mold->set('activeMenu' , 'chart');
-        
-
 	}
 }

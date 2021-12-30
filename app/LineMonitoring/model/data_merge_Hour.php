@@ -352,6 +352,7 @@ class data_merge_Hour extends model implements modelInterFace {
         model::queryUnprepared('DROP TABLE IF EXISTS '.$tempDBName1.';');
         model::queryUnprepared('DROP TABLE IF EXISTS '.$tempDBName2.';');
 
+
         model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS '.$tempDBName1.' SELECT SUM(data.counter) as counter , DATE_FORMAT(MIN(data.Start_time), "%Y-%m-%d %H:00:00") AS Start_time , data.Sensor_id as id, Hour(MIN(data.Start_time))+1 as Day , sensor.label as label FROM '.$perfix.'data_merge_hour AS data LEFT JOIN '.$perfix.'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.Sensor_id , DAY(data.`Start_time`),  hour(data.`Start_time`)  ORDER BY data.Start_time;');
 
         if (!$movAvgFlag){
@@ -359,7 +360,7 @@ class data_merge_Hour extends model implements modelInterFace {
             return parent::search( array()  ,  null  , $DBName1, '*'  , ['column' => 'Start_time' , 'type' =>'asc'] );
         }
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS '.$tempDBName2.' SELECT *,Round((SELECT AVG(datab.counter) FROM '.$tempDBName1.' AS datab WHERE TIMESTAMPDIFF(Hour,datab.Start_time,data.Start_time) BETWEEN 0 AND ' . (string)$movAvg . ' AND datab.id = data.Sensor_id ), 2 ) AS MovingAvg FROM  '.$tempDBName1.' data;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS '.$tempDBName2.' SELECT *,Round((SELECT AVG(datab.counter) FROM '.$tempDBName1.' AS datab WHERE TIMESTAMPDIFF(Hour,datab.Start_time,data.Start_time) BETWEEN 0 AND ' . (string)$movAvg . ' AND datab.id = data.id ), 2 ) AS MovingAvg FROM  '.$tempDBName1.' data;');
         model::queryUnprepared('DELETE FROM '.$tempDBName2.' WHERE  `Start_time` NOT BETWEEN "'. $start .'" AND  "'. $end .'";');
         return parent::search( array()  ,  null  , $DBName2, '*'  , ['column' => 'Start_time' , 'type' =>'asc'] );
     }

@@ -387,14 +387,14 @@ class data_merge extends model implements modelInterFace
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName1 . ';');
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName2 . ';');
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , MIN(data.Start_time) AS Start_time , data.Sensor_id as id,JDAY(MIN(data.Start_time)) as Day , sensor.sensors as sensors FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.`Shift_group_id`,data.Sensor_id , MONTH(data.`Start_time`) ,Round(DAY(data.`Start_time`)/7),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , MIN(data.Start_time) AS Start_time , data.Sensor_id as id,JDAY(MIN(data.Start_time)) as Day , sensor.label as label FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.`Shift_group_id`,data.Sensor_id , MONTH(data.`Start_time`) ,Round(DAY(data.`Start_time`)/7),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
 
         if (!$movAvgFlag) {
             model::queryUnprepared('DELETE FROM ' . $tempDBName1 . ' WHERE JMONTH(`Start_time`) <> ' . $month . ' OR JYear(`Start_time`) <> ' . $year . ';');
             return parent::search(array(), null, $DBName1, '*', ['column' => 'Start_time', 'type' => 'asc']);
         }
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName2 . ' SELECT *,Round((SELECT AVG(datab.counter) FROM ' . $tempDBName1 . ' AS datab WHERE DATEDIFF(data.Start_time, datab.Start_time) BETWEEN 0 AND ' . (string)$movAvg . ' AND datab.id = data.Sensor_id ), 2 ) AS MovingAvg FROM  ' . $tempDBName1 . ' data;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName2 . ' SELECT *,Round((SELECT AVG(datab.counter) FROM ' . $tempDBName1 . ' AS datab WHERE DATEDIFF(data.Start_time, datab.Start_time) BETWEEN 0 AND ' . (string)$movAvg . ' AND datab.id = data.id ), 2 ) AS MovingAvg FROM  ' . $tempDBName1 . ' data;');
         model::queryUnprepared('DELETE FROM ' . $tempDBName2 . ' WHERE JMONTH(`Start_time`) <> ' . $month . ' OR JYear(`Start_time`) <> ' . $year . ';');
 
         return parent::search(array(), null, $DBName2, '*', ['column' => 'Start_time', 'type' => 'asc']);
@@ -413,14 +413,14 @@ class data_merge extends model implements modelInterFace
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName1 . ';');
         model::queryUnprepared('DROP TABLE IF EXISTS ' . $tempDBName2 . ';');
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , DATE_FORMAT(jdate(MIN(data.Start_time)), "%Y-%m-01") AS Start_time , data.Sensor_id as id,jmonth(MIN(data.Start_time)) as Day , sensor.sensors as sensors FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.Sensor_id , JMONTH(data.`Start_time`),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName1 . ' SELECT SUM(data.counter) as counter , DATE_FORMAT(jdate(MIN(data.Start_time)), "%Y-%m-01") AS Start_time , data.Sensor_id as id,jmonth(MIN(data.Start_time)) as Day , sensor.label as label FROM ' . $perfix . 'data_merge AS data LEFT JOIN ' . $perfix . 'sensors sensor on ( data.Sensor_id = sensor.id) WHERE `Start_time` BETWEEN "' . $dayStart . '" AND "' . $dayEnd . '" AND data.Sensor_id IN ' . $sensors . '  GROUP BY data.Sensor_id , JMONTH(data.`Start_time`),  YEAR(data.`Start_time`)  ORDER BY data.Start_time;');
 
         if (!$movAvgFlag) {
             model::queryUnprepared('DELETE FROM ' . $tempDBName1 . ' WHERE Year(`Start_time`) <> ' . $year . ';');
             return parent::search(array(), null, $DBName1, '*', ['column' => 'Start_time', 'type' => 'asc']);
         }
 
-        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName2 . ' SELECT *,Round((SELECT AVG(datab.counter) FROM ' . $tempDBName1 . ' AS datab WHERE TIMESTAMPDIFF(MONTH,datab.Start_time,data.Start_time) BETWEEN 0 AND ' . (string)$movAvg . ' AND datab.id = data.Sensor_id ), 2 ) AS MovingAvg FROM  ' . $tempDBName1 . ' data;');
+        model::queryUnprepared('CREATE TEMPORARY TABLE IF NOT EXISTS ' . $tempDBName2 . ' SELECT *,Round((SELECT AVG(datab.counter) FROM ' . $tempDBName1 . ' AS datab WHERE TIMESTAMPDIFF(MONTH,datab.Start_time,data.Start_time) BETWEEN 0 AND ' . (string)$movAvg . ' AND datab.id = data.id ), 2 ) AS MovingAvg FROM  ' . $tempDBName1 . ' data;');
         model::queryUnprepared('DELETE FROM ' . $tempDBName2 . ' WHERE Year(`Start_time`) <> ' . $year . ';');
         return parent::search(array(), null, $DBName2, '*', ['column' => 'Start_time', 'type' => 'asc']);
     }

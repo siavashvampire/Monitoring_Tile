@@ -44,7 +44,7 @@
                                             data-style="btn btn-outline-info btn-round text-{$float}" title="نام سنسور">
 
                                         {foreach from=$sensorsChart key=key value=sensorChart }
-                                        <option value="{$sensorChart.Sensor_id}">{$sensorChart.label}</option>
+                                        <option value="{$sensorChart.id}">{$sensorChart.label}</option>
                                         {/foreach}
                                     </select>
                                 </div>
@@ -669,7 +669,6 @@
     }
 
     function OpacityColor(color) {
-        console.log("aval opac " + color);
         let addColorrate = 1.2;
         let r = parseInt(color[1] + color[2], 16) * addColorrate;
         let g = parseInt(color[3] + color[4], 16) * addColorrate;

@@ -4,6 +4,7 @@ namespace App\LineMonitoring\app_provider\api;
 
 use App\api\controller\innerController;
 use App\LineMonitoring\model\data_merge;
+use App\LineMonitoring\model\data_merge_Hour;
 use App\shiftWork\app_provider\api\totalDate;
 use DateTime;
 use paymentCms\component\cache;
@@ -15,12 +16,14 @@ if (!defined('paymentCMS')) die('<link rel="stylesheet" href="http://maxcdn.boot
 
 class chart extends innerController
 {
+
     public static function Chart()
     {
-        $sensors = request::postOne('sensors', null);
+        $sensors = request::postOne('sensors');
         $date = request::postOne('date', JDate::jdate('Y/m/d'));
         $Timing = request::postOne('Timing', "Hour");
         $Kind = request::postOne('Kind', "1");
+
         if ($sensors == "") {
             $sensors = array();
             $sensors[] = 2;
@@ -29,6 +32,7 @@ class chart extends innerController
             $date = JDate::jdate('Y/m/d');
 
         $dateg = cache::get('chart ' . $Timing, null, 'LineMonitoring')['date'];
+
         if ($dateg == null)
             $dateg = array();
 
@@ -99,6 +103,7 @@ class chart extends innerController
                 $BudgetFlag = 1;
                 $BudgetPishFlag = 1;
             }
+
             $datas = self::GetHourSeries($date, $sensors, $result['labels'], $BudgetFlag, $BudgetPishFlag, $movAvgFlag, $movAvg);
 
             foreach ($datas as $data) {
@@ -110,6 +115,7 @@ class chart extends innerController
             if ($date > $maxDate)
                 $maxDate = $date;
         }
+
         $result['labels'][0] = 7;
 
         foreach ($result['labels'] as $id => $searchOne) {
@@ -131,7 +137,10 @@ class chart extends innerController
 
     private static function GetHourSeries($date, $sensors, $labels, $BudgetFlag = 0, $BudgetPishFlag = 0, $movAvgFlag = false, $movAvg = 5)
     {
-        $series = null;
+        /** @var data_merge_Hour $data_merge_Hour_model */
+        $data_merge_Hour_model = parent::model('data_merge_Hour');
+
+        $series = [];
         $safety = 0;
 
         $dateShamsi = explode('/', $date);
@@ -151,11 +160,14 @@ class chart extends innerController
         }
 
         $sensorText = '(' . implode(',', $sensors) . ')';
-        $search = parent::model('data_merge_Hour')->getHourData($sensorText, $dayFirst, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
+
+
+        $search = $data_merge_Hour_model->getHourData($sensorText, $dayFirst, $dayStart, $dayEnd, $movAvgFlag, $movAvg);
 
         if (is_array($search)) {
             $series = self::extractData($search, $BudgetPishFlag, $Budgets, $BudgetFlag, $movAvgFlag, $date, $labels);
         }
+
         return $series;
     }
 
@@ -370,7 +382,7 @@ class chart extends innerController
         }
 
         model::join('sensors sensors', 'data.Sensor_id = sensors.id');
-        $search = $model_data_merge->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_merge data', 'SUM(data.counter) as counter, sensors.label , data.Sensor_id as id , jyear(data.Start_time) as Day', [['column' => 'data.Start_time', 'type' => 'asc']], null, 'jyear(`Start_time`) , data.Sensor_id');
+        $search = $model_data_merge->search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'data_merge data', 'SUM(data.counter) as counter, sensors.label as label , data.Sensor_id as id , jyear(data.Start_time) as Day', [['column' => 'data.Start_time', 'type' => 'asc']], null, 'jyear(`Start_time`) , data.Sensor_id');
         $movAvgFlag = false;
         if (is_array($search)) {
             $series = self::extractData($search, $BudgetPishFlag, $Budgets, $BudgetFlag, $movAvgFlag, $date, $labels);
@@ -588,6 +600,7 @@ class chart extends innerController
 
         $dataFinal['data'] = self::Convert2GoogleData($result['data'], $Timing, $MovAvgFlag);
         $dataFinal['MovAvg'] = $MovAvgFlag;
+
         return self::json($dataFinal);
     }
 
@@ -692,9 +705,9 @@ class chart extends innerController
         $resultCheck = [];
         foreach ($search as $searchOne) {
             if (!isset($resultCheck[$searchOne['id']])) {
-                $series[$i]["name"] = $searchOne['sensors'] . " " . $date;
+                $series[$i]["name"] = $searchOne['label'] . " " . $date;
                 if ($movAvgFlag)
-                    $series[$i + 1]["name"] = "میانگین متحرک " . $searchOne['sensors'] . " " . $date;
+                    $series[$i + 1]["name"] = "میانگین متحرک " . $searchOne['label'] . " " . $date;
                 $resultCheck[$searchOne['id']] = true;
                 foreach ($labels as $id => $data) {
                     $series[$i]["data"][$id] = null;

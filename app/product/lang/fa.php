@@ -67,4 +67,7 @@ return [
     'pressure'                                      => 'فشار',
     'temperature'                                   => 'دما',
     'file_code'                                     => 'کد فایل',
+    'controller'                                    => 'کنترلر',
+    'qcManagerUserGroup'                            => 'گروه کاربری کنترل کیفیت',
+    'qcManagerUser'                                 => 'کاربر مدیر کنترل کیفیت',
 ];

@@ -8,6 +8,14 @@ return [
         'support' => '09379206248',
     ],
     'configuration' => [
+        'Days' => [
+            'type' => 'number',
+            'status' => '',
+            'title' => 'زمان بررسی',
+            'description' => '',
+            'value' => '1',
+            'valueDe' =>  null
+        ],
     ],
     'db' => [
         'product_size' => [

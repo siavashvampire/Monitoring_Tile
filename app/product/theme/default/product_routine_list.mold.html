@@ -1,4 +1,12 @@
-﻿<div class="content">
+﻿<style>
+    th.headerZero {
+        padding: 0!important;
+    }
+    .noHover{
+        pointer-events: none;
+    }
+</style>
+<div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -15,14 +23,16 @@
                             {set loadDivIDInHtml,"listToGetFromServer"}
                             <form class="form-horizontal" method="post">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="label" class="col-md-3 col-form-label">{_ "name"} {_ "design"}</label>
-                                        <div class="col-md-9">
-                                            <div class="form-group has-default">
-                                                <input type="text" id="label" name="label" autocomplete="off" class="form-control">
+                                    {if !isset($product)}
+                                        <div class="col-md-4">
+                                            <label for="label" class="col-md-3 col-form-label">{_ "name"} {_ "design"}</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    <input type="text" id="label" name="label" autocomplete="off" class="form-control">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {/if}
                                     <div class="col-md-4">
                                         <label class="col-md-3 col-form-label">{_ "phase"}</label>
                                         <div class="col-md-9">
@@ -47,7 +57,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "controller"} </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="controller" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "controller"}">
+                                                {foreach from=$controllers key=key value=item }
+                                                    <option value="{$item.userId}">{$item.fname} {$item.lname}</option>
+                                                {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
@@ -61,81 +84,113 @@
                 </div>
             </div>
         </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card" id="listToGetFromServer">
-                            <div class="card-header card-header-info card-header-icon">
-                                <div class="card-icon">
-                                    <i class="fa fa-delicious fa-2x"></i>
-                                </div>
-                                <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
-                            </div>
-                            <div class="card-body">
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-delicious fa-2x"></i>
+                        </div>
+                        {if isset($product)}
+                        <a href="{url 'admin'}product/{$product}"><h4 class="card-title float-{$float} m-3" style="color: #9c27b0">{_ "list"} {$item_label} {$productLabel}</h4></a>
+                        {else}
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
+                        {/if}
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table text-{$text_align}" id="tableExport">
                                 <thead>
-                                <tr>
-                                    <th style="width: 9%">{_ "date"}</th>
-                                    {if !isset($productLabel)}
-                                        <th style="width: 9%">{_ "name"} {_ "design"}</th>
-                                    {/if}
-                                    <th style="width: 9%">{_ "shift"}</th>
-                                    <th style="width: 9%">{_ "length"} (mm)</th>
-                                    <th style="width: 9%">{_ "width"} (mm)</th>
-                                    <th style="width: 9%">{_ "thickness"} (mm)</th>
-                                    <th style="width: 9%">{_ "resistance"}</th>
-                                    <th style="width: 9%">{_ "wrap"} {_ "diameter"}</th>
-                                    <th style="width: 9%">{_ "wrap"} {_ "center"}</th>
-                                    <th style="width: 9%">{_ "wrap"} {_ "edge"}</th>
-                                    <th style="width: 9%">{_ "oblique"} (mm)</th>
-                                    <th style="width: 9%">{_ "straight"} (mm)</th>
-                                    <th style="width: 9%">{_ "attraction"} {_ "water"}</th>
-                                    <th style="width: 9%">{_ "mean"} {_ "attraction"} {_ "water"}</th>
-                                    <th style="width: 9%">{_ "temperature"} (C)</th>
-                                    <th style="width: 9%">{_ "cycle"} (min)</th>
-                                    <th style="width: 9%">{_ "pressure"} {_ "specific"} (Kg/Cm2)</th>
-                                    <th style="width: 9%">{_ "description"}</th>
-                                    {if $editAccess == 'true'}
+                                    <tr>
+                                        <th style="width: 25%;">{_ "name"} {_ "design"}</th>
+                                        <th style="width: 25%;">{_ "date"}</th>
+                                        <th style="width: 25%;">{_ "shift"}</th>
+                                        <th style="width: 25%;">{_ "controller"}</th>
                                         <th style="width: 4%"></th>
-                                    {/if}
-                                </tr>
+                                        {if $editAccess == 'true'}
+                                            <th style="width: 4%"></th>
+                                        {/if}
+                                    </tr>
                                 </thead>
                                 <tbody>
                                 {foreach from=$items key=key value=item}
-                                <tr>
-                                    <td>{$item.date}</td>
-                                    {if !isset($productLabel)}
-                                        <td>{$item.productLabel}</td>
-                                    {/if}
-                                    <td>{$item.shift}</td>
-                                    <td>{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
-                                    <td>{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
-                                    <td>{_ "max"} : {$item.thickness_max} <br>{_ "min"} : {$item.thickness_min}</td>
-                                    <td>{$item.resistance}</td>
-                                    <td>{_ "max"} : {$item.wrap_diameter_max} <br>{_ "min"} : {$item.wrap_diameter_min}</td>
-                                    <td>{_ "max"} : {$item.wrap_center_max} <br>{_ "min"} : {$item.wrap_center_min}</td>
-                                    <td>{_ "max"} : {$item.wrap_edge_max} <br>{_ "min"} : {$item.wrap_edge_min}</td>
-                                    <td>{$item.oblique}</td>
-                                    <td>{$item.straight}</td>
-                                    <td>{_ "max"} : {$item.water_attraction_max} <br>{_ "min"} : {$item.water_attraction_min}</td>
-                                    <td>{$item.mean_water_attraction}</td>
-                                    <td>{_ "max"} : {$item.temperature_max} <br>{_ "min"} : {$item.temperature_min}</td>
-                                    <td>{$item.cycle}</td>
-                                    <td>{$item.specific_pressure}</td>
-                                    <td>{$item.description}</td>
-                                    {if $editAccess == 'true'}
-                                        <td>
-                                            <button class="btn btn-link text-info"
-                                                    onclick="location.href='{url}{$ChangeURL}/{$item.product}/{$item.id}'">
-                                                <i class="fa fa-pencil"></i></button>
+                                    <tr>
+                                        <td colspan="4">
+                                            <table class="table text-{$text_align}" style="margin: unset!important;">
+                                                <thead style="border: 1.5px solid;border-bottom-style : hidden!important;">
+                                                    <tr>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                        <th style="width: 25%;" class="headerZero"></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr style="border: 2px solid!important;color:  darkcyan;background-color: #fffde5!important;">
+                                                    <td><a href="{url 'admin'}product_routine/list/{$item.product}">{$item.productLabel}</a></td>
+                                                    <td>{$item.date}</td>
+                                                    <td>{$item.shift}</td>
+                                                    <td><a href="{url 'admin'}users/profile/{$item.controller}" >{$item.controllerUser}</a></td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td>{_ "length"} (mm) :</td>
+                                                    <td>{_ "max"} : {if $item.length_max}{$item.length_max}{else}---{/if} <br>{_ "min"} : {if $item.length_min}{$item.length_min}{else}---{/if}</td>
+                                                    <td>{_ "width"} (mm) : </td>
+                                                    <td>{_ "max"} : {if $item.width_max}{$item.width_max}{else}---{/if}<br>{_ "min"} : {if $item.width_min}{$item.width_min}{else}---{/if}</td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td>{_ "thickness"} (mm) : </td>
+                                                    <td>{_ "max"} : {if $item.thickness_max}{$item.thickness_max}{else}---{/if}<br>{_ "min"} : {if $item.thickness_min}{$item.thickness_min}{else}---{/if}</td>
+                                                    <td>{_ "resistance"} : </td>
+                                                    <td>{if $item.resistance}{$item.resistance}{else}---{/if}</td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td>{_ "wrap"} : </td>
+                                                    <td>{_ "diameter"}<br>{_ "max"} : {if $item.wrap_diameter_max}{$item.wrap_diameter_max}{else}---{/if}<br>{_ "min"} : {if $item.wrap_diameter_min}{$item.wrap_diameter_min}{else}---{/if}</td>
+                                                    <td>{_ "center"}<br>{_ "max"} : {if $item.wrap_center_max}{$item.wrap_center_max}{else}---{/if}<br>{_ "min"} : {if $item.wrap_center_min}{$item.wrap_center_min}{else}---{/if}</td>
+                                                    <td>{_ "edge"}<br>{_ "max"} : {if $item.wrap_edge_max}{$item.wrap_edge_max}{else}---{/if}<br>{_ "min"} : {if $item.wrap_edge_min}{$item.wrap_edge_min}{else}---{/if}</td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td>{_ "oblique"} : (mm)</td>
+                                                    <td> {if $item.oblique}{$item.oblique}{else}---{/if}</td>
+                                                    <td>{_ "straight"} : (mm)</td>
+                                                    <td>{if $item.straight}{$item.straight}{else}---{/if}</td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td>{_ "attraction"} {_ "water"} : </td>
+                                                    <td>{_ "max"} : {if $item.water_attraction_max}{$item.water_attraction_max}{else}---{/if}<br>{_ "mean"} : {if $item.mean_water_attraction}{$item.mean_water_attraction}{else}---{/if} <br>{_ "min"} : {if $item.water_attraction_min}{$item.water_attraction_min}{else}---{/if}</td>
+                                                    <td>{_ "temperature"} (C)</td>
+                                                    <td>{_ "max"} : {if $item.temperature_max}{$item.temperature_max}{else}---{/if}<br>{_ "min"} : {if $item.temperature_min}{$item.temperature_min}{else}---{/if}</td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td>{_ "cycle"} (min)</td>
+                                                    <td>{if $item.cycle}{$item.cycle}{else}---{/if}</td>
+                                                    <td>{_ "pressure"} {_ "specific"} (Kg/Cm2)</td>
+                                                    <td>{if $item.specific_pressure}{$item.specific_pressure}{else}---{/if}</td>
+                                                </tr>
+                                                <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                    <td class="noHover" colspan="4">{_ "description"} : {if $item.description == Null} --- {else} {$item.description} {/if}</td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
                                         </td>
-                                    {/if}
-                                </tr>
+                                        <td>
+                                            <button onclick="openItem(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                        </td>
+                                        {if $editAccess == 'true'}
+                                            <td>
+                                                <button class="btn btn-link text-info"
+                                                        onclick="location.href='{url}{$ChangeURL}/{$item.product}/{$item.id}'">
+                                                    <i class="fa fa-pencil"></i></button>
+                                            </td>
+                                        {/if}
+                                    </tr>
                                 {foreachelse}
-                                <tr>
-                                    <td class="text-center" colspan="18">{_ "hasNotDataYet"}</td>
-                                </tr>
+                                    <tr>
+                                        <td class="text-center" colspan="18">{_ "hasNotDataYet"}</td>
+                                    </tr>
                                 {/foreach}
                                 </tbody>
                             </table>
@@ -187,4 +242,37 @@
 {/map}
 
 {map footerjs}
+<script>
+    function openItem(obj) {
+        let picClass = obj.children[0];
+        let closestTr = obj.closest('tr');
+        let label = closestTr.getElementsByClassName('showHidden')
+        if (picClass.classList.contains('fa-eye')){
+            picClass.classList.remove('fa-eye');
+            picClass.classList.add('fa-eye-slash');
+            if (label.length !== 0)
+                for (let i = 0; i < label.length; i++)
+                    label[i].style.display = "";
+        }
+        else{
+            picClass.classList.remove('fa-eye-slash');
+            picClass.classList.add('fa-eye');
+            if (label.length !== 0)
+                for (let i = 0; i < label.length; i++)
+                    label[i].style.display = "none";
+        }
+        // if (label[0].style.display == ""){
+        //     picClass.classList.remove('fa-eye-slash');
+        //     picClass.classList.add('fa-eye');
+        //     for (let i = 0; i < label.length; i++)
+        //         label[i].style.display = "none";
+        // }
+        // else{
+        //     picClass.classList.remove('fa-eye');
+        //     picClass.classList.add('fa-eye-slash');
+        //     for (let i = 0; i < label.length; i++)
+        //         label[i].style.display = "";
+        // }
+    }
+</script>
 {/map}

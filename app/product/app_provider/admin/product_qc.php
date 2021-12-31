@@ -31,7 +31,7 @@ class product_qc extends controller
     public function list($product = null): bool
     {
         /* @var App\product\model\product_qc $model */
-        $get = request::post('page=1,perEachPage=25,label,phase,code,file_code,size');
+        $get = request::post('page=1,perEachPage=25,label,phase,code,file_code,size,controller');
 
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
@@ -60,6 +60,10 @@ class product_qc extends controller
         if ($get['product'] != null) {
             $variable[] = ' item.product = ?' ;
             $value[] = $get['product'];
+        }
+        if ($get['controller'] != null) {
+            $variable[] = ' item.controller = ?' ;
+            $value[] = $get['controller'];
         }
         if ($get['code'] != null) {
             $variable[] = ' item.code = ?' ;
@@ -104,6 +108,7 @@ class product_qc extends controller
 
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('controllers', user::getUsersByGroupId((int)$this->setting('product_qc'))["result"]);
         return false;
     }
 

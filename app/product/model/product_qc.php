@@ -352,6 +352,8 @@ class product_qc extends model implements modelInterFace
      */
     public function setThickness($thickness): void
     {
+        if ($thickness == '')
+            $thickness = null;
         $this->thickness = $thickness;
     }
 
@@ -383,6 +385,7 @@ class product_qc extends model implements modelInterFace
         $field[] = 'novanc.label as novancLabel';
         $field[] = 'item.code';
         $field[] = 'item.file_code';
+        $field[] = 'item.controller as controller';
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
         $field[] = 'engobe.label as engobeLabel';
         $field[] = 'glaze.label as glazeLabel';

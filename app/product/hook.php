@@ -3,6 +3,7 @@
 namespace App\product;
 
 use app;
+use App\core\controller\fieldService;
 use App\product\model\carton_size;
 use App\product\model\carton_theme;
 use App\product\model\pallet_size;
@@ -32,6 +33,7 @@ use App\product\model\product_strap;
 use App\product\model\product_sub_engobe;
 use App\product\model\product_technique;
 use App\product\model\product_template;
+use App\user\app_provider\api\user;
 use pluginController;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -1317,5 +1319,26 @@ class hook extends pluginController
             ["value" => "product_pallet_packing", "label" => "تغییرات نوع بسته بندی پالت ها"],
             ["value" => "product_packing", "label" => "تغییرات  بسته بندی ها"],
         ];
+    }
+
+    public function _settingFooter()
+    {
+        $getPath = $this->mold->getPath();
+        $this->mold->path('default', 'product');
+        $Groups = user::getGroups()["result"];
+        $fieldsOf = [];
+        if (is_array($Groups)) {
+            foreach ($Groups as $group) {
+                $fieldsOf[] = ['name' => $group['name'], 'groupId' => $group['user_groupId']];
+            }
+        }
+        $this->mold->set('listGroups', $fieldsOf);
+
+        $adminUserList = user::getUsersByGroupId((int)$this->setting('product_qc', 'product', true))["result"];
+        $this->mold->set('adminUserList', $adminUserList);
+
+        $this->mold->view('configuration.system.mold.html');
+        $this->mold->path($getPath['folder'], $getPath['app']);
+        $this->mold->set('dirStartUP', payment_path . 'startup');
     }
 }

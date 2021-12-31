@@ -1,0 +1,35 @@
+{map settingFooter}
+    {if $nameApp == 'product'}
+        {if isset($listGroups)}
+            <div class="col-md-12 mb-3">
+                <label class="col-md-4 col-form-label" for="field_product_qc"> {_ "qcManagerUserGroup"}<span class="text-danger">*</span> </label>
+                <div class="col-md-8">
+                    <select class="selectpicker" id="field_product_qc" name="setting[product_qc]" required data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+                        {if isset($values.[$nameApp])}
+                        {set value=$values.[$nameApp] name="valueThisOne"}
+                        {/if}
+                        {foreach from=$listGroups key=keyValue value=valueOne}
+                        <option value="{$valueOne.groupId}" {if isset($valueThisOne.product_qc)}{if $valueThisOne.product_qc == $valueOne.groupId }selected{/if}{elseif isset($Mold.post.setting.product_qc)}{if $Mold.post.setting.product_qc == $valueOne.groupId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.groupId}selected{/if} >{$valueOne.name}</option>
+                        {/foreach}
+                    </select>
+                    <div class="small text-gray"></div>
+                </div>
+            </div>
+
+            <div class="col-md-12 mb-3">
+                <label class="col-md-4 col-form-label" for="field_product_qcPerson"> {_ "qcManagerUser"} </label>
+                <div class="col-md-8">
+                    <select class="selectpicker" data-live-search="true" id="field_product_qcPerson" name="setting[product_qcPerson]" data-size="7" data-style="btn btn-outline-info btn-round" title="{_ 'please'} {_ 'selecting'}">
+                        {if isset($values.[$nameApp])}
+                        {set value=$values.[$nameApp] name="valueThisOne"}
+                        {/if}
+                        {foreach from=$adminUserList key=keyValue value=valueOne}
+                        <option value="{$valueOne.userId}" {if isset($valueThisOne.product_qcPerson)}{if $valueThisOne.product_qcPerson == $valueOne.userId }selected{/if}{elseif isset($Mold.post.setting.product_qcPerson)}{if $Mold.post.setting.product_qcPerson == $valueOne.userId }selected{/if}{elseif isset($field.value) and $field.value == $valueOne.userId}selected{/if}>{$valueOne.fname} {$valueOne.lname}</option>
+                        {/foreach}
+                    </select>
+                    <div class="small text-gray"></div>
+                </div>
+            </div>
+        {/if}
+    {/if}
+{/map}

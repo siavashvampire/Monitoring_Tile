@@ -629,6 +629,7 @@ class product_routine extends model implements modelInterFace
         $field[] = 'product.label as productLabel';
         $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%Y-%m-%d") as date';
         $field[] = 'shift.shift_name as shift';
+        $field[] = 'item.controller as controller';
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
         $field[] = 'item.length_max';
         $field[] = 'item.length_min';

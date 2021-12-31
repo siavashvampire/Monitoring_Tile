@@ -1,4 +1,12 @@
-﻿<div class="content">
+﻿<style>
+    th.headerZero {
+        padding: 0!important;
+    }
+    .noHover{
+        pointer-events: none;
+    }
+</style>
+<div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -15,14 +23,16 @@
                             {set loadDivIDInHtml,"listToGetFromServer"}
                             <form class="form-horizontal" method="post" >
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <label for="label" class="col-md-3 col-form-label">{_ "name"} {_ "design"}</label>
-                                        <div class="col-md-9">
-                                            <div class="form-group has-default">
-                                                <input type="text" id="label" name="label" autocomplete="off" class="form-control">
+                                    {if !isset($product)}
+                                        <div class="col-md-4">
+                                            <label for="label" class="col-md-3 col-form-label">{_ "name"} {_ "design"}</label>
+                                            <div class="col-md-9">
+                                                <div class="form-group has-default">
+                                                    <input type="text" id="label" name="label" autocomplete="off" class="form-control">
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
+                                    {/if}
                                     <div class="col-md-4">
                                         <label for="label" class="col-md-3 col-form-label">{_ "code"}</label>
                                         <div class="col-md-9">
@@ -40,6 +50,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-md-4">
                                         <label class="col-md-3 col-form-label">{_ "phase"}</label>
@@ -66,7 +77,21 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "controller"} </label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="controller" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "controller"}">
+                                                {foreach from=$controllers key=key value=item }
+                                                    <option value="{$item.userId}">{$item.fname} {$item.lname}</option>
+                                                {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
+                                <br>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
@@ -79,70 +104,92 @@
                     </div>
                 </div>
             </div>
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card" id="listToGetFromServer">
-                            <div class="card-header card-header-info card-header-icon">
-                                <div class="card-icon">
-                                    <i class="fa fa-delicious fa-2x"></i>
-                                </div>
-                                <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
-                            </div>
-                            <div class="card-body">
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-delicious fa-2x"></i>
+                        </div>
+                        {if isset($product)}
+                            <a href="{url 'admin'}product/{$product}"><h4 class="card-title float-{$float} m-3" style="color: #9c27b0">{_ "list"} {$item_label} {$productLabel}</h4></a>
+                        {else}
+                            <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
+                        {/if}
+                    </div>
+                    <div class="card-body">
                         <div class="table-responsive">
                             <table class="table text-{$text_align}" id="tableExport">
                                 <thead>
-                                <tr>
-                                    <th style="width: 9%">{_ "date"}</th>
-                                    {if !isset($productLabel)}
-                                        <th style="width: 9%">{_ "name"} {_ "design"}</th>
-                                    {/if}
-                                    <th style="width: 9%">{_ "body"}</th>
-                                    <th style="width: 9%">{_ "thickness"}</th>
-                                    <th style="width: 9%">{_ "novanc"}</th>
-                                    <th style="width: 9%">{_ "code"}</th>
-                                    <th style="width: 9%">کد فایل</th>
-                                    <th style="width: 9%">کنترلر</th>
-                                    <th style="width: 9%">{_ "engobe"}</th>
-                                    <th style="width: 9%">{_ "glaze"}</th>
-                                    <th style="width: 9%">{_ "sub_engobe"}</th>
-                                    <th style="width: 24%">{_ "description"}</th>
-                                    {if $editAccess == 'true'}
+                                    <tr>
+                                        <th style="width: 25%;">{_ "name"} {_ "design"}</th>
+                                        <th style="width: 25%;">{_ "date"}</th>
+                                        <th style="width: 25%;">{_ "novanc"}</th>
+                                        <th style="width: 25%;">{_ "controller"}</th>
                                         <th style="width: 4%"></th>
-                                    {/if}
-                                </tr>
+                                        {if $editAccess == 'true'}
+                                            <th style="width: 4%"></th>
+                                        {/if}
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                {foreach from=$items key=key value=item}
-                                <tr>
-                                    <td>{$item.date}</td>
-                                    {if !isset($productLabel)}
-                                        <td>{$item.productLabel}</td>
-                                    {/if}
-                                    <td>{$item.bodyLabel}</td>
-                                    <td>{$item.thickness}</td>
-                                    <td>{$item.novancLabel}</td>
-                                    <td>{$item.code}</td>
-                                    <td>{$item.file_code}</td>
-                                    <td>{$item.controllerUser}</td>
-                                    <td>{$item.engobeLabel}</td>
-                                    <td>{$item.glazeLabel}</td>
-                                    <td>{$item.sub_engobeLabel}</td>
-                                    <td>{if $item.description == Null} --- {else} {$item.description} {/if}</td>
-                                    {if $editAccess == 'true'}
-                                        <td>
-                                            <button class="btn btn-link text-info"
-                                                    onclick="location.href='{url}{$ChangeURL}/{$item.product}/{$item.id}'">
-                                                <i class="fa fa-pencil"></i></button>
-                                        </td>
-                                    {/if}
-                                </tr>
-                                {foreachelse}
-                                <tr>
-                                    <td class="text-center" colspan="13">{_ "hasNotDataYet"}</td>
-                                </tr>
-                                {/foreach}
+                                    {foreach from=$items key=key value=item}
+                                        <tr>
+                                            <td colspan="4">
+                                                <table class="table text-{$text_align}" style="margin: unset!important;">
+                                                    <thead style="border: 1.5px solid;border-bottom-style : hidden!important;">
+                                                        <tr>
+                                                            <th style="width: 25%;" class="headerZero"></th>
+                                                            <th style="width: 25%;" class="headerZero"></th>
+                                                            <th style="width: 25%;" class="headerZero"></th>
+                                                            <th style="width: 25%;" class="headerZero"></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr style="border: 2px solid!important;color:  darkcyan;background-color: #fffde5!important;">
+                                                            <td><a href="{url 'admin'}product_qc/list/{$item.product}">{$item.productLabel}</a></td>
+                                                            <td>{$item.date}</td>
+                                                            <td>{$item.novancLabel}</td>
+                                                            <td><a href="{url 'admin'}users/profile/{$item.controller}" >{$item.controllerUser}</a></td>
+                                                        </tr>
+                                                        <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                            <td class="noHover">{_ "body"} : {if $item.bodyLabel}{$item.bodyLabel}{else}---{/if}</td>
+                                                            <td class="noHover">{_ "thickness"} : {if $item.thickness}{$item.thickness}{else}---{/if}</td>
+                                                            <td class="noHover">{_ "code"} : {if $item.code}{$item.code}{else}---{/if}</td>
+                                                            <td class="noHover">{_ "file_code"} : {if $item.file_code}{$item.file_code}{else}---{/if}</td>
+                                                        </tr>
+                                                        <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                            <td class="noHover">{_ "engobe"} : {if $item.engobeLabel}{$item.engobeLabel}{else}---{/if}</td>
+                                                            <td class="noHover">{_ "glaze"} : {if $item.glazeLabel}{$item.glazeLabel}{else}---{/if}</td>
+                                                            <td class="noHover">{_ "sub_engobe"} : {if $item.sub_engobeLabel}{$item.sub_engobeLabel}{else}---{/if}</td>
+                                                            <td class="noHover"></td>
+                                                        </tr>
+                                                        <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
+                                                            <td class="noHover" colspan="4">{_ "description"} : {if $item.description == Null} --- {else} {$item.description} {/if}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+
+                                            <td>
+                                                <button onclick="openItem(this)" type="button" style="color: darkcyan!important;" class="btn btn-link text-info"><i class="fa fa-eye" aria-hidden="true"></i></button>
+                                            </td>
+                                            {if $editAccess == 'true'}
+                                                <td>
+                                                    <button class="btn btn-link text-info"
+                                                            onclick="location.href='{url}{$ChangeURL}/{$item.product}/{$item.id}'">
+                                                        <i class="fa fa-pencil"></i></button>
+                                                </td>
+                                            {/if}
+                                        </tr>
+                                    {foreachelse}
+                                        <tr>
+                                            <td class="text-center" colspan="13">{_ "hasNotDataYet"}</td>
+                                        </tr>
+                                    {/foreach}
                                 </tbody>
                             </table>
                         </div>
@@ -182,4 +229,37 @@
 {/map}
 
 {map footerjs}
+<script>
+    function openItem(obj) {
+        let picClass = obj.children[0];
+        let closestTr = obj.closest('tr');
+        let label = closestTr.getElementsByClassName('showHidden')
+        if (picClass.classList.contains('fa-eye')){
+            picClass.classList.remove('fa-eye');
+            picClass.classList.add('fa-eye-slash');
+            if (label.length !== 0)
+                for (let i = 0; i < label.length; i++)
+                    label[i].style.display = "";
+        }
+        else{
+            picClass.classList.remove('fa-eye-slash');
+            picClass.classList.add('fa-eye');
+            if (label.length !== 0)
+                for (let i = 0; i < label.length; i++)
+                    label[i].style.display = "none";
+        }
+        // if (label[0].style.display == ""){
+        //     picClass.classList.remove('fa-eye-slash');
+        //     picClass.classList.add('fa-eye');
+        //     for (let i = 0; i < label.length; i++)
+        //         label[i].style.display = "none";
+        // }
+        // else{
+        //     picClass.classList.remove('fa-eye');
+        //     picClass.classList.add('fa-eye-slash');
+        //     for (let i = 0; i < label.length; i++)
+        //         label[i].style.display = "";
+        // }
+    }
+</script>
 {/map}

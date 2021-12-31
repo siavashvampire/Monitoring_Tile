@@ -34,7 +34,7 @@ class product_routine extends controller
     public function list($product = null): bool
     {
         /* @var App\product\model\product_routine $model */
-        $get = request::post('page=1,perEachPage=25,label,phase,size,product');
+        $get = request::post('page=1,perEachPage=25,label,phase,size,product,controller');
         $rules = [
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
@@ -63,6 +63,13 @@ class product_routine extends controller
             $variable[] = ' item.product = ?' ;
             $value[] = $get['product'];
         }
+        if ($get['controller'] != null) {
+            $variable[] = ' item.controller = ?' ;
+            $value[] = $get['controller'];
+        }
+
+        $model = parent::model($this->model_name);
+        $model->setProduct($product);
 
         if ($product != null) {
             $value[] = $product;
@@ -72,8 +79,6 @@ class product_routine extends controller
             $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
         }
 
-        $model = parent::model($this->model_name);
-        $model->setProduct($product);
         $search = $model->getItems($value, $variable);
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
@@ -93,6 +98,7 @@ class product_routine extends controller
         $this->mold->set('phases', phases::index()["result"]);
         $this->mold->set('products', App\product\app_provider\api\product::index()["result"]);
         $this->mold->set('sizes', App\product\app_provider\api\product::size()["result"]);
+        $this->mold->set('controllers', user::getUsersByGroupId((int)$this->setting('product_qc'))["result"]);
         return false;
     }
 

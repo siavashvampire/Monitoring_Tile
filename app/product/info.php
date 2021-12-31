@@ -611,7 +611,7 @@ return [
                 'code' => "FLOAT",
                 'file_code' => "FLOAT",
                 'controller' => "INT(11)",
-                'description' => "varchar(65) COLLATE utf8_persian_ci",
+                'description' => "varchar(650) COLLATE utf8_persian_ci",
             ],
             'KEY' => [
                 'product',
@@ -663,7 +663,7 @@ return [
                 'cycle' => "INT(11)",
                 'specific_pressure' => "INT(11)",
                 'controller' => "INT(11)",
-                'description' => "varchar(65) COLLATE utf8_persian_ci",
+                'description' => "varchar(650) COLLATE utf8_persian_ci",
             ],
             'KEY' => [
                 'product',

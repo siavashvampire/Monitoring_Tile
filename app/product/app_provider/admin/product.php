@@ -154,10 +154,12 @@ class product extends controller
                     $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
                     $Dis .= $model->getlabel() . " ";
                     $Dis .= rlang('changed');
+
                     app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
                     app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                 } else {
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }
@@ -168,8 +170,10 @@ class product extends controller
                     $Dis = $Dis . rlang('inserted');
 
                     app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+                    app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
+
                     $this->callHooks('addLog', [$Dis, $this->log_name]);
+                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
                 } else {
                     $this->alert('danger', '', rlang('pleaseTryAGain'));
                 }

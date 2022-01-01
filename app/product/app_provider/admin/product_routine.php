@@ -79,7 +79,13 @@ class product_routine extends controller
             $this->mold->set('productLabel', App\product\app_provider\api\product::index($product)["result"][0]["label"]);
         }
 
-        $search = $model->getItems($value, $variable);
+        $numberOfAll = ($model->getCount($value,$variable));
+        $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
+        $pagination = [$pagination['start'], $pagination['limit']];
+        $sort = ['column' => 'item.routine_date', 'type' => 'DESC'];
+
+        $search = $model->getItems($value, $variable,$sort,$pagination);
+
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
         $this->mold->setPageTitle(rlang('list') . " " . $this->item_label);

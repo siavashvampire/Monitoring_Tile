@@ -89,7 +89,7 @@ class product_qc extends controller
         $numberOfAll = ($model->getCount($value,$variable));
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
-        $sort = ['column' => 'register_date', 'type' => 'DESC'];
+        $sort = ['column' => 'item.qc_date', 'type' => 'DESC'];
 
         $search = $model->getItems($value, $variable,$sort,$pagination);
 

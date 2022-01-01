@@ -617,7 +617,7 @@ class product_routine extends model implements modelInterFace
         return (parent::search((array)$value, (count($variable) == 0) ? null : implode(' and ', $variable), $this->tableName . ' item', 'COUNT(item.product) as co')) [0]['co'];
     }
 
-    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.product', 'type' => 'asc'], $pagination = [0, 9999])
+    public function getItems($value = array(), $variable = array(), $sortWith = ['column' => 'item.routine_date', 'type' => 'DESC'], $pagination = [0, 9999])
     {
         model::join('user controller', 'item.controller = controller.userId');
         model::join('shift_work shift', 'item.shift = shift.shift_id');

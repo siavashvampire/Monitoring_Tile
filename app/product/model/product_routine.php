@@ -648,7 +648,7 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.straight';
         $field[] = 'item.water_attraction_max';
         $field[] = 'item.water_attraction_min';
-        $field[] = '(item.water_attraction_max + item.water_attraction_min)/2 AS mean_water_attraction';
+        $field[] = 'ROUND((item.water_attraction_max + item.water_attraction_min)/2, 2) AS mean_water_attraction';
         $field[] = 'item.temperature_min';
         $field[] = 'item.temperature_max';
         $field[] = 'item.cycle';
@@ -698,7 +698,7 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.straight';
         $field[] = 'item.water_attraction_min';
         $field[] = 'item.water_attraction_max';
-        $field[] = '(item.water_attraction_max + item.water_attraction_min)/2 AS mean_water_attraction';
+        $field[] = 'ROUND((item.water_attraction_max + item.water_attraction_min)/2, 2) AS mean_water_attraction';
         $field[] = 'item.temperature_min';
         $field[] = 'item.temperature_max';
         $field[] = 'item.cycle';

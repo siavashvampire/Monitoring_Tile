@@ -19,7 +19,7 @@
                                             <div class="form-group has-default">
                                                 <select class="selectpicker selectpickerNotRefresh" name="product" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{$item_label}">
                                                 {foreach from=$product key=key value=item }
-                                                <option value="{$item.id}"  >{$item.label}</option>
+                                                <option value="{$item.id}"  >{$item.label} - {$item.phaseLabel}</option>
                                                 {/foreach}
                                                 </select>
                                             </div>

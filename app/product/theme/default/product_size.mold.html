@@ -102,8 +102,8 @@
                                 {foreach from=$items key=key value=item}
                                 <tr>
                                     <td>{$item.label}</td>
-                                    <td>{$item.width}{_ "length_unit_label"}</td>
                                     <td>{$item.length}{_ "length_unit_label"}</td>
+                                    <td>{$item.width}{_ "length_unit_label"}</td>
                                     <td>{$item.thickness}{_ "length_unit_label"}</td>
                                     {if $editAccess == 'true'}
                                     <td>

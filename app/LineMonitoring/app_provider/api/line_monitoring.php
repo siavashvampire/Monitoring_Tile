@@ -158,7 +158,7 @@ class line_monitoring extends innerController
                     $sensor->setActive(1);
                     $sensor->upDateDataBase();
 
-                    return self::json(null);
+                    return self::json('insert done');
                 }
                 return self::jsonError(model::getLastQuery());
             } else {
@@ -190,7 +190,7 @@ class line_monitoring extends innerController
                     $sensor->setActive(0);
                     $sensor->upDateDataBase();
 
-                    return self::json(null);
+                    return self::json('insert done');
                 }
                 return self::jsonError(model::getLastQuery());
             } else {
@@ -205,6 +205,10 @@ class line_monitoring extends innerController
     public static function camSwitchActivity()
     {
         $data = request::post('Switch_id,time,active');
+        $data['Switch_id'] = 1;
+        $data['active'] = 0;
+        $data['time'] = "2022-01-01 17:02:54";
+
         /** @var CamSwitch $Switch */
         $Switch = parent::model(['LineMonitoring', 'CamSwitch'], [$data['Switch_id']], 'id = ? ');
         if ($Switch->getId() != $data['Switch_id']) {
@@ -250,7 +254,7 @@ class line_monitoring extends innerController
                     $log->setFromArray($logArchive->returnAsArray());
                     $log->updateOneRow();
 
-                    return self::json(null);
+                    return self::json('insert done');
                 }
                 return self::jsonError(model::getLastQuery());
             } else {
@@ -284,7 +288,7 @@ class line_monitoring extends innerController
                     $log->setFromArray($logArchive->returnAsArray());
                     $log->insertToDataBase();
 
-                    return self::json(null);
+                    return self::json('insert done');
                 }
                 return self::jsonError(model::getLastQuery());
             } else {

@@ -1291,6 +1291,7 @@ class hook extends pluginController
         return [["value" => "product", "label" => "تغییرات کاشی ها"],
             ["value" => "product_qc", "label" => "فرآیند کنترل"],
             ["value" => "product_routine", "label" => "فرآیند کنترل روتین"],
+            ["value" => "product_size", "label" => "سایز کاشی"],
             ["value" => "product_punch", "label" => "تغییرات پانچ ها"],
             ["value" => "product_glaze", "label" => "تغییرات لعاب ها"],
             ["value" => "product_brand", "label" => "تغییرات برند ها"],

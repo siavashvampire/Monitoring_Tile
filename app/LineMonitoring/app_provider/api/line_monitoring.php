@@ -205,9 +205,6 @@ class line_monitoring extends innerController
     public static function camSwitchActivity()
     {
         $data = request::post('Switch_id,time,active');
-        $data['Switch_id'] = 1;
-        $data['active'] = 0;
-        $data['time'] = "2022-01-01 17:02:54";
 
         /** @var CamSwitch $Switch */
         $Switch = parent::model(['LineMonitoring', 'CamSwitch'], [$data['Switch_id']], 'id = ? ');

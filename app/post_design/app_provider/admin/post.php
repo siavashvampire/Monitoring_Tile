@@ -23,6 +23,7 @@ class post extends controller
 {
     private $item_label = "نامه";
     private $model_name = 'post_data';
+    private $log_name = 'post_data';
     private $type_model_name = 'post_type';
     private $app_name = 'post_design';
     private $active_menu = 'post_insert';
@@ -79,12 +80,20 @@ class post extends controller
 //                }
 //            }
             if ($okPos) {
+                $Dis = $this->item_label . " " . rlang('for') . " " . rlang('agent') . " " ;
+                $Dis .= $eval_data->getEvaluatedPersonName() . " ";
+                $Dis .= rlang('with') . " " . rlang('brand') . " " ;
+                $Dis .= $eval_data->getBrandLabel() . " ";
+                $Dis = $Dis . rlang('inserted');
+
+                $this->callHooks('addLog', [$Dis, $this->log_name]);
                 $this->alert('success', '', 'نامه شما با موفقیت ثبت شد.');
             } else {
                 $this->alert('danger', '', 'لطفا مجددا تلاش کنید!');
             }
 
         }
+
         $_SERVER['JsonOff'] = true;
         $this->mold->set('user_group', user::getGroups()["result"]);
         $this->mold->set('phases', phases::all()["result"]);

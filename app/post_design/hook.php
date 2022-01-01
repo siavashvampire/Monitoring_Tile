@@ -54,4 +54,11 @@ class hook extends pluginController
         $this->mold->path($getPath['folder'], $getPath['app']);
         $this->mold->set('dirStartUP', payment_path . 'startup');
     }
+
+
+    public function _logField(): array
+    {
+        return [["value" => "post_data", "label" => "ثبت نامه"],
+        ];
+    }
 }

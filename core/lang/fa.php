@@ -115,6 +115,7 @@ return [
 	'insert' => 'ثبت',
 	'backTo' => 'برگشت به',
     'content' => 'محتوا',
+    'for' => 'برای',
 
 	/*
 	 * Validation Class

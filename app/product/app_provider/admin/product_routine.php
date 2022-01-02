@@ -83,7 +83,7 @@ class product_routine extends controller
         $numberOfAll = ($model->getCount($value,$variable));
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
-        $sort = ['column' => 'item.routine_date', 'type' => 'DESC'];
+        $sort = ['column' => 'item.insert_date', 'type' => 'DESC'];
 
         $search = $model->getItems($value, $variable,$sort,$pagination);
 
@@ -141,7 +141,6 @@ class product_routine extends controller
 
             $model->setProduct($product);
             $model->setInsertDate(date('Y-m-d H:i:s'));
-            $model->setRoutineDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
             $model->setShift($get['shift']);
             $model->setLengthMax($get['max_length']);
             $model->setLengthMin($get['min_length']);
@@ -185,6 +184,7 @@ class product_routine extends controller
 
             } else {
                 if ($model->insertToDataBase()) {
+                    $model->setRoutineDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 

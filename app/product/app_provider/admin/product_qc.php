@@ -91,7 +91,7 @@ class product_qc extends controller
         $numberOfAll = ($model->getCount($value,$variable));
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
-        $sort = ['column' => 'item.qc_date', 'type' => 'DESC'];
+        $sort = ['column' => 'item.insert_date', 'type' => 'DESC'];
 
         $search = $model->getItems($value, $variable,$sort,$pagination);
 
@@ -143,7 +143,6 @@ class product_qc extends controller
             $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getProductLabel() . " ";
             $model->setInsertDate(date('Y-m-d H:i:s'));
-            $model->setQcDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
             $model->setBody($get['body']);
             $model->setEngobe($get['engobe']);
             $model->setThickness($get['thickness']);
@@ -170,6 +169,7 @@ class product_qc extends controller
 
             } else {
                 if ($model->insertToDataBase()) {
+                    $model->setQcDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 

@@ -32,6 +32,8 @@ use App\product\model\product_strap;
 use App\product\model\product_sub_engobe;
 use App\product\model\product_technique;
 use App\product\model\product_template;
+use App\shiftWork\app_provider\api\totalDate;
+use paymentCms\component\JDate;
 use paymentCms\component\request;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -41,16 +43,17 @@ class product extends innerController
     public static function index($id = null): array
     {
         /** @var \App\product\model\product $model */
-        $model = parent::model(['product', 'product'],$id);
+        $model = parent::model(['product', 'product'], $id);
         return self::json($model->getItems());
     }
+
     public static function size($id = null): array
     {
         $get = request::postOne('id');
         if ($get)
             $id = $get;
         /** @var product_size $model */
-        $model = parent::model(['product', 'product_size'],$id);
+        $model = parent::model(['product', 'product_size'], $id);
         return self::json($model->getItems());
     }
 
@@ -264,76 +267,114 @@ class product extends innerController
         $model = parent::model(['product', 'product_complementary_printing_after_digital']);
         return self::json($model->getItems());
     }
+
     public static function plastic(): array
     {
         /** @var product_plastic $model */
         $model = parent::model(['product', 'product_plastic']);
         return self::json($model->getItems());
     }
+
     public static function glue(): array
     {
         /** @var product_glue $model */
         $model = parent::model(['product', 'product_glue']);
         return self::json($model->getItems());
     }
+
     public static function strap(): array
     {
         /** @var product_strap $model */
         $model = parent::model(['product', 'product_strap']);
         return self::json($model->getItems());
     }
+
     public static function pallet(): array
     {
         /** @var product_pallet $model */
         $model = parent::model(['product', 'product_pallet']);
         return self::json($model->getItems());
     }
+
     public static function carton(): array
     {
         /** @var product_carton $model */
         $model = parent::model(['product', 'product_carton']);
         return self::json($model->getItems());
     }
+
     public static function carton_theme(): array
     {
         /** @var carton_theme $model */
         $model = parent::model(['product', 'carton_theme']);
         return self::json($model->getItems());
     }
+
     public static function carton_size(): array
     {
         /** @var carton_size $model */
         $model = parent::model(['product', 'carton_size']);
         return self::json($model->getItems());
     }
+
     public static function pallet_size(): array
     {
         /** @var pallet_size $model */
         $model = parent::model(['product', 'pallet_size']);
         return self::json($model->getItems());
     }
+
     public static function pallet_packing(): array
     {
         /** @var product_pallet_packing $model */
         $model = parent::model(['product', 'product_pallet_packing']);
         return self::json($model->getItems());
     }
+
     public static function carton_packing(): array
     {
         /** @var product_carton_packing $model */
         $model = parent::model(['product', 'product_carton_packing']);
         return self::json($model->getItems());
     }
+
     public static function novanc(): array
     {
         /** @var product_novanc $model */
         $model = parent::model(['product', 'product_novanc']);
         return self::json($model->getItems());
     }
+
     public static function sub_engobe(): array
     {
         /** @var product_sub_engobe $model */
         $model = parent::model(['product', 'product_sub_engobe']);
         return self::json($model->getItems());
+    }
+
+    public static function fixDB(): array
+    {
+        $_SERVER['JsonOff'] = true;
+        $model = parent::model('product_routine');
+
+        $search = $model->getItems();
+
+        foreach ($search as $id => $routine) {
+            $model = parent::model('product_routine', $routine['id']);
+            $model->setRoutineDate(JDate::jdate('Y-m-d', totalDate::Day(0, strtotime($model->getInsertDate()))["result"]["dayStartTime"]));
+            $model->upDateDataBase();
+        }
+
+        $model = parent::model('product_qc');
+
+        $search = $model->getItems();
+
+        foreach ($search as $id => $routine) {
+            $model = parent::model('product_qc', $routine['id']);
+            $model->setQcDate(JDate::jdate('Y-m-d', totalDate::Day(0, strtotime($model->getInsertDate()))["result"]["dayStartTime"]));
+            $model->upDateDataBase();
+        }
+        unset($_SERVER['JsonOff']);
+        return self::json("done");
     }
 }

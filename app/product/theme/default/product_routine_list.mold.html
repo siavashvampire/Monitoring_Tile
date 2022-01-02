@@ -154,9 +154,21 @@
                                                 </tr>
                                                 <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
                                                     <td>{_ "oblique"} : (mm)</td>
-                                                    <td> {if $item.oblique}{$item.oblique}{else}---{/if}</td>
+                                                    <td>
+                                                        {if $item.oblique_bool}
+                                                        <i class="fa fa-check" aria-hidden="true"></i>
+                                                        {else}
+                                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                                        {/if}
+                                                    </td>
                                                     <td>{_ "straight"} : (mm)</td>
-                                                    <td>{if $item.straight}{$item.straight}{else}---{/if}</td>
+                                                    <td>
+                                                        {if $item.straight_bool}
+                                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                                        {else}
+                                                            <i class="fa fa-times" aria-hidden="true"></i>
+                                                        {/if}
+                                                    </td>
                                                 </tr>
                                                 <tr class="showHidden" style="border-bottom: 2px solid!important;border-right: 2px solid!important;border-left: 2px solid!important;display: none;">
                                                     <td>{_ "attraction"} {_ "water"} : </td>

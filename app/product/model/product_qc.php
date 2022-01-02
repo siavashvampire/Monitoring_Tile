@@ -15,6 +15,7 @@ class product_qc extends model implements modelInterFace
     private $primaryKeyShouldNotInsertOrUpdate = 'id';
     private $id;
     private $product;
+    private $insert_date;
     private $qc_date;
     private $body;
     private $engobe;
@@ -31,6 +32,7 @@ class product_qc extends model implements modelInterFace
     {
         $this->id = $result['id'];
         $this->product = $result['product'];
+        $this->insert_date = $result['insert_date'];
         $this->qc_date = $result['qc_date'];
         $this->body = $result['body'];
         $this->engobe = $result['engobe'];
@@ -48,6 +50,7 @@ class product_qc extends model implements modelInterFace
     {
         $array['id'] = $this->id;
         $array['product'] = $this->product;
+        $array['insert_date'] = $this->insert_date;
         $array['qc_date'] = $this->qc_date;
         $array['body'] = $this->body;
         $array['engobe'] = $this->engobe;
@@ -122,6 +125,24 @@ class product_qc extends model implements modelInterFace
     {
         $this->product = $product;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getInsertDate()
+    {
+        return $this->insert_date;
+    }
+
+    /**
+     * @param mixed $insert_date
+     */
+    public function setInsertDate($insert_date): void
+    {
+        $this->insert_date = $insert_date;
+    }
+
+
 
     /**
      * @return mixed
@@ -379,7 +400,7 @@ class product_qc extends model implements modelInterFace
         $field[] = 'item.id';
         $field[] = 'item.product';
         $field[] = 'product.label as productLabel';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y-%m-%d") as date';
+        $field[] = 'item.qc_date as date';
         $field[] = 'body.label as bodyLabel';
         $field[] = 'item.thickness';
         $field[] = 'novanc.label as novancLabel';
@@ -413,9 +434,9 @@ class product_qc extends model implements modelInterFace
 
         $field = array();
         $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%d") as day';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%m") as month';
-        $field[] = 'DATE_FORMAT(jdate(item.qc_date), "%Y") as year';
+        $field[] = 'DATE_FORMAT(item.qc_date, "%d") as day';
+        $field[] = 'DATE_FORMAT(item.qc_date, "%m") as month';
+        $field[] = 'DATE_FORMAT(item.qc_date, "%Y") as year';
         $field[] = 'phase.label as phaseLabel';
         $field[] = 'size.label as sizeLabel';
         $field[] = 'body.label as bodyeLabel';

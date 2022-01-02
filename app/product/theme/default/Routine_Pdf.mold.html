@@ -39,29 +39,29 @@
     </thead>
     <tbody>
     {foreach from=$datasTable key=key1 value=item }
-    <tr>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.id}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.day}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.month}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.year}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.shift}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.sizeLabel}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.productLabel}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.thickness_max} <br>{_ "min"} : {$item.thickness_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.resistance}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.oblique}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_diameter_max} <br>{_ "min"} : {$item.wrap_diameter_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_center_max} <br>{_ "min"} : {$item.wrap_center_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_edge_max} <br>{_ "min"} : {$item.wrap_edge_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.straight}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.mean_water_attraction}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.temperature_max} <br>{_ "min"} : {$item.temperature_min}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.cycle}</td>
-        <td style="border: 1px solid #ddd;padding: 8px;">{$item.specific_pressure}</td>
-    </tr>
+        <tr>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.id}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.day}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.month}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.year}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.shift}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.sizeLabel}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.productLabel}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.thickness_max} <br>{_ "min"} : {$item.thickness_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.resistance}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.oblique}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_diameter_max} <br>{_ "min"} : {$item.wrap_diameter_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_center_max} <br>{_ "min"} : {$item.wrap_center_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_edge_max} <br>{_ "min"} : {$item.wrap_edge_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.straight}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.mean_water_attraction}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.temperature_max} <br>{_ "min"} : {$item.temperature_min}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.cycle}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.specific_pressure}</td>
+        </tr>
     {/foreach}
     </tbody>
 </table>

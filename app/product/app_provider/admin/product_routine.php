@@ -6,10 +6,11 @@ use App;
 use App\core\controller\httpErrorHandler;
 use App\LineMonitoring\app_provider\api\phases;
 use App\shiftWork\app_provider\api\shift;
+use App\shiftWork\app_provider\api\totalDate;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
-use paymentCms\component\model;
+use paymentCms\component\JDate;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -124,7 +125,7 @@ class product_routine extends controller
         }
 
         if (request::ispost()) {
-            $get = request::post('shift,max_length,min_length,max_width,min_width,max_thickness,min_thickness,resistance,oblique,max_wrap_diameter,min_wrap_diameter,max_wrap_center,min_wrap_center,max_wrap_edge,min_wrap_edge,straight,max_water_attraction,min_water_attraction,max_temperature,min_temperature,cycle,specific_pressure,description');
+            $get = request::post('shift,max_length,min_length,max_width,min_width,max_thickness,min_thickness,resistance,oblique,oblique_bool,max_wrap_diameter,min_wrap_diameter,max_wrap_center,min_wrap_center,max_wrap_edge,min_wrap_edge,straight,straight_bool,max_water_attraction,min_water_attraction,max_temperature,min_temperature,cycle,specific_pressure,description');
             $rules = [
                 "shift" => ["required", rlang('shift')],
             ];
@@ -139,7 +140,8 @@ class product_routine extends controller
             $Dis .= $model->getProductLabel() . " ";
 
             $model->setProduct($product);
-            $model->setRoutineDate(date('Y-m-d H:i:s'));
+            $model->setInsertDate(date('Y-m-d H:i:s'));
+            $model->setRoutineDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
             $model->setShift($get['shift']);
             $model->setLengthMax($get['max_length']);
             $model->setLengthMin($get['min_length']);
@@ -149,6 +151,7 @@ class product_routine extends controller
             $model->setThicknessMin($get['min_thickness']);
             $model->setResistance($get['resistance']);
             $model->setOblique($get['oblique']);
+            $model->setObliqueBool($get['oblique_bool']);
             $model->setWrapDiameterMax($get['max_wrap_diameter']);
             $model->setWrapDiameterMin( $get['min_wrap_diameter']);
             $model->setWrapCenterMax($get['max_wrap_center']);
@@ -156,6 +159,7 @@ class product_routine extends controller
             $model->setWrapEdgeMax($get['max_wrap_edge']);
             $model->setWrapEdgeMin($get['min_wrap_edge']);
             $model->setStraight($get['straight']);
+            $model->setStraightBool($get['straight_bool']);
             $model->setWaterAttractionMax($get['max_water_attraction']);
             $model->setWaterAttractionMin($get['min_water_attraction']);
             $model->setTemperatureMax($get['max_temperature']);

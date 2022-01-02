@@ -33,13 +33,17 @@ class totalDate extends innerController
         }
         if ($isSet)
             unset($_SERVER['JsonOff']);
+
+        $shiftStartTime = strtotime($shiftStart);
+        $shiftEndTime = strtotime($shiftEnd);
+
         return self::json([
             'dayStart' => $shiftStart,
-            'jdayStart' => JDate::jdate('Y/m/d H:i:s', strtotime($shiftStart)),
-//            'dayStartTime' => strtotime($shiftStart),
+            'jdayStart' => JDate::jdate('Y/m/d H:i:s', $shiftStartTime),
+            'dayStartTime' => $shiftStartTime,
             'dayEnd' => $shiftEnd,
-            'jdayEnd' => JDate::jdate('Y/m/d H:i:s', strtotime($shiftEnd)),
-//            'dayEndTime' => strtotime($shiftEnd),
+            'jdayEnd' => JDate::jdate('Y/m/d H:i:s', $shiftEndTime),
+            'dayEndTime' => $shiftEndTime,
         ]);
     }
 

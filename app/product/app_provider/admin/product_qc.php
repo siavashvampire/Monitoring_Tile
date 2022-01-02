@@ -5,9 +5,11 @@ namespace App\product\app_provider\admin;
 use App;
 use App\core\controller\httpErrorHandler;
 use App\LineMonitoring\app_provider\api\phases;
+use App\shiftWork\app_provider\api\totalDate;
 use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
+use paymentCms\component\JDate;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -140,7 +142,8 @@ class product_qc extends controller
             }
             $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
             $Dis .= $model->getProductLabel() . " ";
-            $model->setQcDate(date('Y-m-d H:i:s'));
+            $model->setInsertDate(date('Y-m-d H:i:s'));
+            $model->setQcDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
             $model->setBody($get['body']);
             $model->setEngobe($get['engobe']);
             $model->setThickness($get['thickness']);

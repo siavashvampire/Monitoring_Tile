@@ -19,7 +19,7 @@
                             <label class="col-form-label col-md-6 float-right">{$sizeLabel}</label>
                         </div>
                         <div class="col-md-4 form-group">
-                            <label for="shift" class="col-form-label col-md-3 float-right">{_ "shift"}:</label>
+                            <label for="shift" class="col-form-label col-md-3 float-right">{_ "shift"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
                                     <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh"  id="shift" name="shift" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "shift"}">
@@ -107,11 +107,31 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group" style="margin-bottom: auto;margin-top: auto;">
                             <label for="oblique" class="col-form-label col-md-3 float-right">{_ "oblique"} (mm):</label>
-                            <div class="col-md-9">
+                            <div class="col-md-4">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0"  step="0.01" class="form-control text-center"  id="oblique" name="oblique" value="{if isset($Mold.post.oblique)}{$Mold.post.oblique}{elseif isset($model)}{$model->getOblique()}{/if}">
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-2">
+                                            <div class="form-group has-default" style="margin-top: unset!important;">
+                                                <input type="radio" id="ok" name="oblique_bool" value="1" class="float-right" {if isset($Mold.post.oblique_bool) and $Mold.post.oblique_bool == 1}checked{elseif isset($model) and $model->getObliqueBool() == 1}checked{elseif !isset($model)}checked{/if}>
+                                            </div>
+                                        </div>
+                                        <label for="ok" class="col-form-label col-md-9 float-right" style="padding-top: unset!important;">ok</label>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-2">
+                                            <div class="form-group has-default" style="margin-top: unset!important;">
+                                                <input type="radio" id="not_ok" name="oblique_bool" value="0" class="float-right" {if isset($Mold.post.oblique_bool) and $Mold.post.oblique_bool == 0}checked{elseif isset($model) and $model->getObliqueBool() == 0}checked{/if}>
+                                            </div>
+                                        </div>
+                                        <label for="not_ok" class="col-form-label col-md-9 float-right" style="padding-top: unset!important;">not ok</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group has-default">
+                                    <input type="number" min="0" step="0.01" class="form-control text-center"  id="oblique" name="oblique" value="{if isset($Mold.post.oblique)}{$Mold.post.oblique}{elseif isset($model)}{$model->getOblique()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -184,9 +204,29 @@
                     </div>
                     <hr>
                     <div class="row">
-                        <div class="col-md-4 form-group">
+                        <div class="col-md-6 form-group" style="margin-bottom: auto;margin-top: auto;">
                             <label for="straight" class="col-form-label col-md-3 float-right">{_ "straight"} (mm):</label>
-                            <div class="col-md-9">
+                            <div class="col-md-4">
+                                <div class="form-group has-default">
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-2">
+                                            <div class="form-group has-default" style="margin-top: unset!important;">
+                                                <input type="radio" id="ok" name="straight_bool" value="1" class="float-right" {if isset($Mold.post.straight_bool) and $Mold.post.straight_bool == 1}checked{elseif isset($model) and $model->getStraightBool() == 1}checked{elseif !isset($model)}checked{/if}>
+                                            </div>
+                                        </div>
+                                        <label for="ok" class="col-form-label col-md-9 float-right" style="padding-top: unset!important;">ok</label>
+                                    </div>
+                                    <div class="col-md-12 form-group">
+                                        <div class="col-md-2">
+                                            <div class="form-group has-default" style="margin-top: unset!important;">
+                                                <input type="radio" id="not_ok" name="straight_bool" value="0" class="float-right" {if isset($Mold.post.straight_bool) and $Mold.post.straight_bool == 0}checked{elseif isset($model) and $model->getStraightBool() == 0}checked{/if}>
+                                            </div>
+                                        </div>
+                                        <label for="not_ok" class="col-form-label col-md-9 float-right" style="padding-top: unset!important;">not ok</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
                                 <div class="form-group has-default">
                                     <input type="number" min="-1" max="1" step="0.01" class="form-control text-center"  id="straight" name="straight" value="{if isset($Mold.post.straight)}{$Mold.post.straight}{elseif isset($model)}{$model->getStraight()}{/if}">
                                 </div>

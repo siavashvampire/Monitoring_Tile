@@ -15,6 +15,7 @@ class product_routine extends model implements modelInterFace
     private $primaryKeyShouldNotInsertOrUpdate = 'id';
     private $id;
     private $product;
+    private $insert_date;
     private $routine_date;
     private $shift;
     private $controller;
@@ -32,7 +33,9 @@ class product_routine extends model implements modelInterFace
     private $wrap_edge_min;
     private $wrap_edge_max;
     private $oblique;
+    private $oblique_bool;
     private $straight;
+    private $straight_bool;
     private $water_attraction_max;
     private $water_attraction_min;
     private $temperature_min;
@@ -45,6 +48,7 @@ class product_routine extends model implements modelInterFace
     {
         $this->id = $result['id'];
         $this->product = $result['product'];
+        $this->insert_date = $result['insert_date'];
         $this->routine_date = $result['routine_date'];
         $this->shift = $result['shift'];
         $this->controller = $result['controller'];
@@ -62,7 +66,9 @@ class product_routine extends model implements modelInterFace
         $this->wrap_edge_min = $result['wrap_edge_min'];
         $this->wrap_edge_max = $result['wrap_edge_max'];
         $this->oblique = $result['oblique'];
+        $this->oblique_bool = $result['oblique_bool'];
         $this->straight = $result['straight'];
+        $this->straight_bool = $result['straight_bool'];
         $this->water_attraction_max = $result['water_attraction_max'];
         $this->water_attraction_min = $result['water_attraction_min'];
         $this->temperature_min = $result['temperature_min'];
@@ -76,6 +82,7 @@ class product_routine extends model implements modelInterFace
     {
         $array['id'] = $this->id;
         $array['product'] = $this->product;
+        $array['insert_date'] = $this->insert_date;
         $array['routine_date'] = $this->routine_date;
         $array['shift'] = $this->shift;
         $array['controller'] = $this->controller;
@@ -93,7 +100,9 @@ class product_routine extends model implements modelInterFace
         $array['wrap_edge_min'] = $this->wrap_edge_min;
         $array['wrap_edge_max'] = $this->wrap_edge_max;
         $array['oblique'] = $this->oblique;
+        $array['oblique_bool'] = $this->oblique_bool;
         $array['straight'] = $this->straight;
+        $array['straight_bool'] = $this->straight_bool;
         $array['water_attraction_max'] = $this->water_attraction_max;
         $array['water_attraction_min'] = $this->water_attraction_min;
         $array['temperature_min'] = $this->temperature_min;
@@ -170,6 +179,24 @@ class product_routine extends model implements modelInterFace
     {
         $this->product = $product;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getInsertDate()
+    {
+        return $this->insert_date;
+    }
+
+    /**
+     * @param mixed $insert_date
+     */
+    public function setInsertDate($insert_date): void
+    {
+        $this->insert_date = $insert_date;
+    }
+
+
 
     /**
      * @return mixed
@@ -474,6 +501,22 @@ class product_routine extends model implements modelInterFace
     /**
      * @return mixed
      */
+    public function getObliqueBool()
+    {
+        return $this->oblique_bool;
+    }
+
+    /**
+     * @param mixed $oblique_bool
+     */
+    public function setObliqueBool($oblique_bool): void
+    {
+        $this->oblique_bool = $oblique_bool;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getStraight()
     {
         return $this->straight;
@@ -488,6 +531,24 @@ class product_routine extends model implements modelInterFace
             $straight = null;
         $this->straight = $straight;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getStraightBool()
+    {
+        return $this->straight_bool;
+    }
+
+    /**
+     * @param mixed $straight_bool
+     */
+    public function setStraightBool($straight_bool): void
+    {
+        $this->straight_bool = $straight_bool;
+    }
+
+
 
     /**
      * @return mixed
@@ -627,7 +688,7 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.id';
         $field[] = 'item.product';
         $field[] = 'product.label as productLabel';
-        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%Y-%m-%d") as date';
+        $field[] = 'item.routine_date as date';
         $field[] = 'shift.shift_name as shift';
         $field[] = 'item.controller as controller';
         $field[] = 'concat(controller.fname," ",controller.lname) as controllerUser';
@@ -646,6 +707,8 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.wrap_edge_min';
         $field[] = 'item.oblique';
         $field[] = 'item.straight';
+        $field[] = 'item.oblique_bool';
+        $field[] = 'item.straight_bool';
         $field[] = 'item.water_attraction_max';
         $field[] = 'item.water_attraction_min';
         $field[] = 'ROUND((item.water_attraction_max + item.water_attraction_min)/2, 2) AS mean_water_attraction';
@@ -673,9 +736,9 @@ class product_routine extends model implements modelInterFace
 
         $field = array();
         $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%d") as day';
-        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%m") as month';
-        $field[] = 'DATE_FORMAT(jdate(item.routine_date), "%Y") as year';
+        $field[] = 'DATE_FORMAT(item.routine_date, "%d") as day';
+        $field[] = 'DATE_FORMAT(item.routine_date, "%m") as month';
+        $field[] = 'DATE_FORMAT(item.routine_date, "%Y") as year';
         $field[] = 'phase.label as phaseLabel';
         $field[] = 'size.label as sizeLabel';
         $field[] = 'shift.shift_name as shift';
@@ -696,6 +759,8 @@ class product_routine extends model implements modelInterFace
         $field[] = 'item.wrap_edge_min';
         $field[] = 'item.oblique';
         $field[] = 'item.straight';
+        $field[] = 'item.oblique_bool';
+        $field[] = 'item.straight_bool';
         $field[] = 'item.water_attraction_min';
         $field[] = 'item.water_attraction_max';
         $field[] = 'ROUND((item.water_attraction_max + item.water_attraction_min)/2, 2) AS mean_water_attraction';

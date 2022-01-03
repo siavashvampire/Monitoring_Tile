@@ -183,8 +183,9 @@ class product_routine extends controller
                 }
 
             } else {
+
+                $model->setRoutineDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
                 if ($model->insertToDataBase()) {
-                    $model->setRoutineDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 

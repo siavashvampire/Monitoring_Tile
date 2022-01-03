@@ -54,11 +54,11 @@ class product_export extends controller
         $get = request::post('getPDF=1,Day,StartTime,EndTime,phase,product,size,month');
 
         $_SERVER['JsonOff'] = true;
-        if ($get['Day'] != null){
+        if ($get['Day'] != null) {
             $DayData = totalDate::Day($get['Day'])["result"];
 
             $get['StartTime'] = $DayData["jdayStart"];
-            $get['EndTime']   = $DayData["jdayEnd"];
+            $get['EndTime'] = $DayData["jdayEnd"];
         }
         if ($get['month'] != null) {
             $monthData = totalDate::Month($get['month'])["result"];
@@ -69,26 +69,26 @@ class product_export extends controller
         unset($_SERVER['JsonOff']);
 
         if ($get['StartTime'] != null and $get['EndTime'] == null) {
-            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") > ?' ;
+            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") > ?';
             $value[] = $get['StartTime'];
         } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") < ?' ;
+            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") < ?';
             $value[] = $get['EndTime'];
         } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?' ;
+            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?';
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
         if ($get['phase'] != null) {
-            $variable[] = ' product.phase = ?' ;
+            $variable[] = ' product.phase = ?';
             $value[] = $get['phase'];
         }
         if ($get['size'] != null) {
-            $variable[] = ' product.size = ?' ;
+            $variable[] = ' product.size = ?';
             $value[] = $get['size'];
         }
         if ($get['product'] != null) {
-            $variable[] = ' item.product = ?' ;
+            $variable[] = ' item.product = ?';
             $value[] = $get['product'];
         }
 
@@ -113,10 +113,9 @@ class product_export extends controller
         $file_name = "تولیدات";
         $file_name .= " - ";
 
-        if ($get['Day'] != null){
+        if ($get['Day'] != null) {
             $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
-        }
-        else
+        } else
             $file_name .= JDate::jdate(' Y');
         if ($product != null) {
             $file_name .= " - ";
@@ -157,7 +156,7 @@ class product_export extends controller
             }
             return false;
         }
-        $this->alert('danger','','نتیجه ای یافت نشد !');
+        $this->alert('danger', '', 'نتیجه ای یافت نشد !');
         $this->mold->path('default', $this->app_name);
         $this->mold->view('export_qc.mold.html');
         $this->mold->setPageTitle('گزارش گیری');
@@ -186,11 +185,11 @@ class product_export extends controller
         $get = request::post('getPDF=1,Day,StartTime,EndTime,phase,product,size,month');
 
         $_SERVER['JsonOff'] = true;
-        if ($get['Day'] != null){
+        if ($get['Day'] != null) {
             $DayData = totalDate::Day($get['Day'])["result"];
 
             $get['StartTime'] = $DayData["jdayStart"];
-            $get['EndTime']   = $DayData["jdayEnd"];
+            $get['EndTime'] = $DayData["jdayEnd"];
         }
         if ($get['month'] != null) {
             $monthData = totalDate::Month($get['month'])["result"];
@@ -201,13 +200,13 @@ class product_export extends controller
         unset($_SERVER['JsonOff']);
 
         if ($get['StartTime'] != null and $get['EndTime'] == null) {
-            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") > ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") > ?';
             $value[] = $get['StartTime'];
         } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") < ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") < ?';
             $value[] = $get['EndTime'];
         } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?';
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
@@ -238,10 +237,9 @@ class product_export extends controller
         $file_name = "روتین";
         $file_name .= " - ";
 
-        if ($get['Day'] != null){
+        if ($get['Day'] != null) {
             $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
-        }
-        else
+        } else
             $file_name .= JDate::jdate(' Y');
         if ($product != null) {
             $file_name .= " - ";
@@ -282,7 +280,7 @@ class product_export extends controller
             }
             return false;
         }
-        $this->alert('danger','','نتیجه ای یافت نشد !');
+        $this->alert('danger', '', 'نتیجه ای یافت نشد !');
         $this->mold->path('default', $this->app_name);
         $this->mold->view('export_qc.mold.html');
         $this->mold->setPageTitle('گزارش گیری');
@@ -312,11 +310,11 @@ class product_export extends controller
         $get = request::post('getPDF=1,Day,StartTime,EndTime,phase,product,size,month');
 
         $_SERVER['JsonOff'] = true;
-        if ($get['Day'] != null){
+        if ($get['Day'] != null) {
             $DayData = totalDate::Day($get['Day'])["result"];
 
             $get['StartTime'] = $DayData["jdayStart"];
-            $get['EndTime']   = $DayData["jdayEnd"];
+            $get['EndTime'] = $DayData["jdayEnd"];
         }
         if ($get['month'] != null) {
             $monthData = totalDate::Month($get['month'])["result"];
@@ -327,42 +325,43 @@ class product_export extends controller
         unset($_SERVER['JsonOff']);
 
         if ($get['StartTime'] != null and $get['EndTime'] == null) {
-            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") > ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") > ?';
             $value[] = $get['StartTime'];
         } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") < ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") < ?';
             $value[] = $get['EndTime'];
         } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?';
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
 
         $search = $model->getItemsForExport($value, $variable);
+
         $header = [];
-        $header[] = 'شماره';
-        $header[] = 'روز';
-        $header[] = 'ماه';
-        $header[] = 'سال';
+        $header[] = 'نام طرح';
+        $header[] = 'تاریخ';
         $header[] = 'فاز';
-        $header[] = 'سایز طول (mm)';
-        $header[] = 'سایز عرض (mm)';
-        $header[] = 'دما بالا (c)';
-        $header[] = 'دما پایین (c)';
-        $header[] = 'سیکل (min)';
-        $header[] = 'جذب آب بالا (c)';
-        $header[] = 'جذب آب پایین (c)';
-        $header[] = 'میانگین';
-        $header[] = 'فشار ویژه';
-        $header[] = 'توضیحات';
+        $header[] = '(mm) سایز محصولات';
+        $header[] = 'کنترلر';
+
+//        $header[] = 'سایز طول (mm)';
+//        $header[] = 'سایز عرض (mm)';
+//        $header[] = 'دما بالا (c)';
+//        $header[] = 'دما پایین (c)';
+//        $header[] = 'سیکل (min)';
+//        $header[] = 'جذب آب بالا (c)';
+//        $header[] = 'جذب آب پایین (c)';
+//        $header[] = 'میانگین';
+//        $header[] = 'فشار ویژه';
+//        $header[] = 'توضیحات';
 
         $file_name = "جذب آب";
         $file_name .= " - ";
 
-        if ($get['Day'] != null){
+        if ($get['Day'] != null) {
             $file_name .= date("d-m-Y", strtotime($DayData["jdayStart"]));
-        }
-        else
+        } else
             $file_name .= JDate::jdate(' Y');
         if ($product != null) {
             $file_name .= " - ";
@@ -383,7 +382,7 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-
+//                show($htmlpersian);
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
@@ -404,7 +403,7 @@ class product_export extends controller
             return false;
         }
 
-        $this->alert('danger','','نتیجه ای یافت نشد !');
+        $this->alert('danger', '', 'نتیجه ای یافت نشد !');
         $this->mold->path('default', $this->app_name);
         $this->mold->view('export_qc.mold.html');
         $this->mold->setPageTitle('گزارش گیری');

@@ -23,9 +23,9 @@
     </tbody>
 </table>
 
-<div style="text-align: center;font-size: 18px;">
 
-</div>
+{foreach from=$datasTable key=key1 value=item }
+<div style="font-size: 18px;"></div>
 
 <br>
 
@@ -38,24 +38,33 @@
     </tr>
     </thead>
     <tbody>
-    {foreach from=$datasTable key=key1 value=item }
         <tr>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.id}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.day}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.month}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.year}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.productLabel}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.date}</td>
             <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.temperature_max}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.temperature_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.cycle}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.water_attraction_max}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.water_attraction_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.mean_water_attraction}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.specific_pressure}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.description}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.sizeLabel}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{$item.controllerUser}</td>
         </tr>
-    {/foreach}
+        <tr>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "length"} : </td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.length_max}{$item.length_max}{else}---{/if}<br>{_ "min"} : {if $item.length_min}{$item.length_min}{else}---{/if}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "width"} : </td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.width_max}{$item.width_max}{else}---{/if}<br>{_ "min"} : {if $item.width_min}{$item.width_min}{else}---{/if}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "pressure"} {_ "specific"} : {if $item.specific_pressure}{$item.specific_pressure}{else}---{/if}</td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "temperature"} (C)</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.temperature_max}{$item.temperature_max}{else}---{/if}<br>{_ "min"} : {if $item.temperature_min}{$item.temperature_min}{else}---{/if}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "attraction"} {_ "water"} : </td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.water_attraction_max}{$item.water_attraction_max}{else}---{/if}<br>{_ "mean"} : {if $item.mean_water_attraction}{$item.mean_water_attraction}{else}---{/if} <br>{_ "min"} : {if $item.water_attraction_min}{$item.water_attraction_min}{else}---{/if}</td>
+            <td style="border: 1px solid #ddd;padding: 8px;">{_ "cycle"} : {if $item.cycle}{$item.cycle}{else}---{/if}</td>
+        </tr>
+        {if $item.description != Null}
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;text-align: center" colspan="6">{_ "description"} : {$item.description}</td>
+            </tr>
+        {/if}
     </tbody>
 </table>
+
+{/foreach}

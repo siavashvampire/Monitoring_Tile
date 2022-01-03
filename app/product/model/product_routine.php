@@ -723,9 +723,8 @@ class product_routine extends model implements modelInterFace
         return parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), $this->tableName . ' item', $field, $sortWith, $pagination);
     }
 
-    public function getItemsForExport($value = array(), $variable = array(), $sortWith = ['column' => 'item.id', 'type' => 'asc'], $pagination = [0, 9999])
+    public function getItemsForExport($value = array(), $variable = array(), $sortWith = ['column' => 'item.routine_date', 'type' => 'DESC'], $pagination = [0, 9999])
     {
-
         model::join('product product', 'product.id = item.product');
         model::join('phases  phase', 'phase.id = product.phase');
         model::join('product_size  size', 'size.id = product.size');

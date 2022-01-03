@@ -735,10 +735,11 @@ class product_routine extends model implements modelInterFace
         model::join('user controller', 'item.controller = controller.userId');
 
         $field = array();
-        $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(item.routine_date, "%d") as day';
-        $field[] = 'DATE_FORMAT(item.routine_date, "%m") as month';
-        $field[] = 'DATE_FORMAT(item.routine_date, "%Y") as year';
+//        $field[] = 'item.id';
+        $field[] = 'DATE_FORMAT(item.routine_date, "%Y-%m-%d") as date';
+//        $field[] = 'DATE_FORMAT(item.routine_date, "%d") as day';
+//        $field[] = 'DATE_FORMAT(item.routine_date, "%m") as month';
+//        $field[] = 'DATE_FORMAT(item.routine_date, "%Y") as year';
         $field[] = 'phase.label as phaseLabel';
         $field[] = 'size.label as sizeLabel';
         $field[] = 'shift.shift_name as shift';

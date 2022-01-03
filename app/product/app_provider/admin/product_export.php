@@ -10,6 +10,7 @@ use App\shiftWork\app_provider\api\totalDate;
 use App\units\app_provider\api\units;
 use controller;
 use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -54,28 +55,27 @@ class product_export extends controller
 
         $_SERVER['JsonOff'] = true;
         if ($get['Day'] != null){
-
             $DayData = totalDate::Day($get['Day'])["result"];
 
-            $get['StartTime'] = $DayData["dayStart"];
-            $get['EndTime']   = $DayData["dayEnd"];
+            $get['StartTime'] = $DayData["jdayStart"];
+            $get['EndTime']   = $DayData["jdayEnd"];
         }
         if ($get['month'] != null) {
             $monthData = totalDate::Month($get['month'])["result"];
 
-            $get['StartTime'] = $monthData["monthStart"];
-            $get['EndTime'] = $monthData["monthEnd"];
+            $get['StartTime'] = $monthData["jmonthStart"];
+            $get['EndTime'] = $monthData["jmonthEnd"];
         }
         unset($_SERVER['JsonOff']);
 
         if ($get['StartTime'] != null and $get['EndTime'] == null) {
-            $variable[] = ' item.qc_date > ?' ;
+            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") > ?' ;
             $value[] = $get['StartTime'];
         } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-            $variable[] = ' item.qc_date < ?' ;
+            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") < ?' ;
             $value[] = $get['EndTime'];
         } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-            $variable[] = ' item.qc_date BETWEEN ? AND ?' ;
+            $variable[] = ' DATE_FORMAT(item.qc_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?' ;
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
@@ -93,24 +93,22 @@ class product_export extends controller
         }
 
         $search = $model->getItemsForExport($value, $variable);
+
         $header = [];
-        $header[] = 'شماره';
-        $header[] = 'روز';
-        $header[] = 'ماه';
-        $header[] = 'سال';
+        $header[] = 'نام طرح';
+        $header[] = 'تاریخ';
         $header[] = 'فاز تولیدی';
         $header[] = 'سایز';
-        $header[] = 'فرمول گرانول';
-        $header[] = 'ضخامت';
-        $header[] = 'نام طرح';
         $header[] = 'نوانس';
-        $header[] = 'کد';
-        $header[] = 'شماره پرونده';
         $header[] = 'کنترلر';
-        $header[] = 'فرمول انگوب';
-        $header[] = 'فرمول لعاب';
-        $header[] = 'فرمول انگوب زیر';
-        $header[] = 'توضیحات';
+        $header[] = 'شماره پرونده';
+//        $header[] = 'فرمول گرانول';
+//        $header[] = 'ضخامت';
+//        $header[] = 'کد';
+//        $header[] = 'فرمول انگوب';
+//        $header[] = 'فرمول لعاب';
+//        $header[] = 'فرمول انگوب زیر';
+//        $header[] = 'توضیحات';
 
         $file_name = "تولیدات";
         $file_name .= " - ";
@@ -139,7 +137,7 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-
+//                show($htmlpersian);
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
@@ -189,28 +187,27 @@ class product_export extends controller
 
         $_SERVER['JsonOff'] = true;
         if ($get['Day'] != null){
-
             $DayData = totalDate::Day($get['Day'])["result"];
 
-            $get['StartTime'] = $DayData["dayStart"];
-            $get['EndTime']   = $DayData["dayEnd"];
+            $get['StartTime'] = $DayData["jdayStart"];
+            $get['EndTime']   = $DayData["jdayEnd"];
         }
         if ($get['month'] != null) {
             $monthData = totalDate::Month($get['month'])["result"];
 
-            $get['StartTime'] = $monthData["monthStart"];
-            $get['EndTime'] = $monthData["monthEnd"];
+            $get['StartTime'] = $monthData["jmonthStart"];
+            $get['EndTime'] = $monthData["jmonthEnd"];
         }
         unset($_SERVER['JsonOff']);
 
         if ($get['StartTime'] != null and $get['EndTime'] == null) {
-            $variable[] = ' item.routine_date > ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") > ?' ;
             $value[] = $get['StartTime'];
         } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-            $variable[] = ' item.routine_date < ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") < ?' ;
             $value[] = $get['EndTime'];
         } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-            $variable[] = ' item.routine_date BETWEEN ? AND ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?' ;
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
@@ -218,27 +215,25 @@ class product_export extends controller
         $search = $model->getItemsForExport($value, $variable);
 
         $header = [];
-        $header[] = 'شماره';
-        $header[] = 'روز';
-        $header[] = 'ماه';
-        $header[] = 'سال';
+        $header[] = 'نام طرح';
+        $header[] = 'تاریخ';
         $header[] = 'شیفت';
         $header[] = 'فاز';
         $header[] = '(mm) سایز محصولات';
-        $header[] = 'نام طرح';
-        $header[] = 'ابعاد طول (mm)';
-        $header[] = 'ابعاد عرض (mm)';
-        $header[] = 'ابعاد ضخامت (mm)';
-        $header[] = 'مقاومت (Kg/Cm2)';
-        $header[] = 'گونیایی (mm)';
-        $header[] = 'تاب قطر (mm)';
-        $header[] = 'تاب مرکز (mm)';
-        $header[] = 'تاب ضلع (mm)';
-        $header[] = 'مستقیم بودن (mm)';
-        $header[] = 'میانگین جذب آب';
-        $header[] = 'دما (c)';
-        $header[] = 'سیکل (min)';
-        $header[] = 'فشار ویژه (Kg/Cm2)';
+        $header[] = 'کنترلر';
+//        $header[] = 'ابعاد طول (mm)';
+//        $header[] = 'ابعاد عرض (mm)';
+//        $header[] = 'ابعاد ضخامت (mm)';
+//        $header[] = 'مقاومت (Kg/Cm2)';
+//        $header[] = 'گونیایی (mm)';
+//        $header[] = 'تاب قطر (mm)';
+//        $header[] = 'تاب مرکز (mm)';
+//        $header[] = 'تاب ضلع (mm)';
+//        $header[] = 'مستقیم بودن (mm)';
+//        $header[] = 'میانگین جذب آب';
+//        $header[] = 'دما (c)';
+//        $header[] = 'سیکل (min)';
+//        $header[] = 'فشار ویژه (Kg/Cm2)';
 
         $file_name = "روتین";
         $file_name .= " - ";
@@ -267,7 +262,7 @@ class product_export extends controller
                 $this->mold->set('datasTable', $search);
                 $this->mold->unshow('footer.mold.html');
                 $htmlpersian = $this->mold->render();
-
+//                show($htmlpersian);
                 $this->callHooks('makePDF', ['htmlpersian' => $htmlpersian, 'nameOfFile' => $file_name, 'landscape' => true]);
             } else {
                 header('Content-Encoding: UTF-8');
@@ -318,28 +313,27 @@ class product_export extends controller
 
         $_SERVER['JsonOff'] = true;
         if ($get['Day'] != null){
-
             $DayData = totalDate::Day($get['Day'])["result"];
 
-            $get['StartTime'] = $DayData["dayStart"];
-            $get['EndTime']   = $DayData["dayEnd"];
+            $get['StartTime'] = $DayData["jdayStart"];
+            $get['EndTime']   = $DayData["jdayEnd"];
         }
         if ($get['month'] != null) {
             $monthData = totalDate::Month($get['month'])["result"];
 
-            $get['StartTime'] = $monthData["monthStart"];
-            $get['EndTime'] = $monthData["monthEnd"];
+            $get['StartTime'] = $monthData["jmonthStart"];
+            $get['EndTime'] = $monthData["jmonthEnd"];
         }
         unset($_SERVER['JsonOff']);
 
         if ($get['StartTime'] != null and $get['EndTime'] == null) {
-            $variable[] = ' item.routine_date > ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") > ?' ;
             $value[] = $get['StartTime'];
         } elseif ($get['StartTime'] == null and $get['EndTime'] != null) {
-            $variable[] = ' item.routine_date < ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") < ?' ;
             $value[] = $get['EndTime'];
         } elseif ($get['StartTime'] != null and $get['EndTime'] != null) {
-            $variable[] = ' item.routine_date BETWEEN ? AND ?' ;
+            $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?' ;
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }

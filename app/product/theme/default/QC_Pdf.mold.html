@@ -23,27 +23,44 @@
     </tbody>
 </table>
 
-<div style="text-align: center;font-size: 18px;">
+{foreach from=$datasTable key=key1 value=item }
+    <div style="font-size: 18px;"></div>
 
-</div>
+    <br>
 
-<br>
+    <table style="border-collapse: collapse;width: 100%;">
+        <thead>
+            <tr>
+                {foreach from=$headersTable key=key value=headerTable }
+                    <th style="border: 1px solid #ddd;padding: 8px;padding-top: 12px;padding-bottom: 12px;text-align: center;background-color: #4CAF50;color: white;">{$headerTable}</th>
+                {/foreach}
+            </tr>
+        </thead>
 
-<table style="border-collapse: collapse;width: 100%;">
-    <thead>
-    <tr>
-        {foreach from=$headersTable key=key value=headerTable }
-        <th style="border: 1px solid #ddd;padding: 8px;padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #4CAF50;color: white;">{$headerTable}</th>
-        {/foreach}
-    </tr>
-    </thead>
-    <tbody>
-    {foreach from=$datasTable key=key1 value=dataTable }
-    <tr>
-        {foreach from=$dataTable key=key2 value=data }
-            <td style="border: 1px solid #ddd;padding: 8px;">{$data}</td>
-        {/foreach}
-    </tr>
-    {/foreach}
-    </tbody>
-</table>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.productLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.date}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.sizeLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.novancLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.controllerUser}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.file_code}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "thickness"} : {if $item.thickness == Null} --- {else} {$item.thickness} {/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "code"} : {if $item.code == Null} --- {else} {$item.code} {/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "body"} : {if $item.bodyLabel == Null} --- {else} {$item.bodyLabel} {/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "engobe"} : {if $item.engobeLabel == Null} --- {else} {$item.engobeLabel} {/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "glaze"} : {if $item.glazeLabel == Null} --- {else} {$item.glazeLabel} {/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "sub_engobe"} : {if $item.sub_engobeLabel == Null} --- {else} {$item.sub_engobeLabel} {/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;"></td>
+            </tr>
+            {if $item.description != Null}
+                <tr>
+                    <td style="border: 1px solid #ddd;padding: 8px;text-align: center" colspan="7">{_ "description"} : {$item.description}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </table>
+{/foreach}

@@ -433,15 +433,16 @@ class product_qc extends model implements modelInterFace
         model::join('user controller', 'item.controller = controller.userId');
 
         $field = array();
-        $field[] = 'item.id';
-        $field[] = 'DATE_FORMAT(item.qc_date, "%d") as day';
-        $field[] = 'DATE_FORMAT(item.qc_date, "%m") as month';
-        $field[] = 'DATE_FORMAT(item.qc_date, "%Y") as year';
+//        $field[] = 'item.id';
+        $field[] = 'DATE_FORMAT(item.qc_date, "%Y-%m-%d") as date';
+//        $field[] = 'DATE_FORMAT(item.qc_date, "%d") as day';
+//        $field[] = 'DATE_FORMAT(item.qc_date, "%m") as month';
+//        $field[] = 'DATE_FORMAT(item.qc_date, "%Y") as year';
         $field[] = 'phase.label as phaseLabel';
         $field[] = 'size.label as sizeLabel';
-        $field[] = 'body.label as bodyeLabel';
+        $field[] = 'body.label as bodyLabel';
         $field[] = 'item.thickness';
-        $field[] = 'product.label';
+        $field[] = 'product.label as productLabel';
         $field[] = 'novanc.label as novancLabel';
         $field[] = 'item.code';
         $field[] = 'item.file_code';

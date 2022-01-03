@@ -39,10 +39,10 @@ class totalDate extends innerController
 
         return self::json([
             'dayStart' => $shiftStart,
-            'jdayStart' => JDate::jdate('Y/m/d H:i:s', $shiftStartTime),
+            'jdayStart' => JDate::jdate('Y-m-d H:i:s', $shiftStartTime),
             'dayStartTime' => $shiftStartTime,
             'dayEnd' => $shiftEnd,
-            'jdayEnd' => JDate::jdate('Y/m/d H:i:s', $shiftEndTime),
+            'jdayEnd' => JDate::jdate('Y-m-d H:i:s', $shiftEndTime),
             'dayEndTime' => $shiftEndTime,
         ]);
     }
@@ -65,9 +65,9 @@ class totalDate extends innerController
         $dateStart = JDate::jmktime(12, 0, 0, $yearMonth[0], 1, $yearMonth[1]);
         $yearMonth = self::correctMonthYear($month+1, $year);
         $dateEnd = JDate::jmktime(12, 0, 0, $yearMonth[0], 0, $yearMonth[1]);
-        $justDateStart = JDate::jdate('Y/m/d',$dateStart);
+        $justDateStart = JDate::jdate('Y-m-d',$dateStart);
         $dateStart = self::Day(0, $dateStart)["result"];
-        $justDateEnd = JDate::jdate('Y/m/d',$dateEnd);
+        $justDateEnd = JDate::jdate('Y-m-d',$dateEnd);
         $dateEnd = self::Day(0, $dateEnd)["result"];
 
         if ($isSet)

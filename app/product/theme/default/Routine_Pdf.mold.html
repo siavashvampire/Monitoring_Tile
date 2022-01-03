@@ -23,45 +23,62 @@
     </tbody>
 </table>
 
-<div style="text-align: center;font-size: 18px;">
+{foreach from=$datasTable key=key1 value=item }
+    <div style="font-size: 18px;"></div>
 
-</div>
+    <br>
 
-<br>
+    <table style="border-collapse: collapse;width: 100%;">
+        <thead>
+            <tr>
+                {foreach from=$headersTable key=key value=headerTable }
+<!--                <th style="border: 1px solid #ddd;padding: 8px;padding-top: 12px;padding-bottom: 12px;text-align: center;background-color: #4CAF50;color: white;">{$headerTable}</th>-->
+                    <th style="padding: 8px;padding-top: 12px;padding-bottom: 12px;color: #4CAF50;text-align: center">{$headerTable}</th>
+                {/foreach}
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.productLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.date}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.shift}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.sizeLabel}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{$item.controllerUser}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "length"} : </td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.length_max}{$item.length_max}{else}---{/if}<br>{_ "min"} : {if $item.length_min}{$item.length_min}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "width"} : </td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.width_max}{$item.width_max}{else}---{/if}<br>{_ "min"} : {if $item.width_min}{$item.width_min}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "thickness"} : </td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.wrap_diameter_max}{$item.thickness_max}{else}---{/if}<br>{_ "min"} : {if $item.thickness_min}{$item.thickness_min}{else}---{/if}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "wrap"} : </td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "diameter"}<br>{_ "max"} : {if $item.wrap_diameter_max}{$item.wrap_diameter_max}{else}---{/if}<br>{_ "min"} : {if $item.wrap_diameter_min}{$item.wrap_diameter_min}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "center"}<br>{_ "max"} : {if $item.wrap_center_max}{$item.wrap_center_max}{else}---{/if}<br>{_ "min"} : {if $item.wrap_center_min}{$item.wrap_center_min}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "edge"}<br>{_ "max"} : {if $item.wrap_edge_max}{$item.wrap_edge_max}{else}---{/if}<br>{_ "min"} : {if $item.wrap_edge_min}{$item.wrap_edge_min}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "oblique"} مورد تایید {if $item.oblique_bool} هست{else} نیست{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "straight"} مورد تایید {if $item.straight_bool} هست{else} نیست{/if}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "mean"} {_ "attraction"} {_ "water"} : </td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{if $item.mean_water_attraction}{$item.mean_water_attraction}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "temperature"} (C)</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {if $item.temperature_max}{$item.temperature_max}{else}---{/if}<br>{_ "min"} : {if $item.temperature_min}{$item.temperature_min}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{_ "resistance"}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{if $item.resistance}{$item.resistance}{else}---{/if}</td>
 
-<table style="border-collapse: collapse;width: 100%;">
-    <thead>
-    <tr>
-        {foreach from=$headersTable key=key value=headerTable }
-        <th style="border: 1px solid #ddd;padding: 8px;padding-top: 12px;padding-bottom: 12px;text-align: left;background-color: #4CAF50;color: white;">{$headerTable}</th>
-        {/foreach}
-    </tr>
-    </thead>
-    <tbody>
-    {foreach from=$datasTable key=key1 value=item }
-        <tr>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.id}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.day}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.month}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.year}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.shift}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.phaseLabel}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.sizeLabel}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.productLabel}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.length_max} <br>{_ "min"} : {$item.length_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.width_max} <br>{_ "min"} : {$item.width_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.thickness_max} <br>{_ "min"} : {$item.thickness_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.resistance}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.oblique}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_diameter_max} <br>{_ "min"} : {$item.wrap_diameter_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_center_max} <br>{_ "min"} : {$item.wrap_center_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.wrap_edge_max} <br>{_ "min"} : {$item.wrap_edge_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.straight}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.mean_water_attraction}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{_ "max"} : {$item.temperature_max} <br>{_ "min"} : {$item.temperature_min}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.cycle}</td>
-            <td style="border: 1px solid #ddd;padding: 8px;">{$item.specific_pressure}</td>
-        </tr>
-    {/foreach}
-    </tbody>
-</table>
+                <td style="border: 1px solid #ddd;padding: 8px;">{if $item.cycle}{$item.cycle}{else}---{/if}</td>
+                <td style="border: 1px solid #ddd;padding: 8px;">{if $item.specific_pressure}{$item.specific_pressure}{else}---{/if}</td>
+            </tr>
+            {if $item.description != Null}
+                <tr>
+                    <td style="border: 1px solid #ddd;padding: 8px;text-align: center" colspan="6">{_ "description"} : {$item.description}</td>
+                </tr>
+            {/if}
+        </tbody>
+    </table>
+
+{/foreach}

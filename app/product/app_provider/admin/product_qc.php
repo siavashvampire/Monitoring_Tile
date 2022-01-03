@@ -10,6 +10,7 @@ use App\user\app_provider\api\checkAccess;
 use App\user\app_provider\api\user;
 use controller;
 use paymentCms\component\JDate;
+use paymentCms\component\model;
 use paymentCms\component\request;
 use paymentCms\component\Response;
 use paymentCms\component\validate;
@@ -168,8 +169,8 @@ class product_qc extends controller
                 }
 
             } else {
+                $model->setQcDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
                 if ($model->insertToDataBase()) {
-                    $model->setQcDate(JDate::jdate('Y-m-d', totalDate::Day()["result"]["dayStartTime"]));
                     $Dis .= $model->getProductLabel() . " ";
                     $Dis = $Dis . rlang('inserted');
 

@@ -161,4 +161,5 @@ return [
     'with' => 'با',
     'changed' => 'تغییر پیدا کرد',
     'inserted' => 'ثبت شد',
+    'inserter' => 'ثبت کننده',
 ];

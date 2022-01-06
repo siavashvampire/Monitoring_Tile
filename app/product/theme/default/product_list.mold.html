@@ -81,6 +81,7 @@
                                     <th style="width: 24%">{_ "name"} {$item_label}</th>
                                     <th style="width: 24%">{_ "phase"}</th>
                                     <th style="width: 24%">{_ "size"}</th>
+                                    <th style="width: 24%">{_ "inserter"}</th>
                                     {if $editAccess == 'true'}
                                         <th style="width: 4%"></th>
                                         <th style="width: 4%"></th>
@@ -99,6 +100,7 @@
                                     <td>{$item.label}</td>
                                     <td>{$item.phaseLabel}</td>
                                     <td>{$item.sizeLabel}</td>
+                                    <td>{$item.creatorName}</td>
                                     {if $editAccess == 'true'}
                                     <td>
                                         <button class="btn btn-link text-info"

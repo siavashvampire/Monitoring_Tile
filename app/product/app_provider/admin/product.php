@@ -61,12 +61,18 @@ class product extends controller
             $variable[] = 'item.size = ? ';
         }
 
+        $group_id = user::getUserLogin()["user_group_id"];
+        if ($group_id != null and $group_id != 1) {
+            $value[] = $group_id;
+            $variable[] = 'creator.user_group_id = ? ';
+        }
+
         $model = parent::model($this->model_name);
-        $numberOfAll = ($model->getCount($value,$variable));
+        $numberOfAll = ($model->getCount($value, $variable));
         $pagination = parent::pagination($numberOfAll, $get['page'], $get['perEachPage']);
         $pagination = [$pagination['start'], $pagination['limit']];
         $sort = ['column' => 'register_date', 'type' => 'DESC'];
-        $search = $model->getItems($value, $variable, $sort, $pagination );
+        $search = $model->getItems($value, $variable, $sort, $pagination);
 
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->list_html_file_path);
@@ -111,74 +117,82 @@ class product extends controller
 
             $rules = [
                 "label" => ["required", rlang('name') . " " . $this->item_label],
-//                "production_design_code" => ["required|match:>0", rlang('code') . " " . rlang('example') . " " . rlang('experiment')],
-//                "exampleCode" => ["required|match:>0", rlang('code') . " " . rlang('design') . " " . rlang('production')],
+                "phase" => ["required", rlang('phase') . " " . $this->item_label],
+                "size" => ["required", rlang('size') . " " . $this->item_label],
+                "template" => ["required", rlang('template') . " " . $this->item_label],
+                "kind" => ["required", rlang('kind') . " " . $this->item_label],
+                "production_design_code" => ["required|match:>=1", rlang('code') . " " . rlang('design') . " " . rlang('production') . " " . $this->item_label],
+                "body" => ["required", rlang('code') . " " . rlang('body') . " " . $this->item_label],
+                "body_weight" => ["required|match:>=0", rlang('weight') . " " . rlang('body') . " " . $this->item_label],
+                "engobe" => ["required", rlang('code') . " " . rlang('engobe') . " " . $this->item_label],
+                "engobe_weight" => ["required|match:>=0", rlang('weight') . " " . rlang('engobe') . " " . $this->item_label],
+                "glaze" => ["required", rlang('code') . " " . rlang('code') . " " . rlang('glaze') . " " . $this->item_label],
+                "glaze_weight" => ["required|match:>=0", rlang('weight') . " " . rlang('glaze') . " " . $this->item_label],
             ];
             $valid = validate::check($get, $rules);
             $GLOBALS['timeStart'] = '';
             if ($valid->isFail()) {
-                Response::jsonMessage($valid->errorsIn(), false);
-                return false;
-            }
-            $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
-            $Dis .= $model->getLabel() . " ";
-
-            $model->setLabel($get['label']);
-            $model->setRegisterDate(date('Y-m-d H:i:s'));
-            $model->setColor($get['color']);
-            $model->setExampleCode($get['exampleCode']);
-            $model->setProductionDesignCode($get['production_design_code']);
-            $model->setPhase($get['phase']);
-            $model->setSize($get['size']);
-            $model->setTemplate($get['template']);
-            $model->setKind($get['kind']);
-            $model->setTechnique($get['technique']);
-            $model->setEffect($get['effect']);
-            $model->setDecor($get['decor']);
-            $model->setBody($get['body']);
-            $model->setBodyWeight($get['body_weight']);
-            $model->setEngobe($get['engobe']);
-            $model->setEngobeWeight($get['engobe_weight']);
-            $model->setGlaze($get['glaze']);
-            $model->setGlazeWeight($get['glaze_weight']);
-            $model->setCylinderBefore($get['cylinder_before']);
-            $model->setCylinderAfter($get['cylinder_after']);
-            $model->setComplementaryPrintingBeforeDigital($get['complementary_printing_before_digital']);
-            $model->setComplementaryPrintingBeforeDigitalWeight($get['complementary_printing_before_digital_weight']);
-            $model->setComplementaryPrintingAfterDigital($get['complementary_printing_after_digital']);
-            $model->setComplementaryPrintingAfterDigitalWeight($get['complementary_printing_after_digital_weight']);
-            $model->setCreator(user::getUserLogin(true));
-
-            if ($id != null) {
-                if ($model->upDateDataBase()) {
-                    $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
-                    $Dis .= $model->getlabel() . " ";
-                    $Dis .= rlang('changed');
-
-                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
-                    app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
-
-                    $this->callHooks('addLog', [$Dis, $this->log_name]);
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
-                } else {
-                    $this->alert('danger', '', rlang('pleaseTryAGain'));
-                }
-
+                $this->alert('danger', '', $valid->errorsIn());
             } else {
-                if ($model->insertToDataBase()) {
-                    $Dis .= $model->getLabel() . " ";
-                    $Dis = $Dis . rlang('inserted');
+                $Dis = $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
+                $Dis .= $model->getLabel() . " ";
 
-                    app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
-                    app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
+                $model->setLabel($get['label']);
+                $model->setRegisterDate(date('Y-m-d H:i:s'));
+                $model->setColor($get['color']);
+                $model->setExampleCode($get['exampleCode']);
+                $model->setProductionDesignCode($get['production_design_code']);
+                $model->setPhase($get['phase']);
+                $model->setSize($get['size']);
+                $model->setTemplate($get['template']);
+                $model->setKind($get['kind']);
+                $model->setTechnique($get['technique']);
+                $model->setEffect($get['effect']);
+                $model->setDecor($get['decor']);
+                $model->setBody($get['body']);
+                $model->setBodyWeight($get['body_weight']);
+                $model->setEngobe($get['engobe']);
+                $model->setEngobeWeight($get['engobe_weight']);
+                $model->setGlaze($get['glaze']);
+                $model->setGlazeWeight($get['glaze_weight']);
+                $model->setCylinderBefore($get['cylinder_before']);
+                $model->setCylinderAfter($get['cylinder_after']);
+                $model->setComplementaryPrintingBeforeDigital($get['complementary_printing_before_digital']);
+                $model->setComplementaryPrintingBeforeDigitalWeight($get['complementary_printing_before_digital_weight']);
+                $model->setComplementaryPrintingAfterDigital($get['complementary_printing_after_digital']);
+                $model->setComplementaryPrintingAfterDigitalWeight($get['complementary_printing_after_digital_weight']);
+                $model->setCreator(user::getUserLogin(true));
 
-                    $this->callHooks('addLog', [$Dis, $this->log_name]);
-                    Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+                if ($id != null) {
+                    if ($model->upDateDataBase()) {
+                        $Dis .= rlang('be') . " " . $this->item_label . " " . rlang('with') . " " . rlang('name') . " ";
+                        $Dis .= $model->getlabel() . " ";
+                        $Dis .= rlang('changed');
+
+                        app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
+                        app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
+
+                        $this->callHooks('addLog', [$Dis, $this->log_name]);
+                        Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+                    } else {
+                        $this->alert('danger', '', rlang('pleaseTryAGain'));
+                    }
+
                 } else {
-                    $this->alert('danger', '', rlang('pleaseTryAGain'));
+                    if ($model->insertToDataBase()) {
+                        $Dis .= $model->getLabel() . " ";
+                        $Dis = $Dis . rlang('inserted');
+
+                        app\product\app_provider\api\product::digitalPrint_color_insert($model->getId(), $get['digitalPrint_color']);
+                        app\product\app_provider\api\product::degree_insert($model->getId(), $get['degree']);
+
+                        $this->callHooks('addLog', [$Dis, $this->log_name]);
+                        Response::redirect(App::getBaseAppLink($this->class_name . '/list/', 'admin'));
+                    } else {
+                        $this->alert('danger', '', rlang('pleaseTryAGain'));
+                    }
                 }
             }
-
         }
         $this->mold->path('default', $this->app_name);
         $this->mold->view($this->html_file_path);

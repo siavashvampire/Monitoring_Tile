@@ -101,7 +101,6 @@ class line_monitoring extends innerController
         return [true];
     }
 
-
     public static function sensorActivity()
     {
         $data = request::post('Sensor_id,time,active,Tile_Kind');
@@ -260,7 +259,7 @@ class line_monitoring extends innerController
                 return self::json('Cant Find Deactive log!');
             }
         } else {
-             if ($logArchive->getSwitchId() != $Switch->getId()) {
+            if ($logArchive->getSwitchId() != $Switch->getId()) {
                 $logArchive->setSwitchId($Switch->getId());
                 $logArchive->setPhase($Switch->getPhase());
                 $logArchive->setUnit($Switch->getUnit());

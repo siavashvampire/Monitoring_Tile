@@ -155,14 +155,14 @@ class electrical extends innerController
         $Substation = parent::model(['ElectricalSubstation', 'Substation'], [$data['substation_id']], 'id = ? ');
 
         if ($Substation->getId() != $data['substation_id']) {
-            return [false, 'شماره یکتا پست یافت نشد!'];
+            return [false, 'substation id wrong'];
         }
 
         /* @var substation_Device $Device */
         $Device = parent::model(['ElectricalSubstation', 'substation_Device'], [$data['unitId']], 'unitId = ? ');
 
         if ($Device->getUnitId() != $data['unitId']) {
-            return [false, 'شماره یکتا دستگاه یافت نشد!'];
+            return [false, 'unit id is wrong'];
         }
 
         $Time = $data['Start_time'];

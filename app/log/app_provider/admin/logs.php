@@ -51,12 +51,12 @@ class logs extends controller {
         }
         if ( $get['content'] != null ) {
             $value[] = $get['content'];
-            $variable[] = ' log_name = ? ' ;
+            $variable[] = ' log.log_name = ? ' ;
         }
         else{
             if ( $get['viewPage'] != 'active'){
                 $value[] = 'view_webSite_page';
-                $variable[] = 'log_name != ? ';
+                $variable[] = 'log.log_name != ? ';
             }
         }
         if ( $get['userId'] != null ) {
@@ -65,27 +65,27 @@ class logs extends controller {
         }
         if ( $get['ip'] != null ) {
             $value[] = $get['ip'] ;
-            $variable[] = ' ip = ? ';
+            $variable[] = ' log.ip = ? ';
         }
         if ( $get['StartTime'] != null and $get['EndTime'] == null) {
             $value[] = date('Y-m-d H:i:s' , $get['StartTime'] / 1000 ) ;
-            $variable[] = ' activity_time > ? ';
+            $variable[] = ' log.activity_time > ? ';
         } elseif ( $get['StartTime'] == null and $get['EndTime'] != null) {
             $value[] = date('Y-m-d H:i:s' , $get['EndTime'] / 1000 ) ;
-            $variable[] = ' activity_time < ? ';
+            $variable[] = ' log.activity_time < ? ';
         } elseif ( $get['StartTime'] != null and $get['EndTime'] != null)  {
             $value[] = date('Y-m-d H:i:s' , $get['StartTime'] / 1000 ) ;
             $value[] = date('Y-m-d H:i:s' , $get['EndTime'] / 1000 ) ;
-            $variable[] = ' (activity_time BETWEEN ? AND ?) ';
+            $variable[] = ' (log.activity_time BETWEEN ? AND ?) ';
         }
         $logField = $this->callHooks('logField');
         $this->mold->set('logField' , $logField);
         $model = parent::model('log');
-		$numberOfAll = ($model->search( (array) $value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'log log', 'COUNT(logId) as co' )) [0]['co'];
+		$numberOfAll = ($model->search($value  , ( count($variable) == 0 ) ? null : implode(' and ' , $variable) , 'log log', 'COUNT(log.logId) as co' )) [0]['co'];
 		$pagination = parent::pagination($numberOfAll,$get['page'],$get['perEachPage']);
         model::join('user user', 'user.userId = log.userId');
-		$search = $model->search( (array) $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'log log', '*'  , ['column' => 'logId' , 'type' =>'desc'] , [$pagination['start'] , $pagination['limit'] ] );
-        $this->mold->path('default', 'log');
+		$search = $model->search( $value  , ( ( count($variable) == 0 ) ? null : implode(' and ' , $variable) )  , 'log log', '*'  , ['column' => 'log.logId' , 'type' =>'desc'] , [$pagination['start'] , $pagination['limit'] ] );
+		$this->mold->path('default', 'log');
 		$this->mold->view('logList.mold.html');
 		$this->mold->setPageTitle(rlang('logs'));
 		$this->mold->set('activeMenu' , 'logs');

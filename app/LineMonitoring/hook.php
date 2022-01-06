@@ -176,7 +176,7 @@ class hook extends pluginController
             $this->mold->view('sensorReason.admin.hook.mold.html');
             $this->mold->path($getPath['folder'], $getPath['app']);
         }
-            }
+    }
 
     public function _should_update()
     {
@@ -205,7 +205,12 @@ class hook extends pluginController
 
     public function _logField(): array
     {
-        return [["value" => "off_sensor_reasons" , "label" => "تغییرات علت توقفات"],["value" => "updateReason" , "label" => "تغییرات علت توقفات خط"],["value" => "Sensor" , "label" => "تغییرات سنسورها"],["value" => "Switch" , "label" => "تغییرات کلیدها"],["value" => "phase" , "label" => "تغییرات فاز ها"],["value" => "Tile" , "label" => "تغییرات کاشی ها"]];
+        return [["value" => "off_sensor_reasons", "label" => "تغییرات علت توقفات"],
+            ["value" => "updateReason", "label" => "تغییرات علت توقفات خط"],
+            ["value" => "Sensor", "label" => "تغییرات سنسورها"],
+            ["value" => "Switch", "label" => "تغییرات کلیدها"],
+            ["value" => "phase", "label" => "تغییرات فاز ها"],
+            ["value" => "Tile", "label" => "تغییرات کاشی ها"]];
     }
 
 }

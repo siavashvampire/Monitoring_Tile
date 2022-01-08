@@ -63,7 +63,7 @@ class product extends controller
         }
 
         $group_id = user::getUserLogin()["user_group_id"];
-        if ($group_id != null and $group_id != 1 and $get['label'] != null) {
+        if ($group_id != null and $group_id != 1 and $get['label'] == null) {
             $value[] = $group_id;
             $variable[] = 'creator.user_group_id = ? ';
         }

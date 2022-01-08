@@ -41,6 +41,7 @@ class product extends controller
             "page" => ["required|match:>0", rlang('page')],
             "perEachPage" => ["required|match:>0|match:<501", rlang('page')],
         ];
+
         $valid = validate::check($get, $rules);
         $value = array();
         $variable = array();
@@ -62,7 +63,7 @@ class product extends controller
         }
 
         $group_id = user::getUserLogin()["user_group_id"];
-        if ($group_id != null and $group_id != 1) {
+        if ($group_id != null and $group_id != 1 and $get['label'] != null) {
             $value[] = $group_id;
             $variable[] = 'creator.user_group_id = ? ';
         }

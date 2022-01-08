@@ -121,7 +121,7 @@ class product extends controller
                 "size" => ["required", rlang('size') . " " . $this->item_label],
                 "template" => ["required", rlang('template') . " " . $this->item_label],
                 "kind" => ["required", rlang('kind') . " " . $this->item_label],
-                "production_design_code" => ["required|match:>=1", rlang('code') . " " . rlang('design') . " " . rlang('production') . " " . $this->item_label],
+//                "production_design_code" => ["required|match:>=1", rlang('code') . " " . rlang('design') . " " . rlang('production') . " " . $this->item_label],
                 "body" => ["required", rlang('code') . " " . rlang('body') . " " . $this->item_label],
                 "body_weight" => ["required|match:>=0", rlang('weight') . " " . rlang('body') . " " . $this->item_label],
                 "engobe" => ["required", rlang('code') . " " . rlang('engobe') . " " . $this->item_label],

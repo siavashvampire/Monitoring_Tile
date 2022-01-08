@@ -14,7 +14,7 @@
                             <label for="label" class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="text" class="form-control " required  id="label" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getLabel()}{/if}">
+                                    <input type="text" class="form-control " autocomplete="off" required  id="label" name="label" value="{if isset($Mold.post.label)}{$Mold.post.label}{elseif isset($model)}{$model->getLabel()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -152,10 +152,10 @@
                         </div>
 
                         <div class="col-md-4 form-group">
-                            <label for="production_design_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "design"} {_ "production"}:<span class="text-danger">*</span></label>
+                            <label for="production_design_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "design"} {_ "production"}: </label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="1" class="form-control" required id="production_design_code" name="production_design_code" value="{if isset($Mold.post.production_design_code)}{$Mold.post.production_design_code}{elseif isset($model)}{$model->getProductionDesignCode()}{/if}">
+                                    <input type="number" min="1" class="form-control" autocomplete="off" id="production_design_code" name="production_design_code" value="{if isset($Mold.post.production_design_code)}{$Mold.post.production_design_code}{elseif isset($model)}{$model->getProductionDesignCode()}{/if}">
                                 </div>
                             </div>
                         </div>
@@ -179,7 +179,7 @@
                             <label for="body_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0" step="0.01" class="form-control" required id="body_weight" name="body_weight" value="{if isset($Mold.post.body_weight)}{$Mold.post.body_weight}{elseif isset($model)}{$model->getBodyWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" min="0" step="0.01" class="form-control" autocomplete="off" required id="body_weight" name="body_weight" value="{if isset($Mold.post.body_weight)}{$Mold.post.body_weight}{elseif isset($model)}{$model->getBodyWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -203,7 +203,7 @@
                             <label for="engobe_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0" step="0.01" class="form-control" required id="engobe_weight" name="engobe_weight" value="{if isset($Mold.post.engobe_weight)}{$Mold.post.engobe_weight}{elseif isset($model)}{$model->getEngobeWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" min="0" step="0.01" class="form-control" autocomplete="off" required id="engobe_weight" name="engobe_weight" value="{if isset($Mold.post.engobe_weight)}{$Mold.post.engobe_weight}{elseif isset($model)}{$model->getEngobeWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -227,7 +227,7 @@
                             <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:<span class="text-danger">*</span></label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0" step="0.01" class="form-control" required id="glaze_weight" name="glaze_weight" value="{if isset($Mold.post.glaze_weight)}{$Mold.post.glaze_weight}{elseif isset($model)}{$model->getGlazeWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" min="0" step="0.01" class="form-control" autocomplete="off" required id="glaze_weight" name="glaze_weight" value="{if isset($Mold.post.glaze_weight)}{$Mold.post.glaze_weight}{elseif isset($model)}{$model->getGlazeWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -250,7 +250,7 @@
                             <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" step="0.01" min="0" class="form-control" id="complementary_printing_before_digital_weight" name="complementary_printing_before_digital_weight" value="{if isset($Mold.post.complementary_printing_before_digital_weight)}{$Mold.post.complementary_printing_before_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingBeforeDigitalWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" step="0.01" min="0" class="form-control" autocomplete="off" id="complementary_printing_before_digital_weight" name="complementary_printing_before_digital_weight" value="{if isset($Mold.post.complementary_printing_before_digital_weight)}{$Mold.post.complementary_printing_before_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingBeforeDigitalWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -285,7 +285,7 @@
                             <label for="glaze_weight" class="col-form-label col-md-3 float-right">{_ "weight"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" step="0.01" min="0" class="form-control" id="complementary_printing_after_digital_weight" name="complementary_printing_after_digital_weight" value="{if isset($Mold.post.complementary_printing_after_digital_weight)}{$Mold.post.complementary_printing_after_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingAfterDigitalWeight()}{else}0{/if}" style="text-align: center">
+                                    <input type="number" step="0.01" min="0" class="form-control" autocomplete="off" id="complementary_printing_after_digital_weight" name="complementary_printing_after_digital_weight" value="{if isset($Mold.post.complementary_printing_after_digital_weight)}{$Mold.post.complementary_printing_after_digital_weight}{elseif isset($model)}{$model->getComplementaryPrintingAfterDigitalWeight()}{else}0{/if}" style="text-align: center">
                                 </div>
                             </div>
                         </div>
@@ -325,7 +325,7 @@
                                             </label>
                                         </td>
                                         <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
-                                            <input type="number" min="0" step=".0001" class="form-control" required id="digitalPrint_color_{$key}" name="digitalPrint_color[]" value="{$item.value}" style="text-align: center">
+                                            <input type="number" min="0" step=".0001" class="form-control" autocomplete="off" required id="digitalPrint_color_{$key}" name="digitalPrint_color[]" value="{$item.value}" style="text-align: center">
                                         </td>
                                     </tr>
                                     {/foreach}
@@ -357,7 +357,7 @@
                                             </label>
                                         </td>
                                         <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
-                                            <input type="number" min="0" step=".01" class="form-control" required id="degree_{$key}" name="degree[]" value="{$item.value}" style="text-align: center">
+                                            <input type="number" min="0" step=".01" class="form-control" autocomplete="off" required id="degree_{$key}" name="degree[]" value="{$item.value}" style="text-align: center">
                                         </td>
                                     </tr>
                                     {/foreach}

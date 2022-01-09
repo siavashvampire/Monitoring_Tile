@@ -3,6 +3,7 @@
 namespace App\ElectricalSubstation\app_provider\admin;
 
 use App\core\controller\httpErrorHandler;
+use App\ElectricalSubstation\app_provider\api\device;
 use App\ElectricalSubstation\model\substation_Device;
 use App\ElectricalSubstation\model\substation_deviceType;
 use App\user\app_provider\api\checkAccess;
@@ -30,8 +31,7 @@ class Substation extends controller
                 return false;
             }
             /** @var substation_Device $model_device */
-            $model_device = parent::model('substation_Device');
-            $this->mold->set('devices', $model_device->getItems($id));
+            $model_device = parent::model('substation_Device',[$id],'substation_id = ?');
         } else
             $model = parent::model('Substation');
 

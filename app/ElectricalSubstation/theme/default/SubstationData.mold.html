@@ -1,5 +1,4 @@
-﻿<script src="assets/devices.js"></script>
-<div class="content">
+﻿<div class="content">
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12">
@@ -21,53 +20,303 @@
                         <h4 class="card-title float-{$float} m-3">{_ "Substation"} {$model->getlabel()}</h4>
                     </div>
                     <div class="card-body" id="classDiv">
+<!--                                                <div class="col-md-6 parent" id="Schneider_PM2100_1" >-->
+<!--                                                    <div class="col-md-3">-->
+<!--                                                        <i class="fa fa-caret-right labelTemp label1  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,170%);position: absolute; font-size:   30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label2  section8 section3 section4 section5 section6"-->
+<!--                                                           aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,250%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label3 section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,325%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label4 section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,405%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label1  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,485%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label2  section8 section3 section4 section5 section6"-->
+<!--                                                           aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,560%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label3  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,640%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label3  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,720%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label1  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,800%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label2 section8 section3 section4 section5 section6"-->
+<!--                                                           aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,880%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label3  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,960%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label4  section8" aria-hidden="true"-->
+<!--                                                           style="transform: translate(250%,1050%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label3 label6  section2" aria-hidden="true"-->
+<!--                                                           style="transform: translate(-650%,1110%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label2 label5  section2" aria-hidden="true"-->
+<!--                                                           style="transform: translate(-1280%,1110%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-right labelTemp label1 label4  section2" aria-hidden="true"-->
+<!--                                                           style="transform: translate(-1900%,1110%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-6" style="transform: translate(0%,0%);">-->
+<!--                                                        <div class="load" style="transform: translate(-40%,100%);">-->
+<!--                                                            <div class="gear one">-->
+<!--                                                                <svg id="blue" viewbox="0 0 100 100" fill="#94DDFF">-->
+<!--                                                                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6              c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3              l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9              c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>-->
+<!--                                                                </svg>-->
+<!--                                                            </div>-->
+<!--                                                            <div class="gear two">-->
+<!--                                                                <svg id="pink" viewbox="0 0 100 100" fill="#FB8BB9">-->
+<!--                                                                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6              c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3              l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9              c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>-->
+<!--                                                                </svg>-->
+<!--                                                            </div>-->
+<!--                                                            <div class="gear three">-->
+<!--                                                                <svg id="yellow" viewbox="0 0 100 100" fill="#FFCD5C">-->
+<!--                                                                    <path d="M97.6,55.7V44.3l-13.6-2.9c-0.8-3.3-2.1-6.4-3.9-9.3l7.6-11.7l-8-8L67.9,20c-2.9-1.7-6-3.1-9.3-3.9L55.7,2.4H44.3l-2.9,13.6              c-3.3,0.8-6.4,2.1-9.3,3.9l-11.7-7.6l-8,8L20,32.1c-1.7,2.9-3.1,6-3.9,9.3L2.4,44.3v11.4l13.6,2.9c0.8,3.3,2.1,6.4,3.9,9.3              l-7.6,11.7l8,8L32.1,80c2.9,1.7,6,3.1,9.3,3.9l2.9,13.6h11.4l2.9-13.6c3.3-0.8,6.4-2.1,9.3-3.9l11.7,7.6l8-8L80,67.9              c1.7-2.9,3.1-6,3.9-9.3L97.6,55.7z M50,65.6c-8.7,0-15.6-7-15.6-15.6s7-15.6,15.6-15.6s15.6,7,15.6,15.6S58.7,65.6,50,65.6z"></path>-->
+<!--                                                                </svg>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row" style="height: 125px">-->
+<!--                                                            <div class="col-md-12 text-center">-->
+<!--                                                                <label class="col-form-label text-center showLabel1"-->
+<!--                                                                       style="transform: translate(5%,20%); font-size: 72px; color : #ff0000;"></label>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row" style="height: 125px">-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                            <div class="col-md-6 text-center">-->
+
+<!--                                                                <label class="col-form-label text-center showLabel2"-->
+<!--                                                                       style="transform: translate(30%,-5%); font-size: 72px; color : #ff0000;"></label>-->
+
+<!--                                                            </div>-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row" style="height: 125px">-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                            <div class="col-md-6 text-center">-->
+
+<!--                                                                <label class="col-form-label text-center showLabel3"-->
+<!--                                                                       style="transform: translate(30%,-30%); font-size: 72px; color : #ff0000;"></label>-->
+
+<!--                                                            </div>-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row">-->
+<!--                                                            <div style="width: 430px; margin: auto;height: 50px;">-->
+<!--                                                                <button type="button"-->
+<!--                                                                        style="color: transparent!important;padding: 10px!important;transform: translate(250%,-45%)"-->
+<!--                                                                        class="btn btn-link text-info" id="OkBut"><i-->
+<!--                                                                        style="width: 10px;"-->
+<!--                                                                        onclick="device_class[0].changeSection()"-->
+<!--                                                                        class="fa fa-eye-slash"></i></button>-->
+<!--                                                                <button type="button"-->
+<!--                                                                        style="color: transparent!important;padding: 10px!important;transform: translate(180%,-45%)"-->
+<!--                                                                        class="btn btn-link text-info" id="UPButt"><i-->
+<!--                                                                        style="width: 10px;"-->
+<!--                                                                        onclick="device_class[0].changeIndex(-1)"-->
+<!--                                                                        class="fa fa-eye-slash"></i></button>-->
+<!--                                                                <button type="button"-->
+<!--                                                                        style="color: transparent!important;padding: 10px!important;transform: translate(80%,-45%)"-->
+<!--                                                                        class="btn btn-link text-info" id="DownBut"><i-->
+<!--                                                                        style="width: 10px;"-->
+<!--                                                                        onclick="device_class[0].changeIndex(1)"-->
+<!--                                                                        class="fa fa-eye-slash"></i></button>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-3">-->
+<!--                                                        <i class="fa fa-caret-left labelTemp label1 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,180%);position: absolute; font-size: 30px; color : #ff0000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label2 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,270%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label3 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,350%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label4  section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,430%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label5 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,510%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label6 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,590%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label7 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,670%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label8 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,750%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label9 section1" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,830%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label2 section3" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,930%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label2 section4" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,1010%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label2 section5" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,1090%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label2 section6" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,1165%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                        <i class="fa fa-caret-left labelTemp label1 section7" aria-hidden="true"-->
+<!--                                                           style="transform: translate(470%,1250%);position: absolute; font-size: 30px; color : #000000;"></i>-->
+
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-12 text-center" style="transform: translate(0%,-20%);">-->
+<!--                                                        <label class="col-form-label text-center TimeLabel"-->
+<!--                                                               style=" font-size: 20px; color : #0000ff;"></label>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-12 text-center" style="transform: translate(0%,-20%);">-->
+<!--                                                        <label class="col-form-label text-center updateTimeLabel"-->
+<!--                                                               style=" font-size: 20px; color : #0000ff;"></label>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div class="col-md-6 parent" id="Schneider_PM2200_2" >-->
+<!--                                                    <div class="col-md-3"></div>-->
+<!--                                                    <div class="col-md-6" style="transform: translate(0%,0%);">-->
+<!--                                                        <div class="row" style="height: 125px">-->
+<!--                                                            <div class="col-md-12 text-center">-->
+<!--                                                                <label class="col-form-label text-center showLabel1"-->
+<!--                                                                       style="transform: translate(5%,120%); font-size: 36px; color : #2a2f35;"></label>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row" style="height: 125px">-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                            <div class="col-md-6 text-center">-->
+
+<!--                                                                <label class="col-form-label text-center showLabel2"-->
+<!--                                                                       style="transform: translate(30%,60%); font-size: 36px; color : #2a2f35;"></label>-->
+<!--                                                            </div>-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row" style="height: 125px">-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                            <div class="col-md-6 text-center">-->
+
+<!--                                                                <label class="col-form-label text-center showLabel3"-->
+<!--                                                                       style="transform: translate(30%,-10%); font-size: 36px; color : #2a2f35;"></label>-->
+
+<!--                                                            </div>-->
+<!--                                                            <div class="col-md-3 "></div>-->
+<!--                                                        </div>-->
+<!--                                                        <div class="row">-->
+<!--                                                            <div style="width: 430px; margin: auto;height: 50px;">-->
+<!--                                                                <button type="button"-->
+<!--                                                                        style="color: transparent!important;padding: 10px!important;transform: translate(250%,-45%)"-->
+<!--                                                                        class="btn btn-link text-info" id="OkBut"><i-->
+<!--                                                                        style="width: 10px;"-->
+<!--                                                                        onclick="device_class[1].changeSection()"-->
+<!--                                                                        class="fa fa-eye-slash"></i></button>-->
+<!--                                                                <button type="button"-->
+<!--                                                                        style="color: transparent!important;padding: 10px!important;transform: translate(180%,-45%)"-->
+<!--                                                                        class="btn btn-link text-info" id="UPButt"><i-->
+<!--                                                                        style="width: 10px;"-->
+<!--                                                                        onclick="device_class[1].changeIndex(-1)"-->
+<!--                                                                        class="fa fa-eye-slash"></i></button>-->
+<!--                                                                <button type="button"-->
+<!--                                                                        style="color: transparent!important;padding: 10px!important;transform: translate(80%,-45%)"-->
+<!--                                                                        class="btn btn-link text-info" id="DownBut"><i-->
+<!--                                                                        style="width: 10px;"-->
+<!--                                                                        onclick="device_class[1].changeIndex(1)"-->
+<!--                                                                        class="fa fa-eye-slash"></i></button>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-12 text-center" style="transform: translate(0%,-20%);">-->
+<!--                                                        <label class="col-form-label text-center TimeLabel"-->
+<!--                                                               style=" font-size: 20px; color : #0000ff;"></label>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-12 text-center" style="transform: translate(0%,-20%);">-->
+<!--                                                        <label class="col-form-label text-center updateTimeLabel"-->
+<!--                                                               style=" font-size: 20px; color : #0000ff;"></label>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 {map footerjs}
 <script src="{url theme}assets/devices.js"></script>
+<link rel="stylesheet" href="{url theme}assets/loading.css">
 
 <script>
     let urlApi = '{url api}' ;
-    let themeUrl = '<?php echo \app::getCurrentBaseLink('theme/default/') ;  ?>';
+    let themeUrl = "<?php echo \app::getCurrentBaseLink('theme/default/') ;  ?>";
     let substation_id = '{$model->getId()}'
     device_class = [];
     let classDiv = $('#classDiv');
+    let devices ;
     let x = 0;
-    let temp = '';
 
-    {foreach from=$devices key=key and value=device}
-        if (x == 0 )
-            temp += '<div class="row">'
-
-        temp += getHtml({$device.deviceType},{$key})
-        if (x != 0 )
-            temp += '</div><br>'
-        x += 1
-        if (x == 2 )
-            x = 0
-
-    {/foreach}
-    if (x != 0 )
-        temp +='</div>'
-
-    classDiv.append(temp)
-    {foreach from=$devices key=key and value=device}
-        device_class[{$key}] = type_chooser({$device.deviceType},{$key}, substation_id, {$device.unitId}, themeUrl,urlApi)
-    {/foreach}
-
-    function search2() {
+    function updateDevice() {
         for (let i = 0; i < device_class.length; i++)
             device_class[i].setData();
-
-        return false ;
     }
-    window.setInterval(function(){search2()},10000);
+    function setDevice(){
+        let temp = '';
+        for (let index in devices) {
+            if (x === 0 )
+                temp += '<div class="row">';
+            temp += getHtml(devices[index].deviceType,index);
 
+            if (x !== 0 )
+                temp += '</div><br>';
+
+            x += 1;
+            if (x === 2 )
+                x = 0;
+        }
+        if (x !== 0 )
+            temp +='</div>';
+
+        classDiv.append(temp);
+
+        for (let index in devices) {
+            device_class[index] = type_chooser(devices[index].deviceType,index, substation_id, devices[index].unitId, themeUrl,urlApi)
+        }
+    }
+    function getDevice(substationId){
+        $.ajax({
+            url: urlApi+'device',
+            type: 'post',
+            dataType: 'json',
+            data:{
+                'substation_id': substationId ,
+            },
+            success: function (result) {
+                devices = result;
+                setDevice();
+            },
+            error: function (jqXHR, exception) {
+            },
+        });
+    }
+    window.setInterval(function(){updateDevice()},10000);
+    getDevice();
+    // device_class[0] = type_chooser(1,1, substation_id, 1, themeUrl,urlApi)
+    // device_class[1] = type_chooser(2,2, substation_id, 2, themeUrl,urlApi)
 </script>
 {/map}
 {map navBarButton}

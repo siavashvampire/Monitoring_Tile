@@ -1760,7 +1760,7 @@ class elecsub_data extends model implements modelInterFace
         $data = array();
         for ($i = 0; $i < count($field); $i++) {
             if ($field[$i] != null) {
-                $fieldTemp = 'ROUND( ' . $field[$i] . ' , 1 ) as ' . $field[$i];
+                $fieldTemp =  $field[$i];
                 $data[] = parent::search((array)$value, ((count($variable) == 0) ? null : implode(' and ', $variable)), 'elecsub_data', $fieldTemp)[0][$field[$i]];
             } else
                 $data[] = "";

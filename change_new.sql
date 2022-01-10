@@ -1,1 +1,0 @@
-INSERT IGNORE INTO `per_substation_devicetype` (`id`, `label`) VALUES (2, 'Schneider_PM2200');

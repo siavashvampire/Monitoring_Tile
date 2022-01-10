@@ -579,7 +579,7 @@ function getHtml(deviceType, index) {
 
 function Schneider_PM2100_HTML() {
     return (
-        `<div class="parent" id="Schneider_PM2100_%index" > 
+        `<div class="parent" id="Schneider_PM2100_%index" style="margin: auto"> 
             <div class="row" style="position: relative;width: 420px;height: 425px;margin: auto!important;">
                 <div style="position: relative;width: 80px;height: 425px;"> 
                     <i class="fa fa-caret-right labelTemp label1  section8" aria-hidden="true" 
@@ -737,7 +737,7 @@ function Schneider_PM2100_HTML() {
 
 function Schneider_PM2200_HTML() {
     return (
-        `<div class="parent" id="Schneider_PM2200_%index" > 
+        `<div class="parent" id="Schneider_PM2200_%index" style="margin: auto"> 
             <div class="row" style="position: relative;width: 420px;height: 425px;margin: auto!important;">
                 <div style="position: relative;width: 80px;height: 425px;"> 
                 </div> 

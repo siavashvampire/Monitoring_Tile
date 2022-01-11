@@ -54,7 +54,7 @@ class line_monitoring extends innerController
         /* @var sensors $sensor */
         $sensor = parent::model(['LineMonitoring', 'sensors'], [$data['Sensor_id']], 'id = ? ');
         if ($sensor->getId() != $data['Sensor_id']) {
-            return [false, 'شماره یکتا سنسور یافت نشد!'];
+            return [false, 'sensor code not found'];
         }
 
         $Time = $data['start_time'];

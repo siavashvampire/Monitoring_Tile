@@ -382,8 +382,6 @@ class Schneider_PM2200 extends Schneider_PM21xx {
                 label2.innerHTML = result[1];
                 label3.innerHTML = result[2];
                 label4.innerHTML = result[2];
-                // TimeLabel.innerHTML       = 'last data time :' + result[3];
-                // updateTimeLabel.innerHTML = 'update time :' + result[4];
                 loadDiv.style.display = "none"
             }
         });
@@ -646,11 +644,11 @@ function Schneider_PM2100_HTML() {
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;"> 
                             <label class="text-center showLabel2" 
-                                   style="font-size: 54px; color : #ff0000;margin: auto!important;"></label>
+                                   style="font-size: 64px; color : #ff0000;margin: auto!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;">
                             <label class="text-center showLabel3" 
-                                   style="font-size: 54px; color : #ff0000;margin: auto!important;"></label>
+                                   style="font-size: 64px; color : #ff0000;margin: auto!important;"></label>
                         </div> 
                     </div> 
                     <div class="row" style="position:relative;top: 52px;"> 

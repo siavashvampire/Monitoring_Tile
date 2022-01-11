@@ -25,7 +25,6 @@ class cronjob extends innerController
         $_SERVER['JsonOff'] = true;
         $shiftData = shift::index();
 
-
         /** @var sensor_active_log_archive $SSlogArch */
         $SSlogArch = parent::model(['LineMonitoring', 'sensor_active_log_archive']);
 

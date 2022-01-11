@@ -642,15 +642,15 @@ function Schneider_PM2100_HTML() {
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;"> 
                             <label class="text-center showLabel1" 
-                                   style="font-size: 72px; color : #ff0000;margin: auto!important;"></label> 
+                                   style="font-size: 64px; color : #ff0000;margin: auto!important;"></label> 
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;"> 
                             <label class="text-center showLabel2" 
-                                   style="font-size: 72px; color : #ff0000;margin: auto!important;"></label>
+                                   style="font-size: 54px; color : #ff0000;margin: auto!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;">
                             <label class="text-center showLabel3" 
-                                   style="font-size: 72px; color : #ff0000;margin: auto!important;"></label>
+                                   style="font-size: 54px; color : #ff0000;margin: auto!important;"></label>
                         </div> 
                     </div> 
                     <div class="row" style="position:relative;top: 52px;"> 

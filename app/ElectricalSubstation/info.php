@@ -135,7 +135,7 @@ return [
                 'Apparent_Energy_Delivered_Permanent' => "INT(11) NULL DEFAULT NULL",
                 'Apparent_Energy_Received_Permanent' => "INT(11) NULL DEFAULT NULL",
                 'Apparent_Energy_Delivered_Pos_Received_Permanent' => "INT(11) NULL DEFAULT NULL",
-                'Apparent_Energy_Delivered_Neg_Received_Permanent' => "FLOAT NULL DEFAULT NULL",
+                'Apparent_Energy_Delivered_Neg_Received_Permanent' => "INT(11) NULL DEFAULT NULL",
                 'Active_Energy_Delivered_Phase_A' => "INT(11) NULL DEFAULT NULL",
                 'Active_Energy_Delivered_Phase_B' => "INT(11) NULL DEFAULT NULL",
                 'Active_Energy_Delivered_Phase_C' => "INT(11) NULL DEFAULT NULL",

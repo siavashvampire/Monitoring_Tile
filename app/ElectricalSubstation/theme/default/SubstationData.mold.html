@@ -65,6 +65,7 @@
         for (let index in devices) {
             device_class[index] = type_chooser(devices[index].deviceType,index, substation_id, devices[index].unitId,devices[index].Name, themeUrl,urlApi)
         }
+        // console.log(JSON.stringify(device_class[1].menu));
     }
     function getDevice(substationId){
         $.ajax({
@@ -77,6 +78,7 @@
             success: function (result) {
                 devices = result;
                 setDevice();
+
             },
             error: function (jqXHR, exception) {
             },

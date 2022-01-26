@@ -1,4 +1,9 @@
-caret_size = 30
+const caret_size = 30
+const showField = 0
+const goToChild = 1
+const goToParentChild = 2
+const goUp = 3
+const goRight = 4
 
 class Schneider_PM21xx {
     constructor(id, substation_id, unit_id, type_Id, unit_name, image_name, parent_id, themeUrl, apiUrl) {
@@ -14,7 +19,8 @@ class Schneider_PM21xx {
         this.parent.style.backgroundPosition = "center";
         this.parent.style.width = "420px";
         this.parent.style.height = "425px";
-        this.apiUrl = apiUrl;
+
+        this.apiUrl = apiUrl + "device/data";
         this.tableName = "elecsub_data";
         this.loadDiv = this.parent.getElementsByClassName('load')[0];
         this.label1 = this.parent.getElementsByClassName('showLabel1')[0];
@@ -22,57 +28,53 @@ class Schneider_PM21xx {
         this.label3 = this.parent.getElementsByClassName('showLabel3')[0];
         this.TimeLabel = this.parent.getElementsByClassName('TimeLabel')[0];
         this.updateTimeLabel = this.parent.getElementsByClassName('updateTimeLabel')[0];
-        this.pageIndex = [1, 1, 2, 2, 2, 2, 1, 1];
-        this.minPageIndex = [1, 1, 2, 2, 2, 2, 1, 1];
-        this.maxPageIndex = [9, 6, 2, 2, 2, 2, 1, 3];
-        this.sectionIndex = 1;
-        this.minSectionIndex = 1;
-        this.maxSectionIndex = 8;
         this.html = "";
+        this.menu = new Menu();
         this.setHtml(id);
     }
 
-    getPageIndex() {
-        return this.pageIndex[this.sectionIndex - 1]
-    }
-
-    getMaxPageIndex() {
-        return this.maxPageIndex[this.sectionIndex - 1]
-    }
-
-    getMinPageIndex() {
-        return this.minPageIndex[this.sectionIndex - 1]
-
-    }
-
-    setPageIndex(pageIndex) {
-        this.pageIndex[this.sectionIndex - 1] = pageIndex;
-    }
-
-    changeIndex(indexChange = 0) {
-        let pageI = this.getPageIndex() + indexChange;
-        let pageMax = this.getMaxPageIndex();
-        let pageMin = this.getMinPageIndex();
-        if (pageI === pageMax + 1)
-            pageI = pageMin;
-        if (pageI === pageMin - 1)
-            pageI = pageMax;
-        this.setPageIndex(pageI);
+    changeChild(change = 1) {
+        this.menu.nextChild(0, change);
 
         this.setData();
     }
 
-    changeSection(sectionChange = 1) {
-        let sectionI = this.sectionIndex + sectionChange;
-        if (sectionI === this.maxSectionIndex + 1)
-            sectionI = this.minSectionIndex;
-        if (sectionI === this.minSectionIndex - 1)
-            sectionI = this.maxSectionIndex;
-        this.sectionIndex = sectionI;
+    childChildByNumber(number = 0) {
+        this.menu.childChildByNumber(number);
+        this.setData();
+    }
+
+    changeParent(change = 1) {
+        this.menu.nextChild(1, change);
+
         this.setData();
     }
 
     setData() {
+    }
+
+    getField() {
+        return this.menu.activeChild.field;
+    }
+
+    getAction() {
+        return this.menu.activeChild.action;
+    }
+
+    getDownField() {
+        return this.menu.activeChild.downfield;
+    }
+
+    getUnitField() {
+        return this.menu.activeChild.unit;
+    }
+
+    getDescriptionField() {
+        return this.menu.activeChild.description;
+    }
+
+    getHeaderField() {
+        return this.menu.activeChild.header;
     }
 
     setHtml() {
@@ -103,35 +105,16 @@ class Schneider_PM21xx {
 class Schneider_PM2100 extends Schneider_PM21xx {
     constructor(id, substation_id, unit_id, unit_name, themeUrl, apiUrl, offColor = "#000000", onColor = "#FF0000") {
         super(id, substation_id, unit_id, 1, unit_name, "Schneider_PM2100", "Schneider_PM2100", themeUrl, apiUrl);
-        this.apiUrl = apiUrl + "device/data";
+
         this.type = "Schneider_PM2100";
         this.type_Id = 1;
 
-        this.pageIndex = [1, 1, 2, 2, 2, 2, 1, 1];
-        this.minPageIndex = [1, 1, 2, 2, 2, 2, 1, 1];
-        this.maxPageIndex = [9, 6, 2, 2, 2, 2, 1, 3];
-        this.sectionIndex = 1;
-        this.minSectionIndex = 1;
-        this.maxSectionIndex = 8;
         this.offColor = offColor;
         this.onColor = onColor;
+
+        this.createMenu();
+
         this.setData();
-    }
-
-    changeIndex(indexChange = 0) {
-        if (indexChange !== 0)
-            this.changeColor();
-
-        super.changeIndex(indexChange)
-
-        if (indexChange !== 0)
-            this.changeColor(1);
-    }
-
-    changeSection(sectionChange = 1) {
-        this.changeColor();
-        super.changeSection(sectionChange)
-        this.changeColor(1);
     }
 
     changeColor(state = 0) {
@@ -141,7 +124,9 @@ class Schneider_PM2100 extends Schneider_PM21xx {
                 label[i].style.color = this.offColor;
         }
         if (state === 1) {
-            let label = this.parent.getElementsByClassName('label' + this.getPageIndex() + ' section' + this.sectionIndex)
+            let child = this.menu.getChild();
+            let parent = this.menu.getChild(1);
+            let label = this.parent.getElementsByClassName('label' + child.id + ' section' + parent.id)
             for (let i = 0; i < label.length; i++)
                 label[i].style.color = this.onColor;
         }
@@ -157,8 +142,6 @@ class Schneider_PM2100 extends Schneider_PM21xx {
         let label2 = this.label2;
         let label3 = this.label3;
         let loadDiv = this.loadDiv;
-        // let TimeLabel = this.TimeLabel;
-        // let updateTimeLabel = this.updateTimeLabel;
         let field = this.getField();
         let tableName = this.tableName;
         let unit_id = this.unit_id;
@@ -178,151 +161,80 @@ class Schneider_PM2100 extends Schneider_PM21xx {
                 label1.innerHTML = result[0];
                 label2.innerHTML = result[1];
                 label3.innerHTML = result[2];
-                // TimeLabel.innerHTML       = 'last data time :' + result[3];
-                // updateTimeLabel.innerHTML = 'update time :' + result[4];
                 loadDiv.style.display = "none"
             }
         });
     }
 
-    getField() {
-        let pageIndex = this.getPageIndex()
-        switch (this.sectionIndex) {
-            case 1:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Voltage_A_N,1)', 'ROUND(Voltage_B_N,1)', 'ROUND(Voltage_C_N,1)'];
+    changeChild(change = 1) {
+        this.changeColor();
+        super.changeChild(change)
+        this.changeColor(1);
+    }
 
-                    case 2:
-                        return ['ROUND(Voltage_A_B,1)', 'ROUND(Voltage_B_C,1)', 'ROUND(Voltage_C_A,1)'];
+    changeParent(change = 1) {
+        this.changeColor();
+        super.changeParent(change)
+        this.changeColor(1);
+    }
 
-                    case 3:
-                        return ['ROUND(Current_A,1)', 'ROUND(Current_B,1)', 'ROUND(Current_C,1)'];
+    f1() {
+        this.changeChild()
+    }
 
-                    case 4:
-                        return ['ROUND(Apparent_Power_A,1)', 'ROUND(Apparent_Power_B,1)', 'ROUND(Apparent_Power_C,1)'];
+    f2() {
+        this.changeChild(-1)
+    }
 
-                    case 5:
-                        return ['ROUND(Active_Power_A,1)', 'ROUND(Active_Power_B,1)', 'ROUND(Active_Power_C,1)'];
+    f3() {
+        this.changeParent()
+    }
 
-                    case 6:
-                        return ['ROUND(Reactive_Power_A,1)', 'ROUND(Reactive_Power_B,1)', 'ROUND(Reactive_Power_C,1)'];
+    createMenu() {
+        this.menu = new Menu(this.id, "Schneider_PM2100_" + this.id);
 
-                    case 7:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
+        this.menu.addChild(null, 1, "section1")
+        this.menu.addChild(null, 2, "section2")
+        this.menu.addChild(null, 3, "section3")
+        this.menu.addChild(null, 4, "section4")
+        this.menu.addChild(null, 5, "section5")
+        this.menu.addChild(null, 6, "section6")
+        this.menu.addChild(null, 7, "section7")
+        this.menu.addChild(null, 8, "section8")
 
-                    case 8:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_C,1)', 'ROUND(Voltage_B_N,1)'];
+        this.menu.addChild("section1", 1, "index 1", showField,['ROUND(Voltage_A_N,2)', 'ROUND(Voltage_B_N,2)', 'ROUND(Voltage_C_N,2)'])
+        this.menu.addChild("section1", 2, "index 2", showField,['ROUND(Voltage_A_B,2)', 'ROUND(Voltage_B_C,2)', 'ROUND(Voltage_C_A,2)'])
+        this.menu.addChild("section1", 3, "index 3", showField,['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)'])
+        this.menu.addChild("section1", 4, "index 4", showField,['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)'])
+        this.menu.addChild("section1", 5, "index 5", showField,['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)'])
+        this.menu.addChild("section1", 6, "index 6", showField,['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)'])
+        this.menu.addChild("section1", 7, "index 7", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section1", 8, "index 8", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Voltage_B_N,2)'])
+        this.menu.addChild("section1", 9, "index 9", showField,['ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Current_A,2)'])
 
-                    case 9:
-                        return ['ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)', 'ROUND(Current_A,1)'];
-                    default:
-                        return null;
-                }
+        this.menu.addChild("section2", 1, "index 1", showField,[null, null, 'ROUND(Active_Energy_Delivered_Into_Load,2)'])
+        this.menu.addChild("section2", 2, "index 2", showField,[null, null, 'ROUND(Apparent_Energy_Delivered,2)'])
+        this.menu.addChild("section2", 3, "index 3", showField,[null, null, 'ROUND(Reactive_Energy_Delivered,2)'])
+        this.menu.addChild("section2", 4, "index 4", showField,[null, null, 'ROUND(Active_Energy_Received_Out_of_Load,2)'])
+        this.menu.addChild("section2", 5, "index 5", showField,[null, null, 'ROUND(Reactive_Energy_Received,2)'])
+        this.menu.addChild("section2", 6, "index 6", showField,[null, null, 'ROUND(Apparent_Energy_Received,2)'])
 
-            case 2:
-                switch (pageIndex) {
-                    case 1:
-                        return [null, null, 'ROUND(Active_Energy_Delivered_Into_Load,1)'];
+        this.menu.addChild("section3", 2, "index 2", showField,['ROUND(Current_Avg,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
 
+        this.menu.addChild("section4", 2, "index 2", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Reactive_Power_Total,2)'])
 
-                    case 2:
-                        return [null, null, 'ROUND(Apparent_Energy_Delivered,1)'];
+        this.menu.addChild("section5", 2, "index 2", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
 
-                    case 3:
-                        return [null, null, 'ROUND(Reactive_Energy_Delivered,1)'];
+        this.menu.addChild("section6", 2, "index 2", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
 
-                    case 4:
-                        return [null, null, 'ROUND(Active_Energy_Received_Out_of_Load,1)'];
+        this.menu.addChild("section7", 1, "index 1", showField,['DATE_FORMAT(JStart_time, "%Y")', 'DATE_FORMAT(JStart_time, "%m.%d")', 'DATE_FORMAT(Start_time, "%H.%i")'])
 
-                    case 5:
-                        return [null, null, 'ROUND(Reactive_Energy_Received,1)'];
+        this.menu.addChild("section8", 1, "index 1", showField,['ROUND(Current_Avg,2)', 'ROUND(Power_Factor_Total,2)', 'ROUND(Voltage_L_N_Avg,2)'])
+        this.menu.addChild("section8", 2, "index 2", showField,['ROUND(Apparent_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
+        this.menu.addChild("section8", 3, "index 3", showField,['ROUND(Frequency,2)', 'ROUND(Current_Unbalance_Worst,2)', 'ROUND(Power_Factor_C,2)'])
 
-                    case 6:
-                        return [null, null, 'ROUND(Apparent_Energy_Received,1)'];
-                    default:
-                        return null;
-
-                }
-
-
-            case 3:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Apparent_Power_Total,1)', 'ROUND(Reactive_Power_Total,1)', 'ROUND(Active_Power_Total,1)'];
-
-                    case 2:
-                        return ['ROUND(Current_Avg,1)', 'ROUND(Reactive_Power_Total,1)', 'ROUND(Active_Power_Total,1)'];
-                    default:
-                        return null;
-                }
-
-
-            case 4:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-
-                    case 2:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Reactive_Power_Total,1)'];
-                    default:
-                        return null;
-                }
-
-
-            case 5:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Reactive_Energy_Delivered_Neg_Received,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-
-                    case 2:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-                    default:
-                        return null;
-                }
-
-
-            case 6:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Active_Energy_Delivered_Neg_Received,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-
-                    case 2:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-                    default:
-                        return null;
-                }
-
-
-            case 7:
-                switch (pageIndex) {
-                    case 1:
-                        return ['DATE_FORMAT(JStart_time, "%Y")', 'DATE_FORMAT(JStart_time, "%m.%d")', 'DATE_FORMAT(Start_time, "%H.%i")'];
-                    default:
-                        return null;
-                }
-
-
-            case 8:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Current_Avg,1)', 'ROUND(Power_Factor_Total,1)', 'ROUND(Voltage_L_N_Avg,1)'];
-
-                    case 2:
-                        return ['ROUND(Apparent_Power_Total,1)', 'ROUND(Reactive_Power_Total,1)', 'ROUND(Active_Power_Total,1)'];
-
-                    case 3:
-                        return ['ROUND(Frequency,1)', 'ROUND(Current_Unbalance_Worst,1)', 'ROUND(Power_Factor_C,1)'];
-                    default:
-                        return null;
-
-                }
-
-
-            default:
-                return null;
-        }
-
+        this.menu.activeChildPath = [0, 0];
+        this.menu.updateChild();
     }
 }
 
@@ -333,18 +245,29 @@ class Schneider_PM2200 extends Schneider_PM21xx {
         this.label2 = this.parent.getElementsByClassName('showLabel2 valueLabel')[0];
         this.label3 = this.parent.getElementsByClassName('showLabel3 valueLabel')[0];
         this.label4 = this.parent.getElementsByClassName('showLabel4 valueLabel')[0];
-        this.apiUrl = apiUrl + "device/data";
+
+        this.unitlabel1 = this.parent.getElementsByClassName('showLabel1 unitLabel')[0];
+        this.unitlabel2 = this.parent.getElementsByClassName('showLabel2 unitLabel')[0];
+        this.unitlabel3 = this.parent.getElementsByClassName('showLabel3 unitLabel')[0];
+        this.unitlabel4 = this.parent.getElementsByClassName('showLabel4 unitLabel')[0];
+
+        this.deslabel1 = this.parent.getElementsByClassName('showLabel1 desLabel')[0];
+        this.deslabel2 = this.parent.getElementsByClassName('showLabel2 desLabel')[0];
+        this.deslabel3 = this.parent.getElementsByClassName('showLabel3 desLabel')[0];
+        this.deslabel4 = this.parent.getElementsByClassName('showLabel4 desLabel')[0];
+
+        this.bottomFooter1 = this.parent.getElementsByClassName('bottomFooter1')[0];
+        this.bottomFooter2 = this.parent.getElementsByClassName('bottomFooter2')[0];
+        this.bottomFooter3 = this.parent.getElementsByClassName('bottomFooter3')[0];
+        this.bottomFooter4 = this.parent.getElementsByClassName('bottomFooter4')[0];
+
+        this.topHeader = this.parent.getElementsByClassName('topHeader')[0];
+
         this.type = "Schneider_PM2200";
         this.type_Id = 2;
-        this.tableName = "elecsub_data";
 
-        this.pageIndex = [1, 1, 2, 2, 2, 2, 1, 1];
-        this.minPageIndex = [1, 1, 2, 2, 2, 2, 1, 1];
-        this.maxPageIndex = [9, 6, 2, 2, 2, 2, 1, 3];
-        this.sectionIndex = 1;
-        this.minSectionIndex = 1;
-        this.maxSectionIndex = 8;
-        this.html = "";
+        this.createMenu();
+
         this.setData();
     }
 
@@ -359,13 +282,54 @@ class Schneider_PM2200 extends Schneider_PM21xx {
         let label2 = this.label2;
         let label3 = this.label3;
         let label4 = this.label4;
+
+        this.unitlabel1.innerHTML = "";
+        this.unitlabel2.innerHTML = "";
+        this.unitlabel3.innerHTML = "";
+        this.unitlabel4.innerHTML = "";
+
+        let unitlabel1 = this.unitlabel1;
+        let unitlabel2 = this.unitlabel2;
+        let unitlabel3 = this.unitlabel3;
+        let unitlabel4 = this.unitlabel4;
+
+        this.deslabel1.innerHTML = "";
+        this.deslabel2.innerHTML = "";
+        this.deslabel3.innerHTML = "";
+        this.deslabel4.innerHTML = "";
+
+        let deslabel1 = this.deslabel1;
+        let deslabel2 = this.deslabel2;
+        let deslabel3 = this.deslabel3;
+        let deslabel4 = this.deslabel4;
+
+        this.bottomFooter1.innerHTML = "";
+        this.bottomFooter2.innerHTML = "";
+        this.bottomFooter3.innerHTML = "";
+        this.bottomFooter4.innerHTML = "";
+
+        let bottomFooter1 = this.bottomFooter1;
+        let bottomFooter2 = this.bottomFooter2;
+        let bottomFooter3 = this.bottomFooter3;
+        let bottomFooter4 = this.bottomFooter4;
+
+
+        this.topHeader.innerHTML = "";
+        let topHeader = this.topHeader;
+
         let loadDiv = this.loadDiv;
-        // let TimeLabel = this.TimeLabel;
-        // let updateTimeLabel = this.updateTimeLabel;
+
+        this.menu.HandleAction();
+
         let field = this.getField();
+        let downField = this.getDownField();
+        let description = this.getDescriptionField();
+        let unit = this.getUnitField();
+        let header = this.getHeaderField();
         let tableName = this.tableName;
         let unit_id = this.unit_id;
         let substation_id = this.substation_id;
+        let setDownField = this.setDownField;
 
         $.ajax({
             url: this.apiUrl,
@@ -381,163 +345,265 @@ class Schneider_PM2200 extends Schneider_PM21xx {
                 label1.innerHTML = result[0];
                 label2.innerHTML = result[1];
                 label3.innerHTML = result[2];
-                label4.innerHTML = result[2];
+                label4.innerHTML = result[3];
+
+                unitlabel1.innerHTML = unit[0];
+                unitlabel2.innerHTML = unit[1];
+                unitlabel3.innerHTML = unit[2];
+                unitlabel4.innerHTML = unit[3];
+
+                deslabel1.innerHTML = description[0];
+                deslabel2.innerHTML = description[1];
+                deslabel3.innerHTML = description[2];
+                deslabel4.innerHTML = description[3];
+
+                setDownField(bottomFooter1, downField[0]);
+                setDownField(bottomFooter2, downField[1]);
+                setDownField(bottomFooter3, downField[2]);
+                setDownField(bottomFooter4, downField[3]);
+
+                topHeader.innerHTML = header[0];
+
                 loadDiv.style.display = "none"
             }
         });
     }
 
-    getField() {
-        let pageIndex = this.getPageIndex()
-        switch (this.sectionIndex) {
-            case 1:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Voltage_A_N,1)', 'ROUND(Voltage_B_N,1)', 'ROUND(Voltage_C_N,1)'];
+    setDownField(label, field) {
+        if (field.includes("action_up")) {
+            label.innerHTML = `<i class="fa fa-caret-up" aria-hidden="true"></i>`;
+        } else if (field.includes("action_right")) {
+            label.innerHTML = `<i class="fa fa-caret-right" aria-hidden="true"></i>`;
+        } else {
+            label.innerHTML = field;
+        }
+    }
 
-                    case 2:
-                        return ['ROUND(Voltage_A_B,1)', 'ROUND(Voltage_B_C,1)', 'ROUND(Voltage_C_A,1)'];
+    f1() {
+        this.childChildByNumber(0)
+    }
 
-                    case 3:
-                        return ['ROUND(Current_A,1)', 'ROUND(Current_B,1)', 'ROUND(Current_C,1)'];
+    f2() {
+        this.childChildByNumber(1)
+    }
 
-                    case 4:
-                        return ['ROUND(Apparent_Power_A,1)', 'ROUND(Apparent_Power_B,1)', 'ROUND(Apparent_Power_C,1)'];
+    f3() {
+        this.childChildByNumber(2)
+    }
 
-                    case 5:
-                        return ['ROUND(Active_Power_A,1)', 'ROUND(Active_Power_B,1)', 'ROUND(Active_Power_C,1)'];
+    f4() {
+        this.childChildByNumber(3)
+    }
 
-                    case 6:
-                        return ['ROUND(Reactive_Power_A,1)', 'ROUND(Reactive_Power_B,1)', 'ROUND(Reactive_Power_C,1)'];
+    createMenu() {
+        this.menu = new Menu(this.id, "Schneider_PM2200_" + this.id);
+        this.menu.addChild(null, 1, "summery", [showField], ['ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Active_Power_Total,2)', 'ROUND(Active_Energy_Delivered_Into_Load/1000,2)'], ['I', 'V-v', 'PQS', 'action_right'], ['V', 'A', 'kW', 'MWh'], ['Vavg', 'Iavg', 'Ptot', 'E Del'], ['Summery'])
 
-                    case 7:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
+        this.menu.addChild("summery", 0, "I", [goToChild,0])
 
-                    case 8:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_C,1)', 'ROUND(Voltage_B_N,1)'];
+        this.menu.addChild("I", 0, "I_I_Child", [showField],['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', 'ROUND(Current_N,2)'], ['action_up', 'I', 'Dmd', ''], ['A', 'A', 'A', 'A'], ['I1', 'I2', 'I3', 'In'], ['Amps Per Phases'])
+        this.menu.addChild("I_I_Child", 0, "I_action_up", [goUp, 3])
+        this.menu.addChild("I_I_Child", 1, "I_I_Avg_Child", [goToParentChild, 0])
+        this.menu.addChild("I_I_Child", 2, "I_Dmd_Child", [goToParentChild, 1])
 
-                    case 9:
-                        return ['ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)', 'ROUND(Current_A,1)'];
-                    default:
-                        return null;
-                }
+        this.menu.addChild("I", 1, "I_Dmd", [goToChild,0])
 
-            case 2:
-                switch (pageIndex) {
-                    case 1:
-                        return [null, null, 'ROUND(Active_Energy_Delivered_Into_Load,1)'];
+        this.menu.addChild("I_Dmd", 0, "I_Dmd_I_Avg", [showField], ['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', 'ROUND(Current_N,2)'], ['action_up', 'IAvg', 'Pk DT', ''], ['A', 'A', 'A', 'A'], ['Pres', 'Last', 'Pred', 'Peak'], ['Iavg Dmd'])
 
+        this.menu.addChild("I_Dmd_I_Avg", 0, "I_Dmd_I_Avg_action_up", [goUp, 3])
+        this.menu.addChild("I_Dmd_I_Avg", 1, "I_Dmd_I_Avg_I_Avg_Child", [goToParentChild, 0])
+        this.menu.addChild("I_Dmd_I_Avg", 2, "I_Dmd_I_Avg_Pk_DT_Child", [goToParentChild, 1])
 
-                    case 2:
-                        return [null, null, 'ROUND(Apparent_Energy_Delivered,1)'];
+        this.menu.addChild("I_Dmd", 1, "I_Dmd_Pk_DT", [showField], [null, 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', null], ['action_up', 'IAvg', 'Pk DT', ''], ['', '', '', ''], ['', '', '', ''], ['Iavg Dmd PkDT'])
 
-                    case 3:
-                        return [null, null, 'ROUND(Reactive_Energy_Delivered,1)'];
+        this.menu.addChild("I_Dmd_Pk_DT", 0, "I_Dmd_Pk_DT_action_up", [goUp, 3])
+        this.menu.addChild("I_Dmd_Pk_DT", 1, "I_Dmd_Pk_DT_I_Avg_Child", [goToParentChild, 0])
+        this.menu.addChild("I_Dmd_Pk_DT", 2, "I_Dmd_Pk_DT_Pk_DT_Child", [goToParentChild, 1])
 
-                    case 4:
-                        return [null, null, 'ROUND(Active_Energy_Received_Out_of_Load,1)'];
+        this.menu.addChild("summery", 0, "V_v", [goToChild,0])
 
-                    case 5:
-                        return [null, null, 'ROUND(Reactive_Energy_Received,1)'];
+        this.menu.addChild("V_v", 0, "V", [showField], ['ROUND(Voltage_A_B,2)', 'ROUND(Voltage_B_C,2)', 'ROUND(Voltage_C_A,2)',null], ['action_up', 'V', 'v', ''], ['V', 'V', 'V', ''], ['V12', 'V23', 'V31', ''], ['V'])
 
-                    case 6:
-                        return [null, null, 'ROUND(Apparent_Energy_Received,1)'];
-                    default:
-                        return null;
+        this.menu.addChild("V", 0, "V_action_up", [goUp, 3])
+        this.menu.addChild("V", 1, "V_V_Child", [goToParentChild, 0])
+        this.menu.addChild("V", 2, "V_v_Child", [goToParentChild, 1])
 
-                }
+        this.menu.addChild("V_v", 0, "v", [showField], ['ROUND(Voltage_A_N,2)', 'ROUND(Voltage_B_N,2)', 'ROUND(Voltage_C_N,2)' , null], ['action_up', 'V', 'v', ''], ['V', 'V', 'V', ''], ['V1', 'V2', 'V3', ''], ['v'])
 
+        this.menu.addChild("v", 0, "v_action_up", [goUp, 3])
+        this.menu.addChild("v", 1, "v_V_Child", [goToParentChild, 0])
+        this.menu.addChild("v", 2, "v_v_Child", [goToParentChild, 1])
 
-            case 3:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Apparent_Power_Total,1)', 'ROUND(Reactive_Power_Total,1)', 'ROUND(Active_Power_Total,1)'];
+        this.menu.addChild("summery", 0, "PQS", [goToChild,0])
 
-                    case 2:
-                        return ['ROUND(Current_Avg,1)', 'ROUND(Reactive_Power_Total,1)', 'ROUND(Active_Power_Total,1)'];
-                    default:
-                        return null;
-                }
+        this.menu.addChild("PQS", 0, "PQS_Child", [showField],['ROUND(Active_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Apparent_Power_Total,2)', null], ['action_up', 'PQS', 'Phase', 'Dmd'], ['kW', 'KVAR', 'kVA', ''], ['Ptot', 'Qtot', 'Stot', ''], ['Power Summery'])
+        this.menu.addChild("PQS_Child", 0, "PQS_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Child", 1, "PQS_PQS_Child", [goToParentChild, 0])
+        this.menu.addChild("PQS_Child", 2, "PQS_Phase_Child", [goToChild, 0])
 
+        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_P", [showField],['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)', 'ROUND(Active_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kW', 'kW', 'kW', 'kW'], ['P1', 'P2', 'P3', 'Ptot'], ['Active Power'])
+        this.menu.addChild("PQS_Phase_P", 0, "PQS_Phase_P_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Phase_P", 1, "PQS_Phase_P_P", [goToParentChild, 0])
+        this.menu.addChild("PQS_Phase_P", 2, "PQS_Phase_P_Q", [goToParentChild, 1])
+        this.menu.addChild("PQS_Phase_P", 3, "PQS_Phase_P_S", [goToParentChild, 2])
 
-            case 4:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
+        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_Q", [showField],['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)', 'ROUND(Reactive_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['KVAR', 'KVAR', 'KVAR', 'KVAR'], ['Q1', 'Q2', 'Q3', 'Qtot'], ['Reactive Power'])
+        this.menu.addChild("PQS_Phase_Q", 0, "PQS_Phase_Q_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Phase_Q", 1, "PQS_Phase_Q_P", [goToParentChild, 0])
+        this.menu.addChild("PQS_Phase_Q", 2, "PQS_Phase_Q_Q", [goToParentChild, 1])
+        this.menu.addChild("PQS_Phase_Q", 3, "PQS_Phase_Q_S", [goToParentChild, 2])
 
-                    case 2:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Reactive_Power_Total,1)'];
-                    default:
-                        return null;
-                }
-
-
-            case 5:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Reactive_Energy_Delivered_Neg_Received,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-
-                    case 2:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-                    default:
-                        return null;
-                }
+        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_S", [showField],['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)', 'ROUND(Apparent_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kVA', 'kVA', 'kVA', 'kVA'], ['S1', 'S2', 'S3', 'Stot'], ['Apparent Power'])
+        this.menu.addChild("PQS_Phase_S", 0, "PQS_Phase_S_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Phase_S", 1, "PQS_Phase_S_P", [goToParentChild, 0])
+        this.menu.addChild("PQS_Phase_S", 2, "PQS_Phase_S_Q", [goToParentChild, 1])
+        this.menu.addChild("PQS_Phase_S", 3, "PQS_Phase_S_S", [goToParentChild, 2])
 
 
-            case 6:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Active_Energy_Delivered_Neg_Received,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
+        this.menu.addChild("PQS_Child", 3, "PQS_Dmd_Child", [goToChild, 0])
+        this.menu.addChild("PQS_Dmd_Child", 0, "PQS_Phase_S", [showField],['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)', 'ROUND(Apparent_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kVA', 'kVA', 'kVA', 'kVA'], ['S1', 'S2', 'S3', 'Stot'], ['Apparent Power'])
+        this.menu.addChild("PQS_Phase_S", 0, "PQS_Phase_S_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Phase_S", 1, "PQS_Phase_S_P", [goToParentChild, 0])
+        this.menu.addChild("PQS_Phase_S", 2, "PQS_Phase_S_Q", [goToParentChild, 1])
+        this.menu.addChild("PQS_Phase_S", 3, "PQS_Phase_S_S", [goToParentChild, 2])
 
-                    case 2:
-                        return ['ROUND(Power_Factor_A,1)', 'ROUND(Power_Factor_B,1)', 'ROUND(Power_Factor_C,1)'];
-                    default:
-                        return null;
-                }
+        this.menu.activeChildPath = [0];
+        this.menu.updateChild();
+    }
+}
 
+class Menu {
+    constructor(id, name, action = showField, field, downfield, unit, description, header, child) {
+        this.id = id;
+        this.name = name;
+        this.field = field || null;
+        this.action = action || null;
+        this.downfield = downfield || null;
+        this.unit = unit || null;
+        this.description = description || null;
+        this.header = header || null;
+        this.children = child || [];
+        this.lastIndex = 0;
+        this.activeChildPath = [];
+        this.activeChild = [];
+    }
 
-            case 7:
-                switch (pageIndex) {
-                    case 1:
-                        return ['DATE_FORMAT(JStart_time, "%Y")', 'DATE_FORMAT(JStart_time, "%m.%d")', 'DATE_FORMAT(Start_time, "%H.%i")'];
-                    default:
-                        return null;
-                }
+    addChild(parentName, id, name, action = showField, field, downfield, unit, description, header) {
+        if (parentName == null || parentName === this.name) {
+            this.children.push(new Menu(id, name, action, field, downfield, unit, description, header));
+        } else {
+            for (let i = 0; i < this.children.length; i++)
+                this.children[i].addChild(parentName, id, name, action, field, downfield, unit, description, header)
+        }
+    }
 
+    getChild(offset = 0, path = this.activeChildPath) {
+        let temp = this;
+        for (let i = 0; i < path.length - offset; i++)
+            temp = temp.children[path[i]];
+        return temp;
+    }
 
-            case 8:
-                switch (pageIndex) {
-                    case 1:
-                        return ['ROUND(Current_Avg,1)', 'ROUND(Power_Factor_Total,1)', 'ROUND(Voltage_L_N_Avg,1)'];
+    nextChild(offset = 0, change = 1) {
+        offset = offset + 1;
+        let parent = this.getChild(offset)
+        let pageI = parent.lastIndex + change;
+        let pageMax = parent.children.length - 1;
+        let pageMin = 0;
+        if (pageI === pageMax + 1)
+            pageI = pageMin;
+        if (pageI === pageMin - 1)
+            pageI = pageMax;
+        parent.lastIndex = pageI;
+        let tempChild = parent
 
-                    case 2:
-                        return ['ROUND(Apparent_Power_Total,1)', 'ROUND(Reactive_Power_Total,1)', 'ROUND(Active_Power_Total,1)'];
-
-                    case 3:
-                        return ['ROUND(Frequency,1)', 'ROUND(Current_Unbalance_Worst,1)', 'ROUND(Power_Factor_C,1)'];
-                    default:
-                        return null;
-
-                }
-
-
-            default:
-                return null;
+        for (let i = offset; i > 0; i--) {
+            this.activeChildPath[this.activeChildPath.length - i] = tempChild.lastIndex;
+            this.activeChild = tempChild.children[tempChild.lastIndex];
+            tempChild = parent.children[tempChild.lastIndex]
         }
 
+        // return parent.children[parent.lastIndex];
     }
 
-    f1(){
-        console.log("f1")
+    childByNumber(offset = 0, number) {
+        offset = offset + 1;
+
+        let parent = this.getChild(offset)
+
+        let pageMax = parent.children.length - 1;
+        let pageMin = 0;
+
+        if (number > pageMax || number < pageMin) {
+            return null;
+        }
+
+        parent.lastIndex = number;
+
+        let tempChild = parent
+
+        for (let i = offset; i > 0; i--) {
+            this.activeChildPath[this.activeChildPath.length - i] = tempChild.lastIndex;
+            this.activeChild = tempChild.children[tempChild.lastIndex];
+            tempChild = parent.children[tempChild.lastIndex]
+        }
+
+        // return parent.children[parent.lastIndex];
     }
-    f2(){
-        console.log("f2")
+
+    childChildByNumber(number) {
+        let parent = this.getChild(0)
+
+        let pageMax = parent.children.length - 1;
+        let pageMin = 0;
+
+        if (number > pageMax || number < pageMin) {
+            return null;
+        }
+
+        parent.lastIndex = number;
+
+        this.activeChildPath.push(parent.lastIndex);
+        this.activeChild = parent.children[parent.lastIndex];
+
+        // return parent.children[parent.lastIndex];
     }
-    f3(){
-        console.log("f3")
+
+    changeLevel(level) {
+        for (let i = level; i > 0; i--) {
+            this.activeChildPath.pop();
+        }
+
+        this.updateChild();
     }
-    f4(){
-        console.log("f4")
+
+    updateChild() {
+        this.activeChild = this.getChild();
+    }
+
+    HandleAction() {
+        let action = this.activeChild.action;
+        switch (action[0]) {
+            case goToChild:
+                this.childChildByNumber(action[1])
+                this.HandleAction();
+                break;
+            case goToParentChild:
+                this.changeLevel(2)
+                this.childChildByNumber(action[1])
+                this.HandleAction();
+                break;
+            case goUp:
+                this.changeLevel(action[1]);
+                this.HandleAction();
+                break;
+            case goRight:
+                this.changeLevel(action[1]);
+                this.HandleAction();
+                break;
+            default:
+                break;
+        }
     }
 }
 
@@ -566,14 +632,13 @@ function getHtml(deviceType, index) {
         default:
             tempHtml = '';
     }
-    
+
     regExp = /%index/g;
     tempHtml = tempHtml.replace(regExp, index);
     regExp = /%caret_size/g;
     tempHtml = tempHtml.replace(regExp, caret_size);
     return tempHtml
 }
-
 
 function Schneider_PM2100_HTML() {
     return (
@@ -664,20 +729,20 @@ function Schneider_PM2100_HTML() {
                             <button type="button" 
                                 style="position:absolute;color: transparent!important;padding: 15px!important;left: 65px;top: 25px;" 
                                 class="btn btn-link text-info" id="DownBut">
-                                <i style="width: 10px;" onclick="device_class[%index].changeIndex(1)" 
+                                <i style="width: 10px;" onclick="device_class[%index].f1()" 
                                     class="fa fa-eye-slash"></i>
                             </button>
                             <button type="button" 
                                     style="position:absolute;color: transparent!important;padding: 15px!important;left: 130px;top: 25px;" 
                                     class="btn btn-link text-info" id="UPButt"><i 
                                     style="width: 10px;" 
-                                    onclick="device_class[%index].changeIndex(-1)" 
+                                    onclick="device_class[%index].f2()" 
                                     class="fa fa-eye-slash"></i>
                             </button>
                             <button type="button" 
                                     style="position:absolute;color: transparent!important;padding: 15px!important;left: 185px;top: 25px;" 
                                     class="btn btn-link text-info" id="OkBut">
-                                    <i style="width: 10px;" onclick="device_class[%index].changeSection()" 
+                                    <i style="width: 10px;" onclick="device_class[%index].f3()" 
                                        class="fa fa-eye-slash"></i>
                             </button> 
 
@@ -740,7 +805,7 @@ function Schneider_PM2200_HTML() {
                 <div style="position: relative;width: 80px;height: 425px;"> 
                 </div> 
                 <div style="position: relative;width: 260px;height: 425px;"> 
-                    <div style="position: relative;width: 256px;height: 236px;margin: auto!important;top: 87px;"> 
+                    <div style="position: relative;width: 252px;height: 236px;margin: auto!important;top: 87px;"> 
                         <div class="load" style="margin: auto;"> 
                            <div class="gear one"> 
                                <svg id="blue" viewBox="0 0 100 100" fill="#94DDFF"> 
@@ -760,51 +825,51 @@ function Schneider_PM2200_HTML() {
                         </div> 
                         <div class="row text-center" style="height: 32px;margin: auto!important;border-bottom: 2px solid #0c2920;"> 
                             <label class="text-center topHeader" 
-                                   style="font-size: 18px; color : white;margin: auto!important;width: 200px;background-color: #3e454b;margin-bottom: unset!important;">Summery</label> 
+                                   style="font-size: 18px; color : white;margin: auto!important;width: 200px;background-color: #3e454b;margin-bottom: unset!important;"></label> 
                         </div> 
                         
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel1 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                             <label class="text-center showLabel1 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 128px;margin: auto!important;"></label> 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
                             <label class="text-center showLabel1 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel2 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                             <label class="text-center showLabel2 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 128px;margin: auto!important;"></label> 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
                             <label class="text-center showLabel2 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel3 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                             <label class="text-center showLabel3 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 128px;margin: auto!important;"></label> 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
                             <label class="text-center showLabel3 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel4 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                             <label class="text-center showLabel4 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 128px;margin: auto!important;"></label> 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
                             <label class="text-center showLabel4 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 64px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
                         </div> 
                       
-                        <div class="row text-center" style="height: 28px;margin: auto!important;border-bottom: 2px solid #0c2920;"> 
+                        <div class="row text-center" style="height: 28px;margin: auto!important;border-top: 2px solid #0c2920;"> 
                             <label class="text-center bottomFooter1" 
-                                    style="position: absolute;left: 10px;font-size: 18px; color : #2a2f35;width: 50px;margin-top: unset!important;">I</label> 
+                                    style="position: absolute;left: 10px;font-size: 14px; color : #2a2f35;width: 50px;margin-top: unset!important;"></label> 
                             <label class="text-center bottomFooter2" 
-                                    style="position: absolute;left: 70px;font-size: 18px; color : #2a2f35;width: 50px;margin-top: unset!important;">V-V</label> 
+                                    style="position: absolute;left: 70px;font-size: 14px; color : #2a2f35;width: 50px;margin-top: unset!important;"></label> 
                             <label class="text-center bottomFooter3" 
-                                    style="position: absolute;left: 130px;font-size: 18px; color : #2a2f35;width: 50px;margin-top: unset!important;">PQS</label> 
+                                    style="position: absolute;left: 130px;font-size: 14px; color : #2a2f35;width: 50px;margin-top: unset!important;"></label> 
                             <label class="text-center bottomFooter4" 
-                                    style="position: absolute;left: 190px;font-size: 18px; color : #2a2f35;width: 50px;margin-top: unset!important;">right</label>
+                                    style="position: absolute;left: 190px;font-size: 14px; color : #2a2f35;width: 50px;margin-top: unset!important;"></label>
                         </div> 
                     </div> 
                     <div class="row" style="position:relative;top: 92px;"> 
@@ -834,7 +899,6 @@ function Schneider_PM2200_HTML() {
                                     <i style="width: 10px;" onclick="device_class[%index].f4()" 
                                        class="fa fa-eye-slash"></i>
                             </button> 
-
                         </div> 
                     </div> 
                 </div> 
@@ -844,3 +908,4 @@ function Schneider_PM2200_HTML() {
         </div>`
     )
 }
+

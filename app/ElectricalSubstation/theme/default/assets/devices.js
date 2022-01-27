@@ -330,6 +330,7 @@ class Schneider_PM2200 extends Schneider_PM21xx {
         let unit_id = this.unit_id;
         let substation_id = this.substation_id;
         let setDownField = this.setDownField;
+        let setField = this.setField;
 
         $.ajax({
             url: this.apiUrl,
@@ -342,10 +343,10 @@ class Schneider_PM2200 extends Schneider_PM21xx {
                 'tableName': tableName,
             },
             success: function (result) {
-                label1.innerHTML = result[0];
-                label2.innerHTML = result[1];
-                label3.innerHTML = result[2];
-                label4.innerHTML = result[3];
+                setField(label1, result[0]);
+                setField(label2, result[1]);
+                setField(label3, result[2]);
+                setField(label4, result[3]);
 
                 unitlabel1.innerHTML = unit[0];
                 unitlabel2.innerHTML = unit[1];
@@ -376,6 +377,15 @@ class Schneider_PM2200 extends Schneider_PM21xx {
             label.innerHTML = `<i class="fa fa-caret-right" aria-hidden="true"></i>`;
         } else {
             label.innerHTML = field;
+        }
+    }
+
+    setField(label, field) {
+        if (field < 10000)
+            label.innerHTML = field;
+        else
+        {
+            label.innerHTML = Math.round(field);
         }
     }
 

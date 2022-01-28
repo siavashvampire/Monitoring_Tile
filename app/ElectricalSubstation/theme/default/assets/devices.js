@@ -40,6 +40,7 @@ class Schneider_PM21xx {
     }
 
     childChildByNumber(number = 0) {
+        console.log(number)
         this.menu.childChildByNumber(number);
         this.setData();
     }
@@ -62,7 +63,10 @@ class Schneider_PM21xx {
     }
 
     getDownField() {
-        return this.menu.activeChild.downfield;
+        let start = this.menu.activeChild.downFieldIndex;
+        let end = start + this.menu.showfieldCount;
+
+        return this.menu.activeChild.downfield.slice(start, end);
     }
 
     getUnitField() {
@@ -75,6 +79,24 @@ class Schneider_PM21xx {
 
     getHeaderField() {
         return this.menu.activeChild.header;
+    }
+
+    setDownField(label, field = "") {
+        if (field.includes("action_up")) {
+            label.innerHTML = `<i class="fa fa-caret-up" aria-hidden="true"></i>`;
+        } else if (field.includes("action_right")) {
+            label.innerHTML = `<i class="fa fa-caret-right" aria-hidden="true"></i>`;
+        } else {
+            label.innerHTML = field;
+        }
+    }
+
+    setField(label, field) {
+        if (field < 10000)
+            label.innerHTML = field;
+        else {
+            label.innerHTML = Math.round(field);
+        }
     }
 
     setHtml() {
@@ -146,6 +168,7 @@ class Schneider_PM2100 extends Schneider_PM21xx {
         let tableName = this.tableName;
         let unit_id = this.unit_id;
         let substation_id = this.substation_id;
+        let setField = this.setField;
 
         $.ajax({
             url: this.apiUrl,
@@ -158,9 +181,9 @@ class Schneider_PM2100 extends Schneider_PM21xx {
                 'tableName': tableName,
             },
             success: function (result) {
-                label1.innerHTML = result[0];
-                label2.innerHTML = result[1];
-                label3.innerHTML = result[2];
+                setField(label1, result[0]);
+                setField(label2, result[1]);
+                setField(label3, result[2]);
                 loadDiv.style.display = "none"
             }
         });
@@ -202,37 +225,38 @@ class Schneider_PM2100 extends Schneider_PM21xx {
         this.menu.addChild(null, 7, "section7")
         this.menu.addChild(null, 8, "section8")
 
-        this.menu.addChild("section1", 1, "index 1", showField,['ROUND(Voltage_A_N,2)', 'ROUND(Voltage_B_N,2)', 'ROUND(Voltage_C_N,2)'])
-        this.menu.addChild("section1", 2, "index 2", showField,['ROUND(Voltage_A_B,2)', 'ROUND(Voltage_B_C,2)', 'ROUND(Voltage_C_A,2)'])
-        this.menu.addChild("section1", 3, "index 3", showField,['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)'])
-        this.menu.addChild("section1", 4, "index 4", showField,['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)'])
-        this.menu.addChild("section1", 5, "index 5", showField,['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)'])
-        this.menu.addChild("section1", 6, "index 6", showField,['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)'])
-        this.menu.addChild("section1", 7, "index 7", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
-        this.menu.addChild("section1", 8, "index 8", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Voltage_B_N,2)'])
-        this.menu.addChild("section1", 9, "index 9", showField,['ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Current_A,2)'])
+        this.menu.addChild("section1", 1, "index 1", showField, ['ROUND(Voltage_A_N,2)', 'ROUND(Voltage_B_N,2)', 'ROUND(Voltage_C_N,2)'])
+        this.menu.addChild("section1", 2, "index 2", showField, ['ROUND(Voltage_A_B,2)', 'ROUND(Voltage_B_C,2)', 'ROUND(Voltage_C_A,2)'])
+        this.menu.addChild("section1", 3, "index 3", showField, ['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)'])
+        this.menu.addChild("section1", 4, "index 4", showField, ['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)'])
+        this.menu.addChild("section1", 5, "index 5", showField, ['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)'])
+        this.menu.addChild("section1", 6, "index 6", showField, ['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)'])
+        this.menu.addChild("section1", 7, "index 7", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section1", 8, "index 8", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Voltage_B_N,2)'])
+        this.menu.addChild("section1", 9, "index 9", showField, ['ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Current_A,2)'])
 
-        this.menu.addChild("section2", 1, "index 1", showField,[null, null, 'ROUND(Active_Energy_Delivered_Into_Load,2)'])
-        this.menu.addChild("section2", 2, "index 2", showField,[null, null, 'ROUND(Apparent_Energy_Delivered,2)'])
-        this.menu.addChild("section2", 3, "index 3", showField,[null, null, 'ROUND(Reactive_Energy_Delivered,2)'])
-        this.menu.addChild("section2", 4, "index 4", showField,[null, null, 'ROUND(Active_Energy_Received_Out_of_Load,2)'])
-        this.menu.addChild("section2", 5, "index 5", showField,[null, null, 'ROUND(Reactive_Energy_Received,2)'])
-        this.menu.addChild("section2", 6, "index 6", showField,[null, null, 'ROUND(Apparent_Energy_Received,2)'])
+        this.menu.addChild("section2", 1, "index 1", showField, [null, null, 'ROUND(Active_Energy_Delivered,2)'])
+        this.menu.addChild("section2", 2, "index 2", showField, [null, null, 'ROUND(Apparent_Energy_Delivered,2)'])
+        this.menu.addChild("section2", 3, "index 3", showField, [null, null, 'ROUND(Reactive_Energy_Delivered,2)'])
+        this.menu.addChild("section2", 4, "index 4", showField, [null, null, 'ROUND(Active_Energy_Received_Out_of_Load,2)'])
+        this.menu.addChild("section2", 5, "index 5", showField, [null, null, 'ROUND(Reactive_Energy_Received,2)'])
+        this.menu.addChild("section2", 6, "index 6", showField, [null, null, 'ROUND(Apparent_Energy_Received,2)'])
 
-        this.menu.addChild("section3", 2, "index 2", showField,['ROUND(Current_Avg,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
+        this.menu.addChild("section3", 2, "index 2", showField, ['ROUND(Current_Avg,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
 
-        this.menu.addChild("section4", 2, "index 2", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Reactive_Power_Total,2)'])
+        this.menu.addChild("section4", 2, "index 2", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Reactive_Power_Total,2)'])
 
-        this.menu.addChild("section5", 2, "index 2", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section5", 2, "index 2", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
 
-        this.menu.addChild("section6", 2, "index 2", showField,['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section6", 2, "index 2", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
 
-        this.menu.addChild("section7", 1, "index 1", showField,['DATE_FORMAT(JStart_time, "%Y")', 'DATE_FORMAT(JStart_time, "%m.%d")', 'DATE_FORMAT(Start_time, "%H.%i")'])
+        this.menu.addChild("section7", 1, "index 1", showField, ['DATE_FORMAT(JStart_time, "%Y")', 'DATE_FORMAT(JStart_time, "%m.%d")', 'DATE_FORMAT(Start_time, "%H.%i")'])
 
-        this.menu.addChild("section8", 1, "index 1", showField,['ROUND(Current_Avg,2)', 'ROUND(Power_Factor_Total,2)', 'ROUND(Voltage_L_N_Avg,2)'])
-        this.menu.addChild("section8", 2, "index 2", showField,['ROUND(Apparent_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
-        this.menu.addChild("section8", 3, "index 3", showField,['ROUND(Frequency,2)', 'ROUND(Current_Unbalance_Worst,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section8", 1, "index 1", showField, ['ROUND(Current_Avg,2)', 'ROUND(Power_Factor_Total,2)', 'ROUND(Voltage_L_N_Avg,2)'])
+        this.menu.addChild("section8", 2, "index 2", showField, ['ROUND(Apparent_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
+        this.menu.addChild("section8", 3, "index 3", showField, ['ROUND(Frequency,2)', 'ROUND(Current_Unbalance_Worst,2)', 'ROUND(Power_Factor_C,2)'])
 
+        this.menu.showfieldCount = 3;
         this.menu.activeChildPath = [0, 0];
         this.menu.updateChild();
     }
@@ -370,100 +394,81 @@ class Schneider_PM2200 extends Schneider_PM21xx {
         });
     }
 
-    setDownField(label, field) {
-        if (field.includes("action_up")) {
-            label.innerHTML = `<i class="fa fa-caret-up" aria-hidden="true"></i>`;
-        } else if (field.includes("action_right")) {
-            label.innerHTML = `<i class="fa fa-caret-right" aria-hidden="true"></i>`;
-        } else {
-            label.innerHTML = field;
-        }
-    }
-
-    setField(label, field) {
-        if (field < 10000)
-            label.innerHTML = field;
-        else
-        {
-            label.innerHTML = Math.round(field);
-        }
-    }
-
     f1() {
-        this.childChildByNumber(0)
+        this.childChildByNumber(this.menu.activeChild.downFieldIndex + 0)
     }
 
     f2() {
-        this.childChildByNumber(1)
+        this.childChildByNumber(this.menu.activeChild.downFieldIndex + 1)
     }
 
     f3() {
-        this.childChildByNumber(2)
+        this.childChildByNumber(this.menu.activeChild.downFieldIndex + 2)
     }
 
     f4() {
-        this.childChildByNumber(3)
+        this.childChildByNumber(this.menu.activeChild.downFieldIndex + 3)
     }
 
     createMenu() {
         this.menu = new Menu(this.id, "Schneider_PM2200_" + this.id);
-        this.menu.addChild(null, 1, "summery", [showField], ['ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Active_Power_Total,2)', 'ROUND(Active_Energy_Delivered_Into_Load/1000,2)'], ['I', 'V-v', 'PQS', 'action_right'], ['V', 'A', 'kW', 'MWh'], ['Vavg', 'Iavg', 'Ptot', 'E Del'], ['Summery'])
+        this.menu.addChild(null, 1, "summery", [showField], ['ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Active_Power_Total,2)', 'ROUND(Active_Energy_Delivered/1000,3)'], ['I', 'V-v', 'PQS', 'action_right', 'E', 'PF', 'F', 'action_right'], ['V', 'A', 'kW', 'MWh'], ['Vavg', 'Iavg', 'Ptot', 'E Del'], ['Summery'])
 
-        this.menu.addChild("summery", 0, "I", [goToChild,0])
+        this.menu.addChild("summery", 0, "I", [goToChild, 0])
 
-        this.menu.addChild("I", 0, "I_I_Child", [showField],['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', 'ROUND(Current_N,2)'], ['action_up', 'I', 'Dmd', ''], ['A', 'A', 'A', 'A'], ['I1', 'I2', 'I3', 'In'], ['Amps Per Phases'])
+        this.menu.addChild("I", 0, "I_I_Child", [showField], ['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', 'ROUND(Current_N,2)'], ['action_up', 'I', 'Dmd', ''], ['A', 'A', 'A', 'A'], ['I1', 'I2', 'I3', 'In'], ['Amps Per Phases'])
         this.menu.addChild("I_I_Child", 0, "I_action_up", [goUp, 3])
         this.menu.addChild("I_I_Child", 1, "I_I_Avg_Child", [goToParentChild, 0])
         this.menu.addChild("I_I_Child", 2, "I_Dmd_Child", [goToParentChild, 1])
 
-        this.menu.addChild("I", 1, "I_Dmd", [goToChild,0])
+        this.menu.addChild("I", 1, "I_Dmd", [goToChild, 0])
 
-        this.menu.addChild("I_Dmd", 0, "I_Dmd_I_Avg", [showField], ['ROUND(Current_A,2)', 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', 'ROUND(Current_N,2)'], ['action_up', 'IAvg', 'Pk DT', ''], ['A', 'A', 'A', 'A'], ['Pres', 'Last', 'Pred', 'Peak'], ['Iavg Dmd'])
+        this.menu.addChild("I_Dmd", 0, "I_Dmd_I_Avg", [showField], ['ROUND(Current_Avg_Present_Demand,2)', 'ROUND(Current_Avg_Last_Demand,2)', 'ROUND(Current_Avg_Predicted_Demand,2)', 'ROUND(Current_Avg_Peak _Demand,2)'], ['action_up', 'IAvg', 'Pk DT', ''], ['A', 'A', 'A', 'A'], ['Pres', 'Last', 'Pred', 'Peak'], ['Iavg Dmd'])
 
         this.menu.addChild("I_Dmd_I_Avg", 0, "I_Dmd_I_Avg_action_up", [goUp, 3])
         this.menu.addChild("I_Dmd_I_Avg", 1, "I_Dmd_I_Avg_I_Avg_Child", [goToParentChild, 0])
         this.menu.addChild("I_Dmd_I_Avg", 2, "I_Dmd_I_Avg_Pk_DT_Child", [goToParentChild, 1])
 
-        this.menu.addChild("I_Dmd", 1, "I_Dmd_Pk_DT", [showField], [null, 'ROUND(Current_B,2)', 'ROUND(Current_C,2)', null], ['action_up', 'IAvg', 'Pk DT', ''], ['', '', '', ''], ['', '', '', ''], ['Iavg Dmd PkDT'])
+        this.menu.addChild("I_Dmd", 1, "I_Dmd_Pk_DT", [showField], [null, 'DATE_FORMAT(Current_Avg_PK_DT_Demand, "%H:%i:%s")', 'DATE_FORMAT(Current_Avg_PK_DT_Demand, "%m/%d/%y")', null], ['action_up', 'IAvg', 'Pk DT', ''], ['', '', '', ''], ['', '', '', ''], ['Iavg Dmd PkDT'])
 
         this.menu.addChild("I_Dmd_Pk_DT", 0, "I_Dmd_Pk_DT_action_up", [goUp, 3])
         this.menu.addChild("I_Dmd_Pk_DT", 1, "I_Dmd_Pk_DT_I_Avg_Child", [goToParentChild, 0])
         this.menu.addChild("I_Dmd_Pk_DT", 2, "I_Dmd_Pk_DT_Pk_DT_Child", [goToParentChild, 1])
 
-        this.menu.addChild("summery", 0, "V_v", [goToChild,0])
+        this.menu.addChild("summery", 1, "V_v", [goToChild, 0])
 
-        this.menu.addChild("V_v", 0, "V", [showField], ['ROUND(Voltage_A_B,2)', 'ROUND(Voltage_B_C,2)', 'ROUND(Voltage_C_A,2)',null], ['action_up', 'V', 'v', ''], ['V', 'V', 'V', ''], ['V12', 'V23', 'V31', ''], ['V'])
+        this.menu.addChild("V_v", 0, "V", [showField], ['ROUND(Voltage_A_B,2)', 'ROUND(Voltage_B_C,2)', 'ROUND(Voltage_C_A,2)', null], ['action_up', 'V', 'v', ''], ['V', 'V', 'V', ''], ['V12', 'V23', 'V31', ''], ['V'])
 
         this.menu.addChild("V", 0, "V_action_up", [goUp, 3])
         this.menu.addChild("V", 1, "V_V_Child", [goToParentChild, 0])
         this.menu.addChild("V", 2, "V_v_Child", [goToParentChild, 1])
 
-        this.menu.addChild("V_v", 0, "v", [showField], ['ROUND(Voltage_A_N,2)', 'ROUND(Voltage_B_N,2)', 'ROUND(Voltage_C_N,2)' , null], ['action_up', 'V', 'v', ''], ['V', 'V', 'V', ''], ['V1', 'V2', 'V3', ''], ['v'])
+        this.menu.addChild("V_v", 0, "v", [showField], ['ROUND(Voltage_A_N,2)', 'ROUND(Voltage_B_N,2)', 'ROUND(Voltage_C_N,2)', null], ['action_up', 'V', 'v', ''], ['V', 'V', 'V', ''], ['V1', 'V2', 'V3', ''], ['v'])
 
         this.menu.addChild("v", 0, "v_action_up", [goUp, 3])
         this.menu.addChild("v", 1, "v_V_Child", [goToParentChild, 0])
         this.menu.addChild("v", 2, "v_v_Child", [goToParentChild, 1])
 
-        this.menu.addChild("summery", 0, "PQS", [goToChild,0])
+        this.menu.addChild("summery", 2, "PQS", [goToChild, 0])
 
-        this.menu.addChild("PQS", 0, "PQS_Child", [showField],['ROUND(Active_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Apparent_Power_Total,2)', null], ['action_up', 'PQS', 'Phase', 'Dmd'], ['kW', 'KVAR', 'kVA', ''], ['Ptot', 'Qtot', 'Stot', ''], ['Power Summery'])
+        this.menu.addChild("PQS", 0, "PQS_Child", [showField], ['ROUND(Active_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Apparent_Power_Total,2)', null], ['action_up', 'PQS', 'Phase', 'Dmd'], ['kW', 'KVAR', 'kVA', ''], ['Ptot', 'Qtot', 'Stot', ''], ['Power Summery'])
         this.menu.addChild("PQS_Child", 0, "PQS_action_up", [goUp, 3])
         this.menu.addChild("PQS_Child", 1, "PQS_PQS_Child", [goToParentChild, 0])
         this.menu.addChild("PQS_Child", 2, "PQS_Phase_Child", [goToChild, 0])
 
-        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_P", [showField],['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)', 'ROUND(Active_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kW', 'kW', 'kW', 'kW'], ['P1', 'P2', 'P3', 'Ptot'], ['Active Power'])
+        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_P", [showField], ['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)', 'ROUND(Active_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kW', 'kW', 'kW', 'kW'], ['P1', 'P2', 'P3', 'Ptot'], ['Active Power'])
         this.menu.addChild("PQS_Phase_P", 0, "PQS_Phase_P_action_up", [goUp, 3])
         this.menu.addChild("PQS_Phase_P", 1, "PQS_Phase_P_P", [goToParentChild, 0])
         this.menu.addChild("PQS_Phase_P", 2, "PQS_Phase_P_Q", [goToParentChild, 1])
         this.menu.addChild("PQS_Phase_P", 3, "PQS_Phase_P_S", [goToParentChild, 2])
 
-        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_Q", [showField],['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)', 'ROUND(Reactive_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['KVAR', 'KVAR', 'KVAR', 'KVAR'], ['Q1', 'Q2', 'Q3', 'Qtot'], ['Reactive Power'])
+        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_Q", [showField], ['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)', 'ROUND(Reactive_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['KVAR', 'KVAR', 'KVAR', 'KVAR'], ['Q1', 'Q2', 'Q3', 'Qtot'], ['Reactive Power'])
         this.menu.addChild("PQS_Phase_Q", 0, "PQS_Phase_Q_action_up", [goUp, 3])
         this.menu.addChild("PQS_Phase_Q", 1, "PQS_Phase_Q_P", [goToParentChild, 0])
         this.menu.addChild("PQS_Phase_Q", 2, "PQS_Phase_Q_Q", [goToParentChild, 1])
         this.menu.addChild("PQS_Phase_Q", 3, "PQS_Phase_Q_S", [goToParentChild, 2])
 
-        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_S", [showField],['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)', 'ROUND(Apparent_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kVA', 'kVA', 'kVA', 'kVA'], ['S1', 'S2', 'S3', 'Stot'], ['Apparent Power'])
+        this.menu.addChild("PQS_Phase_Child", 0, "PQS_Phase_S", [showField], ['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)', 'ROUND(Apparent_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kVA', 'kVA', 'kVA', 'kVA'], ['S1', 'S2', 'S3', 'Stot'], ['Apparent Power'])
         this.menu.addChild("PQS_Phase_S", 0, "PQS_Phase_S_action_up", [goUp, 3])
         this.menu.addChild("PQS_Phase_S", 1, "PQS_Phase_S_P", [goToParentChild, 0])
         this.menu.addChild("PQS_Phase_S", 2, "PQS_Phase_S_Q", [goToParentChild, 1])
@@ -471,12 +476,81 @@ class Schneider_PM2200 extends Schneider_PM21xx {
 
 
         this.menu.addChild("PQS_Child", 3, "PQS_Dmd_Child", [goToChild, 0])
-        this.menu.addChild("PQS_Dmd_Child", 0, "PQS_Phase_S", [showField],['ROUND(Apparent_Power_A,2)', 'ROUND(Apparent_Power_B,2)', 'ROUND(Apparent_Power_C,2)', 'ROUND(Apparent_Power_Total,2)'], ['action_up', 'P', 'Q', 'S'], ['kVA', 'kVA', 'kVA', 'kVA'], ['S1', 'S2', 'S3', 'Stot'], ['Apparent Power'])
-        this.menu.addChild("PQS_Phase_S", 0, "PQS_Phase_S_action_up", [goUp, 3])
-        this.menu.addChild("PQS_Phase_S", 1, "PQS_Phase_S_P", [goToParentChild, 0])
-        this.menu.addChild("PQS_Phase_S", 2, "PQS_Phase_S_Q", [goToParentChild, 1])
-        this.menu.addChild("PQS_Phase_S", 3, "PQS_Phase_S_S", [goToParentChild, 2])
 
+        this.menu.addChild("PQS_Dmd_Child", 0, "PQS_Dmd_P", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', 'Last'], ['Pwr Dmd Summary'])
+        this.menu.addChild("PQS_Dmd_P", 0, "PQS_Dmd_P_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Dmd_P", 1, "PQS_Dmd_P_Pd", [goToParentChild, 0])
+        this.menu.addChild("PQS_Dmd_P", 2, "PQS_Dmd_P_Qd", [goToParentChild, 1])
+        this.menu.addChild("PQS_Dmd_P", 3, "PQS_Dmd_P_Sd", [goToParentChild, 2])
+
+        this.menu.addChild("PQS_Dmd_Child", 1, "PQS_Dmd_Q", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', 'Last'], ['Pwr Dmd Summary'])
+        this.menu.addChild("PQS_Dmd_Q", 0, "PQS_Dmd_Q_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Dmd_Q", 1, "PQS_Dmd_Q_Pd", [goToParentChild, 0])
+        this.menu.addChild("PQS_Dmd_Q", 2, "PQS_Dmd_Q_Qd", [goToParentChild, 1])
+        this.menu.addChild("PQS_Dmd_Q", 3, "PQS_Dmd_Q_Sd", [goToParentChild, 2])
+
+
+        this.menu.addChild("PQS_Dmd_Child", 2, "PQS_Dmd_S", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', ''], ['Pwr Dmd Summary'])
+        this.menu.addChild("PQS_Dmd_S", 0, "PQS_Dmd_S_action_up", [goUp, 3])
+        this.menu.addChild("PQS_Dmd_S", 1, "PQS_Dmd_S_Pd", [goToParentChild, 0])
+        this.menu.addChild("PQS_Dmd_S", 2, "PQS_Dmd_S_Qd", [goToParentChild, 1])
+        this.menu.addChild("PQS_Dmd_S", 3, "PQS_Dmd_S_Sd", [goToParentChild, 2])
+
+
+        this.menu.addChild("summery", 3, "summery_action_right", [goRight, 4])
+
+        this.menu.addChild("summery", 4, "E", [goToChild, 0])
+
+        this.menu.addChild("E", 0, "Wh", [showField], ['ROUND(Active_Energy_Delivered,2)', 'ROUND(Active_Energy_Received,2)', 'ROUND(Active_Energy_Delivered_Pos_Received,2)', 'ROUND(Active_Energy_Delivered_Neg_Received,2)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MWh', 'MWh', 'MWh', 'MWh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum Wh'])
+        this.menu.addChild("Wh", 0, "E_action_up", [goUp, 3])
+        this.menu.addChild("Wh", 1, "E_Wh_Child", [goToParentChild, 0])
+        this.menu.addChild("Wh", 2, "E_VAh_Child", [goToParentChild, 1])
+        this.menu.addChild("Wh", 3, "E_action_right", [goRight, 4])
+        this.menu.addChild("Wh", 4, "E_action_up", [goUp, 3])
+        this.menu.addChild("Wh", 5, "E_VARh_Child", [goToParentChild, 2])
+        this.menu.addChild("Wh", 6, "E_Tariff_Child", [goToParentChild, 3])
+        this.menu.addChild("Wh", 7, "E_action_right", [goRight, 4])
+
+        this.menu.addChild("E", 1, "VAh", [showField], ['ROUND(Apparent_Energy_Delivered,2)', 'ROUND(Apparent_Energy_Received,2)', 'ROUND(Apparent_Energy_Delivered_Pos_Received,2)', 'ROUND(Apparent_Energy_Delivered_Neg_Received,2)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MVAh', 'MVAh', 'MVAh', 'MVAh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum VAh'])
+        this.menu.addChild("VAh", 0, "E_action_up", [goUp, 3])
+        this.menu.addChild("VAh", 1, "E_Wh_Child", [goToParentChild, 0])
+        this.menu.addChild("VAh", 2, "E_VAh_Child", [goToParentChild, 1])
+        this.menu.addChild("VAh", 3, "E_action_right", [goRight, 4])
+        this.menu.addChild("VAh", 4, "E_action_up", [goUp, 3])
+        this.menu.addChild("VAh", 5, "E_VARh_Child", [goToParentChild, 2])
+        this.menu.addChild("VAh", 6, "E_Tariff_Child", [goToParentChild, 3])
+        this.menu.addChild("VAh", 7, "E_action_right", [goRight, 4])
+
+        this.menu.addChild("E", 2, "VARh", [showField], ['ROUND(Reactive_Energy_Delivered,2)', 'ROUND(Reactive_Energy_Received,2)', 'ROUND(Reactive_Energy_Delivered_Pos_Received,2)', 'ROUND(Reactive_Energy_Delivered_Neg_Received,2)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MVAh', 'MVAh', 'MVAh', 'MVAh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum VARh'])
+        this.menu.addChild("VARh", 0, "E_action_up", [goUp, 3])
+        this.menu.addChild("VARh", 1, "E_Wh_Child", [goToParentChild, 0])
+        this.menu.addChild("VARh", 2, "E_VAh_Child", [goToParentChild, 1])
+        this.menu.addChild("VARh", 3, "E_action_right", [goRight, 4])
+        this.menu.addChild("VARh", 4, "E_action_up", [goUp, 3])
+        this.menu.addChild("VARh", 5, "E_VARh_Child", [goToParentChild, 2])
+        this.menu.addChild("VARh", 6, "E_Tariff_Child", [goToParentChild, 3])
+        this.menu.addChild("VARh", 7, "E_action_right", [goRight, 4])
+
+        this.menu.addChild("summery", 5, "PF", [goToChild, 0])
+        this.menu.addChild("PF", 0, "PF_True_Child", [showField], ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Power_Factor_Total,2)'], ['action_up', 'True', 'Disp', ''], ['Lead', 'Lead', 'Lead', 'Lead'], ['PF a', 'PF b', 'PF c', 'Ptot'], ['True PF'])
+        this.menu.addChild("PF_True_Child", 0, "PF_True_action_up", [goUp, 3])
+        this.menu.addChild("PF_True_Child", 1, "PF_True_True_Child", [goToParentChild, 0])
+        this.menu.addChild("PF_True_Child", 2, "PF_True_Disp_Child", [goToParentChild, 1])
+
+        this.menu.addChild("PF", 0, "PF_Disp_Child", [showField], ['ROUND(Displacement_Power_Factor_A,2)', 'ROUND(Displacement_Power_Factor_B,2)', 'ROUND(Displacement_Power_Factor_C,2)', 'ROUND(Displacement_Power_Factor_Total,2)'], ['action_up', 'True', 'Disp', ''], ['Lead', 'Lead', 'Lead', 'Lead'], ['PF a', 'PF b', 'PF c', 'Ptot'], ['Displacement PF'])
+        this.menu.addChild("PF_Disp_Child", 0, "PF_Disp_action_up", [goUp, 3])
+        this.menu.addChild("PF_Disp_Child", 1, "PF_Disp_True_Child", [goToParentChild, 0])
+        this.menu.addChild("PF_Disp_Child", 2, "PF_Disp_Disp_Child", [goToParentChild, 1])
+
+
+        this.menu.addChild("summery", 6, "F", [goToChild, 0])
+        this.menu.addChild("F", 0, "F_Child", [showField], ['ROUND(Frequency,2)', 'ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Power_Factor_Total,2)'], ['action_up', '', '', ''], ['Hz', 'V', 'A', 'Lead'], ['Freq', 'Vavg', 'Iavg', 'PF'], ['Frequency'])
+        this.menu.addChild("F_Child", 0, "F_action_up", [goUp, 3])
+
+
+        this.menu.addChild("summery", 7, "summery_action_right", [goRight, 4])
+
+        this.menu.showfieldCount = 4;
         this.menu.activeChildPath = [0];
         this.menu.updateChild();
     }
@@ -494,6 +568,8 @@ class Menu {
         this.header = header || null;
         this.children = child || [];
         this.lastIndex = 0;
+        this.downFieldIndex = 0;
+        this.showfieldCount = 4;
         this.activeChildPath = [];
         this.activeChild = [];
     }
@@ -593,22 +669,27 @@ class Menu {
 
     HandleAction() {
         let action = this.activeChild.action;
-        switch (action[0]) {
+        let action_type = action[0]
+        let action_value = action[1]
+        switch (action_type) {
             case goToChild:
-                this.childChildByNumber(action[1])
+                this.childChildByNumber(action_value)
                 this.HandleAction();
                 break;
             case goToParentChild:
                 this.changeLevel(2)
-                this.childChildByNumber(action[1])
+                this.childChildByNumber(action_value)
                 this.HandleAction();
                 break;
             case goUp:
-                this.changeLevel(action[1]);
+                this.changeLevel(action_value);
                 this.HandleAction();
                 break;
             case goRight:
-                this.changeLevel(action[1]);
+                this.changeLevel(1);
+                this.activeChild.downFieldIndex += this.showfieldCount;
+                if (this.activeChild.downFieldIndex >= this.activeChild.downfield.length)
+                    this.activeChild.downFieldIndex = 0
                 this.HandleAction();
                 break;
             default:
@@ -715,15 +796,15 @@ function Schneider_PM2100_HTML() {
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;"> 
                             <label class="text-center showLabel1" 
-                                   style="font-size: 64px; color : #ff0000;margin: auto!important;"></label> 
+                                   style="font-size: 64px; color : #ff0000;margin: auto!important;direction: ltr!important;"></label> 
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;"> 
                             <label class="text-center showLabel2" 
-                                   style="font-size: 64px; color : #ff0000;margin: auto!important;"></label>
+                                   style="font-size: 64px; color : #ff0000;margin: auto!important;direction: ltr!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 93px;margin: auto!important;">
                             <label class="text-center showLabel3" 
-                                   style="font-size: 64px; color : #ff0000;margin: auto!important;"></label>
+                                   style="font-size: 64px; color : #ff0000;margin: auto!important;direction: ltr!important;"></label>
                         </div> 
                     </div> 
                     <div class="row" style="position:relative;top: 52px;"> 
@@ -840,35 +921,35 @@ function Schneider_PM2200_HTML() {
                         
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel1 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
-                            <label class="text-center showLabel1 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
+                            <label class="text-left showLabel1 valueLabel" 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;direction: ltr!important;"></label> 
                             <label class="text-center showLabel1 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel2 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
-                            <label class="text-center showLabel2 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
+                            <label class="text-left showLabel2 valueLabel" 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;direction: ltr!important;"></label> 
                             <label class="text-center showLabel2 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel3 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
-                            <label class="text-center showLabel3 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
+                            <label class="text-left showLabel3 valueLabel" 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;direction: ltr!important;"></label> 
                             <label class="text-center showLabel3 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
                         </div> 
                         <div class="row text-center" style="height: 44px;margin: auto!important;">
                             <label class="text-center showLabel4 unitLabel" 
-                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
-                            <label class="text-center showLabel4 valueLabel" 
-                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;"></label> 
+                                    style="font-size: 18px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
+                            <label class="text-left showLabel4 valueLabel" 
+                                    style="font-size: 32px; color : #2a2f35;width: 126px;margin: auto!important;direction: ltr!important;"></label> 
                             <label class="text-center showLabel4 desLabel" 
-                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;"></label>
+                                    style="font-size: 14px; color : #2a2f35;width: 63px;margin: auto!important;direction: ltr!important;"></label>
                         </div> 
                       
                         <div class="row text-center" style="height: 28px;margin: auto!important;border-top: 2px solid #0c2920;"> 

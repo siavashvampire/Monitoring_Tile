@@ -412,7 +412,7 @@ class Schneider_PM2200 extends Schneider_PM21xx {
 
     createMenu() {
         this.menu = new Menu(this.id, "Schneider_PM2200_" + this.id);
-        this.menu.addChild(null, 1, "summery", [showField], ['ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Active_Power_Total,2)', 'ROUND(Active_Energy_Delivered/1000,3)'], ['I', 'V-v', 'PQS', 'action_right', 'E', 'PF', 'F', 'action_right'], ['V', 'A', 'kW', 'MWh'], ['Vavg', 'Iavg', 'Ptot', 'E Del'], ['Summery'])
+        this.menu.addChild(null, 1, "summery", [showField], ['ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Active_Power_Total,2)', 'ROUND(Active_Energy_Delivered/1000,2)'], ['I', 'V-v', 'PQS', 'action_right', 'E', 'PF', 'F', 'action_right'], ['V', 'A', 'kW', 'MWh'], ['Vavg', 'Iavg', 'Ptot', 'E Del'], ['Summery'])
 
         this.menu.addChild("summery", 0, "I", [goToChild, 0])
 
@@ -501,7 +501,7 @@ class Schneider_PM2200 extends Schneider_PM21xx {
 
         this.menu.addChild("summery", 4, "E", [goToChild, 0])
 
-        this.menu.addChild("E", 0, "Wh", [showField], ['ROUND(Active_Energy_Delivered/1000,3)', 'ROUND(Active_Energy_Received/1000,3)', 'ROUND(Active_Energy_Delivered_Pos_Received/1000,3)', 'ROUND(Active_Energy_Delivered_Neg_Received/1000,3)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MWh', 'MWh', 'MWh', 'MWh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum Wh'])
+        this.menu.addChild("E", 0, "Wh", [showField], ['ROUND(Active_Energy_Delivered/1000,2)', 'ROUND(Active_Energy_Received/1000,2)', 'ROUND(Active_Energy_Delivered_Pos_Received/1000,2)', 'ROUND(Active_Energy_Delivered_Neg_Received/1000,2)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MWh', 'MWh', 'MWh', 'MWh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum Wh'])
         this.menu.addChild("Wh", 0, "E_action_up", [goUp, 3])
         this.menu.addChild("Wh", 1, "E_Wh_Child", [goToParentChild, 0])
         this.menu.addChild("Wh", 2, "E_VAh_Child", [goToParentChild, 1])
@@ -511,7 +511,7 @@ class Schneider_PM2200 extends Schneider_PM21xx {
         this.menu.addChild("Wh", 6, "E_Tariff_Child", [goToParentChild, 3])
         this.menu.addChild("Wh", 7, "E_action_right", [goRight, 4])
 
-        this.menu.addChild("E", 1, "VAh", [showField], ['ROUND(Apparent_Energy_Delivered/1000,3)', 'ROUND(Apparent_Energy_Received/1000,3)', 'ROUND(Apparent_Energy_Delivered_Pos_Received/1000,3)', 'ROUND(Apparent_Energy_Delivered_Neg_Received/1000,3)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MVAh', 'MVAh', 'MVAh', 'MVAh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum VAh'])
+        this.menu.addChild("E", 1, "VAh", [showField], ['ROUND(Apparent_Energy_Delivered/1000,2)', 'ROUND(Apparent_Energy_Received/1000,2)', 'ROUND(Apparent_Energy_Delivered_Pos_Received/1000,2)', 'ROUND(Apparent_Energy_Delivered_Neg_Received/1000,2)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MVAh', 'MVAh', 'MVAh', 'MVAh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum VAh'])
         this.menu.addChild("VAh", 0, "E_action_up", [goUp, 3])
         this.menu.addChild("VAh", 1, "E_Wh_Child", [goToParentChild, 0])
         this.menu.addChild("VAh", 2, "E_VAh_Child", [goToParentChild, 1])
@@ -521,7 +521,7 @@ class Schneider_PM2200 extends Schneider_PM21xx {
         this.menu.addChild("VAh", 6, "E_Tariff_Child", [goToParentChild, 3])
         this.menu.addChild("VAh", 7, "E_action_right", [goRight, 4])
 
-        this.menu.addChild("E", 2, "VARh", [showField], ['ROUND(Reactive_Energy_Delivered/1000,3)', 'ROUND(Reactive_Energy_Received/1000,3)', 'ROUND(Reactive_Energy_Delivered_Pos_Received/1000,3)', 'ROUND(Reactive_Energy_Delivered_Neg_Received/1000,3)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MVAh', 'MVAh', 'MVAh', 'MVAh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum VARh'])
+        this.menu.addChild("E", 2, "VARh", [showField], ['ROUND(Reactive_Energy_Delivered/1000,2)', 'ROUND(Reactive_Energy_Received/1000,2)', 'ROUND(Reactive_Energy_Delivered_Pos_Received/1000,2)', 'ROUND(Reactive_Energy_Delivered_Neg_Received/1000,2)'], ['action_up', 'Wh', 'VAh', 'action_right','action_up', 'VARh', 'Tariff', 'action_right'], ['MVAh', 'MVAh', 'MVAh', 'MVAh'], ['Del', 'Rec', 'D+R', 'D-R'], ['Accum VARh'])
         this.menu.addChild("VARh", 0, "E_action_up", [goUp, 3])
         this.menu.addChild("VARh", 1, "E_Wh_Child", [goToParentChild, 0])
         this.menu.addChild("VARh", 2, "E_VAh_Child", [goToParentChild, 1])

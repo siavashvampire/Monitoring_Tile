@@ -150,7 +150,67 @@ class electrical extends innerController
 
     private static function insertLog($_data): array
     {
-        $data = request::getFromArray($_data, 'substation_id,unitId,Start_time,Current_A,Current_B,Current_C,Current_N,Current_G,Current_Avg,Current_Unbalance_A,Current_Unbalance_B,Current_Unbalance_C,Current_Unbalance_Worst,Voltage_A_B,Voltage_B_C,Voltage_C_A,Voltage_L_L_Avg,Voltage_A_N,Voltage_B_N,Voltage_C_N,Voltage_L_N_Avg,Voltage_Unbalance_A_B,Voltage_Unbalance_B_C,Voltage_Unbalance_C_A,Voltage_Unbalance_L_L_Worst,Voltage_Unbalance_A_N,Voltage_Unbalance_B_N,Voltage_Unbalance_C_N,Voltage_Unbalance_L_N_Worst,Active_Power_A,Active_Power_B,Active_Power_C,Active_Power_Total,Reactive_Power_A,Reactive_Power_B,Reactive_Power_C,Reactive_Power_Total,Apparent_Power_A,Apparent_Power_B,Apparent_Power_C,Apparent_Power_Total,Power_Factor_A,Power_Factor_B,Power_Factor_C,Power_Factor_Total,Displacement_Power_Factor_A,Displacement_Power_Factor_B,Displacement_Power_Factor_C,Displacement_Power_Factor_Total,Frequency,Active_Energy_Delivered_Into_Load,Active_Energy_Received_Out_of_Load,Active_Energy_Delivered_Pos_Received,Active_Energy_Delivered_Neg_Received,Reactive_Energy_Delivered,Reactive_Energy_Received,Reactive_Energy_Delivered_Pos_Received,Reactive_Energy_Delivered_Neg_Received,Apparent_Energy_Delivered,Apparent_Energy_Received,Apparent_Energy_Delivered_Pos_Received,Apparent_Energy_Delivered_Neg_Received,Reactive_Energy_in_Quadrant_I,Reactive_Energy_in_Quadrant_II,Reactive_Energy_in_Quadrant_III,Reactive_Energy_in_Quadrant_IV,Active_Energy_Delivered_Into_Load_Permanent,Active_Energy_Received_Out_of_Load_Permanent,Active_Energy_Delivered_Pos_Received_Permanent,Active_Energy_Delivered_Neg_Received_Permanent,Reactive_Energy_Delivered_Permanent,Reactive_Energy_Received_Permanent,Reactive_Energy_Delivered_Pos_Received_Permanent,Reactive_Energy_Delivered_Neg_Received_Permanent,Apparent_Energy_Delivered_Permanent,Apparent_Energy_Received_Permanent,Apparent_Energy_Delivered_Pos_Received_Permanent,Apparent_Energy_Delivered_Neg_Received_Permanent,Active_Energy_Delivered_Phase_A,Active_Energy_Delivered_Phase_B,Active_Energy_Delivered_Phase_C,Reactive_Energy_Delivered_Phase_A,Reactive_Energy_Delivered_Phase_B,Reactive_Energy_Delivered_Phase_C,Apparent_Energy_Delivered_Phase_A,Apparent_Energy_Delivered_Phase_B,Apparent_Energy_Delivered_Phase_C');
+        $key = array();
+        $key[] = 'substation_id';
+        $key[] = 'unitId';
+        $key[] = 'Start_time';
+        $key[] = 'Current_A';
+        $key[] = 'Current_B';
+        $key[] = 'Current_C';
+        $key[] = 'Current_N';
+        $key[] = 'Current_G';
+        $key[] = 'Current_Avg';
+        $key[] = 'Voltage_A_B';
+        $key[] = 'Voltage_B_C';
+        $key[] = 'Voltage_C_A';
+        $key[] = 'Voltage_L_L_Avg';
+        $key[] = 'Voltage_A_N';
+        $key[] = 'Voltage_B_N';
+        $key[] = 'Voltage_C_N';
+        $key[] = 'Voltage_L_N_Avg';
+        $key[] = 'Active_Power_A';
+        $key[] = 'Active_Power_B';
+        $key[] = 'Active_Power_C';
+        $key[] = 'Active_Power_Total';
+        $key[] = 'Reactive_Power_A';
+        $key[] = 'Reactive_Power_B';
+        $key[] = 'Reactive_Power_C';
+        $key[] = 'Reactive_Power_Total';
+        $key[] = 'Apparent_Power_A';
+        $key[] = 'Apparent_Power_B';
+        $key[] = 'Apparent_Power_C';
+        $key[] = 'Apparent_Power_Total';
+        $key[] = 'Power_Factor_A';
+        $key[] = 'Power_Factor_B';
+        $key[] = 'Power_Factor_C';
+        $key[] = 'Power_Factor_Total';
+        $key[] = 'Displacement_Power_Factor_A';
+        $key[] = 'Displacement_Power_Factor_B';
+        $key[] = 'Displacement_Power_Factor_C';
+        $key[] = 'Displacement_Power_Factor_Total';
+        $key[] = 'Frequency';
+        $key[] = 'Active_Energy_Delivered';
+        $key[] = 'Active_Energy_Received';
+        $key[] = 'Active_Energy_Delivered_Pos_Received';
+        $key[] = 'Active_Energy_Delivered_Neg_Received';
+        $key[] = 'Reactive_Energy_Delivered';
+        $key[] = 'Reactive_Energy_Received';
+        $key[] = 'Reactive_Energy_Delivered_Pos_Received';
+        $key[] = 'Reactive_Energy_Delivered_Neg_Received';
+        $key[] = 'Apparent_Energy_Delivered';
+        $key[] = 'Apparent_Energy_Received';
+        $key[] = 'Apparent_Energy_Delivered_Pos_Received';
+        $key[] = 'Apparent_Energy_Delivered_Neg_Received';
+        $key[] = 'Active_Power_Last_Demand';
+        $key[] = 'Reactive_Power_Last_Demand';
+        $key[] = 'Apparent_Power_Last_Demand';
+        $key[] = 'Current_Avg_Last_Demand';
+        $key[] = 'Current_Avg_Present_Demand';
+        $key[] = 'Current_Avg_Predicted_Demand';
+        $key[] = 'Current_Avg_Peak_Demand';
+        $key[] = 'Current_Avg_PK_DT_Demand';
+        $key = implode(",",$key);
+        $data = request::getFromArray($_data, $key);
         /* @var Substation $Substation */
         $Substation = parent::model(['ElectricalSubstation', 'Substation'], [$data['substation_id']], 'id = ? ');
 
@@ -237,6 +297,7 @@ class electrical extends innerController
         if (!$log->insertToDataBase()) {
             return [false, model::getLastQuery()];
         }
+
         return [true];
     }
 }

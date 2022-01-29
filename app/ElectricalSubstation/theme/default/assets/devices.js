@@ -232,29 +232,29 @@ class Schneider_PM2100 extends Schneider_PM21xx {
         this.menu.addChild("section1", 5, "index 5", showField, ['ROUND(Active_Power_A,2)', 'ROUND(Active_Power_B,2)', 'ROUND(Active_Power_C,2)'])
         this.menu.addChild("section1", 6, "index 6", showField, ['ROUND(Reactive_Power_A,2)', 'ROUND(Reactive_Power_B,2)', 'ROUND(Reactive_Power_C,2)'])
         this.menu.addChild("section1", 7, "index 7", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
-        this.menu.addChild("section1", 8, "index 8", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Voltage_B_N,2)'])
-        this.menu.addChild("section1", 9, "index 9", showField, ['ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)', 'ROUND(Current_A,2)'])
+        this.menu.addChild("section1", 8, "index 8", showField, ['0', '0', '0'])
+        this.menu.addChild("section1", 9, "index 9", showField, ['0', '0', '0'])
 
         this.menu.addChild("section2", 1, "index 1", showField, [null, null, 'ROUND(Active_Energy_Delivered,2)'])
         this.menu.addChild("section2", 2, "index 2", showField, [null, null, 'ROUND(Apparent_Energy_Delivered,2)'])
         this.menu.addChild("section2", 3, "index 3", showField, [null, null, 'ROUND(Reactive_Energy_Delivered,2)'])
-        this.menu.addChild("section2", 4, "index 4", showField, [null, null, 'ROUND(Active_Energy_Received_Out_of_Load,2)'])
+        this.menu.addChild("section2", 4, "index 4", showField, [null, null, 'ROUND(Active_Energy_Received,2)'])
         this.menu.addChild("section2", 5, "index 5", showField, [null, null, 'ROUND(Reactive_Energy_Received,2)'])
         this.menu.addChild("section2", 6, "index 6", showField, [null, null, 'ROUND(Apparent_Energy_Received,2)'])
 
-        this.menu.addChild("section3", 2, "index 2", showField, ['ROUND(Current_Avg,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
+        this.menu.addChild("section3", 2, "index 2", showField, ['ROUND(Apparent_Power_Last_Demand,2)', 'ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)'])
 
-        this.menu.addChild("section4", 2, "index 2", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Reactive_Power_Total,2)'])
+        this.menu.addChild("section4", 2, "index 2", showField, ['ROUND(Apparent_Power_Present_Demand,2)', 'ROUND(Active_Power_Present_Demand,2)', 'ROUND(Reactive_Power_Present_Demand,2)'])
 
-        this.menu.addChild("section5", 2, "index 2", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section5", 2, "index 2", showField, ['ROUND(Apparent_Power_Predicted_Demand,2)', 'ROUND(Active_Power_Predicted_Demand,2)', 'ROUND(Reactive_Power_Predicted_Demand,2)'])
 
-        this.menu.addChild("section6", 2, "index 2", showField, ['ROUND(Power_Factor_A,2)', 'ROUND(Power_Factor_B,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section6", 2, "index 2", showField, ['ROUND(Apparent_Power_Peak_Demand,2)', 'ROUND(Active_Power_Peak_Demand,2)', 'ROUND(Reactive_Power_Peak_Demand,2)'])
 
         this.menu.addChild("section7", 1, "index 1", showField, ['DATE_FORMAT(JStart_time, "%Y")', 'DATE_FORMAT(JStart_time, "%m.%d")', 'DATE_FORMAT(Start_time, "%H.%i")'])
 
-        this.menu.addChild("section8", 1, "index 1", showField, ['ROUND(Current_Avg,2)', 'ROUND(Power_Factor_Total,2)', 'ROUND(Voltage_L_N_Avg,2)'])
+        this.menu.addChild("section8", 1, "index 1", showField, ['ROUND(Voltage_L_N_Avg,2)', 'ROUND(Current_Avg,2)', 'ROUND(Power_Factor_Total,2)'])
         this.menu.addChild("section8", 2, "index 2", showField, ['ROUND(Apparent_Power_Total,2)', 'ROUND(Reactive_Power_Total,2)', 'ROUND(Active_Power_Total,2)'])
-        this.menu.addChild("section8", 3, "index 3", showField, ['ROUND(Frequency,2)', 'ROUND(Current_Unbalance_Worst,2)', 'ROUND(Power_Factor_C,2)'])
+        this.menu.addChild("section8", 3, "index 3", showField, ['ROUND(Frequency,2)', 'ROUND(Current_N,2)', 'ROUND(0,2)'])
 
         this.menu.showfieldCount = 3;
         this.menu.activeChildPath = [0, 0];
@@ -477,13 +477,13 @@ class Schneider_PM2200 extends Schneider_PM21xx {
 
         this.menu.addChild("PQS_Child", 3, "PQS_Dmd_Child", [goToChild, 0])
 
-        this.menu.addChild("PQS_Dmd_Child", 0, "PQS_Dmd_P", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', 'Last'], ['Pwr Dmd Summary'])
+        this.menu.addChild("PQS_Dmd_Child", 0, "PQS_Dmd_P", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', ''], ['Pwr Dmd Summary'])
         this.menu.addChild("PQS_Dmd_P", 0, "PQS_Dmd_P_action_up", [goUp, 3])
         this.menu.addChild("PQS_Dmd_P", 1, "PQS_Dmd_P_Pd", [goToParentChild, 0])
         this.menu.addChild("PQS_Dmd_P", 2, "PQS_Dmd_P_Qd", [goToParentChild, 1])
         this.menu.addChild("PQS_Dmd_P", 3, "PQS_Dmd_P_Sd", [goToParentChild, 2])
 
-        this.menu.addChild("PQS_Dmd_Child", 1, "PQS_Dmd_Q", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', 'Last'], ['Pwr Dmd Summary'])
+        this.menu.addChild("PQS_Dmd_Child", 1, "PQS_Dmd_Q", [showField], ['ROUND(Active_Power_Last_Demand,2)', 'ROUND(Reactive_Power_Last_Demand,2)', 'ROUND(Apparent_Power_Last_Demand,2)', null], ['action_up', 'Pd', 'Qd', 'Sd'], ['kW', 'kVAR', 'kVA', ''], ['Last', 'Last', 'Last', ''], ['Pwr Dmd Summary'])
         this.menu.addChild("PQS_Dmd_Q", 0, "PQS_Dmd_Q_action_up", [goUp, 3])
         this.menu.addChild("PQS_Dmd_Q", 1, "PQS_Dmd_Q_Pd", [goToParentChild, 0])
         this.menu.addChild("PQS_Dmd_Q", 2, "PQS_Dmd_Q_Qd", [goToParentChild, 1])

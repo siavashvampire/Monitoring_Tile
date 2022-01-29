@@ -39,16 +39,28 @@ class elecsub_data_archive extends model implements modelInterFace
     private $Active_Power_C;
     private $Active_Power_Total;
     private $Active_Power_Last_Demand;
+    private $Active_Power_Present_Demand;
+    private $Active_Power_Predicted_Demand;
+    private $Active_Power_Peak_Demand;
+    private $Active_Power_PK_DT_Demand;
     private $Reactive_Power_A;
     private $Reactive_Power_B;
     private $Reactive_Power_C;
     private $Reactive_Power_Total;
     private $Reactive_Power_Last_Demand;
+    private $Reactive_Power_Present_Demand;
+    private $Reactive_Power_Predicted_Demand;
+    private $Reactive_Power_Peak_Demand;
+    private $Reactive_Power_PK_DT_Demand;
     private $Apparent_Power_A;
     private $Apparent_Power_B;
     private $Apparent_Power_C;
     private $Apparent_Power_Total;
     private $Apparent_Power_Last_Demand;
+    private $Apparent_Power_Present_Demand;
+    private $Apparent_Power_Predicted_Demand;
+    private $Apparent_Power_Peak_Demand;
+    private $Apparent_Power_PK_DT_Demand;
     private $Power_Factor_A;
     private $Power_Factor_B;
     private $Power_Factor_C;
@@ -102,16 +114,28 @@ class elecsub_data_archive extends model implements modelInterFace
         $this->Active_Power_C = $result['Active_Power_C'];
         $this->Active_Power_Total = $result['Active_Power_Total'];
         $this->Active_Power_Last_Demand = $result['Active_Power_Last_Demand'];
+        $this->Active_Power_Present_Demand = $result['Active_Power_Present_Demand'];
+        $this->Active_Power_Predicted_Demand = $result['Active_Power_Predicted_Demand'];
+        $this->Active_Power_Peak_Demand = $result['Active_Power_Peak_Demand'];
+        $this->Active_Power_PK_DT_Demand = $result['Active_Power_PK_DT_Demand'];
         $this->Reactive_Power_A = $result['Reactive_Power_A'];
         $this->Reactive_Power_B = $result['Reactive_Power_B'];
         $this->Reactive_Power_C = $result['Reactive_Power_C'];
         $this->Reactive_Power_Total = $result['Reactive_Power_Total'];
-        $this->Active_Power_Last_Demand = $result['Reactive_Power_Last_Demand'];
+        $this->Reactive_Power_Last_Demand = $result['Reactive_Power_Last_Demand'];
+        $this->Reactive_Power_Present_Demand = $result['Reactive_Power_Present_Demand'];
+        $this->Reactive_Power_Predicted_Demand = $result['Reactive_Power_Predicted_Demand'];
+        $this->Reactive_Power_Peak_Demand = $result['Reactive_Power_Peak_Demand'];
+        $this->Reactive_Power_PK_DT_Demand = $result['Reactive_Power_PK_DT_Demand'];
         $this->Apparent_Power_A = $result['Apparent_Power_A'];
         $this->Apparent_Power_B = $result['Apparent_Power_B'];
         $this->Apparent_Power_C = $result['Apparent_Power_C'];
         $this->Apparent_Power_Total = $result['Apparent_Power_Total'];
-        $this->Active_Power_Last_Demand = $result['Apparent_Power_Last_Demand'];
+        $this->Apparent_Power_Last_Demand = $result['Apparent_Power_Last_Demand'];
+        $this->Apparent_Power_Present_Demand = $result['Apparent_Power_Present_Demand'];
+        $this->Apparent_Power_Predicted_Demand = $result['Apparent_Power_Predicted_Demand'];
+        $this->Apparent_Power_Peak_Demand = $result['Apparent_Power_Peak_Demand'];
+        $this->Apparent_Power_PK_DT_Demand = $result['Apparent_Power_PK_DT_Demand'];
         $this->Power_Factor_A = $result['Power_Factor_A'];
         $this->Power_Factor_B = $result['Power_Factor_B'];
         $this->Power_Factor_C = $result['Power_Factor_C'];
@@ -166,16 +190,28 @@ class elecsub_data_archive extends model implements modelInterFace
         $array['Active_Power_C'] = $this->Active_Power_C;
         $array['Active_Power_Total'] = $this->Active_Power_Total;
         $array['Active_Power_Last_Demand'] = $this->Active_Power_Last_Demand;
+        $array['Active_Power_Present_Demand'] = $this->Active_Power_Present_Demand;
+        $array['Active_Power_Predicted_Demand'] = $this->Active_Power_Predicted_Demand;
+        $array['Active_Power_Peak_Demand'] = $this->Active_Power_Peak_Demand;
+        $array['Active_Power_PK_DT_Demand'] = $this->Active_Power_PK_DT_Demand;
         $array['Reactive_Power_A'] = $this->Reactive_Power_A;
         $array['Reactive_Power_B'] = $this->Reactive_Power_B;
         $array['Reactive_Power_C'] = $this->Reactive_Power_C;
         $array['Reactive_Power_Total'] = $this->Reactive_Power_Total;
         $array['Reactive_Power_Last_Demand'] = $this->Reactive_Power_Last_Demand;
+        $array['Reactive_Power_Present_Demand'] = $this->Reactive_Power_Present_Demand;
+        $array['Reactive_Power_Predicted_Demand'] = $this->Reactive_Power_Predicted_Demand;
+        $array['Reactive_Power_Peak_Demand'] = $this->Reactive_Power_Peak_Demand;
+        $array['Reactive_Power_PK_DT_Demand'] = $this->Reactive_Power_PK_DT_Demand;
         $array['Apparent_Power_A'] = $this->Apparent_Power_A;
         $array['Apparent_Power_B'] = $this->Apparent_Power_B;
         $array['Apparent_Power_C'] = $this->Apparent_Power_C;
         $array['Apparent_Power_Total'] = $this->Apparent_Power_Total;
         $array['Apparent_Power_Last_Demand'] = $this->Apparent_Power_Last_Demand;
+        $array['Apparent_Power_Present_Demand'] = $this->Apparent_Power_Present_Demand;
+        $array['Apparent_Power_Predicted_Demand'] = $this->Apparent_Power_Predicted_Demand;
+        $array['Apparent_Power_Peak_Demand'] = $this->Apparent_Power_Peak_Demand;
+        $array['Apparent_Power_PK_DT_Demand'] = $this->Apparent_Power_PK_DT_Demand;
         $array['Power_Factor_A'] = $this->Power_Factor_A;
         $array['Power_Factor_B'] = $this->Power_Factor_B;
         $array['Power_Factor_C'] = $this->Power_Factor_C;
@@ -667,6 +703,70 @@ class elecsub_data_archive extends model implements modelInterFace
     /**
      * @return mixed
      */
+    public function getActivePowerPresentDemand()
+    {
+        return $this->Active_Power_Present_Demand;
+    }
+
+    /**
+     * @param mixed $Active_Power_Present_Demand
+     */
+    public function setActivePowerPresentDemand($Active_Power_Present_Demand): void
+    {
+        $this->Active_Power_Present_Demand = $Active_Power_Present_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivePowerPredictedDemand()
+    {
+        return $this->Active_Power_Predicted_Demand;
+    }
+
+    /**
+     * @param mixed $Active_Power_Predicted_Demand
+     */
+    public function setActivePowerPredictedDemand($Active_Power_Predicted_Demand): void
+    {
+        $this->Active_Power_Predicted_Demand = $Active_Power_Predicted_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivePowerPeakDemand()
+    {
+        return $this->Active_Power_Peak_Demand;
+    }
+
+    /**
+     * @param mixed $Active_Power_Peak_Demand
+     */
+    public function setActivePowerPeakDemand($Active_Power_Peak_Demand): void
+    {
+        $this->Active_Power_Peak_Demand = $Active_Power_Peak_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getActivePowerPKDTDemand()
+    {
+        return $this->Active_Power_PK_DT_Demand;
+    }
+
+    /**
+     * @param mixed $Active_Power_PK_DT_Demand
+     */
+    public function setActivePowerPKDTDemand($Active_Power_PK_DT_Demand): void
+    {
+        $this->Active_Power_PK_DT_Demand = $Active_Power_PK_DT_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getReactivePowerA()
     {
         return $this->Reactive_Power_A;
@@ -747,6 +847,70 @@ class elecsub_data_archive extends model implements modelInterFace
     /**
      * @return mixed
      */
+    public function getReactivePowerPresentDemand()
+    {
+        return $this->Reactive_Power_Present_Demand;
+    }
+
+    /**
+     * @param mixed $Reactive_Power_Present_Demand
+     */
+    public function setReactivePowerPresentDemand($Reactive_Power_Present_Demand): void
+    {
+        $this->Reactive_Power_Present_Demand = $Reactive_Power_Present_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReactivePowerPredictedDemand()
+    {
+        return $this->Reactive_Power_Predicted_Demand;
+    }
+
+    /**
+     * @param mixed $Reactive_Power_Predicted_Demand
+     */
+    public function setReactivePowerPredictedDemand($Reactive_Power_Predicted_Demand): void
+    {
+        $this->Reactive_Power_Predicted_Demand = $Reactive_Power_Predicted_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReactivePowerPeakDemand()
+    {
+        return $this->Reactive_Power_Peak_Demand;
+    }
+
+    /**
+     * @param mixed $Reactive_Power_Peak_Demand
+     */
+    public function setReactivePowerPeakDemand($Reactive_Power_Peak_Demand): void
+    {
+        $this->Reactive_Power_Peak_Demand = $Reactive_Power_Peak_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getReactivePowerPKDTDemand()
+    {
+        return $this->Reactive_Power_PK_DT_Demand;
+    }
+
+    /**
+     * @param mixed $Reactive_Power_PK_DT_Demand
+     */
+    public function setReactivePowerPKDTDemand($Reactive_Power_PK_DT_Demand): void
+    {
+        $this->Reactive_Power_PK_DT_Demand = $Reactive_Power_PK_DT_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getApparentPowerA()
     {
         return $this->Apparent_Power_A;
@@ -822,6 +986,70 @@ class elecsub_data_archive extends model implements modelInterFace
     public function setApparentPowerLastDemand($Apparent_Power_Last_Demand): void
     {
         $this->Apparent_Power_Last_Demand = $Apparent_Power_Last_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApparentPowerPresentDemand()
+    {
+        return $this->Apparent_Power_Present_Demand;
+    }
+
+    /**
+     * @param mixed $Apparent_Power_Present_Demand
+     */
+    public function setApparentPowerPresentDemand($Apparent_Power_Present_Demand): void
+    {
+        $this->Apparent_Power_Present_Demand = $Apparent_Power_Present_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApparentPowerPredictedDemand()
+    {
+        return $this->Apparent_Power_Predicted_Demand;
+    }
+
+    /**
+     * @param mixed $Apparent_Power_Predicted_Demand
+     */
+    public function setApparentPowerPredictedDemand($Apparent_Power_Predicted_Demand): void
+    {
+        $this->Apparent_Power_Predicted_Demand = $Apparent_Power_Predicted_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApparentPowerPeakDemand()
+    {
+        return $this->Apparent_Power_Peak_Demand;
+    }
+
+    /**
+     * @param mixed $Apparent_Power_Peak_Demand
+     */
+    public function setApparentPowerPeakDemand($Apparent_Power_Peak_Demand): void
+    {
+        $this->Apparent_Power_Peak_Demand = $Apparent_Power_Peak_Demand;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getApparentPowerPKDTDemand()
+    {
+        return $this->Apparent_Power_PK_DT_Demand;
+    }
+
+    /**
+     * @param mixed $Apparent_Power_PK_DT_Demand
+     */
+    public function setApparentPowerPKDTDemand($Apparent_Power_PK_DT_Demand): void
+    {
+        $this->Apparent_Power_PK_DT_Demand = $Apparent_Power_PK_DT_Demand;
     }
 
     /**

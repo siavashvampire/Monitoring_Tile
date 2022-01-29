@@ -35,7 +35,7 @@
                             <label for="file_code" class="col-form-label col-md-3 float-right">{_ "code"} {_ "file"}:</label>
                             <div class="col-md-9">
                                 <div class="form-group has-default">
-                                    <input type="number" min="0" class="form-control" step="0.1"  id="file_code" name="file_code" value="{if isset($Mold.post.file_code)}{$Mold.post.file_code}{elseif isset($model)}{$model->getFileCode()}{/if}">
+                                    <input type="number" min="0" class="form-control" step="0.01"  id="file_code" name="file_code" value="{if isset($Mold.post.file_code)}{$Mold.post.file_code}{elseif isset($model)}{$model->getFileCode()}{/if}">
                                 </div>
                             </div>
                         </div>

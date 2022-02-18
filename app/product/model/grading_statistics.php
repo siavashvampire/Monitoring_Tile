@@ -17,12 +17,14 @@ class grading_statistics extends model implements modelInterFace {
 	private $product_id ;
 	private $novanc_id ;
 	private $insert_date ;
+	private $insert_id ;
 	private $routine_date ;
 	public function setFromArray($result) {
 		$this->id = $result['id'] ;
 		$this->product_id = $result['product_id'] ;
 		$this->novanc_id = $result['novanc_id'] ;
 		$this->insert_date = $result['insert_date'] ;
+		$this->insert_id = $result['insert_id'] ;
 		$this->routine_date = $result['routine_date'] ;
 	}
 
@@ -31,6 +33,7 @@ class grading_statistics extends model implements modelInterFace {
 		$array['product_id'] = $this->product_id ;
 		$array['novanc_id'] = $this->novanc_id ;
 		$array['insert_date'] = $this->insert_date ;
+		$array['insert_id'] = $this->insert_id ;
 		$array['routine_date'] = $this->routine_date ;
 		return $array ;
 	}
@@ -67,12 +70,15 @@ class grading_statistics extends model implements modelInterFace {
             'product_size.label as size',
             'product.body as body_id',
             'product_body.label as body',
+            'CONCAT(user.fname , \' \',user.lname) as user',
+            'user.userId as user_id',
         ];
         parent::join('grading_statistics_space as space' ,  'space.grading_statistic_id = item.id');
         parent::join('product_novanc as novanc' ,  'novanc.id = item.novanc_id');
         parent::join('product as product' ,  'product.id = item.product_id');
         parent::join('product_size as product_size' ,  'product_size.id = product.size');
         parent::join('product_body as product_body' ,  'product_body.id = product.body');
+        parent::join('user as user' ,  'user.userId = item.insert_id');
 
         foreach ($kind_degree as  $degree){
             $select[] = 'MAX(CASE WHEN space.degree_id = \''.$degree['id'].'\' 
@@ -170,5 +176,21 @@ class grading_statistics extends model implements modelInterFace {
     public function setRoutineDate($routine_date): void
     {
         $this->routine_date = $routine_date;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInsertId()
+    {
+        return $this->insert_id;
+    }
+
+    /**
+     * @param mixed $insert_id
+     */
+    public function setInsertId($insert_id): void
+    {
+        $this->insert_id = $insert_id;
     }
 }

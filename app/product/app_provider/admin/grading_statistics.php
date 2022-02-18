@@ -113,6 +113,7 @@ class grading_statistics extends controller
         $object->setProductId($data['product_id']);
         $object->setNovancId($data['novance_id']);
         $object->setRoutineDate($miladi);
+        $object->setInsertId(user::getUserLogin(true));
         $space = new grading_statistics_space();
         if ( $id == 0 ){
             $object->setInsertDate(date('Y-m-d'));

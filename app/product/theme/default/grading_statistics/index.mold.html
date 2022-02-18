@@ -16,7 +16,7 @@
                             <form class="form-horizontal" id="listToGetFromServerForm" method="post"  onsubmit="return search('{url current}' ,'{$loadDivID}');">
                                 <div class="row">
                                     <div class="col-md-4">
-                                        <label class="col-md-3 col-form-label">{_ "product_label"}</label>
+                                        <label class="col-md-3 col-form-label">{_ "name"} {_ "design"}</label>
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
                                                 <select class="selectpicker selectpickerNotRefresh" name="product_id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}">
@@ -80,6 +80,7 @@
                                         <th rowspan="2">{_ "body"}</th>
                                         <th colspan="{$degrees|count} ">{_ "space"}</th>
                                         <th rowspan="2">{_ "sub"}</th>
+                                        <th rowspan="2">{_ "user"}</th>
                                         {if $editAccess == 'true'}
                                             <th style="width: 25px;" rowspan="2"></th>
                                         {/if}
@@ -105,6 +106,7 @@
                                         {/foreach}
                                         {math format="round(x,2)" x=$item.sum set="tempDegree"}
                                         <td>{$tempDegree}</td>
+                                        <td><a href="{url admin}users/profile/{$item.user_id}" target="_blank">{$item.user}</a></td>
                                         {if $editAccess == 'true'}
                                             <td>
                                                 <a class="btn btn-link text-info" href="{url admin}grading_statistics/edit/{$item.id}">

@@ -688,19 +688,22 @@ return [
                 'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
                 'product_id' => 'INT(11) NOT NULL',
                 'novanc_id' => 'INT(11) NOT NULL',
+                'insert_id' => 'INT(11) NOT NULL',
                 'insert_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
                 'routine_date' => "DATE NOT NULL DEFAULT CURRENT_TIMESTAMP",
             ],
             'KEY' => [
                 'product_id',
                 'novanc_id',
+                'insert_id',
             ],
             'PRIMARY KEY' => [
                 'id'
             ],
             'REFERENCES' => [
                 'product_id' => ['table' => 'product', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
-                'novanc_id' => ['table' => 'product_novanc', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE']
+                'novanc_id' => ['table' => 'product_novanc', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'insert_id' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE']
             ]
         ],
         'grading_statistics_space' => [
@@ -731,6 +734,51 @@ return [
                 'id'
             ],
             'REFERENCES' => [
+            ]
+        ],
+        'disadvantages' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'product_id' => 'INT(11) NOT NULL',
+                'phases_id' => 'INT(11) NOT NULL',
+                'shift_id' => 'INT(11) NOT NULL',
+                'insert_id' => 'INT(11) NOT NULL',
+                'insert_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'routine_date' => "DATE NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            ],
+            'KEY' => [
+                'product_id',
+                'phases_id',
+                'shift_id',
+                'insert_id',
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'product_id' => ['table' => 'product', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'phases_id' => ['table' => 'per_phases', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'shift_id' => ['table' => 'per_shift_work', 'column' => 'shift_id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'insert_id' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE']
+            ]
+        ],
+        'disadvantages_count' => [
+            'fields' => [
+                'disadvantages_id' => 'INT(11) NOT NULL',
+                'product_disadvantage_id' => 'INT(11) NOT NULL',
+                'degree_id' => 'INT(11) NOT NULL',
+                'count' => 'INT(11) DEFAULT 0 NOT NULL',
+            ],
+            'KEY' => [
+                'disadvantages_id',
+                'product_disadvantage_id',
+            ],
+            'PRIMARY KEY' => [
+            ],
+            'REFERENCES' => [
+                'disadvantages_id' => ['table' => 'disadvantages', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'product_disadvantage_id' => ['table' => 'product_disadvantage', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'degree_id' => ['table' => 'product_degree', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
     ],

@@ -58,6 +58,7 @@ class hook extends pluginController
         $this->menu->addChild('configurationLine', 'product_effect', 'افکت ها', app::getBaseAppLink('product_effect', 'admin'), 'fa fa-file-image-o', '', 'admin/product_effect/index/product');
         $this->menu->addChild('configurationLine', 'product_decor', 'دکور ها', app::getBaseAppLink('product_decor', 'admin'), 'fa fa-photo', '', 'admin/product_decor/index/product');
         $this->menu->addChild('configurationLine', 'product_degree', 'درجه ها', app::getBaseAppLink('product_degree', 'admin'), 'fa fa-sort-numeric-asc', '', 'admin/product_degree/index/product');
+        $this->menu->addChild('configurationLine', 'product_disadvantage', 'معایب', app::getBaseAppLink('product_disadvantage', 'admin'), 'fa fa-sort-numeric-asc', '', 'admin/product_disadvantage/index/product');
         $this->menu->addChild('configurationLine', 'product_template', 'قالب ها', app::getBaseAppLink('product_template', 'admin'), 'fa fa-object-ungroup', '', 'admin/product_template/index/product');
         $this->menu->addChild('configurationLine', 'product_glue', 'چسب ها', app::getBaseAppLink('product_glue', 'admin'), 'fa fa-flask', '', 'admin/product_glue/index/product');
         $this->menu->addChild('configurationLine', 'product_strap', 'تسمه ها', app::getBaseAppLink('product_strap', 'admin'), 'fa fa-link', '', 'admin/product_strap/index/product');

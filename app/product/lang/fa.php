@@ -70,4 +70,6 @@ return [
     'controller'                                    => 'کنترلر',
     'qcManagerUserGroup'                            => 'گروه کاربری کنترل کیفیت',
     'qcManagerUser'                                 => 'کاربر مدیر کنترل کیفیت',
+    'space'                                         => 'متراژ',
+    'sub'                                           => 'مجموع',
 ];

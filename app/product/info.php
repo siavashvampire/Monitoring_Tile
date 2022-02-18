@@ -683,6 +683,43 @@ return [
                 'controller' => ['table' => 'user', 'column' => 'userId', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
             ]
         ],
+        'grading_statistics' => [
+            'fields' => [
+                'id' => 'INT(11) NOT NULL AUTO_INCREMENT',
+                'product_id' => 'INT(11) NOT NULL',
+                'novanc_id' => 'INT(11) NOT NULL',
+                'insert_date' => "DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP",
+                'routine_date' => "DATE NOT NULL DEFAULT CURRENT_TIMESTAMP",
+            ],
+            'KEY' => [
+                'product_id',
+                'novanc_id',
+            ],
+            'PRIMARY KEY' => [
+                'id'
+            ],
+            'REFERENCES' => [
+                'product_id' => ['table' => 'product', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'novanc_id' => ['table' => 'product_novanc', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE']
+            ]
+        ],
+        'grading_statistics_space' => [
+            'fields' => [
+                'grading_statistic_id' => 'INT(11) NOT NULL',
+                'degree_id' => 'INT(11) NOT NULL',
+                'space' => 'FLOAT',
+            ],
+            'KEY' => [
+                'grading_statistic_id',
+                'degree_id',
+            ],
+            'PRIMARY KEY' => [
+            ],
+            'REFERENCES' => [
+                'grading_statistic_id' => ['table' => 'grading_statistics', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+                'degree_id' => ['table' => 'product_degree', 'column' => 'id', 'on_delete' => 'RESTRICT', 'on_update' => 'CASCADE'],
+            ]
+        ],
     ],
     'sqlInstall' => [
         "INSERT IGNORE INTO `{prefix}product_size` (`id`, `label`,`width`,`length`,`thickness`) VALUES

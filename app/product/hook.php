@@ -43,6 +43,7 @@ class hook extends pluginController
     private $appName = 'product';
     public function _adminHeaderNavbar($vars2)
     {
+        $this->menu->addChild('Reports', 'grading_statistics', 'آمار درجهبندی', app::getBaseAppLink('grading_statistics', 'admin'), 'fa fa-cube', '', 'admin/grading_statistics/index/product');
         $this->menu->addChild('configurationLine', 'product', 'کاشی‌ها', app::getBaseAppLink('product/list', 'admin'), 'fa fa-delicious', '', 'admin/product/list/product');
         $this->menu->addChild('configurationLine', 'product_qc_list', 'لاگ فرآیند کنترل', app::getBaseAppLink('product_qc/list', 'admin'), 'fa fa-cube', '', 'admin/product_qc/list/product');
         $this->menu->addChild('configurationLine', 'product_routine_list', 'لاگ فرآیند کنترل روتین', app::getBaseAppLink('product_routine/list', 'admin'), 'fa fa-cube', '', 'admin/product_routine/list/product');

@@ -1,0 +1,143 @@
+﻿<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info card-header-icon pointer"  data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">
+                        <div class="card-icon" >
+                            <i class="material-icons">search</i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "searchIn"} {$item_label}</h4>
+                    </div>
+                    <div class="collapse" id="searchUsers">
+                        <div class="card-body">
+                            {set loadDivID,"#listToGetFromServer"}
+                            {set loadDivIDInHtml,"listToGetFromServer"}
+                            <form class="form-horizontal" id="listToGetFromServerForm" method="post"  onsubmit="return search('{url current}' ,'{$loadDivID}');">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "product_label"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <select class="selectpicker selectpickerNotRefresh" name="product_id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}">
+                                                    <option value=""  selected>همه</option>
+                                                    {foreach from=$products key=key value=product }
+                                                    <option value="{$product.id}">{$product.label}</option>
+                                                    {/foreach}
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "az"} {_ "date"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatePicker-from text-center" {if isset($Mold.post.startTime) and $Mold.post.startTime != ""}value="{$Mold.post.startTime|jDate:"j F, Y"}"{/if}>
+                                                <input type="hidden" name="StartTime"   class="form-control persianJustDatePicker-from-alt text-center" {if isset($Mold.post.startTime) and $Mold.post.startTime != ""}value="{$Mold.post.startTime}"{/if}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="col-md-3 col-form-label">{_ "ta"} {_ "date"}</label>
+                                        <div class="col-md-9">
+                                            <div class="form-group has-default">
+                                                <input type="text" autocomplete="off" class="form-control persianJustDatePicker-to text-center" {if isset($Mold.post.endTime) and $Mold.post.endTime != ""}value="{$Mold.post.endTime|jDate:"j F, Y"}"{/if}>
+                                                <input type="hidden" name="EndTime"   class="form-control persianJustDatePicker-to-alt text-center" {if isset($Mold.post.endTime)  and $Mold.post.endTime != ""}value="{$Mold.post.endTime}"{/if}>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button class="btn btn-link" id="closeSearch" data-toggle="collapse" data-target="#searchUsers" aria-expanded="false" aria-controls="searchUsers">{_ "close"}</button>
+                                        <button type="submit" class="btn btn-fill btn-info">{_ "search"}</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card" id="listToGetFromServer">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="fa fa-usb fa-2x"></i>
+                        </div>
+                        <h4 class="card-title float-{$float} m-3">{_ "list"} {$item_label}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table text-{$text_align}" id="tebleExport">
+                                <thead>
+                                    <tr>
+                                        <th rowspan="2">{_ "date"}</th>
+                                        <th rowspan="2">{_ "size"}</th>
+                                        <th rowspan="2">{_ "name"} {_ "design"}</th>
+                                        <th rowspan="2">{_ "novanc"}</th>
+                                        <th rowspan="2">{_ "body"}</th>
+                                        <th colspan="{$degrees|count} ">{_ "space"}</th>
+                                        <th rowspan="2">{_ "sub"}</th>
+                                        {if $editAccess == 'true'}
+                                            <th style="width: 25px;" rowspan="2"></th>
+                                        {/if}
+                                    </tr>
+                                    <tr>
+                                        {foreach from=$degrees key=key value=degree }
+                                        <th>{$degree.label}</th>
+                                        {/foreach}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {foreach from=$items key=key value=item}
+                                    <tr>
+                                        <td>{$item.routine_date|jDate:"j F Y"}</td>
+                                        <td>{$item.size}</td>
+                                        <td>{$item.product}</td>
+                                        <td>{$item.novanc}</td>
+                                        <td>{$item.body}</td>
+                                        {foreach from=$degrees key=key value=degree }
+                                        {math format="round(x [ y ],2)" x=$item y=$degree.label  set="tempDegree"}
+                                        {math format="round(x * 100 / y , 2)" y=$item.sum x=$tempDegree  set="tempPercent"}
+                                        <td>{$tempDegree ?? 0}<br>{$tempPercent}%</td>
+                                        {/foreach}
+                                        {math format="round(x,2)" x=$item.sum set="tempDegree"}
+                                        <td>{$tempDegree}</td>
+                                        {if $editAccess == 'true'}
+                                            <td>
+                                                <a class="btn btn-link text-info" href="{url admin}grading_statistics/edit/{$item.id}">
+                                                    <i class="fa fa-pencil">
+
+                                                    </i>
+                                                </a>
+                                            </td>
+                                        {/if}
+                                    </tr>
+                                {foreachelse}
+                                <tr>
+                                    <td class="text-center" colspan="100">{_ "hasNotDataYet"}</td>
+                                </tr>
+                                {/foreach}
+                                </tbody>
+                            </table>
+                        </div>
+                        {view "[url patch]../pagination.mold.html"}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{map navBarButton}
+    {if $insertAccess == 'true'}
+        <a class="btn btn-info" href="{url admin}grading_statistics/insert">
+            <span class="btn-label">
+                <i class="fa fa-plus"></i>
+            </span>
+            {_ "add"} {$item_label} {_ "new"}
+        </a>
+    {/if}
+{/map}

@@ -848,11 +848,13 @@ class product extends model implements modelInterFace
             $variable[] = 'item.id = ?';
         }
         model::join('phases phase' , 'phase.id = item.phase');
+        model::join('product_body body' , 'body.id = item.body');
         model::join('product_size size' , 'size.id = item.size');
         model::join('user creator' , 'creator.userId = item.creator');
         $fields = array();
         $fields[] = 'item.*';
         $fields[] = 'size.label as sizeLabel';
+        $fields[] = 'body.label as bodyLabel';
         $fields[] = 'phase.label as phaseLabel';
         $fields[] = 'CONCAT(creator.fname , " " , creator.lname ) as creatorName';
         $fields = implode(' , ',$fields);

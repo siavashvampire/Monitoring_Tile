@@ -1,0 +1,136 @@
+<div class="content">
+  <div class="container-fluid">
+    <div class="card">
+      <div class="card-header card-header-info card-header-icon">
+        <div class="card-icon" >
+          <i class="fa fa-file-excel-o fa-2x"></i>
+        </div>
+        <h4 class="card-title float-{$float} m-3">{_ "configuration"} {$item_label}</h4>
+      </div>
+      <div class="card-body">
+        <form class="form-horizontal" method="post">
+          <div class="row">
+            <div class="col-md-4 float-right form-group">
+              <label for="label" class="col-form-label col-md-3 float-right">{_ "name"} {_ "design"}:<span class="text-danger">*</span></label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <select onchange="$('#tempSize').val(getValue('size' , $(this).val()));$('#tempBody').val(getValue('body' , $(this).val()));" class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="label" name="product_id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}">
+                  <option>-</option>
+                  {foreach from=$products key=key value=item }
+                  <option value="{$item.id}" {if isset($Mold.post.product_id)}{if $item.id == $Mold.post.product_id}selected{/if}{elseif isset($model) and $item.id == $model->getProductId()}selected{/if} >{$item.label}</option>
+                  {/foreach}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 float-right form-group">
+              <label for="novanc" class="col-form-label col-md-3 float-right">{_ "novanc"}:<span class="text-danger">*</span></label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <select class="selectpicker selectpickerNotRefresh selectPickerShouldRefresh" id="novanc" name="novance_id" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}">
+                  {foreach from=$novancs key=key value=item }
+                  <option value="{$item.id}" {if isset($Mold.post.novance_id)}{if $item.id == $Mold.post.novance_id}selected{/if}{elseif isset($model) and $item.id == $model->getNovancId()}selected{/if} >{$item.label}</option>
+                  {/foreach}
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 float-right form-group">
+              <label for="novanc" class="col-form-label col-md-3 float-right">{_ "date"}:<span class="text-danger">*</span></label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <input type="date" autocomplete="off" required name="date" class="form-control" value="{if isset($Mold.post.Time_Send_justT)}{$Mold.post.Time_Send_justT}{elseif isset($model)}{$model->getJDate()}{/if}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-4 float-right form-group">
+              <label class="col-form-label col-md-3 float-right">{_ "size"}:</label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <input name="tempSize" id="tempSize" disabled class="form-control" value="{if isset($Mold.post.tempSize)}{$Mold.post.tempSize}{/if}">
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4 float-right form-group">
+              <label class="col-form-label col-md-3 float-right">{_ "body"}:</label>
+              <div class="col-md-9">
+                <div class="form-group has-default">
+                  <input name="tempBody" id="tempBody" disabled class="form-control" value="{if isset($Mold.post.tempBody)}{$Mold.post.tempBody}{/if}">
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-8 form-group">
+              <div class="col-md-4" style="display: flex;align-items: center;height: 100%;">
+                <label class="float-right">{_ "degree"}:<span class="text-danger">*</span></label>
+              </div>
+              <div class="col-md-8">
+                <table class="table text-{$text_align}" style="border-collapse:collapse;width: 100%;margin: unset !important;">
+                  <thead style="">
+                  <tr>
+                    <th style="width: 50%;border: 2px solid darkcyan;padding: 8px;font-size: 16px;font-weight: bold;">{_ "degree"}</th>
+                    <th style="width: 50%;border: 2px solid darkcyan;padding: 8px;font-size: 16px;font-weight: bold;">{_ "space"}</th>
+                  </tr>
+                  </thead>
+                  <tbody style="border-bottom: 2px solid darkcyan;">
+                  {foreach from=$degrees key=key value=item }
+                  <tr>
+                    <td style="border: 1px solid darkcyan;border-right: 2px solid darkcyan;padding: 8px;text-align: center;">
+                      <label style="font-size: 14px;color:gray;" for="degree_{$key}">
+                        {_ "space"} {$item.label}
+                      </label>
+                    </td>
+                    <td style="border: 1px solid darkcyan;border-left: 2px solid darkcyan;padding: 8px;text-align: center;">
+                      <input type="number" min="0" step=".01" class="form-control" autocomplete="off" id="degree_{$key}" name="degree[{$item.id}]" value="{if isset($Mold.post.degree.[$item.id])}{$Mold.post.degree.[$item.id]}{elseif isset($model)}{foreach from=$spaces key=key value=space }{if $space.degree_id ==$item.id }{$space.space}{/if}{/foreach}{/if}" style="text-align: center">
+                    </td>
+                  </tr>
+                  {/foreach}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <hr>
+          <div class="row">
+            <div class="col-md-12">
+              <button type="submit" class="btn btn-fill btn-info"><i class="fa fa-download"></i>{_ "insert"}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{map navBarButton}
+{if $editAccess == 'true'}
+<a class="btn btn-info"  href="{url admin}{$ChangeURL}">
+                                      <span class="btn-label">
+                                        <i class="fa fa-plus"></i>
+                                      </span>
+  {_ "backTo"} {_ "list"} {$item_label}
+</a>
+{/if}
+{/map}
+
+{map footerjs}
+<script>
+
+  var p =[];
+
+  {foreach from=$products key=key value=item }
+  p[{$item.id}] = [];
+  p[{$item.id}]['size'] = '{$item.sizeLabel}';
+  p[{$item.id}]['body'] = '{$item.bodyLabel}';
+  {/foreach}
+  function getValue(type , id){
+      return p[id][type];
+  }
+
+</script>
+{/map}

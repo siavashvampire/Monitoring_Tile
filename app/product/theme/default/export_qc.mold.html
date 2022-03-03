@@ -31,7 +31,7 @@
                                             <div class="form-group has-default">
                                                 <select class="selectpicker selectpickerNotRefresh" name="phase" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "phase"}">
                                                 {foreach from=$phases key=key value=item }
-                                                <option value="{$item.id}"  >{$item.label}</option>
+                                                    <option value="{$item.id}"  >{$item.label}</option>
                                                 {/foreach}
                                                 </select>
                                             </div>
@@ -86,9 +86,9 @@
                                         <div class="col-md-9">
                                             <div class="form-group has-default">
                                                 <select class="selectpicker selectpickerNotRefresh" onchange="changeFormAction($(this ,':selected').val())" name="kind" data-live-search="true" data-size="7" data-style="btn btn-outline-info btn-round text-{$float}" title="{_ "kind"} {_ "export"}">
-                                                    <option value="{url}product_export" selected>تولید</option>
-                                                    <option value="{url}product_export/routine"  >روتین</option>
-                                                    <option value="{url}product_export/water_attraction"  >جذب آب</option>
+                                                    <option value="{url}product_export" selected>{_ "production"}</option>
+                                                    <option value="{url}product_export/routine"  >{_ "routine"}</option>
+                                                    <option value="{url}product_export/water_attraction"  >{_ "attraction"} {_ "water"}</option>
                                                 </select>
                                             </div>
                                         </div>

@@ -50,8 +50,8 @@ return [
     'sub_engobe'                                    => 'انگوب زیر',
     'max'                                           => 'max',
     'min'                                           => 'min',
-    'up'                                           => 'بالا',
-    'down'                                           => 'پایین',
+    'up'                                            => 'بالا',
+    'down'                                          => 'پایین',
     'resistance'                                    => 'مقاومت',
     'oblique'                                       => 'گونیایی',
     'wrap'                                          => 'تاب',
@@ -70,4 +70,5 @@ return [
     'controller'                                    => 'کنترلر',
     'qcManagerUserGroup'                            => 'گروه کاربری کنترل کیفیت',
     'qcManagerUser'                                 => 'کاربر مدیر کنترل کیفیت',
+    'routine'                                       => 'روتین',
 ];

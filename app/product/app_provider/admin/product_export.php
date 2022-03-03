@@ -210,6 +210,18 @@ class product_export extends controller
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
         }
+        if ($get['phase'] != null) {
+            $variable[] = ' product.phase = ?';
+            $value[] = $get['phase'];
+        }
+        if ($get['size'] != null) {
+            $variable[] = ' product.size = ?';
+            $value[] = $get['size'];
+        }
+        if ($get['product'] != null) {
+            $variable[] = ' item.product = ?';
+            $value[] = $get['product'];
+        }
 
         $search = $model->getItemsForExport($value, $variable);
 
@@ -334,6 +346,18 @@ class product_export extends controller
             $variable[] = ' DATE_FORMAT(item.routine_date, "%Y-%m-%d 12:00:00") BETWEEN ? AND ?';
             $value[] = $get['StartTime'];
             $value[] = $get['EndTime'];
+        }
+        if ($get['phase'] != null) {
+            $variable[] = ' product.phase = ?';
+            $value[] = $get['phase'];
+        }
+        if ($get['size'] != null) {
+            $variable[] = ' product.size = ?';
+            $value[] = $get['size'];
+        }
+        if ($get['product'] != null) {
+            $variable[] = ' item.product = ?';
+            $value[] = $get['product'];
         }
 
         $search = $model->getItemsForExport($value, $variable);

@@ -365,10 +365,6 @@ class product_export extends controller
             $value[] = $get['product'];
         }
 
-
-        show($variable,false);
-        show($value,true);
-
         $search = $model->getItemsForExport($value, $variable);
 
         $header = [];

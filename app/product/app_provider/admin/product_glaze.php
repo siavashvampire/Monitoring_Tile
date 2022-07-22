@@ -24,6 +24,8 @@ class product_glaze extends controller
 
     public function index($parent = null ): bool
     {
+
+
         /* @var \App\product\model\product_glaze $model */
         $model = parent::model($this->model_name);
 
@@ -96,6 +98,17 @@ class product_glaze extends controller
         } else
             $model = parent::model($this->model_name);
 
+        $value[] = $get['label'];
+        $variable[] = 'item.label Like ? ';
+
+        $search = $model->getItems($value, $variable, ['column' => 'id', 'type' => 'asc']);
+        if (is_array($search)){
+            $name = $search[0]['label'];
+            $text = $this->item_label." با نام " . $name . " قبلا ثبت شده است";
+            Response::jsonMessage($text, false);
+            return false;
+        }
+
         if ($get['parent'])
             $model->setParent($get['parent']);
 
@@ -116,7 +129,7 @@ class product_glaze extends controller
                 return false;
             }
             else{
-                Response::jsonMessage("rid", true);
+                Response::jsonMessage("errors", true);
                 return false;
             }
         } else {
@@ -128,7 +141,7 @@ class product_glaze extends controller
                 return false;
             }
             else{
-                Response::jsonMessage("rid", true);
+                Response::jsonMessage("errors", true);
                 return false;
             }
         }

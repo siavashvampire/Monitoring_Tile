@@ -10,7 +10,6 @@ use App\shiftWork\app_provider\api\totalDate;
 use App\units\app_provider\api\units;
 use controller;
 use paymentCms\component\JDate;
-use paymentCms\component\model;
 use paymentCms\component\request;
 
 if (!defined('paymentCMS')) die('<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" type="text/css"><div class="container" style="margin-top: 20px;"><div id="msg_1" class="alert alert-danger"><strong>Error!</strong> Please do not set the url manually !! </div></div>');
@@ -445,4 +444,5 @@ class product_export extends controller
         $this->mold->set('item_label', $this->item_label);
         return false;
     }
+
 }

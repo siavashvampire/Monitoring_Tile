@@ -88,7 +88,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning float-left" data-dismiss="modal" style="position: absolute;">{_ "close"}</button>
-                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();window.location.reload()" >{_ "send"}</button>
+                <button type="button" class="btn btn-success float-right" id="sendDataButton" onclick="sendItem();" >{_ "send"}</button>
             </div>
         </div>
     </div>
@@ -151,12 +151,12 @@ function sendItem(){
             if (result['status']) {
                 $("#dataSendAlert").removeClass("alert-danger").addClass("alert-success").html(changeSuccessfully).show();
                 $('#sendDataButton').hide();
-                console.log("miad inja")
                 load();
+                setInterval(function() {window.location.reload();}, 3000);
+
                 return false;
             }
             else {
-                console.log("miad 234")
                 $("#dataSendAlert").addClass("alert-danger").removeClass("alert-success").html(result['message']).show();
             }
         }
